@@ -9,6 +9,7 @@ import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { hiraganaInfo, smallHiragana } from '../src/courses/ja/hiragana.ts'
 import { katakanaInfo, LONG_VOWEL, smallKatakana } from '../src/courses/ja/katakana.ts'
+import { kanjiList } from '../src/courses/ja/kanji.ts'
 import type { StrokeData } from '../src/courses/ja/types.ts'
 
 const KANJIVG_TAG = 'r20260714'
@@ -81,3 +82,5 @@ const katakanaChars = [
   ...new Set([...Object.keys(katakanaInfo), ...Object.keys(smallKatakana), LONG_VOWEL].flatMap((c) => [...c])),
 ]
 await build('katakana', katakanaChars)
+
+await build('kanji', kanjiList.map((k) => k.char))

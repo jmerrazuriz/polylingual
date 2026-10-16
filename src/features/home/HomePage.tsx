@@ -12,7 +12,10 @@ import { now } from '../../lib/time'
 
 const features = [
   { to: '/tabla', glyph: 'あ', title: 'Tabla rápida', text: 'Todos los caracteres de un vistazo.' },
-  { to: '/aprender', glyph: '学', title: 'Aprender', text: 'Lecciones con orden de trazos y palabras.' },
+  { to: '/aprender', glyph: '学', title: 'Recorrido', text: 'Avanza unidad por unidad, parada por parada.' },
+  { to: '/extra', glyph: '∞', title: 'Lección extra', text: 'Sin límite: se arma con lo que ya sabes.' },
+  { to: '/contadores', glyph: '数', title: 'Contadores', text: 'Cómo contar personas, cosas, horas y fechas.' },
+  { to: '/kanji', glyph: '字', title: 'Kanji', text: 'Los kanji del nivel N5 con trazos y ejemplos.' },
   { to: '/gramatica', glyph: '文', title: 'Gramática', text: 'Partículas y frases básicas con ejercicios.' },
   { to: '/practicar', glyph: '書', title: 'Practicar', text: 'Lee y escribe con el dedo, con corrección.' },
   { to: '/juegos', glyph: '遊', title: 'Juegos', text: 'Une parejas de caracteres y palabras.' },

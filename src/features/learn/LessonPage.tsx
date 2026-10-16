@@ -48,7 +48,7 @@ export function LessonPage({ lesson, onFinish }: { lesson: Lesson; onFinish?: ()
   const index = lessonsByScript[lesson.script].indexOf(lesson)
   // Después de la última lección de hiragana sigue la primera de katakana.
   const nextLesson = lessons[lessons.indexOf(lesson) + 1]
-  const back = lesson.script === 'katakana' ? '/aprender?silabario=katakana' : '/aprender'
+  const back = lesson.script === 'katakana' ? '/aprender?silabario=katakana' : '/aprender?silabario=hiragana'
   const learned = learnedThrough(lesson.id)
   const lessonKana = lesson.chars.map((c) => kanaByChar.get(c)!)
   const pool = [...learned].flatMap((c) => kanaByChar.get(c) ?? [])

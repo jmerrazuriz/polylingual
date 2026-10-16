@@ -327,6 +327,20 @@ app_idiomas/
   - 11 lecciones en kana: です, は, か, の, これ/それ/あれ, も, を + ます, に/へ, で, adjetivos い/な y あります/います.
   - Cada una tiene explicación, ejemplos con romaji y audio, y ejercicios de completar, significado y ordenar palabras.
   - Se abre tras los básicos del hiragana.
+- ✅ **Recorrido (portada de Aprender):** 14 unidades en orden recomendado que mezclan kana, gramática, contadores y kanji. Son 46 paradas de 1 a 3 lecciones, cada unidad de kana cierra con su repaso, y la parada actual se marca con «¡Sigue aquí!». Al tocar una parada se ven sus lecciones para empezar o repetir. La lección del día toma de aquí la siguiente lección.
+- ✅ **Lecciones ilimitadas:**
+  - **Lección extra (`/extra`):** se arma al azar con todo lo aprendido (kana, palabras, gramática, contadores y kanji) y se puede pedir otra sin fin.
+  - Cualquier lección completada se puede repetir.
+- ✅ **Números y contadores (`/contadores`):**
+  - 9 lecciones: números del 1 al 10 y grandes, つ, 人, 本, 枚, 匹, 個, 冊, 台, 杯, 時, 分, 月, 日, 歳, 回 y 円.
+  - Cada contador explica para qué se usa y muestra su tabla del 1 al 10 con las lecturas especiales en rojo, ejemplos con audio y ejercicios (lectura, qué contador usar, significado).
+  - Un test revisa que cada lectura regular sea número + contador y que las especiales estén marcadas.
+  - Se abre al terminar el hiragana.
+- ✅ **Kanji (`/kanji`):**
+  - 76 kanji del nivel N5 en 14 lecciones (números, tiempo, personas, naturaleza y lugares, adjetivos y verbos), con trazos de KanjiVG.
+  - Cada kanji tiene significado, lecturas on y kun con romaji, 2 palabras de ejemplo, ejercicios de significado y lectura, y escritura calcando.
+  - Se abre al terminar los básicos del katakana.
+  - **Pendiente:** el resto del N5, el nivel N4 y tarjetas de repaso (SRS) para kanji.
 - **Para agregar un idioma:** crear `src/courses/<id>/` con su contenido, registrar la gramática en `src/courses/content.ts`, cambiar su `status` a `available` y darle sus secciones. Las lecciones de vocabulario para idiomas sin silabario propio son lo siguiente a diseñar. Quedan como ideas para después (sección 9): tarjetas SRS de palabras, temas de palabras en los juegos, pares confusos juntos en los juegos, kanji, frases con furigana y evaluación de pronunciación.
 
 **Hiragana primero:** las fases 1 a 6 se construyen solo con hiragana. El código se escribe desde el principio para cualquier silabario (el campo `script` en los datos), así que katakana entra en la fase 7 casi solo como contenido.

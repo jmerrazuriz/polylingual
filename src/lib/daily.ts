@@ -1,7 +1,8 @@
 import { grammarByCourse } from '../courses/content.ts'
 import { lessons } from '../courses/ja/lessons.ts'
 import type { DailyRecord, ProgressData } from './progress/model.ts'
-import { unlockedGrammar, unlockedLessons } from './progress/unlock.ts'
+import { nextPathLesson } from './path.ts'
+import { unlockedGrammar } from './progress/unlock.ts'
 import { dueNowCount } from './review.ts'
 import { weakItems } from './units.ts'
 
@@ -32,8 +33,8 @@ export function planDaily(p: ProgressData, now: number, everythingOpen: boolean)
   if (dueNowCount(p.cards, now) > 0) steps.push('repasos')
   else if (weakItems(p).read.length > 0) steps.push('debiles')
 
-  const openLessons = unlockedLessons(p.lessons, everythingOpen || p.unlockAll)
-  const lesson = lessons.find((l) => openLessons.has(l.id) && !p.lessons[l.id])
+  // La siguiente lección del recorrido: kana, contadores o kanji.
+  const lesson = nextPathLesson(p, everythingOpen)
   if (lesson) steps.push('nuevo')
 
   const grammarIds = (grammarByCourse[p.course] ?? []).map((g) => g.id)
@@ -41,7 +42,8 @@ export function planDaily(p: ProgressData, now: number, everythingOpen: boolean)
   const grammar = grammarIds.find((id) => openGrammar.has(id) && !p.grammar[id])
   if (grammar) steps.push('gramatica')
 
-  if (Object.keys(p.lessons).length > 0) steps.push('juego')
+  // El juego usa los kana aprendidos: hace falta al menos una lección de kana.
+  if (lessons.some((l) => p.lessons[l.id])) steps.push('juego')
 
   return { steps, ...(lesson ? { lesson: lesson.id } : {}), ...(grammar ? { grammar } : {}), done: [] }
 }

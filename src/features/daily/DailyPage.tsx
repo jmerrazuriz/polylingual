@@ -3,6 +3,8 @@ import { Link } from 'react-router'
 import { SaveProgressPrompt } from '../../components/SaveProgressPrompt'
 import { grammarByCourse } from '../../courses/content'
 import { kanaByChar } from '../../courses/ja/kana'
+import { counterLessons } from '../../courses/ja/counters'
+import { kanjiLessons } from '../../courses/ja/kanji'
 import { lessons } from '../../courses/ja/lessons'
 import { useAccount } from '../../lib/account/store'
 import { DAILY_REVIEW_LIMIT, type DailyStep, dailyStepInfo, isDailyComplete, planDaily } from '../../lib/daily'
@@ -17,7 +19,13 @@ import { buildWeakReview } from '../../lib/units'
 import { PairsGame } from '../games/PairsGame'
 import { GrammarLessonView } from '../grammar/GrammarLessonPage'
 import { LessonPage } from '../learn/LessonPage'
+import { CounterLessonView } from '../study/CountersPages'
+import { KanjiLessonView } from '../study/KanjiPages'
 import { MixedSession } from '../practice/MixedSession'
+
+/** Título de la lección nueva del día, sea de kana, contadores o kanji. */
+const lessonTitle = (id?: string) =>
+  [...lessons, ...counterLessons, ...kanjiLessons].find((l) => l.id === id)?.title
 
 /** Parejas del mini juego diario: 6, al azar entre lo ya aprendido. */
 const GAME_PAIRS = 6
@@ -75,7 +83,7 @@ export function DailyPage() {
             const done = record.done.includes(step)
             const detail =
               step === 'nuevo'
-                ? lessons.find((l) => l.id === record.lesson)?.title
+                ? lessonTitle(record.lesson)
                 : step === 'gramatica'
                   ? grammarByCourse.ja.find((g) => g.id === record.grammar)?.title
                   : undefined
@@ -173,12 +181,15 @@ function DailyStepRunner({ step, lessonId, grammarId, onDone, onExit }: RunnerPr
   }
 
   if (step === 'nuevo') {
-    const lesson = lessons.find((l) => l.id === lessonId)
-    if (!lesson) return null
+    const kana = lessons.find((l) => l.id === lessonId)
+    const counter = counterLessons.find((l) => l.id === lessonId)
+    const kanji = kanjiLessons.find((l) => l.id === lessonId)
     return (
       <div className="flex flex-col gap-3">
         {back}
-        <LessonPage lesson={lesson} onFinish={onDone} />
+        {kana && <LessonPage lesson={kana} onFinish={onDone} />}
+        {counter && <CounterLessonView lesson={counter} onFinish={onDone} />}
+        {kanji && <KanjiLessonView lesson={kanji} onFinish={onDone} />}
       </div>
     )
   }

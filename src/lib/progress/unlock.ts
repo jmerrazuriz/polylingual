@@ -52,3 +52,30 @@ export function useUnlockedGrammar(ids: readonly string[]): Set<string> {
   const unlockAll = useProgress((s) => s.unlockAll)
   return unlockedGrammar(ids, grammar, lessons, guest || unlockAll)
 }
+
+/** Los contadores se abren al terminar el hiragana (usan dakuten y combinados). */
+export const COUNTERS_UNLOCKED_BY = 'yoon-4'
+/** Los kanji se abren al terminar los básicos del katakana (las lecturas on van en katakana). */
+export const KANJI_UNLOCKED_BY = 'kata-w'
+
+/** Lista de lecciones en orden: la primera se abre con `gate`, las demás al completar la anterior. */
+export function unlockedSequence(
+  ids: readonly string[],
+  lessons: Record<string, LessonResult>,
+  gate: string,
+  unlockAll: boolean,
+): Set<string> {
+  if (unlockAll) return new Set(ids)
+  const unlocked = new Set<string>()
+  ids.forEach((id, i) => {
+    if ((i === 0 && lessons[gate]) || (i > 0 && lessons[ids[i - 1]]) || lessons[id]) unlocked.add(id)
+  })
+  return unlocked
+}
+
+export function useUnlockedSequence(ids: readonly string[], gate: string): Set<string> {
+  const guest = useAccount((s) => s.status !== 'user')
+  const lessons = useProgress((s) => s.lessons)
+  const unlockAll = useProgress((s) => s.unlockAll)
+  return unlockedSequence(ids, lessons, gate, guest || unlockAll)
+}

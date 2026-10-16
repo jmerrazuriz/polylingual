@@ -1,6 +1,7 @@
 import { hiraganaChart, hiraganaInfo, hiraganaMnemonics } from './hiragana.ts'
 import { katakanaChart, katakanaInfo, katakanaMnemonics, toHiragana, toKatakana } from './katakana.ts'
 import hiraganaStrokes from './strokes/hiragana.json'
+import kanjiStrokes from './strokes/kanji.json'
 import katakanaStrokes from './strokes/katakana.json'
 import type { ChartSection, Kana, KanaInfo, Script, StrokeData } from './types.ts'
 
@@ -8,6 +9,7 @@ import type { ChartSection, Kana, KanaInfo, Script, StrokeData } from './types.t
 const strokes = {
   ...(hiraganaStrokes as unknown as Record<string, StrokeData>),
   ...(katakanaStrokes as unknown as Record<string, StrokeData>),
+  ...(kanjiStrokes as unknown as Record<string, StrokeData>),
 }
 
 export const charts: Record<Script, ChartSection[]> = { hiragana: hiraganaChart, katakana: katakanaChart }

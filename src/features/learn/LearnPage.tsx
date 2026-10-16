@@ -6,6 +6,7 @@ import { useProgress } from '../../lib/progress/store'
 import { useUnlockedLessons } from '../../lib/progress/unlock'
 import { units } from '../../lib/units'
 import { UnitCard } from '../review/UnitCard'
+import { PathPage } from '../path/PathPage'
 import { LearnTabs } from './LearnTabs'
 
 const groups: { group: KanaGroup; title: string }[] = [
@@ -26,8 +27,11 @@ export function LearnPage() {
   const unlocked = useUnlockedLessons()
   const [params] = useSearchParams()
   const script: Script = params.get('silabario') === 'katakana' ? 'katakana' : 'hiragana'
+  const showPath = !params.get('silabario')
   const list = lessonsByScript[script]
   const katakanaLocked = !lessonsByScript.katakana.some((l) => unlocked.has(l.id))
+
+  if (showPath) return <PathPage />
 
   return (
     <div className="flex flex-col gap-6">

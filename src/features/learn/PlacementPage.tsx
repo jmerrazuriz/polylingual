@@ -43,7 +43,7 @@ export function PlacementPage() {
         )}
         <SaveProgressPrompt />
         <Link
-          to={script === 'katakana' ? '/aprender?silabario=katakana' : '/aprender'}
+          to={script === 'katakana' ? '/aprender?silabario=katakana' : '/aprender?silabario=hiragana'}
           className="rounded-full bg-ink px-6 py-3 font-bold text-white hover:opacity-90"
         >
           Ir a las lecciones

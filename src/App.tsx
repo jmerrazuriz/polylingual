@@ -5,6 +5,9 @@ import { Layout } from './components/Layout'
 import { ChartPage } from './features/chart/ChartPage'
 import { CoursesPage } from './features/courses/CoursesPage'
 import { DailyPage } from './features/daily/DailyPage'
+import { ExtraLessonPage } from './features/extra/ExtraLessonPage'
+import { CounterLessonRoute, CountersPage } from './features/study/CountersPages'
+import { KanjiLessonRoute, KanjiPage } from './features/study/KanjiPages'
 import { GamesPage } from './features/games/GamesPage'
 import { GrammarLessonRoute } from './features/grammar/GrammarLessonPage'
 import { GrammarPage } from './features/grammar/GrammarPage'
@@ -35,6 +38,11 @@ export default function App() {
         <Route path="aprender/:lessonId" element={<LessonRoute />} />
         <Route path="test-de-nivel" element={<PlacementPage />} />
         <Route path="gramatica" element={<GrammarPage />} />
+        <Route path="contadores" element={<CountersPage />} />
+        <Route path="contadores/:lessonId" element={<CounterLessonRoute />} />
+        <Route path="kanji" element={<KanjiPage />} />
+        <Route path="kanji/:lessonId" element={<KanjiLessonRoute />} />
+        <Route path="extra" element={<ExtraLessonPage />} />
         <Route path="gramatica/:lessonId" element={<GrammarLessonRoute />} />
         <Route path="practicar" element={<PracticePage />} />
         <Route path="juegos" element={<GamesPage />} />

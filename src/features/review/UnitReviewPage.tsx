@@ -21,7 +21,7 @@ function UnitReview({ unit }: { unit: Unit }) {
   const complete = useProgress((s) => s.completeUnit)
   const [plan, setPlan] = useState<ReturnType<typeof buildUnitReview> | null>(null)
   const [result, setResult] = useState<MixedResult | null>(null)
-  const back = unit.script === 'katakana' ? '/aprender?silabario=katakana' : '/aprender'
+  const back = unit.script === 'katakana' ? '/aprender?silabario=katakana' : '/aprender?silabario=hiragana'
 
   if (status === 'locked') {
     return (
