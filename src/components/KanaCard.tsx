@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { getStrokes } from '../content/kana'
+import { counterpart, getStrokes } from '../content/kana'
 import type { Kana, Word } from '../content/types'
 import { useSpeech } from '../lib/audio/useSpeech'
 import { wordRomaji } from '../lib/words'
@@ -18,6 +18,7 @@ export function KanaCard({ kana, words, showAnswer = true, onReveal }: Props) {
   const [replay, setReplay] = useState(0)
   const { available: audio, speak } = useSpeech()
   const strokeCount = kana.parts.reduce((n, p) => n + (getStrokes(p)?.strokes.length ?? 0), 0)
+  const pair = counterpart(kana)
 
   return (
     <div className="flex flex-col gap-4">
@@ -44,6 +45,11 @@ export function KanaCard({ kana, words, showAnswer = true, onReveal }: Props) {
             {strokeCount} {strokeCount === 1 ? 'trazo' : 'trazos'}
             {showAnswer && kana.variants && ` · también se escribe ${kana.variants.join(', ')}`}
           </p>
+          {pair && (
+            <p className="text-sm text-slate-500 dark:text-slate-400">
+              En {pair.script}: <span className="font-jp text-lg text-slate-800 dark:text-slate-200">{pair.char}</span>
+            </p>
+          )}
         </div>
         <div className="flex gap-2">
           <button

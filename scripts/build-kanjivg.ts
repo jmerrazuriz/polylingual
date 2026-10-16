@@ -8,6 +8,7 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { hiraganaInfo, smallHiragana } from '../src/content/hiragana.ts'
+import { katakanaInfo, LONG_VOWEL, smallKatakana } from '../src/content/katakana.ts'
 import type { StrokeData } from '../src/content/types.ts'
 
 const KANJIVG_TAG = 'r20260714'
@@ -75,3 +76,8 @@ const hiraganaChars = [
   ...Object.keys(smallHiragana),
 ]
 await build('hiragana', hiraganaChars)
+
+const katakanaChars = [
+  ...new Set([...Object.keys(katakanaInfo), ...Object.keys(smallKatakana), LONG_VOWEL].flatMap((c) => [...c])),
+]
+await build('katakana', katakanaChars)

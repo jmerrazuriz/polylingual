@@ -82,7 +82,7 @@ describe('desbloqueo progresivo', () => {
     expect([...unlockedLessons(done, false)]).toEqual(['vocales', 'k', 's'])
   })
 
-  it('con «desbloquear todo» abre las 19', () => {
-    expect(unlockedLessons({}, true).size).toBe(19)
+  it('con «desbloquear todo» abre las 41 (19 de hiragana y 22 de katakana)', () => {
+    expect(unlockedLessons({}, true).size).toBe(41)
   })
 })

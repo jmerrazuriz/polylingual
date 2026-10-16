@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { GroupPicker } from '../../components/GroupPicker'
 import type { Kana, Word } from '../../content/types'
 import { useSpeech } from '../../lib/audio/useSpeech'
-import { kanaPairItems, type PairItem, uniqueByRomaji, uniquePairs, wordPairItems } from '../../lib/pairs'
+import { kanaPairItems, type PairItem, scriptPairItems, uniqueByRomaji, uniquePairs, wordPairItems } from '../../lib/pairs'
 import { recordKey } from '../../lib/progress/model'
 import { useProgress } from '../../lib/progress/store'
 import { wordsForPool } from '../../lib/quiz'
@@ -11,7 +11,7 @@ import { kanaForLessons, useSelectedLessons, useSelection } from '../practice/se
 import { MemoryGame } from './MemoryGame'
 import { PairsGame } from './PairsGame'
 
-type GameId = 'pairs-romaji' | 'pairs-audio' | 'memory' | 'words-romaji' | 'words-meaning'
+type GameId = 'pairs-romaji' | 'pairs-audio' | 'pairs-scripts' | 'memory' | 'words-romaji' | 'words-meaning'
 
 /** Palabras por partida: dos rondas de 6. */
 const WORDS_PER_GAME = 12
@@ -45,6 +45,15 @@ const kanaGames: Game[] = [
     instructions: 'Toca un carácter y luego el sonido que le corresponde (🔊 lo reproduce).',
     record: (n) => `${n} pts`,
     items: (pool) => kanaPairItems(pool),
+  },
+  {
+    id: 'pairs-scripts',
+    glyph: 'あ↔ア',
+    title: 'Hiragana y katakana',
+    text: 'Une cada hiragana con su katakana.',
+    instructions: 'Toca un hiragana y luego el katakana que suena igual.',
+    record: (n) => `${n} pts`,
+    items: (pool) => scriptPairItems(pool),
   },
   {
     id: 'memory',
@@ -149,7 +158,7 @@ export function GamesPage() {
 
       <section className="flex flex-col gap-2">
         <h2 className="text-sm font-extrabold text-slate-500 uppercase">Caracteres</h2>
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">{kanaGames.map(card)}</div>
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">{kanaGames.map(card)}</div>
       </section>
 
       <section className="flex flex-col gap-2">

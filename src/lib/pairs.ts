@@ -1,3 +1,4 @@
+import { counterpart } from '../content/kana.ts'
 import type { Kana, Word } from '../content/types.ts'
 import { shuffle } from './random.ts'
 import { wordRomaji } from './words.ts'
@@ -22,6 +23,18 @@ export type PairItem = {
 
 export function kanaPairItems(pool: readonly Kana[]): PairItem[] {
   return pool.map((k) => ({ id: k.char, left: k.char, right: k.romaji, speak: k.char, kana: k.char }))
+}
+
+/** Hiragana ↔ katakana de cada sílaba del pool que existe en ambos (か ↔ カ). */
+export function scriptPairItems(pool: readonly Kana[]): PairItem[] {
+  const pairs = new Map<string, PairItem>()
+  for (const kana of pool) {
+    const other = counterpart(kana)
+    if (!other) continue
+    const [hira, kata] = kana.script === 'hiragana' ? [kana, other] : [other, kana]
+    pairs.set(hira.char, { id: hira.char, left: hira.char, right: kata.char, speak: hira.char })
+  }
+  return [...pairs.values()]
 }
 
 export function wordPairItems(words: readonly Word[], side: 'romaji' | 'meaning'): PairItem[] {

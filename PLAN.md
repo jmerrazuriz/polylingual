@@ -293,6 +293,15 @@ app_idiomas/
   - **Desbloqueo progresivo:** cada lección se abre al completar la anterior, con la opción «desbloquear todas». Los invitados tienen todo abierto. Los selectores de práctica y juegos solo ofrecen lo desbloqueado.
   - **Juego 2:** parejas de palabras con su lectura o con su significado (12 palabras por partida, al azar entre las que se pueden leer). El motor de parejas ahora es genérico.
   - **Pendiente:** tarjetas SRS para palabras (por ahora solo caracteres), temas de palabras en los juegos y que los pares confusos aparezcan juntos en los juegos.
+- ✅ Fase 7 lista:
+  - **Caracteres:** 123 katakana (46 básicos, 25 dakuten, 33 combinados y 19 extendidos como ファ, ティ, ウィ, ヴ…) con trazos de KanjiVG, incluidos los pequeños y ー.
+  - **Ayudas:** mnemotecnias propias para los 46 básicos; las notas de pronunciación se comparten con el hiragana.
+  - **Lecciones:** 22 lecciones de katakana, que se abren al completar los básicos del hiragana.
+  - **Palabras:** 98 palabras en katakana (comida, casa, ropa, lugares, ocio y países).
+  - **Romaji:** ー alarga la vocal y se aceptan «koohii», «kohi» y «kōhī».
+  - **Pares confusos:** 10 grupos de katakana (シ/ツ, ソ/ン…).
+  - **Tabla:** selector Hiragana / Katakana / Ambos y pestaña de extendidos. La ficha muestra la pareja en el otro silabario.
+  - **Juego:** hiragana ↔ katakana.
 
 **Hiragana primero:** las fases 1 a 6 se construyen solo con hiragana. El código se escribe desde el principio para cualquier silabario (el campo `script` en los datos), así que katakana entra en la fase 7 casi solo como contenido.
 

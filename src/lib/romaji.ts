@@ -1,10 +1,22 @@
 import { hiraganaInfo, smallHiragana } from '../content/hiragana.ts'
+import { katakanaInfo, LONG_VOWEL, smallKatakana } from '../content/katakana.ts'
+import type { KanaInfo } from '../content/types.ts'
 
-/** Romanizaciones de cada sílaba; la primera es la principal (Hepburn). */
+const infoEntries = (info: Record<string, KanaInfo>) =>
+  Object.entries(info).map(([char, i]): [string, string[]] => [char, [i.romaji, ...(i.variants ?? [])]])
+const smallEntries = (small: Record<string, string>) =>
+  Object.entries(small).map(([char, romaji]): [string, string[]] => [char, [romaji]])
+
+/** Romanizaciones de cada sílaba (hiragana y katakana); la primera es la principal (Hepburn). */
 const table = new Map<string, string[]>([
-  ...Object.entries(hiraganaInfo).map(([char, info]): [string, string[]] => [char, [info.romaji, ...(info.variants ?? [])]]),
-  ...Object.entries(smallHiragana).map(([char, romaji]): [string, string[]] => [char, [romaji]]),
+  ...infoEntries(hiraganaInfo),
+  ...smallEntries(smallHiragana),
+  ...infoEntries(katakanaInfo),
+  ...smallEntries(smallKatakana),
 ])
+
+const SMALL_TSU = new Set(['っ', 'ッ'])
+const N = new Set(['ん', 'ン'])
 
 /** Separa en sílabas, uniendo los combinados: でんしゃ → ['で', 'ん', 'しゃ']. */
 export function syllables(kana: string): string[] {
@@ -22,7 +34,8 @@ export function syllables(kana: string): string[] {
 /**
  * Todas las formas válidas de escribir el kana en romaji, la principal primero
  * (でんしゃ → densha, densya, nnsha…). Las vocales largas se escriben tal como
- * están en kana (おとうさん → otousan). Lanza un error con caracteres desconocidos.
+ * están en kana (おとうさん → otousan) y ー repite la vocal (コーヒー → koohii;
+ * también se acepta sin repetir: kohi). Lanza un error con caracteres desconocidos.
  */
 export function romajiReadings(kana: string): string[] {
   let readings = ['']
@@ -30,8 +43,16 @@ export function romajiReadings(kana: string): string[] {
   let prevWasN = false
 
   for (const key of syllables(kana)) {
-    if (key === 'っ') {
+    if (SMALL_TSU.has(key)) {
       doubleNext = true
+      continue
+    }
+    if (key === LONG_VOWEL) {
+      readings = readings.flatMap((r) => {
+        const vowel = r.match(/[aeiou]$/)?.[0]
+        return vowel ? [r + vowel, r] : [r]
+      })
+      prevWasN = false
       continue
     }
     const options = table.get(key)
@@ -45,7 +66,7 @@ export function romajiReadings(kana: string): string[] {
     })
     readings = readings.flatMap((prefix) => forms.map((form) => prefix + form))
     doubleNext = false
-    prevWasN = key === 'ん'
+    prevWasN = N.has(key)
   }
   return readings
 }
@@ -55,7 +76,16 @@ export function toRomaji(kana: string): string {
   return romajiReadings(kana)[0]
 }
 
-const normalize = (text: string) => text.trim().toLowerCase().replace(/[\s'’-]/g, '')
+const MACRONS: Record<string, string> = { ā: 'aa', ī: 'ii', ū: 'uu', ē: 'ee', ō: 'oo', â: 'aa', î: 'ii', û: 'uu', ê: 'ee', ô: 'oo' }
+
+const normalize = (text: string) =>
+  text
+    .trim()
+    .toLowerCase()
+    .replace(/[āīūēōâîûêô]/g, (c) => MACRONS[c])
+    .replace(/[\s'’-]/g, '')
+    // «ō» puede ser おう u おお: se comparan igual (otōsan = otousan = otoosan).
+    .replace(/ou/g, 'oo')
 
 /** Compara lo que escribió el usuario con las lecturas aceptadas (sin importar mayúsculas, espacios ni apóstrofos). */
 export function matchesReading(input: string, accepted: readonly string[]): boolean {

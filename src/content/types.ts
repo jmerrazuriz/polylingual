@@ -1,6 +1,6 @@
 export type Script = 'hiragana' | 'katakana'
 
-export type KanaGroup = 'basic' | 'dakuten' | 'yoon'
+export type KanaGroup = 'basic' | 'dakuten' | 'yoon' | 'extended'
 
 /** Datos escritos a mano de cada carácter (los trazos vienen de KanjiVG). */
 export type KanaInfo = {
@@ -57,6 +57,9 @@ export type WordTheme =
   | 'tiempo'
   | 'verbos'
   | 'adjetivos'
+  | 'ropa'
+  | 'ocio'
+  | 'paises'
 
 export type Word = {
   kana: string

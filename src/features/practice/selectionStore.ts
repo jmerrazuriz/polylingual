@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { kanaByChar } from '../../content/kana'
-import { hiraganaLessons } from '../../content/lessons'
+import { lessons } from '../../content/lessons'
 import type { Kana } from '../../content/types'
 import { useAccount } from '../../lib/account/store'
 import { useUnlockedLessons } from '../../lib/progress/unlock'
@@ -27,10 +27,10 @@ export function useSelectedLessons(): { selected: string[]; unlocked: Set<string
   const chosen = useSelection((s) => s.lessonIds)
   const guest = useAccount((s) => s.status !== 'user')
   const unlocked = useUnlockedLessons()
-  const fallback = guest ? DEFAULT_LESSONS : hiraganaLessons.map((l) => l.id)
+  const fallback = guest ? DEFAULT_LESSONS : lessons.map((l) => l.id)
   return { selected: (chosen ?? fallback).filter((id) => unlocked.has(id)), unlocked }
 }
 
 export function kanaForLessons(lessonIds: readonly string[]): Kana[] {
-  return hiraganaLessons.filter((l) => lessonIds.includes(l.id)).flatMap((l) => l.chars.map((c) => kanaByChar.get(c)!))
+  return lessons.filter((l) => lessonIds.includes(l.id)).flatMap((l) => l.chars.map((c) => kanaByChar.get(c)!))
 }

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { hiragana } from '../../content/kana'
+import { allKana } from '../../content/kana'
 import { checkStroke, expectedStrokes, matchStroke, scoreFromMistakes } from './evaluate'
 import { length, pathToPoints, type Point, resample } from './geometry'
 
@@ -56,9 +56,9 @@ describe('evaluación de trazos', () => {
     expect(write(char, (strokes) => strokes.map((s) => humanize(s, random)))).toBe(0)
   })
 
-  it('acepta todos los hiragana escritos con cuidado', () => {
+  it('acepta todos los kana (hiragana y katakana) escritos con cuidado', () => {
     const random = seeded(42)
-    const chars = new Set(hiragana.flatMap((k) => k.parts))
+    const chars = new Set([...allKana.flatMap((k) => k.parts), 'ー'])
     for (const char of chars) {
       expect(write(char, (strokes) => strokes.map((s) => humanize(s, random, { jitter: 1, offset: 2, scale: 0.97 }))), char).toBe(0)
     }

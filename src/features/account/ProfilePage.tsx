@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router'
-import { hiragana } from '../../content/kana'
-import { hiraganaLessons } from '../../content/lessons'
+import { hiragana, katakana } from '../../content/kana'
+import { lessonsByScript } from '../../content/lessons'
 import { authErrorMessage, checkVerification, resendVerification, signOut } from '../../lib/account/service'
 import { useAccount } from '../../lib/account/store'
 import { readingMastery } from '../../lib/progress/model'
@@ -47,8 +47,10 @@ export function ProfilePage() {
     }
   }
 
-  const mastered = hiragana.filter((k) => readingMastery(kana[k.char]) === 'mastered').length
-  const completed = hiraganaLessons.filter((l) => lessons[l.id]).length
+  const scripts = [
+    { title: 'Hiragana', list: hiragana, lessonList: lessonsByScript.hiragana },
+    { title: 'Katakana', list: katakana, lessonList: lessonsByScript.katakana },
+  ]
 
   return (
     <div className="mx-auto flex max-w-md flex-col gap-5">
@@ -103,20 +105,25 @@ export function ProfilePage() {
         </p>
       )}
 
-      <dl className="grid grid-cols-2 gap-2">
-        <div className="rounded-2xl border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900">
-          <dt className="text-xs font-bold text-slate-500 uppercase">Lecciones</dt>
-          <dd className="text-2xl font-extrabold">
-            {completed}/{hiraganaLessons.length}
-          </dd>
-        </div>
-        <div className="rounded-2xl border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900">
-          <dt className="text-xs font-bold text-slate-500 uppercase">Hiragana dominados</dt>
-          <dd className="text-2xl font-extrabold">
-            {mastered}/{hiragana.length}
-          </dd>
-        </div>
-      </dl>
+      {scripts.map(({ title, list, lessonList }) => (
+        <section key={title} className="flex flex-col gap-2">
+          <h2 className="text-sm font-extrabold text-slate-500 uppercase">{title}</h2>
+          <dl className="grid grid-cols-2 gap-2">
+            <div className="rounded-2xl border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900">
+              <dt className="text-xs font-bold text-slate-500 uppercase">Lecciones</dt>
+              <dd className="text-2xl font-extrabold">
+                {lessonList.filter((l) => lessons[l.id]).length}/{lessonList.length}
+              </dd>
+            </div>
+            <div className="rounded-2xl border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900">
+              <dt className="text-xs font-bold text-slate-500 uppercase">Dominados</dt>
+              <dd className="text-2xl font-extrabold">
+                {list.filter((k) => readingMastery(kana[k.char]) === 'mastered').length}/{list.length}
+              </dd>
+            </div>
+          </dl>
+        </section>
+      ))}
 
       <p className="text-sm text-slate-500">
         {user.emailVerified

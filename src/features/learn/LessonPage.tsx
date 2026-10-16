@@ -4,7 +4,7 @@ import { ComingSoon } from '../../components/ComingSoon'
 import { KanaCard } from '../../components/KanaCard'
 import { SaveProgressPrompt } from '../../components/SaveProgressPrompt'
 import { kanaByChar } from '../../content/kana'
-import { hiraganaLessons, learnedThrough, type Lesson } from '../../content/lessons'
+import { learnedThrough, type Lesson, lessons, lessonsByScript } from '../../content/lessons'
 import type { Kana, Word } from '../../content/types'
 import { useSpeech } from '../../lib/audio/useSpeech'
 import { syllables } from '../../lib/romaji'
@@ -22,7 +22,7 @@ type Step =
 
 export function LessonRoute() {
   const { lessonId } = useParams()
-  const lesson = hiraganaLessons.find((l) => l.id === lessonId)
+  const lesson = lessons.find((l) => l.id === lessonId)
   const unlocked = useUnlockedLessons()
   if (!lesson) return <ComingSoon title="Lección no encontrada" />
   if (!unlocked.has(lesson.id)) {
@@ -44,8 +44,10 @@ export function LessonRoute() {
 }
 
 function LessonPage({ lesson }: { lesson: Lesson }) {
-  const index = hiraganaLessons.indexOf(lesson)
-  const nextLesson = hiraganaLessons[index + 1]
+  const index = lessonsByScript[lesson.script].indexOf(lesson)
+  // Después de la última lección de hiragana sigue la primera de katakana.
+  const nextLesson = lessons[lessons.indexOf(lesson) + 1]
+  const back = lesson.script === 'katakana' ? '/aprender?silabario=katakana' : '/aprender'
   const learned = learnedThrough(lesson.id)
   const lessonKana = lesson.chars.map((c) => kanaByChar.get(c)!)
   const pool = [...learned].flatMap((c) => kanaByChar.get(c) ?? [])
@@ -74,7 +76,7 @@ function LessonPage({ lesson }: { lesson: Lesson }) {
   return (
     <div className="mx-auto flex max-w-md flex-col gap-5">
       <div className="flex items-center gap-3">
-        <Link to="/aprender" aria-label="Volver a las lecciones" className="text-xl text-slate-400 hover:text-slate-700">
+        <Link to={back} aria-label="Volver a las lecciones" className="text-xl text-slate-400 hover:text-slate-700">
           ×
         </Link>
         <div className="h-2 flex-1 overflow-hidden rounded-full bg-slate-200 dark:bg-slate-800">
@@ -87,7 +89,9 @@ function LessonPage({ lesson }: { lesson: Lesson }) {
 
       {step.kind === 'intro' && (
         <section className="flex flex-col items-center gap-5 py-6 text-center">
-          <p className="text-sm font-bold text-slate-500 uppercase">Lección {index + 1}</p>
+          <p className="text-sm font-bold text-slate-500 uppercase">
+            {lesson.script} · Lección {index + 1}
+          </p>
           <h1 className="text-3xl font-extrabold">{lesson.title}</h1>
           <p className="font-jp text-5xl tracking-widest">{lesson.chars.join(' ')}</p>
           <p className="text-slate-600 dark:text-slate-400">{lesson.description}</p>
@@ -124,7 +128,7 @@ function LessonPage({ lesson }: { lesson: Lesson }) {
           </p>
           <SaveProgressPrompt />
           <div className="flex flex-wrap justify-center gap-3">
-            <Link to="/aprender" className="rounded-full border border-slate-300 px-6 py-3 font-bold dark:border-slate-700">
+            <Link to={back} className="rounded-full border border-slate-300 px-6 py-3 font-bold dark:border-slate-700">
               Lecciones
             </Link>
             {nextLesson && (

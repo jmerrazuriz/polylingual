@@ -1,7 +1,8 @@
 import { Link } from 'react-router'
-import { hiraganaLessons } from '../../content/lessons'
+import { lessons as allLessons } from '../../content/lessons'
 import { nextDue } from '../../lib/progress/srs'
 import { useProgress } from '../../lib/progress/store'
+import { useUnlockedLessons } from '../../lib/progress/unlock'
 import { describeDue, dueNowCount } from '../../lib/review'
 import { now } from '../../lib/time'
 
@@ -57,7 +58,8 @@ function TodayCard() {
   const t = now()
   const due = dueNowCount(cards, t)
   const next = nextDue(cards, t)
-  const nextLesson = hiraganaLessons.find((l) => !lessons[l.id])
+  const unlocked = useUnlockedLessons()
+  const nextLesson = allLessons.find((l) => unlocked.has(l.id) && !lessons[l.id])
 
   if (due > 0) {
     return (

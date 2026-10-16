@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { useSearchParams } from 'react-router'
-import { hiraganaChart } from '../../content/hiragana'
-import { kanaByChar } from '../../content/kana'
+import { charts, counterpart, kanaByChar } from '../../content/kana'
 import type { Kana } from '../../content/types'
 import { useSpeech } from '../../lib/audio/useSpeech'
 import { type Mastery, readingMastery } from '../../lib/progress/model'
@@ -14,9 +13,35 @@ const masteryStyle: Record<Mastery, string> = {
   mastered: 'border-emerald-400 bg-emerald-50 dark:border-emerald-700 dark:bg-emerald-950/40',
 }
 
+type View = 'hiragana' | 'katakana' | 'ambos'
+
+const views: { view: View; label: string }[] = [
+  { view: 'hiragana', label: 'Hiragana' },
+  { view: 'katakana', label: 'Katakana' },
+  { view: 'ambos', label: 'Ambos' },
+]
+
+const tabClass = (active: boolean) =>
+  `rounded-lg px-3 py-1.5 text-sm font-bold transition ${
+    active
+      ? 'bg-white text-ink shadow-sm dark:bg-slate-950 dark:text-white'
+      : 'text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white'
+  }`
+
 export function ChartPage() {
   const [params, setParams] = useSearchParams()
-  const section = hiraganaChart.find((s) => s.group === params.get('grupo')) ?? hiraganaChart[0]
+  const view: View = (['katakana', 'ambos'] as const).find((v) => v === params.get('silabario')) ?? 'hiragana'
+  // «Ambos» usa la tabla del hiragana y muestra el katakana al lado (los extendidos solo existen en katakana).
+  const sections = charts[view === 'katakana' ? 'katakana' : 'hiragana']
+  const section = sections.find((s) => s.group === params.get('grupo')) ?? sections[0]
+  const go = (next: { view?: View; group?: string }) => {
+    const v = next.view ?? view
+    const g = next.group ?? section.group
+    const query: Record<string, string> = {}
+    if (v !== 'hiragana') query.silabario = v
+    if (g !== 'basic' && charts[v === 'katakana' ? 'katakana' : 'hiragana'].some((s) => s.group === g)) query.grupo = g
+    setParams(query, { replace: true })
+  }
   const [hideRomaji, setHideRomaji] = useState(false)
   const [selected, setSelected] = useState<Kana | null>(null)
   const { speak } = useSpeech()
@@ -33,26 +58,24 @@ export function ChartPage() {
   return (
     <div className="flex flex-col gap-5">
       <header className="flex flex-col gap-1">
-        <h1 className="text-2xl font-extrabold">Tabla rápida · Hiragana</h1>
+        <h1 className="text-2xl font-extrabold">Tabla rápida</h1>
         <p className="text-sm text-slate-500 dark:text-slate-400">
           Toca un carácter para escucharlo y ver cómo se escribe.
         </p>
       </header>
 
+      <div role="tablist" aria-label="Silabario" className="flex self-start rounded-xl bg-slate-200 p-1 dark:bg-slate-800">
+        {views.map((v) => (
+          <button key={v.view} role="tab" aria-selected={v.view === view} onClick={() => go({ view: v.view })} className={tabClass(v.view === view)}>
+            {v.label}
+          </button>
+        ))}
+      </div>
+
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <div role="tablist" className="flex rounded-xl bg-slate-200 p-1 dark:bg-slate-800">
-          {hiraganaChart.map((s) => (
-            <button
-              key={s.group}
-              role="tab"
-              aria-selected={s === section}
-              onClick={() => setParams(s === hiraganaChart[0] ? {} : { grupo: s.group }, { replace: true })}
-              className={`rounded-lg px-3 py-1.5 text-sm font-bold transition ${
-                s === section
-                  ? 'bg-white text-ink shadow-sm dark:bg-slate-950 dark:text-white'
-                  : 'text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white'
-              }`}
-            >
+        <div role="tablist" aria-label="Grupo" className="flex flex-wrap rounded-xl bg-slate-200 p-1 dark:bg-slate-800">
+          {sections.map((s) => (
+            <button key={s.group} role="tab" aria-selected={s === section} onClick={() => go({ group: s.group })} className={tabClass(s === section)}>
               {s.title}
             </button>
           ))}
@@ -105,15 +128,17 @@ export function ChartPage() {
             {row.cells.map((char, c) => {
               const kana = char ? kanaByChar.get(char) : undefined
               if (!kana) return <span key={c} />
+              const pair = view === 'ambos' ? counterpart(kana) : undefined
               return (
                 <button
                   key={c}
                   onClick={() => open(kana)}
                   className={`flex aspect-square flex-col items-center justify-center rounded-xl border transition hover:-translate-y-0.5 hover:border-accent hover:shadow-md focus-visible:ring-2 focus-visible:ring-accent/50 focus-visible:outline-none sm:aspect-[4/3] ${masteryStyle[readingMastery(stats[kana.char])]}`}
-                  aria-label={hideRomaji ? kana.char : `${kana.char}, ${kana.romaji}`}
+                  aria-label={`${kana.char}${pair ? ` ${pair.char}` : ''}${hideRomaji ? '' : `, ${kana.romaji}`}`}
                 >
-                  <span className={`font-jp leading-none ${kana.parts.length > 1 ? 'text-2xl sm:text-3xl' : 'text-3xl sm:text-4xl'}`}>
+                  <span className={`font-jp leading-none ${kana.parts.length > 1 || pair ? 'text-xl sm:text-3xl' : 'text-3xl sm:text-4xl'}`}>
                     {kana.char}
+                    {pair && <span className="ml-0.5 text-accent">{pair.char}</span>}
                   </span>
                   <span className="mt-1 h-4 text-xs font-bold text-slate-500 dark:text-slate-400">
                     {hideRomaji ? '' : kana.romaji}

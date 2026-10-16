@@ -1,6 +1,6 @@
-import { Link } from 'react-router'
-import { hiraganaLessons } from '../../content/lessons'
-import type { KanaGroup } from '../../content/types'
+import { Link, useSearchParams } from 'react-router'
+import { lessonsByScript } from '../../content/lessons'
+import type { KanaGroup, Script } from '../../content/types'
 import { useAccount } from '../../lib/account/store'
 import { useProgress } from '../../lib/progress/store'
 import { useUnlockedLessons } from '../../lib/progress/unlock'
@@ -9,6 +9,7 @@ const groups: { group: KanaGroup; title: string }[] = [
   { group: 'basic', title: 'Básicos' },
   { group: 'dakuten', title: 'Dakuten' },
   { group: 'yoon', title: 'Combinados' },
+  { group: 'extended', title: 'Extendidos' },
 ]
 
 const cardClass =
@@ -20,22 +21,50 @@ export function LearnPage() {
   const setUnlockAll = useProgress((s) => s.setUnlockAll)
   const isUser = useAccount((s) => s.status === 'user')
   const unlocked = useUnlockedLessons()
+  const [params, setParams] = useSearchParams()
+  const script: Script = params.get('silabario') === 'katakana' ? 'katakana' : 'hiragana'
+  const list = lessonsByScript[script]
+  const katakanaLocked = !lessonsByScript.katakana.some((l) => unlocked.has(l.id))
 
   return (
     <div className="flex flex-col gap-6">
       <header className="flex flex-col gap-1">
-        <h1 className="text-2xl font-extrabold">Aprender · Hiragana</h1>
+        <h1 className="text-2xl font-extrabold">Aprender</h1>
         <p className="text-sm text-slate-500 dark:text-slate-400">
           Lecciones cortas por grupos: cómo se escribe cada carácter, cómo suena, un truco para recordarlo y
           palabras que ya puedes leer. Al completar una lección se abre la siguiente.
         </p>
       </header>
 
-      {groups.map(({ group, title }) => (
+      <div role="tablist" className="flex self-start rounded-xl bg-slate-200 p-1 dark:bg-slate-800">
+        {(['hiragana', 'katakana'] as const).map((s) => (
+          <button
+            key={s}
+            role="tab"
+            aria-selected={s === script}
+            onClick={() => setParams(s === 'hiragana' ? {} : { silabario: s }, { replace: true })}
+            className={`rounded-lg px-4 py-1.5 text-sm font-bold capitalize transition ${
+              s === script
+                ? 'bg-white text-ink shadow-sm dark:bg-slate-950 dark:text-white'
+                : 'text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white'
+            }`}
+          >
+            {s}
+          </button>
+        ))}
+      </div>
+
+      {script === 'katakana' && katakanaLocked && (
+        <p className="rounded-xl bg-slate-100 p-3 text-sm text-slate-600 dark:bg-slate-800 dark:text-slate-300">
+          🔒 El katakana se abre al completar los básicos del hiragana (hasta la lección «W y N»).
+        </p>
+      )}
+
+      {groups.filter(({ group }) => list.some((l) => l.group === group)).map(({ group, title }) => (
         <section key={group} className="flex flex-col gap-2">
           <h2 className="text-sm font-extrabold text-slate-500 uppercase">{title}</h2>
           <ol className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-            {hiraganaLessons
+            {list
               .filter((l) => l.group === group)
               .map((lesson) => {
                 const result = results[lesson.id]
@@ -86,7 +115,7 @@ export function LearnPage() {
             onChange={(e) => setUnlockAll(e.target.checked)}
             className="h-4 w-4 accent-accent"
           />
-          Desbloquear todas las lecciones (si ya sabes algo de hiragana)
+          Desbloquear todas las lecciones (si ya sabes algo de japonés)
         </label>
       ) : (
         <p className="text-sm text-slate-500">Como invitado tienes todas las lecciones abiertas.</p>

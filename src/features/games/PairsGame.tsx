@@ -18,6 +18,8 @@ type Result = { score: number; seconds: number; errors: number; maxCombo: number
 
 const WRONG_MS = 650
 const NEXT_ROUND_MS = 450
+/** Hiragana o katakana: el lado derecho se muestra con la fuente japonesa. */
+const KANA = /[぀-ヿ]/
 /** Los juegos cuentan la mitad que un ejercicio para el dominio de cada carácter. */
 const GAME_WEIGHT = 0.5
 
@@ -151,7 +153,9 @@ function PairsRun({ items, variant, instructions, recordKey, onExit, onRetry }: 
               }}
               disabled={matched.has(item.id)}
               aria-label={variant === 'audio' ? `Sonido ${i + 1}` : item.right}
-              className={`min-h-16 rounded-2xl border-2 px-2 font-extrabold leading-tight transition ${item.right.length > 8 ? 'text-sm' : 'text-2xl'} ${cellClass(item.id, right === item.id)}`}
+              className={`min-h-16 rounded-2xl border-2 px-2 font-extrabold leading-tight transition ${
+                KANA.test(item.right) ? 'font-jp text-3xl font-normal' : item.right.length > 8 ? 'text-sm' : 'text-2xl'
+              } ${cellClass(item.id, right === item.id)}`}
             >
               {variant === 'text' || matched.has(item.id) ? item.right : `🔊 ${i + 1}`}
             </button>

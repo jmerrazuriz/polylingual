@@ -1,5 +1,6 @@
 import { hiraganaConfusables } from '../content/hiragana.ts'
-import { hiragana, kanaByChar } from '../content/kana.ts'
+import { allKana, kanaByChar } from '../content/kana.ts'
+import { katakanaConfusables, LONG_VOWEL } from '../content/katakana.ts'
 import type { Kana, Word } from '../content/types.ts'
 import { shuffle } from './random.ts'
 import { wordRomaji, wordsReadableWith } from './words.ts'
@@ -48,6 +49,8 @@ export const readingTypes: { type: ReadingType; label: string }[] = [
 export function wordsForPool(pool: readonly Kana[]): Word[] {
   const learned = new Set(pool.map((k) => k.char))
   if (learned.has('つ')) learned.add('っ')
+  if (learned.has('ツ')) learned.add('ッ')
+  if (pool.some((k) => k.script === 'katakana')) learned.add(LONG_VOWEL)
   return wordsReadableWith(learned)
 }
 
@@ -78,22 +81,25 @@ export function buildReadingSession({ pool, types, count = 10, random = Math.ran
   })
 }
 
-/** Grupos de pares confusos cuyos caracteres están todos en el pool (o todos, si no hay ninguno). */
+const confusables = [...hiraganaConfusables, ...katakanaConfusables]
+
+/** Grupos de pares confusos cuyos caracteres están todos en el pool (o los del hiragana, si no hay ninguno). */
 export function confusablesFor(pool: readonly Kana[]) {
   const chars = new Set(pool.map((k) => k.char))
-  const inPool = hiraganaConfusables.filter((g) => g.chars.every((c) => chars.has(c)))
+  const inPool = confusables.filter((g) => g.chars.every((c) => chars.has(c)))
   return inPool.length > 0 ? inPool : hiraganaConfusables
 }
 
 /** Sesión de pares confusos: siempre aparecen juntos como opciones, con la clave para distinguirlos. */
 export function buildConfusableSession({ pool, count = 10, random = Math.random }: Omit<SessionOptions, 'types'>): Question[] {
   const groups = confusablesFor(pool)
-  const filler = hiragana.filter((k) => k.group === 'basic')
 
   return Array.from({ length: count }, (): Question => {
     const group = groups[Math.floor(random() * groups.length)]
     const members = group.chars.map((c) => kanaByChar.get(c)!)
     const kana = members[Math.floor(random() * members.length)]
+    // Relleno del mismo silabario, para que la respuesta no se adivine por el estilo de trazo.
+    const filler = allKana.filter((k) => k.group === 'basic' && k.script === kana.script)
     const options = pickKana(kana, members, filler, Math.max(members.length, 3), random)
     return random() < 0.5
       ? { type: 'kana-to-romaji', kana, options: options.map((k) => k.romaji), tip: group.tip }
