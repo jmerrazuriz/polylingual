@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { type ReactNode, useState } from 'react'
+import { useSearchParams } from 'react-router'
 import { GroupPicker } from '../../components/GroupPicker'
 import {
   buildConfusableSession,
@@ -12,13 +13,46 @@ import {
 } from '../../lib/quiz'
 import { type Answer, ReadingSession } from './ReadingSession'
 import { kanaForLessons, useSelectedLessons, useSelection } from './selectionStore'
+import { WritingPractice } from './WritingPractice'
 
 type Mode = 'normal' | 'confusables'
 type Settings = { mode: Mode; types: ReadingType[]; timed: boolean }
 
 const SECONDS_PER_QUESTION = 10
 
+/** Pestañas Lectura / Escritura; se muestran en la pantalla de ajustes de cada práctica. */
+function PracticeTabs({ current, onChange }: { current: 'lectura' | 'escritura'; onChange: (t: 'lectura' | 'escritura') => void }) {
+  return (
+    <div role="tablist" className="flex self-start rounded-xl bg-slate-200 p-1 dark:bg-slate-800">
+      {(['lectura', 'escritura'] as const).map((t) => (
+        <button
+          key={t}
+          role="tab"
+          aria-selected={current === t}
+          onClick={() => onChange(t)}
+          className={`rounded-lg px-4 py-1.5 text-sm font-bold capitalize transition ${
+            current === t
+              ? 'bg-white text-ink shadow-sm dark:bg-slate-950 dark:text-white'
+              : 'text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white'
+          }`}
+        >
+          {t}
+        </button>
+      ))}
+    </div>
+  )
+}
+
 export function PracticePage() {
+  const [params, setParams] = useSearchParams()
+  const current = params.get('tipo') === 'escritura' ? 'escritura' : 'lectura'
+  const tabs = (
+    <PracticeTabs current={current} onChange={(t) => setParams(t === 'lectura' ? {} : { tipo: t }, { replace: true })} />
+  )
+  return current === 'escritura' ? <WritingPractice tabs={tabs} /> : <ReadingPractice tabs={tabs} />
+}
+
+function ReadingPractice({ tabs }: { tabs: ReactNode }) {
   const lessonIds = useSelectedLessons()
   const setLessonIds = useSelection((s) => s.setLessonIds)
   const [settings, setSettings] = useState<Settings>({
@@ -71,6 +105,7 @@ export function PracticePage() {
 
   return (
     <div className="flex flex-col gap-6">
+      {tabs}
       <header className="flex flex-col gap-1">
         <h1 className="text-2xl font-extrabold">Practicar lectura</h1>
         <p className="text-sm text-slate-500 dark:text-slate-400">Sesiones de 10 preguntas sobre los caracteres que elijas.</p>
@@ -152,10 +187,6 @@ export function PracticePage() {
       </button>
       {!canStart && <p className="-mt-4 text-center text-sm text-slate-500">Elige al menos un grupo y un tipo de ejercicio.</p>}
 
-      <section className="rounded-2xl border border-dashed border-slate-300 p-4 text-sm text-slate-500 dark:border-slate-700">
-        <span className="font-extrabold">Practicar escritura</span> · llega en la fase 4: dibujar con el dedo y corrección
-        trazo a trazo.
-      </section>
     </div>
   )
 }
