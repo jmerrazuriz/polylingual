@@ -33,3 +33,6 @@ dist-ssr
 # Guías de Firebase para asistentes de IA (las instala firebase init)
 .agents/
 skills-lock.json
+
+# Caché de descargas de scripts/
+scripts/.cache/

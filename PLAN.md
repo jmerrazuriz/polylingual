@@ -274,6 +274,10 @@ app_idiomas/
 | **7. Katakana** | Datos de katakana (básicos, dakuten, combinados, extendidos), palabras en katakana, selector Hiragana/Katakana/Ambos en la tabla y variante de juego hiragana ↔ katakana | Todo lo anterior funciona igual con katakana. En esta fase se agregan sobre todo datos, no código nuevo |
 | **8. Motivación y pulido** | Racha, objetivo diario, logros, panel de progreso, test de nivel, modo oscuro, accesibilidad e impresión de la tabla | Recorrido completo probado en Android, iPhone y PC |
 
+**Avance:**
+- ✅ Fase 0 lista: proyecto base, Firebase y publicación automática.
+- ✅ Fase 1 lista: 104 hiragana con trazos de KanjiVG, 150 palabras y la tabla rápida con ficha, audio y animación. La ficha cubre parte de la fase 2. Quedan pendientes los colores por dominio (fase 5) y la versión imprimible (fase 8).
+
 **Hiragana primero:** las fases 1 a 6 se construyen solo con hiragana. El código se escribe desde el principio para cualquier silabario (el campo `script` en los datos), así que katakana entra en la fase 7 casi solo como contenido.
 
 La fase 5 (cuentas) puede adelantarse si quieres probar entre dispositivos desde temprano.

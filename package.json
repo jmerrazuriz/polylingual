@@ -8,7 +8,8 @@
     "build": "tsc -b && vite build",
     "lint": "oxlint",
     "preview": "vite preview",
-    "test": "vitest run --passWithNoTests"
+    "test": "vitest run --passWithNoTests",
+    "data:strokes": "node scripts/build-kanjivg.ts"
   },
   "dependencies": {
     "firebase": "^13.0.0",
