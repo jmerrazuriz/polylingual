@@ -5,7 +5,8 @@ import { uniqueByRomaji } from '../../lib/pairs'
 import { kanaForLessons, useSelectedLessons, useSelection } from '../practice/selectionStore'
 import { MemoryGame } from './MemoryGame'
 import { PairsGame } from './PairsGame'
-import { recordKey, useRecords } from './recordsStore'
+import { recordKey } from '../../lib/progress/model'
+import { useProgress } from '../../lib/progress/store'
 
 type GameId = 'pairs-romaji' | 'pairs-audio' | 'memory'
 
@@ -18,7 +19,7 @@ const games: { id: GameId; glyph: string; title: string; text: string; record: (
 export function GamesPage() {
   const lessonIds = useSelectedLessons()
   const setLessonIds = useSelection((s) => s.setLessonIds)
-  const best = useRecords((s) => s.best)
+  const best = useProgress((s) => s.records)
   const { available: audio } = useSpeech()
   const [playing, setPlaying] = useState<GameId | null>(null)
 

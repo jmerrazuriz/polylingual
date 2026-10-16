@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link, useParams } from 'react-router'
 import { ComingSoon } from '../../components/ComingSoon'
 import { KanaCard } from '../../components/KanaCard'
+import { SaveProgressPrompt } from '../../components/SaveProgressPrompt'
 import { kanaByChar } from '../../content/kana'
 import { hiraganaLessons, learnedThrough, type Lesson } from '../../content/lessons'
 import type { Kana, Word } from '../../content/types'
@@ -9,7 +10,7 @@ import { useSpeech } from '../../lib/audio/useSpeech'
 import { syllables } from '../../lib/romaji'
 import { wordRomaji, wordsReadableWith } from '../../lib/words'
 import { LessonQuiz } from './LessonQuiz'
-import { useLessonProgress } from './progressStore'
+import { useProgress } from '../../lib/progress/store'
 
 type Step =
   | { kind: 'intro' }
@@ -44,7 +45,7 @@ function LessonPage({ lesson }: { lesson: Lesson }) {
 
   const [position, setPosition] = useState(0)
   const [result, setResult] = useState<{ correct: number; total: number } | null>(null)
-  const complete = useLessonProgress((s) => s.complete)
+  const complete = useProgress((s) => s.completeLesson)
 
   const step: Step = result ? { kind: 'done', ...result } : steps[position]
   const go = (delta: number) => setPosition((p) => Math.min(Math.max(p + delta, 0), steps.length - 1))
@@ -105,6 +106,7 @@ function LessonPage({ lesson }: { lesson: Lesson }) {
           <p className="text-slate-600 dark:text-slate-400">
             Acertaste {step.correct} de {step.total} en el repaso.
           </p>
+          <SaveProgressPrompt />
           <div className="flex flex-wrap justify-center gap-3">
             <Link to="/aprender" className="rounded-full border border-slate-300 px-6 py-3 font-bold dark:border-slate-700">
               Lecciones

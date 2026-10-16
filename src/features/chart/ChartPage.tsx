@@ -4,7 +4,15 @@ import { hiraganaChart } from '../../content/hiragana'
 import { kanaByChar } from '../../content/kana'
 import type { Kana } from '../../content/types'
 import { useSpeech } from '../../lib/audio/useSpeech'
+import { type Mastery, readingMastery } from '../../lib/progress/model'
+import { useProgress } from '../../lib/progress/store'
 import { KanaDetailDialog } from './KanaDetailDialog'
+
+const masteryStyle: Record<Mastery, string> = {
+  new: 'border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900',
+  learning: 'border-amber-400 bg-amber-50 dark:border-amber-700 dark:bg-amber-950/40',
+  mastered: 'border-emerald-400 bg-emerald-50 dark:border-emerald-700 dark:bg-emerald-950/40',
+}
 
 export function ChartPage() {
   const [params, setParams] = useSearchParams()
@@ -12,6 +20,8 @@ export function ChartPage() {
   const [hideRomaji, setHideRomaji] = useState(false)
   const [selected, setSelected] = useState<Kana | null>(null)
   const { speak } = useSpeech()
+  const stats = useProgress((s) => s.kana)
+  const hasStats = Object.keys(stats).length > 0
 
   const sectionKana = section.rows.flatMap((r) => r.cells).flatMap((c) => (c ? [kanaByChar.get(c)!] : []))
 
@@ -62,6 +72,20 @@ export function ChartPage() {
 
       <p className="text-sm text-slate-600 dark:text-slate-400">{section.description}</p>
 
+      {hasStats && (
+        <ul className="flex flex-wrap gap-3 text-xs font-semibold text-slate-500" aria-label="Leyenda">
+          <li className="flex items-center gap-1.5">
+            <span className="h-3 w-3 rounded border border-slate-300 bg-white dark:bg-slate-900" /> Sin practicar
+          </li>
+          <li className="flex items-center gap-1.5">
+            <span className="h-3 w-3 rounded border border-amber-400 bg-amber-50" /> Aprendiendo
+          </li>
+          <li className="flex items-center gap-1.5">
+            <span className="h-3 w-3 rounded border border-emerald-400 bg-emerald-50" /> Dominado (80 % de aciertos)
+          </li>
+        </ul>
+      )}
+
       <div
         className="grid gap-1.5 sm:gap-2"
         style={{ gridTemplateColumns: `1.75rem repeat(${section.columns.length}, minmax(0, 1fr))` }}
@@ -85,7 +109,7 @@ export function ChartPage() {
                 <button
                   key={c}
                   onClick={() => open(kana)}
-                  className="flex aspect-square flex-col items-center justify-center rounded-xl border border-slate-200 bg-white transition hover:-translate-y-0.5 hover:border-accent hover:shadow-md focus-visible:ring-2 focus-visible:ring-accent/50 focus-visible:outline-none sm:aspect-[4/3] dark:border-slate-800 dark:bg-slate-900"
+                  className={`flex aspect-square flex-col items-center justify-center rounded-xl border transition hover:-translate-y-0.5 hover:border-accent hover:shadow-md focus-visible:ring-2 focus-visible:ring-accent/50 focus-visible:outline-none sm:aspect-[4/3] ${masteryStyle[readingMastery(stats[kana.char])]}`}
                   aria-label={hideRomaji ? kana.char : `${kana.char}, ${kana.romaji}`}
                 >
                   <span className={`font-jp leading-none ${kana.parts.length > 1 ? 'text-2xl sm:text-3xl' : 'text-3xl sm:text-4xl'}`}>

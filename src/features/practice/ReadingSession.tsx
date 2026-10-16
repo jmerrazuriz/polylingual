@@ -3,6 +3,7 @@ import type { Kana } from '../../content/types'
 import { useSpeech } from '../../lib/audio/useSpeech'
 import { type Question, questionPrompt } from '../../lib/quiz'
 import { matchesReading, romajiReadings } from '../../lib/romaji'
+import { useProgress } from '../../lib/progress/store'
 import { wordReadings } from '../../lib/words'
 
 export type Answer = { question: Question; correct: boolean; given: string | null }
@@ -28,6 +29,7 @@ export function ReadingSession({ questions, secondsPerQuestion, onFinish }: Prop
   const answer = (correct: boolean, given: string | null) => {
     if (current) return
     setAnswers([...answers, { question, correct, given }])
+    if (question.type !== 'type-word') useProgress.getState().recordReading(question.kana.char, correct)
     speak(questionPrompt(question).kana)
   }
 

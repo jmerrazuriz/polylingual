@@ -1,5 +1,6 @@
 import { type ReactNode, useState } from 'react'
 import { GroupPicker } from '../../components/GroupPicker'
+import { SaveProgressPrompt } from '../../components/SaveProgressPrompt'
 import type { WritingHelp } from '../../components/WritingCanvas'
 import { wordsForPool } from '../../lib/quiz'
 import { buildWritingItems, type WritingContent, type WritingItem } from '../../lib/writing'
@@ -60,6 +61,7 @@ export function WritingPractice({ tabs }: { tabs: ReactNode }) {
             </ul>
           </section>
         )}
+        <SaveProgressPrompt />
         <div className="flex gap-3">
           <button
             onClick={() => {

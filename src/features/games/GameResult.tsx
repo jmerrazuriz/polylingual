@@ -1,3 +1,5 @@
+import { SaveProgressPrompt } from '../../components/SaveProgressPrompt'
+
 type Stat = { label: string; value: string }
 
 type Props = {
@@ -24,6 +26,7 @@ export function GameResult({ title, stats, isRecord, onRetry, onExit }: Props) {
           </div>
         ))}
       </dl>
+      <SaveProgressPrompt />
       <div className="flex gap-3">
         <button onClick={onExit} className="rounded-full border border-slate-300 px-6 py-3 font-bold dark:border-slate-700">
           Volver

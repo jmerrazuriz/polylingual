@@ -1,3 +1,4 @@
+import { lazy, Suspense } from 'react'
 import { Route, Routes } from 'react-router'
 import { ComingSoon } from './components/ComingSoon'
 import { Layout } from './components/Layout'
@@ -7,6 +8,11 @@ import { HomePage } from './features/home/HomePage'
 import { LearnPage } from './features/learn/LearnPage'
 import { LessonRoute } from './features/learn/LessonPage'
 import { PracticePage } from './features/practice/PracticePage'
+
+// Las páginas de cuenta usan Firebase Auth: se cargan solo al visitarlas.
+const LoginPage = lazy(() => import('./features/account/LoginPage').then((m) => ({ default: m.LoginPage })))
+const ProfilePage = lazy(() => import('./features/account/ProfilePage').then((m) => ({ default: m.ProfilePage })))
+const loading = <p className="py-10 text-center text-slate-500">Cargando…</p>
 
 export default function App() {
   return (
@@ -18,7 +24,8 @@ export default function App() {
         <Route path="aprender/:lessonId" element={<LessonRoute />} />
         <Route path="practicar" element={<PracticePage />} />
         <Route path="juegos" element={<GamesPage />} />
-        <Route path="perfil" element={<ComingSoon title="Perfil" phase={5} />} />
+        <Route path="entrar" element={<Suspense fallback={loading}><LoginPage /></Suspense>} />
+        <Route path="perfil" element={<Suspense fallback={loading}><ProfilePage /></Suspense>} />
         <Route path="*" element={<ComingSoon title="Página no encontrada" />} />
       </Route>
     </Routes>

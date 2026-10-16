@@ -1,7 +1,7 @@
 import { Link } from 'react-router'
 import { hiraganaLessons } from '../../content/lessons'
 import type { KanaGroup } from '../../content/types'
-import { useLessonProgress } from './progressStore'
+import { useProgress } from '../../lib/progress/store'
 
 const groups: { group: KanaGroup; title: string }[] = [
   { group: 'basic', title: 'Básicos' },
@@ -10,7 +10,7 @@ const groups: { group: KanaGroup; title: string }[] = [
 ]
 
 export function LearnPage() {
-  const results = useLessonProgress((s) => s.results)
+  const results = useProgress((s) => s.lessons)
 
   return (
     <div className="flex flex-col gap-6">
@@ -22,9 +22,6 @@ export function LearnPage() {
         </p>
       </header>
 
-      <p className="rounded-xl bg-amber-50 p-3 text-sm text-amber-900 dark:bg-amber-950/40 dark:text-amber-200">
-        Por ahora tu avance se pierde al recargar la página. Se guardará cuando lleguen las cuentas.
-      </p>
 
       {groups.map(({ group, title }) => (
         <section key={group} className="flex flex-col gap-2">

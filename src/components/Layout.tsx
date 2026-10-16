@@ -1,4 +1,6 @@
-import { Link, NavLink, Outlet } from 'react-router'
+import { useState } from 'react'
+import { Link, NavLink, Outlet, useLocation } from 'react-router'
+import { useAccount } from '../lib/account/store'
 
 const sections = [
   { to: '/', label: 'Inicio', glyph: '家' },
@@ -31,14 +33,10 @@ export function Layout() {
               </NavLink>
             ))}
           </nav>
-          <NavLink
-            to="/perfil"
-            className="rounded-full border border-slate-300 px-3 py-1 text-sm font-semibold hover:bg-slate-100 dark:border-slate-700 dark:hover:bg-slate-800"
-          >
-            Entrar
-          </NavLink>
+          <AccountButton />
         </div>
       </header>
+      <GuestBanner />
 
       <main className="mx-auto w-full max-w-5xl flex-1 px-4 pt-6 pb-24 md:pb-10">
         <Outlet />
@@ -52,6 +50,55 @@ export function Layout() {
           </NavLink>
         ))}
       </nav>
+    </div>
+  )
+}
+
+function AccountButton() {
+  const { status, user } = useAccount()
+  if (status === 'user' && user) {
+    return (
+      <NavLink
+        to="/perfil"
+        aria-label="Tu perfil"
+        className="flex h-9 w-9 items-center justify-center rounded-full bg-ink font-extrabold text-white hover:opacity-90"
+      >
+        {(user.name ?? user.email ?? '?').charAt(0).toUpperCase()}
+      </NavLink>
+    )
+  }
+  return (
+    <NavLink
+      to="/entrar"
+      className={`rounded-full border border-slate-300 px-3 py-1 text-sm font-semibold hover:bg-slate-100 dark:border-slate-700 dark:hover:bg-slate-800 ${
+        status === 'loading' ? 'invisible' : ''
+      }`}
+    >
+      Entrar
+    </NavLink>
+  )
+}
+
+/** Aviso discreto del modo invitado (sin memoria); se puede ocultar durante la visita. */
+function GuestBanner() {
+  const status = useAccount((s) => s.status)
+  const [hidden, setHidden] = useState(false)
+  const { pathname } = useLocation()
+  if (status !== 'guest' || hidden || pathname === '/entrar') return null
+
+  return (
+    <div className="border-b border-amber-200 bg-amber-50 text-sm text-amber-900 dark:border-amber-900/50 dark:bg-amber-950/40 dark:text-amber-200">
+      <div className="mx-auto flex max-w-5xl items-center gap-3 px-4 py-2">
+        <p className="flex-1">
+          Estás como invitado: tu progreso no se guardará.{' '}
+          <Link to="/entrar" className="font-bold underline">
+            Entrar
+          </Link>
+        </p>
+        <button onClick={() => setHidden(true)} aria-label="Ocultar aviso" className="px-1 text-lg leading-none opacity-60 hover:opacity-100">
+          ×
+        </button>
+      </div>
     </div>
   )
 }

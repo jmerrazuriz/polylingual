@@ -2,11 +2,27 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Cada usuario solo puede leer y escribir su propio documento y subcolecciones
-    // (users/{uid}, users/{uid}/cards, users/{uid}/games, users/{uid}/sessions).
-    // Los invitados no tienen sesión, así que no pueden acceder a nada.
-    match /users/{uid}/{document=**} {
-      allow read, write: if request.auth != null && request.auth.uid == uid;
+    // Dueño del documento, con correo verificado (las cuentas de Google ya vienen verificadas).
+    // Los invitados no tienen sesión, así que no pueden leer ni escribir nada.
+    function isOwner(uid) {
+      return request.auth != null
+        && request.auth.uid == uid
+        && request.auth.token.email_verified == true;
+    }
+
+    // users/{uid}: { progress: map, version: int, updatedAt: timestamp }
+    function validProgressDoc() {
+      let data = request.resource.data;
+      return data.keys().hasOnly(['progress', 'version', 'updatedAt'])
+        && data.progress is map
+        && data.progress.keys().hasOnly(['lessons', 'records', 'kana'])
+        && data.version is int
+        && data.updatedAt == request.time;
+    }
+
+    match /users/{uid} {
+      allow read, delete: if isOwner(uid);
+      allow create, update: if isOwner(uid) && validProgressDoc();
     }
   }
 }

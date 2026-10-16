@@ -4,7 +4,7 @@ import { useSpeech } from '../../lib/audio/useSpeech'
 import { buildPairsRounds, PENALTY, pointsForMatch } from '../../lib/pairs'
 import { formatSeconds, now, secondsSince } from '../../lib/time'
 import { GameResult } from './GameResult'
-import { useRecords } from './recordsStore'
+import { useProgress } from '../../lib/progress/store'
 
 type Props = {
   pool: Kana[]
@@ -18,6 +18,8 @@ type Result = { score: number; seconds: number; errors: number; maxCombo: number
 
 const WRONG_MS = 650
 const NEXT_ROUND_MS = 450
+/** Los juegos cuentan la mitad que un ejercicio para el dominio de cada carácter. */
+const GAME_WEIGHT = 0.5
 
 export function PairsGame(props: Props) {
   const [game, setGame] = useState(0)
@@ -34,7 +36,7 @@ function PairsRun({ pool, variant, recordKey, onExit, onRetry }: Props & { onRet
   const [stats, setStats] = useState({ score: 0, errors: 0, combo: 0, maxCombo: 0 })
   const [result, setResult] = useState<Result | null>(null)
   const startedAt = useRef(0)
-  const submit = useRecords((s) => s.submit)
+  const submit = useProgress((s) => s.submitRecord)
   const { speak } = useSpeech()
 
   useEffect(() => {
@@ -68,10 +70,12 @@ function PairsRun({ pool, variant, recordKey, onExit, onRetry }: Props & { onRet
       const combo = stats.combo + 1
       setStats((s) => ({ ...s, score: s.score + pointsForMatch(combo), combo, maxCombo: Math.max(s.maxCombo, combo) }))
       setMatched(new Set(matched).add(l))
+      useProgress.getState().recordReading(l, true, GAME_WEIGHT)
       if (variant === 'romaji') speak(l)
     } else {
       setStats((s) => ({ ...s, score: Math.max(0, s.score - PENALTY), errors: s.errors + 1, combo: 0 }))
       setWrong([l, r])
+      useProgress.getState().recordReading(l, false, GAME_WEIGHT)
       setTimeout(() => setWrong(null), WRONG_MS)
     }
     setLeft(null)

@@ -280,6 +280,13 @@ app_idiomas/
 - ✅ Fase 2 lista: 19 lecciones (10 básicas, 5 de dakuten, 4 de combinados). Cada una tiene introducción, ficha por carácter con mnemotecnia, palabras que ya se pueden leer y un repaso final. El avance vive solo en memoria hasta la fase 5. El desbloqueo progresivo y el test de nivel siguen en las fases 6 y 8.
 - ✅ Fase 3 lista: práctica de lectura con 4 tipos de ejercicio (kana → romaji, romaji → kana, escribir romaji y leer palabras), variantes de romanización aceptadas, contrarreloj y resultados con errores. 13 grupos de pares confusos con su clave. Juegos de parejas (romaji, audio) y memoria, con combos y récords. Los récords viven en memoria hasta la fase 5; que los pares confusos aparezcan juntos en los juegos queda para más adelante.
 - ✅ Fase 4 lista: lienzo de escritura (dedo, lápiz o mouse) con corrección trazo a trazo según KanjiVG: forma, posición, dirección, orden, cerrado/abierto (゜ vs ゛) y dos trazos unidos aceptados. Niveles calcar, guía y de memoria, más modo libre. Pista automática tras 2 errores; pedir pista cuenta como error. Se puede escribir caracteres sueltos o palabras completas, con puntuación de 1 a 5 ★. Hay 22 tests del comparador, incluidos todos los hiragana y los pares confusos. Falta ajustar las tolerancias con escritura real en el teléfono.
+- ✅ Fase 5 lista:
+  - **Acceso:** login con Google o con correo y contraseña (verificación de correo, reenviar, «olvidé mi contraseña»).
+  - **Invitado:** cualquiera sin sesión es invitado sin memoria, con un aviso discreto y «Crear cuenta y guardar esta sesión» en cada pantalla de resultados. Al cerrar sesión se vuelve a ser invitado.
+  - **Datos:** el progreso (lecciones, récords y estadísticas de lectura y escritura por carácter) vive en un solo documento `users/{uid}`. Se guarda agrupado 2 s después del último cambio, se actualiza en vivo entre dispositivos y al entrar se une con lo hecho como invitado.
+  - **Reglas de Firestore:** solo el dueño con correo verificado, con el formato del documento validado.
+  - **Tabla:** se colorea por dominio de lectura (80 % de aciertos con al menos 5 respuestas).
+  - **Cambio respecto del modelo de datos de la sección 6:** un solo documento por usuario en vez de subcolecciones. Cuesta 1 lectura al entrar, y las tarjetas del SRS (fase 6) caben en el mismo documento.
 
 **Hiragana primero:** las fases 1 a 6 se construyen solo con hiragana. El código se escribe desde el principio para cualquier silabario (el campo `script` en los datos), así que katakana entra en la fase 7 casi solo como contenido.
 

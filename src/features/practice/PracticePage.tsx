@@ -1,6 +1,7 @@
 import { type ReactNode, useState } from 'react'
 import { useSearchParams } from 'react-router'
 import { GroupPicker } from '../../components/GroupPicker'
+import { SaveProgressPrompt } from '../../components/SaveProgressPrompt'
 import {
   buildConfusableSession,
   buildReadingSession,
@@ -227,6 +228,7 @@ function Results({ answers, onRetry, onSettings }: { answers: Answer[]; onRetry:
         </section>
       )}
 
+      <SaveProgressPrompt />
       <div className="flex gap-3">
         <button onClick={onSettings} className="rounded-full border border-slate-300 px-6 py-3 font-bold dark:border-slate-700">
           Cambiar ajustes

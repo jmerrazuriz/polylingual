@@ -4,7 +4,7 @@ import { useSpeech } from '../../lib/audio/useSpeech'
 import { buildMemoryCards } from '../../lib/pairs'
 import { formatSeconds, now, secondsSince } from '../../lib/time'
 import { GameResult } from './GameResult'
-import { useRecords } from './recordsStore'
+import { useProgress } from '../../lib/progress/store'
 
 type Props = {
   pool: Kana[]
@@ -26,7 +26,7 @@ function MemoryRun({ pool, recordKey, onExit, onRetry }: Props & { onRetry: () =
   const [moves, setMoves] = useState(0)
   const [result, setResult] = useState<{ seconds: number; isRecord: boolean } | null>(null)
   const startedAt = useRef(0)
-  const submit = useRecords((s) => s.submit)
+  const submit = useProgress((s) => s.submitRecord)
   const { speak } = useSpeech()
 
   useEffect(() => {
@@ -59,7 +59,7 @@ function MemoryRun({ pool, recordKey, onExit, onRetry }: Props & { onRetry: () =
       setOpen([])
       if (next.size === pairs) {
         // Menos intentos es mejor.
-        setResult({ seconds: secondsSince(startedAt.current), isRecord: submit(recordKey, moves + 1, true) })
+        setResult({ seconds: secondsSince(startedAt.current), isRecord: submit(recordKey, moves + 1) })
       }
     } else {
       setOpen([open[0], index])
