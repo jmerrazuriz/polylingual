@@ -3,8 +3,16 @@ import { Link } from 'react-router'
 import { SaveProgressPrompt } from '../../components/SaveProgressPrompt'
 import type { GrammarExercise } from '../../courses/grammar'
 import { japanesePath } from '../../lib/path'
-import { buildBlock, passMark, type PlacementBlock, placementBlocks, placementResult, QUESTIONS_PER_BLOCK } from '../../lib/pathPlacement'
-import { useProgress } from '../../lib/progress/store'
+import {
+  buildBlock,
+  firstPendingBlock,
+  passMark,
+  type PlacementBlock,
+  placementBlocks,
+  placementResult,
+  QUESTIONS_PER_BLOCK,
+} from '../../lib/pathPlacement'
+import { progressSnapshot, useProgress } from '../../lib/progress/store'
 import { GrammarExerciseView } from '../grammar/GrammarExerciseView'
 
 type Phase =
@@ -23,15 +31,18 @@ const unitTitles = (blocks: PlacementBlock[]) =>
 export function PathPlacementPage() {
   const [phase, setPhase] = useState<Phase>({ kind: 'intro' })
   const apply = useProgress((s) => s.applyPlacement)
+  // Quien vuelve con progreso empieza en el primer bloque que le falta.
+  const [start] = useState(() => firstPendingBlock(progressSnapshot()))
 
   const startBlock = (index: number) => setPhase({ kind: 'block', index, questions: buildBlock(placementBlocks[index]), step: 0, correct: 0 })
 
   const finish = (passed: number, lastScore?: { correct: number; total: number }) => {
-    if (passed > 0) apply(placementResult(placementBlocks.slice(0, passed)))
+    if (passed > start) apply(placementResult(placementBlocks.slice(0, passed)))
     setPhase({ kind: 'done', passed, lastScore })
   }
 
   if (phase.kind === 'intro') {
+    const allDone = start === placementBlocks.length
     return (
       <section className="mx-auto flex max-w-md flex-col items-center gap-5 py-8 text-center">
         <span className="text-6xl" aria-hidden>
@@ -39,24 +50,49 @@ export function PathPlacementPage() {
         </span>
         <h1 className="text-2xl font-extrabold">Test de nivelación</h1>
         <p className="text-slate-600 dark:text-slate-400">
-          ¿Ya sabes algo de japonés? Responde bloques de {QUESTIONS_PER_BLOCK} preguntas, de lo más fácil (hiragana) a lo más difícil (el final del
-          N5). Cada bloque que apruebes con 80 % desbloquea su parte del recorrido, y lo que ya sabes entra a tus repasos.
+          ¿Ya sabes algo de japonés, o vuelves después de estudiar por tu cuenta? Responde bloques de {QUESTIONS_PER_BLOCK}{' '}
+          preguntas, de lo más fácil (hiragana) a lo más difícil (el final del N5). Cada bloque que apruebes con 80 % desbloquea su
+          parte del recorrido, y lo que ya sabes entra a tus repasos.
         </p>
+        {start > 0 && !allDone && (
+          <p className="rounded-xl bg-emerald-50 p-3 text-sm text-emerald-900 dark:bg-emerald-950/40 dark:text-emerald-200">
+            {start === 1 ? 'El primer bloque ya lo tienes completo' : `Los primeros ${start} bloques ya los tienes completos`}: empiezas
+            en el bloque {start + 1}. El test solo agrega progreso, nunca borra lo que ya hiciste.
+          </p>
+        )}
         <ol className="flex w-full flex-col gap-1 text-left text-sm">
           {placementBlocks.map((b, i) => (
-            <li key={b.id} className="flex items-center gap-2 rounded-xl bg-slate-100 px-3 py-2 dark:bg-slate-800">
-              <span className="font-extrabold text-slate-400">{i + 1}</span>
+            <li
+              key={b.id}
+              className={`flex items-center gap-2 rounded-xl px-3 py-2 ${
+                i < start ? 'bg-emerald-100 text-emerald-900 dark:bg-emerald-950 dark:text-emerald-200' : 'bg-slate-100 dark:bg-slate-800'
+              }`}
+            >
+              <span className="font-extrabold text-slate-400">{i < start ? '✓' : i + 1}</span>
               {b.title}
             </li>
           ))}
         </ol>
-        <p className="text-sm text-slate-500">Si no sabes una respuesta, toca «No lo sé»: adivinar solo te adelanta a lecciones difíciles.</p>
-        <button onClick={() => startBlock(0)} className="rounded-full bg-ink px-8 py-3 font-bold text-white hover:opacity-90">
-          Empezar el test
-        </button>
-        <Link to="/aprender" className="text-sm font-bold text-slate-500 underline">
-          Mejor empiezo desde cero
-        </Link>
+        {allDone ? (
+          <>
+            <p className="font-bold">¡Ya completaste todo el recorrido! No hay nada que nivelar.</p>
+            <Link to="/aprender" className="rounded-full bg-ink px-8 py-3 font-bold text-white hover:opacity-90">
+              Ir al recorrido
+            </Link>
+          </>
+        ) : (
+          <>
+            <p className="text-sm text-slate-500">
+              Si no sabes una respuesta, toca «No lo sé»: adivinar solo te adelanta a lecciones difíciles.
+            </p>
+            <button onClick={() => startBlock(start)} className="rounded-full bg-ink px-8 py-3 font-bold text-white hover:opacity-90">
+              Empezar el test
+            </button>
+            <Link to="/aprender" className="text-sm font-bold text-slate-500 underline">
+              {start > 0 ? 'Mejor sigo donde iba' : 'Mejor empiezo desde cero'}
+            </Link>
+          </>
+        )}
       </section>
     )
   }
@@ -119,18 +155,20 @@ export function PathPlacementPage() {
     )
   }
 
-  const titles = unitTitles(placementBlocks.slice(0, phase.passed))
+  const titles = unitTitles(placementBlocks.slice(start, phase.passed))
   return (
     <section className="mx-auto flex max-w-md flex-col items-center gap-4 py-8 text-center">
       <span className="text-6xl" aria-hidden>
-        {phase.passed ? '🎓' : '🌱'}
+        {titles.length ? '🎓' : '🌱'}
       </span>
       <h1 className="text-2xl font-extrabold">
         {phase.passed === placementBlocks.length
           ? '¡Ya dominas todo el N5 del curso!'
-          : phase.passed
+          : titles.length
             ? `Desbloqueaste ${titles.length} ${titles.length === 1 ? 'unidad' : 'unidades'}`
-            : 'Empezamos desde el principio'}
+            : start > 0
+              ? 'Sigues donde ibas'
+              : 'Empezamos desde el principio'}
       </h1>
       {phase.lastScore && (
         <p className="text-slate-600 dark:text-slate-400">
@@ -150,7 +188,9 @@ export function PathPlacementPage() {
           </ul>
         </>
       ) : (
-        <p className="text-slate-600 dark:text-slate-400">No pasa nada: la primera lección es justo para ti.</p>
+        <p className="text-slate-600 dark:text-slate-400">
+          {start > 0 ? 'No pasa nada: tu recorrido sigue igual que antes.' : 'No pasa nada: la primera lección es justo para ti.'}
+        </p>
       )}
       <SaveProgressPrompt />
       <Link to="/aprender" className="rounded-full bg-ink px-6 py-3 font-bold text-white hover:opacity-90">

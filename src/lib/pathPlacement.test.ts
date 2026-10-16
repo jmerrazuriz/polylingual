@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it } from 'vitest'
 import { japanesePath, pathStatus } from './path'
-import { blockItems, buildBlock, hasNotStarted, passMark, placementBlocks, placementResult, QUESTIONS_PER_BLOCK } from './pathPlacement'
+import { blockItems, buildBlock, firstPendingBlock, hasNotStarted, passMark, placementBlocks, placementResult, QUESTIONS_PER_BLOCK } from './pathPlacement'
 import { emptyProgress } from './progress/model'
 import { progressSnapshot, useProgress } from './progress/store'
 
@@ -62,5 +62,16 @@ describe('test de nivelación del recorrido', () => {
     useProgress.getState().completeLesson('vocales', 3, 5, [])
     useProgress.getState().applyPlacement(placementResult(placementBlocks.slice(0, 1)))
     expect(progressSnapshot().lessons.vocales).toEqual({ correct: 3, total: 5 })
+  })
+
+  it('quien vuelve empieza en el primer bloque que le falta', () => {
+    expect(firstPendingBlock(emptyProgress())).toBe(0)
+    useProgress.getState().applyPlacement(placementResult(placementBlocks.slice(0, 3)))
+    expect(firstPendingBlock(progressSnapshot())).toBe(3)
+    // Con una lección suelta del bloque 4 hecha, el bloque 4 sigue pendiente.
+    useProgress.getState().completeLesson('kata-vocales', 5, 5, [])
+    expect(firstPendingBlock(progressSnapshot())).toBe(3)
+    useProgress.getState().applyPlacement(placementResult(placementBlocks))
+    expect(firstPendingBlock(progressSnapshot())).toBe(placementBlocks.length)
   })
 })

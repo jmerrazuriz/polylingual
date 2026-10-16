@@ -371,6 +371,7 @@ app_idiomas/
   - Quien no ha empezado el recorrido ve, al comienzo de Aprender, la opción de hacer el test o empezar de cero.
   - Son 8 bloques de 8 preguntas, de dificultad creciente (hiragana → final del N5), que mezclan kana, vocabulario, gramática, contadores y kanji. Se puede responder «No lo sé».
   - Cada bloque aprobado con 80 % completa sus unidades del recorrido. El test termina en el primer bloque no aprobado, o cuando la persona decide parar entre bloques.
+  - También está en el **perfil**, para quien vuelve después de un tiempo: empieza en el primer bloque que le falta y solo agrega progreso.
   - Lo desbloqueado entra a los repasos como «ya sabido»: el primer repaso se reparte en los próximos días, sin juntarse todo hoy.
 - **Pendiente para cerrar la etapa A:** 20 lecturas cortas, 20 diálogos con preguntas y un simulacro N5.
 - **Riesgo:** todas las tarjetas viven en un solo documento de Firestore (máximo 1 MB). Con ~900 palabras van unas 2.600 tarjetas, lo que todavía cabe. Antes de la etapa B (~1.500 palabras) hay que pasar las tarjetas a una subcolección o compactarlas.

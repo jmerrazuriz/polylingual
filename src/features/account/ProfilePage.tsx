@@ -6,6 +6,7 @@ import { authErrorMessage, checkVerification, resendVerification, signOut } from
 import { useAccount } from '../../lib/account/store'
 import { readingMastery } from '../../lib/progress/model'
 import { useProgress } from '../../lib/progress/store'
+import { PlacementCard } from '../path/PlacementCard'
 import { SettingsSection } from './SettingsSection'
 
 export function ProfilePage() {
@@ -35,6 +36,7 @@ export function ProfilePage() {
             Ya tengo cuenta
           </Link>
         </div>
+        <PlacementCard />
         <SettingsSection />
       </div>
     )
@@ -151,6 +153,8 @@ export function ProfilePage() {
       <Link to="/progreso" className="font-bold text-accent hover:underline">
         Ver mi progreso, racha y logros →
       </Link>
+
+      <PlacementCard />
 
       <SettingsSection />
     </div>

@@ -120,3 +120,17 @@ export function placementResult(blocks: PlacementBlock[]): PlacementResult {
 /** ¿Todavía no empezó el recorrido? (ninguna lección, gramática ni repaso hecho) */
 export const hasNotStarted = (p: { lessons: object; grammar: object; units: object }) =>
   Object.keys(p.lessons).length === 0 && Object.keys(p.grammar).length === 0 && Object.keys(p.units).length === 0
+
+type Done = { lessons: object; grammar: object; units: object }
+
+const itemDone = (p: Done, item: PathItem) =>
+  item.kind === 'grammar' ? item.id in p.grammar : item.kind === 'unit' ? item.id in p.units : item.id in p.lessons
+
+/**
+ * Primer bloque con algo sin hacer: el test empieza ahí (lo anterior ya está completo).
+ * Devuelve placementBlocks.length si ya está todo hecho.
+ */
+export function firstPendingBlock(p: Done): number {
+  const i = placementBlocks.findIndex((b) => !blockItems(b).every((item) => itemDone(p, item)))
+  return i === -1 ? placementBlocks.length : i
+}
