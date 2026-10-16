@@ -287,6 +287,12 @@ app_idiomas/
   - **Reglas de Firestore:** solo el dueño con correo verificado, con el formato del documento validado.
   - **Tabla:** se colorea por dominio de lectura (80 % de aciertos con al menos 5 respuestas).
   - **Cambio respecto del modelo de datos de la sección 6:** un solo documento por usuario en vez de subcolecciones. Cuesta 1 lectura al entrar, y las tarjetas del SRS (fase 6) caben en el mismo documento.
+- ✅ Fase 6 lista:
+  - **Repetición espaciada:** FSRS (`ts-fsrs`) con dos tarjetas por carácter, lectura y escritura. Completar una lección agrega sus caracteres. Los ejercicios y repasos reprograman las tarjetas: acierto = Good, error = Again; en escritura, 4–5 ★ = Good, 3 = Hard y 1–2 = Again. Los juegos solo suman a las estadísticas.
+  - **Repasos:** el inicio muestra los pendientes, o el próximo repaso y la siguiente lección. `/repasar` hace hasta 20 tarjetas: primero lectura y después escritura de memoria.
+  - **Desbloqueo progresivo:** cada lección se abre al completar la anterior, con la opción «desbloquear todas». Los invitados tienen todo abierto. Los selectores de práctica y juegos solo ofrecen lo desbloqueado.
+  - **Juego 2:** parejas de palabras con su lectura o con su significado (12 palabras por partida, al azar entre las que se pueden leer). El motor de parejas ahora es genérico.
+  - **Pendiente:** tarjetas SRS para palabras (por ahora solo caracteres), temas de palabras en los juegos y que los pares confusos aparezcan juntos en los juegos.
 
 **Hiragana primero:** las fases 1 a 6 se construyen solo con hiragana. El código se escribe desde el principio para cualquier silabario (el campo `script` en los datos), así que katakana entra en la fase 7 casi solo como contenido.
 

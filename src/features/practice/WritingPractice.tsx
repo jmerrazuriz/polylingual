@@ -15,7 +15,7 @@ const helps: { help: WritingHelp; title: string; text: string }[] = [
 ]
 
 export function WritingPractice({ tabs }: { tabs: ReactNode }) {
-  const lessonIds = useSelectedLessons()
+  const { selected: lessonIds, unlocked } = useSelectedLessons()
   const setLessonIds = useSelection((s) => s.setLessonIds)
   const [content, setContent] = useState<WritingContent>('kana')
   const [help, setHelp] = useState<WritingHelp>('trace')
@@ -92,7 +92,7 @@ export function WritingPractice({ tabs }: { tabs: ReactNode }) {
 
       <section className="flex flex-col gap-3 rounded-2xl border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900">
         <h2 className="font-extrabold">1. Caracteres</h2>
-        <GroupPicker selected={lessonIds} onChange={setLessonIds} />
+        <GroupPicker selected={lessonIds} onChange={setLessonIds} unlocked={unlocked} />
         <p className="text-sm text-slate-500">
           {pool.length} caracteres · {words} palabras que se pueden escribir con ellos
         </p>

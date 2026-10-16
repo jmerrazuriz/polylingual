@@ -11,6 +11,7 @@ import { syllables } from '../../lib/romaji'
 import { wordRomaji, wordsReadableWith } from '../../lib/words'
 import { LessonQuiz } from './LessonQuiz'
 import { useProgress } from '../../lib/progress/store'
+import { useUnlockedLessons } from '../../lib/progress/unlock'
 
 type Step =
   | { kind: 'intro' }
@@ -22,7 +23,22 @@ type Step =
 export function LessonRoute() {
   const { lessonId } = useParams()
   const lesson = hiraganaLessons.find((l) => l.id === lessonId)
+  const unlocked = useUnlockedLessons()
   if (!lesson) return <ComingSoon title="Lección no encontrada" />
+  if (!unlocked.has(lesson.id)) {
+    return (
+      <section className="flex flex-col items-center gap-4 py-16 text-center">
+        <span className="text-5xl" aria-hidden>
+          🔒
+        </span>
+        <h1 className="text-2xl font-extrabold">{lesson.title} todavía está bloqueada</h1>
+        <p className="text-slate-500">Completa la lección anterior para abrirla.</p>
+        <Link to="/aprender" className="font-semibold text-accent hover:underline">
+          Ver lecciones
+        </Link>
+      </section>
+    )
+  }
   // La key reinicia el estado al pasar a otra lección.
   return <LessonPage key={lesson.id} lesson={lesson} />
 }
@@ -51,7 +67,7 @@ function LessonPage({ lesson }: { lesson: Lesson }) {
   const go = (delta: number) => setPosition((p) => Math.min(Math.max(p + delta, 0), steps.length - 1))
 
   const finishQuiz = (correct: number, total: number) => {
-    complete(lesson.id, correct, total)
+    complete(lesson.id, correct, total, lesson.chars)
     setResult({ correct, total })
   }
 

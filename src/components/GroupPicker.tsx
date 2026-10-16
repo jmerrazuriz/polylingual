@@ -10,14 +10,16 @@ const groups: { group: KanaGroup; title: string }[] = [
 type Props = {
   selected: string[]
   onChange: (lessonIds: string[]) => void
+  /** Lecciones que se pueden elegir; las demás se ven bloqueadas. */
+  unlocked: Set<string>
 }
 
 /** Elige qué lecciones (grupos de caracteres) entran en una práctica o juego. */
-export function GroupPicker({ selected, onChange }: Props) {
+export function GroupPicker({ selected, onChange, unlocked }: Props) {
   const toggle = (id: string) =>
     onChange(selected.includes(id) ? selected.filter((s) => s !== id) : [...selected, id])
   const setGroup = (group: KanaGroup) => {
-    const ids = hiraganaLessons.filter((l) => l.group === group).map((l) => l.id)
+    const ids = hiraganaLessons.filter((l) => l.group === group && unlocked.has(l.id)).map((l) => l.id)
     const allIn = ids.every((id) => selected.includes(id))
     onChange(allIn ? selected.filter((s) => !ids.includes(s)) : [...new Set([...selected, ...ids])])
   }
@@ -37,13 +39,15 @@ export function GroupPicker({ selected, onChange }: Props) {
               .filter((l) => l.group === group)
               .map((lesson) => {
                 const on = selected.includes(lesson.id)
+                const locked = !unlocked.has(lesson.id)
                 return (
                   <button
                     key={lesson.id}
                     onClick={() => toggle(lesson.id)}
                     aria-pressed={on}
-                    title={lesson.title}
-                    className={`rounded-full border px-3 py-1 font-jp text-sm transition ${
+                    disabled={locked}
+                    title={locked ? `${lesson.title}: completa las lecciones anteriores` : lesson.title}
+                    className={`rounded-full border px-3 py-1 font-jp text-sm transition disabled:opacity-35 ${
                       on
                         ? 'border-ink bg-ink text-white dark:border-white dark:bg-white dark:text-ink'
                         : 'border-slate-300 bg-white text-slate-600 hover:border-slate-500 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300'

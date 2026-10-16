@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { hiraganaConfusables } from '../content/hiragana'
 import { kanaByChar } from '../content/kana'
 import { learnedThrough } from '../content/lessons'
-import { buildMemoryCards, buildPairsRounds, uniqueByRomaji } from './pairs'
+import { buildMemoryCards, buildPairsRounds, kanaPairItems, uniqueByRomaji, uniquePairs, wordPairItems } from './pairs'
 import { buildConfusableSession, buildReadingSession } from './quiz'
 import { matchesReading, romajiReadings } from './romaji'
 import { wordReadings } from './words'
@@ -90,14 +90,31 @@ describe('juegos de parejas', () => {
   })
 
   it('reparte en rondas de hasta 6 con las dos columnas iguales', () => {
-    const rounds = buildPairsRounds(kana('あいうえおかきくけこさしすせそ'))
+    const rounds = buildPairsRounds(kanaPairItems(kana('あいうえおかきくけこさしすせそ')))
     expect(rounds.map((r) => r.left.length)).toEqual([6, 6, 3])
     for (const r of rounds) expect(new Set(r.right)).toEqual(new Set(r.left))
   })
 
   it('no deja una ronda final de una sola pareja', () => {
-    const rounds = buildPairsRounds(kana('あいうえおかき'))
+    const rounds = buildPairsRounds(kanaPairItems(kana('あいうえおかき')))
     expect(rounds.every((r) => r.left.length >= 2)).toBe(true)
+  })
+
+  it('quita parejas ambiguas (mismo romaji)', () => {
+    expect(uniquePairs(kanaPairItems(kana('じぢずづ'))).map((p) => p.left)).toEqual(['じ', 'ず'])
+  })
+
+  it('arma parejas de palabras con su lectura o significado', () => {
+    const words = [
+      { kana: 'ねこ', meaning: 'gato', theme: 'animales' as const },
+      { kana: 'こんにちは', meaning: 'hola', theme: 'saludos' as const, romaji: 'konnichiwa' },
+    ]
+    expect(wordPairItems(words, 'romaji').map((p) => p.right)).toEqual(['neko', 'konnichiwa'])
+    expect(wordPairItems(words, 'meaning').map((p) => [p.left, p.right])).toEqual([
+      ['ねこ', 'gato'],
+      ['こんにちは', 'hola'],
+    ])
+    expect(wordPairItems(words, 'romaji').every((p) => p.kana === undefined)).toBe(true)
   })
 
   it('cada carta de memoria tiene su pareja', () => {

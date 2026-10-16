@@ -68,11 +68,18 @@ describe('store de progreso', () => {
     expect(submitRecord('pairs-romaji:k', 500)).toBe(true)
     expect(submitRecord('pairs-romaji:k', 400)).toBe(false)
 
-    expect(progressSnapshot()).toEqual({
-      lessons: { k: { correct: 4, total: 5 } },
-      records: { 'pairs-romaji:k': 500 },
-      kana: { か: { readOk: 1, readTotal: 1.5, writeScore: 4, writeCount: 1 } },
-    })
+    const snap = progressSnapshot()
+    expect(snap.lessons).toEqual({ k: { correct: 4, total: 5 } })
+    expect(snap.records).toEqual({ 'pairs-romaji:k': 500 })
+    expect(snap.kana).toEqual({ か: { readOk: 1, readTotal: 1.5, writeScore: 4, writeCount: 1 } })
+    // La respuesta del juego (peso 0.5) no reprograma: solo hubo 1 repaso de lectura y 1 de escritura.
+    expect(snap.cards['か:read'].reps).toBe(1)
+    expect(snap.cards['か:write'].reps).toBe(1)
+  })
+
+  it('completar una lección agrega sus caracteres a los repasos', () => {
+    useProgress.getState().completeLesson('vocales', 5, 5, ['あ', 'い'])
+    expect(Object.keys(progressSnapshot().cards).sort()).toEqual(['あ:read', 'あ:write', 'い:read', 'い:write'])
   })
 
   it('reset vuelve a cero (al cerrar sesión se es invitado sin memoria)', () => {

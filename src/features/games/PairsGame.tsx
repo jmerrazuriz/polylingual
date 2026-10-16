@@ -1,15 +1,15 @@
 import { useEffect, useRef, useState } from 'react'
-import type { Kana } from '../../content/types'
 import { useSpeech } from '../../lib/audio/useSpeech'
-import { buildPairsRounds, PENALTY, pointsForMatch } from '../../lib/pairs'
+import { buildPairsRounds, type PairItem, PENALTY, pointsForMatch } from '../../lib/pairs'
 import { formatSeconds, now, secondsSince } from '../../lib/time'
 import { GameResult } from './GameResult'
 import { useProgress } from '../../lib/progress/store'
 
 type Props = {
-  pool: Kana[]
-  /** romaji: se une kana con romaji. audio: se une kana con su sonido. */
-  variant: 'romaji' | 'audio'
+  items: PairItem[]
+  /** text: se ve el lado derecho. audio: el lado derecho es un sonido (🔊). */
+  variant: 'text' | 'audio'
+  instructions: string
   recordKey: string
   onExit: () => void
 }
@@ -26,8 +26,8 @@ export function PairsGame(props: Props) {
   return <PairsRun key={game} {...props} onRetry={() => setGame((g) => g + 1)} />
 }
 
-function PairsRun({ pool, variant, recordKey, onExit, onRetry }: Props & { onRetry: () => void }) {
-  const [rounds] = useState(() => buildPairsRounds(pool))
+function PairsRun({ items, variant, instructions, recordKey, onExit, onRetry }: Props & { onRetry: () => void }) {
+  const [rounds] = useState(() => buildPairsRounds(items))
   const [roundIndex, setRoundIndex] = useState(0)
   const [matched, setMatched] = useState<Set<string>>(new Set())
   const [left, setLeft] = useState<string | null>(null)
@@ -62,20 +62,23 @@ function PairsRun({ pool, variant, recordKey, onExit, onRetry }: Props & { onRet
     return () => clearTimeout(timer)
   }, [matched, round, roundIndex, rounds.length, stats, recordKey, submit])
 
+  const byId = new Map(round.left.map((item) => [item.id, item]))
+
   const tryPair = (l: string | null, r: string | null) => {
     setLeft(l)
     setRight(r)
     if (!l || !r) return
+    const item = byId.get(l)!
     if (l === r) {
       const combo = stats.combo + 1
       setStats((s) => ({ ...s, score: s.score + pointsForMatch(combo), combo, maxCombo: Math.max(s.maxCombo, combo) }))
       setMatched(new Set(matched).add(l))
-      useProgress.getState().recordReading(l, true, GAME_WEIGHT)
-      if (variant === 'romaji') speak(l)
+      if (item.kana) useProgress.getState().recordReading(item.kana, true, GAME_WEIGHT)
+      if (variant === 'text') speak(item.speak)
     } else {
       setStats((s) => ({ ...s, score: Math.max(0, s.score - PENALTY), errors: s.errors + 1, combo: 0 }))
       setWrong([l, r])
-      useProgress.getState().recordReading(l, false, GAME_WEIGHT)
+      if (item.kana) useProgress.getState().recordReading(item.kana, false, GAME_WEIGHT)
       setTimeout(() => setWrong(null), WRONG_MS)
     }
     setLeft(null)
@@ -122,37 +125,35 @@ function PairsRun({ pool, variant, recordKey, onExit, onRetry }: Props & { onRet
       </div>
 
       <p className="text-center text-sm text-slate-500">
-        {variant === 'romaji'
-          ? 'Toca un carácter y luego cómo se lee.'
-          : 'Toca un carácter y luego el sonido que le corresponde (🔊 lo reproduce).'}
+        {instructions}
       </p>
 
       <div className="grid grid-cols-2 gap-3">
         <div className="flex flex-col gap-2">
-          {round.left.map((k) => (
+          {round.left.map((item) => (
             <button
-              key={k.char}
-              onClick={() => tryPair(left === k.char ? null : k.char, right)}
-              disabled={matched.has(k.char)}
-              className={`h-16 rounded-2xl border-2 font-jp text-3xl transition ${cellClass(k.char, left === k.char)}`}
+              key={item.id}
+              onClick={() => tryPair(left === item.id ? null : item.id, right)}
+              disabled={matched.has(item.id)}
+              className={`min-h-16 rounded-2xl border-2 px-2 font-jp transition ${[...item.left].length > 2 ? 'text-2xl' : 'text-3xl'} ${cellClass(item.id, left === item.id)}`}
             >
-              {k.char}
+              {item.left}
             </button>
           ))}
         </div>
         <div className="flex flex-col gap-2">
-          {round.right.map((k, i) => (
+          {round.right.map((item, i) => (
             <button
-              key={k.char}
+              key={item.id}
               onClick={() => {
-                if (variant === 'audio') speak(k.char)
-                tryPair(left, right === k.char ? null : k.char)
+                if (variant === 'audio') speak(item.speak)
+                tryPair(left, right === item.id ? null : item.id)
               }}
-              disabled={matched.has(k.char)}
-              aria-label={variant === 'audio' ? `Sonido ${i + 1}` : k.romaji}
-              className={`h-16 rounded-2xl border-2 text-2xl font-extrabold transition ${cellClass(k.char, right === k.char)}`}
+              disabled={matched.has(item.id)}
+              aria-label={variant === 'audio' ? `Sonido ${i + 1}` : item.right}
+              className={`min-h-16 rounded-2xl border-2 px-2 font-extrabold leading-tight transition ${item.right.length > 8 ? 'text-sm' : 'text-2xl'} ${cellClass(item.id, right === item.id)}`}
             >
-              {variant === 'romaji' || matched.has(k.char) ? k.romaji : `🔊 ${i + 1}`}
+              {variant === 'text' || matched.has(item.id) ? item.right : `🔊 ${i + 1}`}
             </button>
           ))}
         </div>

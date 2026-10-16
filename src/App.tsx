@@ -8,6 +8,7 @@ import { HomePage } from './features/home/HomePage'
 import { LearnPage } from './features/learn/LearnPage'
 import { LessonRoute } from './features/learn/LessonPage'
 import { PracticePage } from './features/practice/PracticePage'
+import { ReviewPage } from './features/review/ReviewPage'
 
 // Las páginas de cuenta usan Firebase Auth: se cargan solo al visitarlas.
 const LoginPage = lazy(() => import('./features/account/LoginPage').then((m) => ({ default: m.LoginPage })))
@@ -24,6 +25,7 @@ export default function App() {
         <Route path="aprender/:lessonId" element={<LessonRoute />} />
         <Route path="practicar" element={<PracticePage />} />
         <Route path="juegos" element={<GamesPage />} />
+        <Route path="repasar" element={<ReviewPage />} />
         <Route path="entrar" element={<Suspense fallback={loading}><LoginPage /></Suspense>} />
         <Route path="perfil" element={<Suspense fallback={loading}><ProfilePage /></Suspense>} />
         <Route path="*" element={<ComingSoon title="Página no encontrada" />} />

@@ -2,7 +2,8 @@ import { create } from 'zustand'
 import { kanaByChar } from '../../content/kana'
 import { hiraganaLessons } from '../../content/lessons'
 import type { Kana } from '../../content/types'
-import { useProgress } from '../../lib/progress/store'
+import { useAccount } from '../../lib/account/store'
+import { useUnlockedLessons } from '../../lib/progress/unlock'
 
 type Selection = {
   /** Lecciones elegidas para practicar y jugar; null = aún no elige (se usa el valor por defecto). */
@@ -18,13 +19,16 @@ export const useSelection = create<Selection>((set) => ({
 
 const DEFAULT_LESSONS = ['vocales', 'k']
 
-/** Lecciones elegidas: lo que eligió el usuario, o las que ya completó, o las dos primeras. */
-export function useSelectedLessons(): string[] {
+/**
+ * Lecciones elegidas (solo entre las desbloqueadas). Por defecto: todo lo
+ * desbloqueado con cuenta; como invitado (todo abierto), las dos primeras.
+ */
+export function useSelectedLessons(): { selected: string[]; unlocked: Set<string> } {
   const chosen = useSelection((s) => s.lessonIds)
-  const results = useProgress((s) => s.lessons)
-  if (chosen) return chosen
-  const completed = Object.keys(results)
-  return completed.length > 0 ? hiraganaLessons.filter((l) => completed.includes(l.id)).map((l) => l.id) : DEFAULT_LESSONS
+  const guest = useAccount((s) => s.status !== 'user')
+  const unlocked = useUnlockedLessons()
+  const fallback = guest ? DEFAULT_LESSONS : hiraganaLessons.map((l) => l.id)
+  return { selected: (chosen ?? fallback).filter((id) => unlocked.has(id)), unlocked }
 }
 
 export function kanaForLessons(lessonIds: readonly string[]): Kana[] {

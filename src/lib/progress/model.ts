@@ -1,5 +1,7 @@
 // Modelo del progreso del usuario. Es lo que se guarda en Firestore (users/{uid}.progress).
 
+import type { SrsCard } from './srs.ts'
+
 export type LessonResult = { correct: number; total: number }
 
 /** Estadísticas por carácter: lectura (aciertos/total) y escritura (suma de puntajes 1–5 / cantidad). */
@@ -11,9 +13,13 @@ export type ProgressData = {
   /** Mejor resultado por juego y selección de grupos (ver recordKey). */
   records: Record<string, number>
   kana: Record<string, KanaStat>
+  /** Tarjetas de repetición espaciada, por cardId ("か:read", "か:write"). */
+  cards: Record<string, SrsCard>
+  /** El usuario eligió desbloquear todas las lecciones. */
+  unlockAll: boolean
 }
 
-export const emptyProgress = (): ProgressData => ({ lessons: {}, records: {}, kana: {} })
+export const emptyProgress = (): ProgressData => ({ lessons: {}, records: {}, kana: {}, cards: {}, unlockAll: false })
 
 export const emptyStat = (): KanaStat => ({ readOk: 0, readTotal: 0, writeScore: 0, writeCount: 0 })
 
@@ -51,7 +57,14 @@ export function mergeProgress(a: ProgressData, b: ProgressData): ProgressData {
       writeCount: prev.writeCount + s.writeCount,
     }
   }
-  return { lessons, records, kana }
+  // De cada tarjeta se queda la repasada más recientemente.
+  const cards = { ...a.cards }
+  for (const [id, card] of Object.entries(b.cards)) {
+    const prev = cards[id]
+    if (!prev || (card.last_review ?? 0) > (prev.last_review ?? 0)) cards[id] = card
+  }
+
+  return { lessons, records, kana, cards, unlockAll: a.unlockAll || b.unlockAll }
 }
 
 const num = (v: unknown) => (typeof v === 'number' && Number.isFinite(v) ? v : 0)
@@ -75,6 +88,23 @@ export function parseProgress(raw: unknown): ProgressData {
       writeCount: num(stat.writeCount),
     }
   }
+  for (const [id, c] of Object.entries(obj(data.cards))) {
+    const card = obj(c)
+    if (typeof card.due !== 'number') continue
+    progress.cards[id] = {
+      due: card.due,
+      stability: num(card.stability),
+      difficulty: num(card.difficulty),
+      elapsed_days: num(card.elapsed_days),
+      scheduled_days: num(card.scheduled_days),
+      learning_steps: num(card.learning_steps),
+      reps: num(card.reps),
+      lapses: num(card.lapses),
+      state: num(card.state),
+      last_review: typeof card.last_review === 'number' ? card.last_review : null,
+    }
+  }
+  progress.unlockAll = data.unlockAll === true
   return progress
 }
 
