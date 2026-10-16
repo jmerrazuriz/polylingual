@@ -1,0 +1,20 @@
+import { Route, Routes } from 'react-router'
+import { ComingSoon } from './components/ComingSoon'
+import { Layout } from './components/Layout'
+import { HomePage } from './features/home/HomePage'
+
+export default function App() {
+  return (
+    <Routes>
+      <Route element={<Layout />}>
+        <Route index element={<HomePage />} />
+        <Route path="tabla" element={<ComingSoon title="Tabla rápida" phase={1} />} />
+        <Route path="aprender" element={<ComingSoon title="Aprender" phase={2} />} />
+        <Route path="practicar" element={<ComingSoon title="Practicar" phase={3} />} />
+        <Route path="juegos" element={<ComingSoon title="Juegos" phase={3} />} />
+        <Route path="perfil" element={<ComingSoon title="Perfil" phase={5} />} />
+        <Route path="*" element={<ComingSoon title="Página no encontrada" />} />
+      </Route>
+    </Routes>
+  )
+}
