@@ -166,6 +166,23 @@ export const hiraganaMnemonics: Record<string, string> = {
   ん: 'Una «n» minúscula escrita a mano.',
 }
 
+/** Grupos de caracteres que se confunden fácilmente, con la clave para distinguirlos. */
+export const hiraganaConfusables: { chars: string[]; tip: string }[] = [
+  { chars: ['ぬ', 'め'], tip: 'ぬ termina con un rulo; め no.' },
+  { chars: ['る', 'ろ'], tip: 'る termina con un rulo; ろ no.' },
+  { chars: ['わ', 'ね', 'れ'], tip: 'Las tres empiezan igual. わ cierra con una curva, ね termina en rulo y れ con una colita hacia afuera.' },
+  { chars: ['は', 'ほ'], tip: 'ほ tiene una raya más arriba y su palito derecho no sobresale por encima.' },
+  { chars: ['け', 'は'], tip: 'は tiene un lazo abajo a la derecha; け no.' },
+  { chars: ['さ', 'ち'], tip: 'En さ la curva de abajo es un trazo aparte; en ち sale del trazo vertical y parece un 5 al revés.' },
+  { chars: ['き', 'さ'], tip: 'き tiene dos rayas horizontales; さ solo una.' },
+  { chars: ['い', 'り'], tip: 'い tiene dos trazos cortos parecidos; en り el segundo es más largo y baja más.' },
+  { chars: ['こ', 'に'], tip: 'に tiene un palito vertical a la izquierda; こ no.' },
+  { chars: ['あ', 'お'], tip: 'お tiene un puntito arriba a la derecha; あ no.' },
+  { chars: ['ま', 'も'], tip: 'En ま el trazo vertical termina en un lazo; en も se curva hacia arriba como un anzuelo.' },
+  { chars: ['ば', 'ぱ'], tip: 'Dos rayitas (゛) es b; un circulito (゜) es p.' },
+  { chars: ['ぶ', 'ぷ'], tip: 'Dos rayitas (゛) es b; un circulito (゜) es p.' },
+]
+
 /** Caracteres pequeños: no van en la tabla, pero forman los combinados y la consonante doble. */
 export const smallHiragana: Record<string, string> = {
   ゃ: 'ya',

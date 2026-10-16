@@ -1,9 +1,14 @@
 import type { Word } from '../content/types.ts'
 import { hiraganaWords } from '../content/words.ts'
-import { syllables, toRomaji } from './romaji.ts'
+import { romajiReadings, syllables, toRomaji } from './romaji.ts'
 
 export function wordRomaji(word: Word): string {
   return word.romaji ?? toRomaji(word.kana)
+}
+
+/** Lecturas aceptadas al escribir la palabra en romaji. */
+export function wordReadings(word: Word): string[] {
+  return word.romaji ? [word.romaji] : romajiReadings(word.kana)
 }
 
 const byLength = (a: Word, b: Word) => [...a.kana].length - [...b.kana].length

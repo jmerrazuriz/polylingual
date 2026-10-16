@@ -278,6 +278,7 @@ app_idiomas/
 - ✅ Fase 0 lista: proyecto base, Firebase y publicación automática.
 - ✅ Fase 1 lista: 104 hiragana con trazos de KanjiVG, 150 palabras y la tabla rápida con ficha, audio y animación. Quedan pendientes los colores por dominio (fase 5) y la versión imprimible (fase 8).
 - ✅ Fase 2 lista: 19 lecciones (10 básicas, 5 de dakuten, 4 de combinados). Cada una tiene introducción, ficha por carácter con mnemotecnia, palabras que ya se pueden leer y un repaso final. El avance vive solo en memoria hasta la fase 5. El desbloqueo progresivo y el test de nivel siguen en las fases 6 y 8.
+- ✅ Fase 3 lista: práctica de lectura con 4 tipos de ejercicio (kana → romaji, romaji → kana, escribir romaji y leer palabras), variantes de romanización aceptadas, contrarreloj y resultados con errores. 13 grupos de pares confusos con su clave. Juegos de parejas (romaji, audio) y memoria, con combos y récords. Los récords viven en memoria hasta la fase 5; que los pares confusos aparezcan juntos en los juegos queda para más adelante.
 
 **Hiragana primero:** las fases 1 a 6 se construyen solo con hiragana. El código se escribe desde el principio para cualquier silabario (el campo `script` en los datos), así que katakana entra en la fase 7 casi solo como contenido.
 
