@@ -5,6 +5,7 @@ import { grammarByCourse } from '../courses/content.ts'
 import { counterLessons } from '../courses/ja/counters.ts'
 import { kanjiLessons } from '../courses/ja/kanji.ts'
 import { lessons as kanaLessons } from '../courses/ja/lessons.ts'
+import { vocabLessons, vocabLessonsHira, vocabLessonsKata } from '../courses/ja/vocab.ts'
 import type { ProgressData } from './progress/model.ts'
 import {
   COUNTERS_UNLOCKED_BY,
@@ -12,10 +13,11 @@ import {
   unlockedGrammar,
   unlockedLessons,
   unlockedSequence,
+  unlockedVocab,
 } from './progress/unlock.ts'
 import { units } from './units.ts'
 
-export type PathItemKind = 'kana' | 'grammar' | 'counters' | 'kanji' | 'unit'
+export type PathItemKind = 'kana' | 'grammar' | 'counters' | 'kanji' | 'vocab' | 'unit'
 export type PathItem = { kind: PathItemKind; id: string; title: string; to: string }
 export type PathStop = { id: string; title: string; items: PathItem[] }
 export type PathUnit = { id: string; title: string; icon: string; stops: PathStop[] }
@@ -32,6 +34,8 @@ const item = (kind: PathItemKind, id: string): PathItem => {
       return { kind, id, title: counterLessons.find((l) => l.id === id)!.title, to: `/contadores/${id}` }
     case 'kanji':
       return { kind, id, title: kanjiLessons.find((l) => l.id === id)!.title, to: `/kanji/${id}` }
+    case 'vocab':
+      return { kind, id, title: vocabLessons.find((l) => l.id === id)!.title, to: `/vocabulario/${id}` }
     case 'unit':
       return { kind, id, title: `Repaso: ${units.find((u) => u.id === id)!.title}`, to: `/repaso/unidad/${id}` }
   }
@@ -46,6 +50,14 @@ const stop = (kind: PathItemKind, ids: string[], title?: string): PathStop => {
 const review = (unitId: string) => stop('unit', [unitId], 'Repaso de la unidad')
 const kata = (...ids: string[]) => ids.map((id) => `kata-${id}`)
 const kanji = (...ids: string[]) => ids.map((id) => `kanji-${id}`)
+
+/** Unidad de vocabulario: las lecciones dadas, de a 3 por parada. */
+function vocabUnit(n: number, title: string, lessons: { id: string }[]): PathUnit {
+  const stops: PathStop[] = []
+  for (let i = 0; i < lessons.length; i += 3) stops.push(stop('vocab', lessons.slice(i, i + 3).map((l) => l.id)))
+  return { id: `vocab-${n}`, title, icon: '語', stops }
+}
+const hiraVocab = (from: number, to?: number) => vocabLessonsHira.slice(from, to)
 
 export const japanesePath: PathUnit[] = [
   {
@@ -67,6 +79,7 @@ export const japanesePath: PathUnit[] = [
     icon: 'きゃ',
     stops: [stop('kana', ['yoon-1', 'yoon-2']), stop('kana', ['yoon-3', 'yoon-4']), review('hiragana-yoon')],
   },
+  vocabUnit(1, 'Vocabulario I', hiraVocab(0, 12)),
   {
     id: 'counters-1',
     title: 'Números y contadores I',
@@ -87,6 +100,7 @@ export const japanesePath: PathUnit[] = [
     ],
   },
   { id: 'grammar-2', title: 'Gramática II', icon: '文', stops: [stop('grammar', ['kore', 'mo']), stop('grammar', ['o', 'ni-e'])] },
+  vocabUnit(2, 'Vocabulario II', hiraVocab(12, 24)),
   {
     id: 'kanji-1',
     title: 'Kanji · Números y tiempo',
@@ -121,6 +135,7 @@ export const japanesePath: PathUnit[] = [
     ],
   },
   { id: 'grammar-3', title: 'Gramática III', icon: '文', stops: [stop('grammar', ['de', 'adjetivos']), stop('grammar', ['aru-iru'])] },
+  vocabUnit(3, 'Vocabulario III', hiraVocab(24, 36)),
   {
     id: 'kanji-2',
     title: 'Kanji · Personas y lugares',
@@ -132,11 +147,24 @@ export const japanesePath: PathUnit[] = [
     ],
   },
   {
+    id: 'grammar-4',
+    title: 'Gramática IV · Verbos y partículas',
+    icon: '文',
+    stops: [
+      stop('grammar', ['koko-soko', 'ne-yo']),
+      stop('grammar', ['grupos-verbos', 'ga']),
+      stop('grammar', ['to-ya', 'ni-tiempo']),
+      stop('grammar', ['kara-made', 'mashou']),
+    ],
+  },
+  {
     id: 'katakana-extended',
     title: 'Katakana · Extendidos',
     icon: 'ファ',
     stops: [stop('kana', kata('ext-1', 'ext-2')), stop('kana', kata('ext-3')), review('katakana-extended')],
   },
+  { ...vocabUnit(0, 'Vocabulario en katakana', vocabLessonsKata), id: 'vocab-kata', icon: 'カ' },
+  vocabUnit(4, 'Vocabulario IV', hiraVocab(36, 48)),
   {
     id: 'kanji-3',
     title: 'Kanji · Adjetivos y verbos',
@@ -144,11 +172,41 @@ export const japanesePath: PathUnit[] = [
     stops: [stop('kanji', kanji('adjetivos', 'adjetivos-2')), stop('kanji', kanji('verbos-1', 'verbos-2'))],
   },
   {
+    id: 'grammar-5',
+    title: 'Gramática V · Forma て, ない y た',
+    icon: '文',
+    stops: [
+      stop('grammar', ['tai', 'te-forma']),
+      stop('grammar', ['te-kudasai', 'te-imasu']),
+      stop('grammar', ['te-mo-ii', 'forma-nai']),
+      stop('grammar', ['forma-ta', 'informal']),
+    ],
+  },
+  vocabUnit(5, 'Vocabulario V', hiraVocab(48, 60)),
+  {
     id: 'kanji-4',
     title: 'Kanji · Cuerpo, ciudad y trabajo',
     icon: '手',
     stops: [stop('kanji', kanji('cuerpo', 'cosas')), stop('kanji', kanji('ciudad', 'trabajo'))],
   },
+  {
+    id: 'grammar-6',
+    title: 'Gramática VI · Adjetivos y comparaciones',
+    icon: '文',
+    stops: [
+      stop('grammar', ['adj-pasado', 'adj-te']),
+      stop('grammar', ['naru', 'comparar']),
+      stop('grammar', ['kara-porque', 'preguntas-ka-mo']),
+    ],
+  },
+  vocabUnit(6, 'Vocabulario VI', hiraVocab(60, 72)),
+  {
+    id: 'grammar-7',
+    title: 'Gramática VII · Cerrando el N5',
+    icon: '文',
+    stops: [stop('grammar', ['ni-iku', 'antes-despues']), stop('grammar', ['mou-mada', 'deshou']), stop('grammar', ['no-ga-suki'])],
+  },
+  vocabUnit(7, 'Vocabulario VII', hiraVocab(72)),
 ]
 
 export type ItemStatus = 'done' | 'open' | 'locked'
@@ -170,6 +228,7 @@ export function pathItemStatus(p: ProgressData, everythingOpen: boolean): (i: Pa
     COUNTERS_UNLOCKED_BY,
     all,
   )
+  const voc = unlockedVocab(p.lessons, all)
   const kanj = unlockedSequence(
     kanjiLessons.map((l) => l.id),
     p.lessons,
@@ -186,6 +245,8 @@ export function pathItemStatus(p: ProgressData, everythingOpen: boolean): (i: Pa
         return p.lessons[i.id] ? 'done' : cont.has(i.id) ? 'open' : 'locked'
       case 'kanji':
         return p.lessons[i.id] ? 'done' : kanj.has(i.id) ? 'open' : 'locked'
+      case 'vocab':
+        return p.lessons[i.id] ? 'done' : voc.has(i.id) ? 'open' : 'locked'
       case 'unit': {
         if (p.units[i.id]) return 'done'
         const unit = units.find((u) => u.id === i.id)!

@@ -1,3 +1,4 @@
+import { vocabLessons } from '../courses/ja/vocab'
 import { describe, expect, it } from 'vitest'
 import { grammarByCourse } from '../courses/content'
 import { counterLessons, counters, numbers } from '../courses/ja/counters'
@@ -42,7 +43,7 @@ describe('contadores', () => {
       const exercises = counterLessonExercises(lesson)
       expect(exercises.length, lesson.id).toBeGreaterThanOrEqual(4)
       for (const ex of exercises) {
-        if (ex.type === 'order') continue
+        if (ex.type === 'order' || ex.type === 'type') continue
         expect(ex.options, lesson.id).toContain(ex.answer)
         expect(new Set(ex.options).size).toBe(ex.options.length)
         expect(ex.options.length).toBeGreaterThanOrEqual(3)
@@ -79,7 +80,7 @@ describe('kanji', () => {
     for (const lesson of kanjiLessons) {
       const exercises = kanjiLessonExercises(lesson)
       expect(exercises).toHaveLength(lesson.chars.length * 2)
-      for (const ex of exercises) if (ex.type !== 'order') expect(ex.options).toContain(ex.answer)
+      for (const ex of exercises) if (ex.type === 'choice' || ex.type === 'meaning') expect(ex.options).toContain(ex.answer)
       const writing = kanjiWritingItems(lesson)
       expect(writing.length).toBe(Math.min(4, lesson.chars.length))
       for (const w of writing) expect(kanjiByChar.get(w.kana)!.meaning).toBe(w.prompt)
@@ -98,6 +99,7 @@ describe('recorrido', () => {
       ...grammarByCourse.ja.map((g) => `grammar:${g.id}`),
       ...counterLessons.map((l) => `counters:${l.id}`),
       ...kanjiLessons.map((l) => `kanji:${l.id}`),
+      ...vocabLessons.map((l) => `vocab:${l.id}`),
       ...units.map((u) => `unit:${u.id}`),
     ]
     expect(new Set(ids)).toEqual(new Set(expected))

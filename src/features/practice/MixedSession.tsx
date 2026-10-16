@@ -67,7 +67,11 @@ export function MixedSession({ reading, exercises = [], writing, writingHelp = '
           key={exerciseIndex}
           exercise={current.exercise}
           onDone={(ok) => {
-            if (current.char) useProgress.getState().recordReading(current.char, ok)
+            if (current.char) {
+              const progress = useProgress.getState()
+              if (current.skill === 'write') progress.recordWriting(current.char, ok ? 5 : 1)
+              else progress.recordReading(current.char, ok)
+            }
             const results = [...exerciseResults, ok]
             if (exerciseIndex + 1 < exercises.length) {
               setExerciseResults(results)

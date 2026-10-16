@@ -8,6 +8,8 @@ import { DailyPage } from './features/daily/DailyPage'
 import { ExtraLessonPage } from './features/extra/ExtraLessonPage'
 import { CounterLessonRoute, CountersPage } from './features/study/CountersPages'
 import { KanjiLessonRoute, KanjiPage } from './features/study/KanjiPages'
+import { VocabLessonRoute, VocabPage } from './features/study/VocabPages'
+import { ConjugationPage } from './features/grammar/ConjugationPage'
 import { GamesPage } from './features/games/GamesPage'
 import { GrammarLessonRoute } from './features/grammar/GrammarLessonPage'
 import { GrammarPage } from './features/grammar/GrammarPage'
@@ -38,6 +40,9 @@ export default function App() {
         <Route path="aprender/:lessonId" element={<LessonRoute />} />
         <Route path="test-de-nivel" element={<PlacementPage />} />
         <Route path="gramatica" element={<GrammarPage />} />
+        <Route path="conjugacion" element={<ConjugationPage />} />
+        <Route path="vocabulario" element={<VocabPage />} />
+        <Route path="vocabulario/:lessonId" element={<VocabLessonRoute />} />
         <Route path="contadores" element={<CountersPage />} />
         <Route path="contadores/:lessonId" element={<CounterLessonRoute />} />
         <Route path="kanji" element={<KanjiPage />} />

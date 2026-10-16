@@ -1,4 +1,5 @@
 import { lessons as allLessons, lessonsByScript } from '../../courses/ja/lessons.ts'
+import { VOCAB_KATA_UNLOCKED_BY, VOCAB_UNLOCKED_BY, vocabLessonsHira, vocabLessonsKata } from '../../courses/ja/vocab.ts'
 import { useAccount } from '../account/store.ts'
 import type { LessonResult } from './model.ts'
 import { useProgress } from './store.ts'
@@ -78,4 +79,22 @@ export function useUnlockedSequence(ids: readonly string[], gate: string): Set<s
   const lessons = useProgress((s) => s.lessons)
   const unlockAll = useProgress((s) => s.unlockAll)
   return unlockedSequence(ids, lessons, gate, guest || unlockAll)
+}
+
+const vocabHiraIds = vocabLessonsHira.map((l) => l.id)
+const vocabKataIds = vocabLessonsKata.map((l) => l.id)
+
+/** Vocabulario: las lecciones en hiragana tras el hiragana; las de katakana tras el katakana. Cada una abre la siguiente. */
+export function unlockedVocab(lessons: Record<string, LessonResult>, unlockAll: boolean): Set<string> {
+  return new Set([
+    ...unlockedSequence(vocabHiraIds, lessons, VOCAB_UNLOCKED_BY, unlockAll),
+    ...unlockedSequence(vocabKataIds, lessons, VOCAB_KATA_UNLOCKED_BY, unlockAll),
+  ])
+}
+
+export function useUnlockedVocab(): Set<string> {
+  const guest = useAccount((s) => s.status !== 'user')
+  const lessons = useProgress((s) => s.lessons)
+  const unlockAll = useProgress((s) => s.unlockAll)
+  return unlockedVocab(lessons, guest || unlockAll)
 }

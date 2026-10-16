@@ -7,7 +7,9 @@ import { type Question, romajiOptions } from './quiz.ts'
 import { shuffle } from './random.ts'
 import { syllables } from './romaji.ts'
 import { kanjiReviewExercise, kanjiWritingItem, type TaggedExercise } from './studyExercises.ts'
+import { wordCardChar, wordReviewExercise } from './vocabExercises.ts'
 import { wordsReadableWith } from './words.ts'
+import { vocab } from '../courses/ja/vocab.ts'
 import type { WritingItem } from './writing.ts'
 
 /** Unidad: un bloque de lecciones (p. ej. «Hiragana · Básicos») con su repaso al final. */
@@ -59,7 +61,7 @@ export function buildUnitReview(unit: Unit, random = Math.random): SessionPlan {
 }
 
 /** Puntos débiles: lo que más falla en lectura y en escritura, en kana y en kanji. */
-export function weakItems(p: ProgressData): { read: Kana[]; write: Kana[]; kanjiRead: string[]; kanjiWrite: string[] } {
+export function weakItems(p: ProgressData): { read: Kana[]; write: Kana[]; kanjiRead: string[]; kanjiWrite: string[]; words: string[] } {
   const accuracy = (char: string) => {
     const s = p.kana[char]
     return s && s.readTotal > 0 ? s.readOk / s.readTotal : 1
@@ -91,6 +93,7 @@ export function weakItems(p: ProgressData): { read: Kana[]; write: Kana[]; kanji
     write: weakWrite(kanaChars, 4).map((c) => kanaByChar.get(c)!),
     kanjiRead: weakRead(kanjiChars, 6),
     kanjiWrite: weakWrite(kanjiChars, 2),
+    words: weakRead(vocab.map(wordCardChar), 6),
   }
 }
 
@@ -99,7 +102,7 @@ export function weakItems(p: ProgressData): { read: Kana[]; write: Kana[]; kanji
  * romaji), los kanji débiles como ejercicios y la escritura floja.
  */
 export function buildWeakReview(p: ProgressData, random = Math.random): SessionPlan {
-  const { read, write, kanjiRead, kanjiWrite } = weakItems(p)
+  const { read, write, kanjiRead, kanjiWrite, words } = weakItems(p)
   const reading = shuffle(
     read.flatMap((kana): Question[] => {
       const pool = allKana.filter((k) => k.script === kana.script && k.group === kana.group)
@@ -112,7 +115,7 @@ export function buildWeakReview(p: ProgressData, random = Math.random): SessionP
   )
   return {
     reading,
-    exercises: kanjiRead.map((c) => kanjiReviewExercise(c, random)),
+    exercises: [...kanjiRead.map((c) => kanjiReviewExercise(c, random)), ...words.map((c) => wordReviewExercise(c, 'read', random))],
     writing: [...write.map(writingItem), ...kanjiWrite.map(kanjiWritingItem)],
   }
 }

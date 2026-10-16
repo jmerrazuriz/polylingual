@@ -134,8 +134,11 @@ export function kanjiWritingItems(lesson: KanjiLesson, random = Math.random): Wr
     })
 }
 
-/** Ejercicio con el carácter al que pertenece: al responderlo se reprograma su tarjeta SRS. */
-export type TaggedExercise = { char?: string; exercise: GrammarExercise }
+/**
+ * Ejercicio con el carácter al que pertenece: al responderlo se reprograma su tarjeta SRS
+ * de lectura, o la de escritura si `skill` es 'write' (escribir una palabra en kana).
+ */
+export type TaggedExercise = { char?: string; skill?: 'read' | 'write'; exercise: GrammarExercise }
 
 /** Repaso de un kanji: su significado o la lectura de una de sus palabras de ejemplo. */
 export function kanjiReviewExercise(char: string, random = Math.random): TaggedExercise {

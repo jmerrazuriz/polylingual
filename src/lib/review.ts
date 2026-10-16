@@ -4,18 +4,20 @@ import type { Kana } from '../courses/ja/types.ts'
 import { dueCards, endOfDay, parseCardId, type SrsCard } from './progress/srs.ts'
 import { type Question, romajiOptions } from './quiz.ts'
 import { kanjiReviewExercise, kanjiWritingItem, type TaggedExercise } from './studyExercises.ts'
+import { wordFromCard, wordReviewExercise } from './vocabExercises.ts'
 import type { WritingItem } from './writing.ts'
 
 export const REVIEW_LIMIT = 20
 
 /**
  * Plan de una sesión de repaso: preguntas de lectura de kana, ejercicios de
- * kanji (significado o lectura) y escritura (kana o kanji).
+ * kanji (significado o lectura) y de palabras (significado o escribirla en kana),
+ * y escritura a mano (kana o kanji).
  */
 export type ReviewPlan = { reading: Question[]; exercises: TaggedExercise[]; writing: WritingItem[] }
 
-/** Caracteres que tienen tarjetas de repaso: kana y kanji. */
-export const isReviewable = (char: string) => kanaByChar.has(char) || kanjiByChar.has(char)
+/** Caracteres que tienen tarjetas de repaso: kana, kanji y palabras («w-<id>»). */
+export const isReviewable = (char: string) => kanaByChar.has(char) || kanjiByChar.has(char) || !!wordFromCard(char)
 
 /**
  * Repasos pendientes: las tarjetas ya vencidas, las más atrasadas primero. Las que
@@ -43,12 +45,13 @@ export function buildReview(cards: Record<string, SrsCard>, now: number, random 
         : { type: 'type-romaji', kana }
     })
 
-  const exercises = due
-    .filter((c) => c.skill === 'read' && kanjiByChar.has(c.char))
-    .map(({ char }) => kanjiReviewExercise(char, random))
+  const exercises = due.flatMap(({ char, skill }): TaggedExercise[] => {
+    if (wordFromCard(char)) return [wordReviewExercise(char, skill, random)]
+    return skill === 'read' && kanjiByChar.has(char) ? [kanjiReviewExercise(char, random)] : []
+  })
 
   const writing = due
-    .filter((c) => c.skill === 'write')
+    .filter((c) => c.skill === 'write' && !wordFromCard(c.char))
     .map(({ char }): WritingItem => {
       const kana = kanaByChar.get(char)
       return kana ? { prompt: kana.romaji, kana: kana.char, parts: kana.parts } : kanjiWritingItem(char)

@@ -347,6 +347,28 @@ app_idiomas/
   - Quien ya había completado lecciones de kanji recibe sus tarjetas automáticamente al abrir la app.
   - El panel de progreso muestra los kanji (lecciones, dominados y en repaso) y los incluye en «los que más te cuestan».
   - **Pendiente:** nivel N4.
+### Etapa A: completar el N5 (ver ANALISIS_N3.md)
+- ✅ **Entrada en kana (`src/lib/kanaInput.ts`, `KanaInput`):**
+  - Se escribe en romaji y se convierte en hiragana al escribir, como un teclado japonés (nn/n' = ん, consonante doble = っ, «-» = ー). También acepta el teclado japonés.
+  - Al corregir, hiragana y katakana dan igual, y ー también vale escrito como vocal.
+- ✅ **Motor de conjugación (`src/lib/conjugation.ts`):**
+  - Verbos de los grupos 1 y 2 e irregulares (する, くる y compuestos), en 18 formas: las N5 (ます, ません, ました, ませんでした, ましょう, ない, た, なかった, て, たい) y las N4 (potencial, volitiva, imperativa, ば, たら, pasiva, causativa).
+  - Adjetivos い (incluido いい → よかった) y な.
+  - Excepciones cubiertas: いく → いって, ある → ない.
+- ✅ **Vocabulario N5 (`src/courses/ja/vocab.ts`):**
+  - 903 palabras, juntando las 250 de antes con el vocabulario N5, cada una con clase gramatical y grupo en los verbos. Son 141 verbos, 65 adjetivos い y 33 な.
+  - Se reparten en 86 lecciones en hiragana (se abren tras los combinados) y 11 en katakana (se abren tras los extendidos). Los temas van intercalados.
+  - Pestaña **Vocabulario** (`/vocabulario`) con fichas de 5 palabras (audio, romaji, clase, forma ます).
+- ✅ **SRS de palabras:**
+  - Cada palabra tiene tarjetas `w-<id>`: leer (reconocer el significado o elegir la palabra) y escribir (escribirla en kana).
+  - Entran a `/repasar`, la lección del día, los puntos débiles y la lección extra.
+- ✅ **Práctica de conjugación (`/conjugacion`):** se eligen las formas (N5 y N4) y los tipos de palabra, y se escribe cada forma en kana. Al corregir se explica la regla aplicada. Por defecto usa solo las palabras de las lecciones ya hechas.
+- ✅ **Gramática N5 completa:**
+  - 27 lecciones nuevas, 38 en total: ここ/そこ, ね/よ, grupos de verbos, が, と/や, に (tiempo), から/まで, ましょう, たい/ほしい, forma て, てください, ています, てもいい/てはいけません, forma ない, forma た y たことがある, habla informal, adjetivos en pasado y con くて/で, なる, comparaciones, から (porque)/が (pero), なにか/なにも, 〜にいく, まえに/てから/あとで, もう/まだ, でしょう y のがすき.
+  - Nuevo tipo de ejercicio **«type»**: escribir la respuesta. En japonés se escribe en kana.
+- ✅ **Recorrido:** 27 unidades y 95 paradas. Las unidades de vocabulario y de gramática IV–VII se intercalan con kana, contadores y kanji. La lección del día también puede proponer vocabulario.
+- **Pendiente para cerrar la etapa A:** 20 lecturas cortas, 20 diálogos con preguntas y un simulacro N5.
+- **Riesgo:** todas las tarjetas viven en un solo documento de Firestore (máximo 1 MB). Con ~900 palabras van unas 2.600 tarjetas, lo que todavía cabe. Antes de la etapa B (~1.500 palabras) hay que pasar las tarjetas a una subcolección o compactarlas.
 - **Para agregar un idioma:** crear `src/courses/<id>/` con su contenido, registrar la gramática en `src/courses/content.ts`, cambiar su `status` a `available` y darle sus secciones. Las lecciones de vocabulario para idiomas sin silabario propio son lo siguiente a diseñar. Quedan como ideas para después (sección 9): tarjetas SRS de palabras, temas de palabras en los juegos, pares confusos juntos en los juegos, kanji, frases con furigana y evaluación de pronunciación.
 
 **Hiragana primero:** las fases 1 a 6 se construyen solo con hiragana. El código se escribe desde el principio para cualquier silabario (el campo `script` en los datos), así que katakana entra en la fase 7 casi solo como contenido.

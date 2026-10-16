@@ -5,6 +5,7 @@ import { grammarByCourse } from '../../courses/content'
 import { kanaByChar } from '../../courses/ja/kana'
 import { counterLessons } from '../../courses/ja/counters'
 import { kanjiLessons } from '../../courses/ja/kanji'
+import { vocabLessons } from '../../courses/ja/vocab'
 import { lessons } from '../../courses/ja/lessons'
 import { useAccount } from '../../lib/account/store'
 import { DAILY_REVIEW_LIMIT, type DailyStep, dailyStepInfo, isDailyComplete, planDaily } from '../../lib/daily'
@@ -21,11 +22,12 @@ import { GrammarLessonView } from '../grammar/GrammarLessonPage'
 import { LessonPage } from '../learn/LessonPage'
 import { CounterLessonView } from '../study/CountersPages'
 import { KanjiLessonView } from '../study/KanjiPages'
+import { VocabLessonView } from '../study/VocabPages'
 import { MixedSession } from '../practice/MixedSession'
 
 /** Título de la lección nueva del día, sea de kana, contadores o kanji. */
 const lessonTitle = (id?: string) =>
-  [...lessons, ...counterLessons, ...kanjiLessons].find((l) => l.id === id)?.title
+  [...lessons, ...counterLessons, ...kanjiLessons, ...vocabLessons].find((l) => l.id === id)?.title
 
 /** Parejas del mini juego diario: 6, al azar entre lo ya aprendido. */
 const GAME_PAIRS = 6
@@ -195,12 +197,14 @@ function DailyStepRunner({ step, lessonId, grammarId, onDone, onExit }: RunnerPr
     const kana = lessons.find((l) => l.id === lessonId)
     const counter = counterLessons.find((l) => l.id === lessonId)
     const kanji = kanjiLessons.find((l) => l.id === lessonId)
+    const vocab = vocabLessons.find((l) => l.id === lessonId)
     return (
       <div className="flex flex-col gap-3">
         {back}
         {kana && <LessonPage lesson={kana} onFinish={onDone} />}
         {counter && <CounterLessonView lesson={counter} onFinish={onDone} />}
         {kanji && <KanjiLessonView lesson={kanji} onFinish={onDone} />}
+        {vocab && <VocabLessonView lesson={vocab} onFinish={onDone} />}
       </div>
     )
   }

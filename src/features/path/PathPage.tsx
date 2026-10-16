@@ -15,7 +15,7 @@ const stopStyle: Record<StopStatus, string> = {
   locked: 'bg-slate-200 text-slate-400 border-slate-300 dark:bg-slate-800 dark:border-slate-700',
 }
 
-const kindIcon = { kana: 'あ', grammar: '文', counters: '数', kanji: '字', unit: '🧩' } as const
+const kindIcon = { kana: 'あ', grammar: '文', counters: '数', kanji: '字', vocab: '語', unit: '🧩' } as const
 
 export function PathPage() {
   // Se vuelve a calcular cuando cambia cualquier progreso relevante.

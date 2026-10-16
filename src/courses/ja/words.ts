@@ -80,7 +80,7 @@ export const hiraganaWords: Word[] = [
   { kana: 'き', meaning: 'árbol', theme: 'naturaleza' },
   { kana: 'つき', meaning: 'luna', theme: 'naturaleza' },
   { kana: 'ほし', meaning: 'estrella', theme: 'naturaleza' },
-  { kana: 'かぜ', meaning: 'viento', theme: 'naturaleza' },
+  { kana: 'かぜ', meaning: 'viento; resfriado', theme: 'naturaleza' },
   { kana: 'いし', meaning: 'piedra', theme: 'naturaleza' },
   { kana: 'もり', meaning: 'bosque', theme: 'naturaleza' },
   { kana: 'しま', meaning: 'isla', theme: 'naturaleza' },

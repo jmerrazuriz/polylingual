@@ -1,5 +1,7 @@
 import { useState } from 'react'
+import { KanaInput } from '../../components/KanaInput'
 import type { GrammarExercise } from '../../courses/grammar'
+import { finishKana, matchesKana } from '../../lib/kanaInput'
 import { useSpeech } from '../../lib/audio/useSpeech'
 import { shuffle } from '../../lib/random'
 
@@ -26,6 +28,7 @@ export function GrammarExerciseView({ exercise, onDone }: Props) {
       {exercise.type === 'choice' && <Choice exercise={exercise} result={result} onAnswer={(ok) => check(ok, exercise.prompt.replace('＿', exercise.answer))} />}
       {exercise.type === 'meaning' && <Meaning exercise={exercise} result={result} onAnswer={(ok) => check(ok, exercise.text)} />}
       {exercise.type === 'order' && <Order exercise={exercise} result={result} onAnswer={(ok) => check(ok, exercise.answer.join(' '))} />}
+      {exercise.type === 'type' && <Type exercise={exercise} result={result} onAnswer={(ok) => check(ok, exercise.answers[0])} />}
 
       {result !== null && (
         <div
@@ -38,7 +41,7 @@ export function GrammarExerciseView({ exercise, onDone }: Props) {
         >
           <p className="font-extrabold">{result ? '✓ ¡Correcto!' : '✗ No es correcto'}</p>
           {!result && <p>La respuesta es: <Answer exercise={exercise} /></p>}
-          {exercise.type === 'choice' && exercise.explanation && <p>💡 {exercise.explanation}</p>}
+          {(exercise.type === 'choice' || exercise.type === 'type') && exercise.explanation && <p>💡 {exercise.explanation}</p>}
         </div>
       )}
 
@@ -52,7 +55,7 @@ export function GrammarExerciseView({ exercise, onDone }: Props) {
 }
 
 function Answer({ exercise }: { exercise: GrammarExercise }) {
-  const text = exercise.type === 'order' ? exercise.answer.join(' ') : exercise.answer
+  const text = exercise.type === 'order' ? exercise.answer.join(' ') : exercise.type === 'type' ? exercise.answers[0] : exercise.answer
   return <span className={`font-bold ${jpClass(text)}`}>{text}</span>
 }
 
@@ -192,6 +195,54 @@ function Order({ exercise, result, onAnswer }: { exercise: Extract<GrammarExerci
           Comprobar
         </button>
       )}
+    </>
+  )
+}
+
+const normalizeText = (text: string) => text.trim().toLowerCase().replace(/\s+/g, ' ')
+
+/** Escribir la respuesta (en kana: el romaji se convierte al escribir). */
+function Type({ exercise, result, onAnswer }: { exercise: Extract<GrammarExercise, { type: 'type' }>; result: boolean | null; onAnswer: (ok: boolean) => void }) {
+  const [value, setValue] = useState('')
+  const done = result !== null
+  const submit = () => {
+    if (!value.trim() || done) return
+    // La «n» final que quedó en romaji se muestra como ん al corregir.
+    if (exercise.kana) setValue(finishKana(value))
+    onAnswer(
+      exercise.kana ? matchesKana(value, exercise.answers) : exercise.answers.some((a) => normalizeText(a) === normalizeText(value)),
+    )
+  }
+  return (
+    <>
+      <p className="text-sm font-bold text-slate-500 uppercase">Escribe la respuesta</p>
+      <p className={`text-2xl font-bold ${jpClass(exercise.prompt)}`}>{exercise.prompt}</p>
+      {exercise.hint && <p className="text-slate-500">{exercise.hint}</p>}
+      <form
+        onSubmit={(e) => {
+          e.preventDefault()
+          submit()
+        }}
+        className="flex flex-col gap-3"
+      >
+        {exercise.kana ? (
+          <KanaInput value={value} onChange={setValue} disabled={done} state={done ? (result ? 'right' : 'wrong') : 'idle'} />
+        ) : (
+          <input
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+            disabled={done}
+            autoFocus
+            autoComplete="off"
+            className="rounded-2xl border-2 border-slate-200 bg-white px-4 py-3 text-xl dark:border-slate-800 dark:bg-slate-900"
+          />
+        )}
+        {!done && (
+          <button type="submit" disabled={!value.trim()} className="self-center rounded-full bg-ink px-8 py-3 font-bold text-white disabled:opacity-40">
+            Comprobar
+          </button>
+        )}
+      </form>
     </>
   )
 }

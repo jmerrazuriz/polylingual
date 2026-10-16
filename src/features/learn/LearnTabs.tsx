@@ -1,12 +1,14 @@
 import { Link } from 'react-router'
 
-export type LearnTab = 'recorrido' | 'hiragana' | 'katakana' | 'gramatica' | 'contadores' | 'kanji'
+export type LearnTab = 'recorrido' | 'hiragana' | 'katakana' | 'vocabulario' | 'gramatica' | 'conjugacion' | 'contadores' | 'kanji'
 
 const tabs: { tab: LearnTab; label: string; to: string }[] = [
   { tab: 'recorrido', label: 'Recorrido', to: '/aprender' },
   { tab: 'hiragana', label: 'Hiragana', to: '/aprender?silabario=hiragana' },
   { tab: 'katakana', label: 'Katakana', to: '/aprender?silabario=katakana' },
+  { tab: 'vocabulario', label: 'Vocabulario', to: '/vocabulario' },
   { tab: 'gramatica', label: 'Gramática', to: '/gramatica' },
+  { tab: 'conjugacion', label: 'Conjugación', to: '/conjugacion' },
   { tab: 'contadores', label: 'Contadores', to: '/contadores' },
   { tab: 'kanji', label: 'Kanji', to: '/kanji' },
 ]

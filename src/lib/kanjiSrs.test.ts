@@ -33,7 +33,7 @@ describe('repasos SRS de kanji', () => {
     expect(plan.exercises).toHaveLength(1)
     expect(plan.exercises[0].char).toBe('山')
     const ex = plan.exercises[0].exercise
-    if (ex.type === 'order') throw new Error('tipo inesperado')
+    if (ex.type === 'order' || ex.type === 'type') throw new Error('tipo inesperado')
     expect(ex.options).toContain(ex.answer)
     expect(plan.writing).toEqual([{ prompt: 'montaña', kana: '山', parts: ['山'] }])
     expect(dueNowCount(cards, t0 + 1000)).toBe(3)

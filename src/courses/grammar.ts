@@ -15,6 +15,8 @@ export type GrammarExercise =
   | { type: 'meaning'; text: string; options: string[]; answer: string }
   /** Ordenar las palabras para formar la frase. */
   | { type: 'order'; meaning: string; answer: string[] }
+  /** Escribir la respuesta. Con `kana`, el romaji se convierte en kana al escribir (japonés). */
+  | { type: 'type'; prompt: string; hint?: string; answers: string[]; kana?: boolean; explanation?: string }
 
 export type GrammarLesson = {
   id: string

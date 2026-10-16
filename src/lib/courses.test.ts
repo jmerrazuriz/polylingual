@@ -15,7 +15,7 @@ const t0 = new Date(2026, 9, 16, 10, 0).getTime()
 const JP = /[぀-ヿ]/
 
 /** Quita espacios y puntuación para comprobar que el texto solo usa kana conocidos. */
-const kanaOnly = (text: string) => text.replace(/[\s、。？＿]/g, '')
+const kanaOnly = (text: string) => text.replace(/[\s、。？＿→]/g, '')
 
 describe('cursos', () => {
   it('el japonés está disponible y el resto llega pronto', () => {
@@ -84,7 +84,7 @@ describe('gramática de japonés', () => {
   it('la respuesta de cada ejercicio de opción está entre las opciones y no se repiten', () => {
     for (const l of japaneseGrammar) {
       for (const ex of l.exercises) {
-        if (ex.type === 'order') continue
+        if (ex.type === 'order' || ex.type === 'type') continue
         expect(ex.options, `${l.id}: ${ex.answer}`).toContain(ex.answer)
         expect(new Set(ex.options).size).toBe(ex.options.length)
         if (ex.type === 'choice' && JP.test(ex.prompt) && ex.prompt.includes('＿')) expect(ex.prompt.split('＿')).toHaveLength(2)
@@ -96,7 +96,13 @@ describe('gramática de japonés', () => {
     const texts = japaneseGrammar.flatMap((l) => [
       ...l.examples.map((e) => e.text),
       ...l.exercises.flatMap((ex) =>
-        ex.type === 'order' ? ex.answer : ex.type === 'meaning' ? [ex.text] : [ex.prompt, ...ex.options].filter((t) => JP.test(t)),
+        ex.type === 'order'
+          ? ex.answer
+          : ex.type === 'meaning'
+            ? [ex.text]
+            : ex.type === 'type'
+              ? [ex.prompt, ...ex.answers].filter((t) => JP.test(t))
+              : [ex.prompt, ...ex.options].filter((t) => JP.test(t)),
       ),
     ])
     // Las consignas en español que citan una partícula («¿Cómo se pronuncia は…?») no cuentan.
