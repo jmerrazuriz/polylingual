@@ -27,6 +27,8 @@ export type ChartSection = {
 
 export type Kana = KanaInfo & {
   id: string
+  /** Ayuda visual para recordar la forma (solo en los básicos). */
+  mnemonic?: string
   char: string
   script: Script
   group: KanaGroup

@@ -1,4 +1,4 @@
-import { hiraganaChart, hiraganaInfo } from './hiragana.ts'
+import { hiraganaChart, hiraganaInfo, hiraganaMnemonics } from './hiragana.ts'
 import hiraganaStrokes from './strokes/hiragana.json'
 import type { Kana, StrokeData } from './types.ts'
 
@@ -11,6 +11,7 @@ export const hiragana: Kana[] = hiraganaChart.flatMap((section) =>
       .filter((char): char is string => char !== null)
       .map((char) => ({
         ...hiraganaInfo[char],
+        mnemonic: hiraganaMnemonics[char],
         id: `hira_${hiraganaInfo[char].romaji}${char === 'ぢ' || char === 'づ' ? '_d' : ''}`,
         char,
         script: 'hiragana' as const,
