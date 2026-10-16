@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { Link, NavLink, Outlet, useLocation } from 'react-router'
 import { useAccount } from '../lib/account/store'
+import { useApplySettings } from '../lib/settings/useApplySettings'
+import { useToasts } from '../lib/toasts'
 
 const sections = [
   { to: '/', label: 'Inicio', glyph: '家' },
@@ -18,9 +20,16 @@ const linkClass = ({ isActive }: { isActive: boolean }) =>
   }`
 
 export function Layout() {
+  useApplySettings()
   return (
     <div className="flex min-h-dvh flex-col">
-      <header className="sticky top-0 z-10 border-b border-slate-200 bg-white/90 backdrop-blur dark:border-slate-800 dark:bg-slate-900/90">
+      <a
+        href="#contenido"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:rounded-lg focus:bg-ink focus:px-4 focus:py-2 focus:text-white"
+      >
+        Saltar al contenido
+      </a>
+      <header className="sticky top-0 z-10 print:hidden border-b border-slate-200 bg-white/90 backdrop-blur dark:border-slate-800 dark:bg-slate-900/90">
         <div className="mx-auto flex h-14 max-w-5xl items-center justify-between px-4">
           <Link to="/" className="flex items-center gap-2 text-lg font-extrabold text-ink dark:text-white">
             <img src="/favicon.svg" alt="" className="h-8 w-8" />
@@ -38,11 +47,13 @@ export function Layout() {
       </header>
       <GuestBanner />
 
-      <main className="mx-auto w-full max-w-5xl flex-1 px-4 pt-6 pb-24 md:pb-10">
+      <main id="contenido" className="mx-auto w-full max-w-5xl flex-1 px-4 pt-6 pb-24 md:pb-10 print:p-0">
         <Outlet />
       </main>
 
-      <nav className="fixed inset-x-0 bottom-0 z-10 flex justify-around border-t border-slate-200 bg-white pb-[env(safe-area-inset-bottom)] dark:border-slate-800 dark:bg-slate-900 md:hidden">
+      <Toaster />
+
+      <nav aria-label="Secciones" className="fixed inset-x-0 bottom-0 z-10 flex print:hidden justify-around border-t border-slate-200 bg-white pb-[env(safe-area-inset-bottom)] dark:border-slate-800 dark:bg-slate-900 md:hidden">
         {sections.map((s) => (
           <NavLink key={s.to} to={s.to} end={s.to === '/'} className={linkClass}>
             <span className="font-jp text-lg leading-none">{s.glyph}</span>
@@ -68,14 +79,22 @@ function AccountButton() {
     )
   }
   return (
-    <NavLink
-      to="/entrar"
-      className={`rounded-full border border-slate-300 px-3 py-1 text-sm font-semibold hover:bg-slate-100 dark:border-slate-700 dark:hover:bg-slate-800 ${
-        status === 'loading' ? 'invisible' : ''
-      }`}
-    >
-      Entrar
-    </NavLink>
+    <div className={`flex items-center gap-1 ${status === 'loading' ? 'invisible' : ''}`}>
+      <NavLink
+        to="/perfil"
+        aria-label="Ajustes"
+        title="Ajustes"
+        className="rounded-full px-2 py-1 text-lg hover:bg-slate-100 dark:hover:bg-slate-800"
+      >
+        ⚙️
+      </NavLink>
+      <NavLink
+        to="/entrar"
+        className="rounded-full border border-slate-300 px-3 py-1 text-sm font-semibold hover:bg-slate-100 dark:border-slate-700 dark:hover:bg-slate-800"
+      >
+        Entrar
+      </NavLink>
+    </div>
   )
 }
 
@@ -87,7 +106,7 @@ function GuestBanner() {
   if (status !== 'guest' || hidden || pathname === '/entrar') return null
 
   return (
-    <div className="border-b border-amber-200 bg-amber-50 text-sm text-amber-900 dark:border-amber-900/50 dark:bg-amber-950/40 dark:text-amber-200">
+    <div className="border-b border-amber-200 bg-amber-50 print:hidden text-sm text-amber-900 dark:border-amber-900/50 dark:bg-amber-950/40 dark:text-amber-200">
       <div className="mx-auto flex max-w-5xl items-center gap-3 px-4 py-2">
         <p className="flex-1">
           Estás como invitado: tu progreso no se guardará.{' '}
@@ -99,6 +118,31 @@ function GuestBanner() {
           ×
         </button>
       </div>
+    </div>
+  )
+}
+
+/** Avisos breves (logros nuevos), anunciados también a los lectores de pantalla. */
+function Toaster() {
+  const toasts = useToasts((s) => s.toasts)
+  const dismiss = useToasts((s) => s.dismiss)
+  return (
+    <div aria-live="polite" className="pointer-events-none fixed inset-x-0 bottom-20 z-20 flex flex-col items-center gap-2 px-4 md:bottom-6 print:hidden">
+      {toasts.map((t) => (
+        <button
+          key={t.id}
+          onClick={() => dismiss(t.id)}
+          className="pointer-events-auto flex w-full max-w-sm items-center gap-3 rounded-2xl bg-ink p-3 text-left text-white shadow-lg"
+        >
+          <span className="text-3xl" aria-hidden>
+            {t.icon}
+          </span>
+          <span>
+            <span className="block font-extrabold">{t.title}</span>
+            <span className="text-sm opacity-90">{t.text}</span>
+          </span>
+        </button>
+      ))}
     </div>
   )
 }

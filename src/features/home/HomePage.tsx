@@ -3,6 +3,8 @@ import { lessons as allLessons } from '../../content/lessons'
 import { nextDue } from '../../lib/progress/srs'
 import { useProgress } from '../../lib/progress/store'
 import { useUnlockedLessons } from '../../lib/progress/unlock'
+import { currentStreak, dayKey } from '../../lib/progress/model'
+import { GoalBar } from '../progress/ProgressPage'
 import { describeDue, dueNowCount } from '../../lib/review'
 import { now } from '../../lib/time'
 
@@ -28,6 +30,7 @@ export function HomePage() {
         </p>
       </section>
 
+      <DailyStrip />
       <TodayCard />
 
       <section className="grid grid-cols-1 gap-3 sm:grid-cols-2">
@@ -96,5 +99,34 @@ function TodayCard() {
         </Link>
       )}
     </div>
+  )
+}
+
+/** Racha y objetivo de hoy, con enlace al panel de progreso. */
+function DailyStrip() {
+  const activity = useProgress((s) => s.activity)
+  const goal = useProgress((s) => s.settings.dailyGoal)
+  const t = now()
+  const today = activity[dayKey(t)] ?? 0
+  const streak = currentStreak(activity, t)
+
+  return (
+    <Link
+      to="/progreso"
+      className="-mb-6 flex items-center gap-4 rounded-2xl border border-slate-200 bg-white px-4 py-3 transition hover:shadow-md dark:border-slate-800 dark:bg-slate-900"
+    >
+      <span className="text-lg font-extrabold whitespace-nowrap">
+        🔥 {streak} {streak === 1 ? 'día' : 'días'}
+      </span>
+      <span className="flex-1">
+        <span className="text-sm text-slate-500 dark:text-slate-400">
+          Hoy: {Math.floor(today)}/{goal} respuestas{today >= goal ? ' · ¡objetivo cumplido!' : ''}
+        </span>
+        <GoalBar value={today} goal={goal} />
+      </span>
+      <span className="text-slate-400" aria-hidden>
+        →
+      </span>
+    </Link>
   )
 }

@@ -4,6 +4,10 @@ import { BrowserRouter } from 'react-router'
 import './index.css'
 import App from './App.tsx'
 
+import { watchAchievements } from './lib/progress/watchAchievements.ts'
+
+watchAchievements()
+
 // Firebase se carga aparte para que la primera pantalla aparezca antes.
 import('./lib/account/service.ts').then((m) => m.startAccount())
 

@@ -29,7 +29,9 @@ export function KanaCard({ kana, words, showAnswer = true, onReveal }: Props) {
       <div className="flex items-center justify-between gap-3">
         <div>
           <div className="flex items-baseline gap-3">
-            <span className="font-jp text-5xl font-bold">{kana.char}</span>
+            <span lang="ja" className="font-jp text-5xl font-bold">
+              {kana.char}
+            </span>
             {showAnswer ? (
               <span className="text-3xl font-extrabold text-accent">{kana.romaji}</span>
             ) : (

@@ -302,6 +302,14 @@ app_idiomas/
   - **Pares confusos:** 10 grupos de katakana (シ/ツ, ソ/ン…).
   - **Tabla:** selector Hiragana / Katakana / Ambos y pestaña de extendidos. La ficha muestra la pareja en el otro silabario.
   - **Juego:** hiragana ↔ katakana.
+- ✅ Fase 8 lista:
+  - **Motivación:** racha diaria (con mejor racha), objetivo diario de 10, 20 o 40 respuestas, 15 logros con aviso al obtenerlos y panel `/progreso` (calendario de 12 semanas, estadísticas por silabario, los caracteres que más cuestan y logros).
+  - **Test de nivel:** en `/test-de-nivel`, por silabario, marca como completadas las lecciones que ya se dominan.
+  - **Ajustes** (también para invitados): tema claro, oscuro o del sistema; letra grande; audio y velocidad de la voz.
+  - **Accesibilidad:** enlace «Saltar al contenido», foco visible, `lang="ja"` en los kana y avisos con `aria-live`.
+  - **Impresión:** la tabla imprime todos los grupos del silabario elegido en A4.
+
+**Las 8 fases de la v1 están completas.** Quedan como ideas para después (sección 9): tarjetas SRS de palabras, temas de palabras en los juegos, pares confusos juntos en los juegos, kanji, frases con furigana y evaluación de pronunciación.
 
 **Hiragana primero:** las fases 1 a 6 se construyen solo con hiragana. El código se escribe desde el principio para cualquier silabario (el campo `script` en los datos), así que katakana entra en la fase 7 casi solo como contenido.
 

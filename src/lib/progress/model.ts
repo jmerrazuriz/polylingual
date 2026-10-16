@@ -17,9 +17,43 @@ export type ProgressData = {
   cards: Record<string, SrsCard>
   /** El usuario eligió desbloquear todas las lecciones. */
   unlockAll: boolean
+  /** Respuestas por día local ("2026-10-16": 23), para la racha y el objetivo diario. */
+  activity: Record<string, number>
+  /** Logros obtenidos y cuándo (ms). */
+  achievements: Record<string, number>
+  settings: Settings
 }
 
-export const emptyProgress = (): ProgressData => ({ lessons: {}, records: {}, kana: {}, cards: {}, unlockAll: false })
+export type Settings = {
+  /** Respuestas por día para cumplir el objetivo. */
+  dailyGoal: number
+  theme: 'system' | 'light' | 'dark'
+  fontScale: 'normal' | 'large'
+  audio: boolean
+  /** Velocidad de la voz (0.6 lenta – 1 normal). */
+  speechRate: number
+}
+
+export const DAILY_GOALS = [10, 20, 40] as const
+
+export const defaultSettings = (): Settings => ({
+  dailyGoal: 20,
+  theme: 'system',
+  fontScale: 'normal',
+  audio: true,
+  speechRate: 0.8,
+})
+
+export const emptyProgress = (): ProgressData => ({
+  lessons: {},
+  records: {},
+  kana: {},
+  cards: {},
+  unlockAll: false,
+  activity: {},
+  achievements: {},
+  settings: defaultSettings(),
+})
 
 export const emptyStat = (): KanaStat => ({ readOk: 0, readTotal: 0, writeScore: 0, writeCount: 0 })
 
@@ -64,7 +98,14 @@ export function mergeProgress(a: ProgressData, b: ProgressData): ProgressData {
     if (!prev || (card.last_review ?? 0) > (prev.last_review ?? 0)) cards[id] = card
   }
 
-  return { lessons, records, kana, cards, unlockAll: a.unlockAll || b.unlockAll }
+  const activity = { ...a.activity }
+  for (const [day, n] of Object.entries(b.activity)) activity[day] = (activity[day] ?? 0) + n
+
+  const achievements = { ...a.achievements }
+  for (const [id, t] of Object.entries(b.achievements)) achievements[id] = Math.min(achievements[id] ?? t, t)
+
+  // Los ajustes de la cuenta mandan sobre los de la visita como invitado.
+  return { lessons, records, kana, cards, unlockAll: a.unlockAll || b.unlockAll, activity, achievements, settings: a.settings }
 }
 
 const num = (v: unknown) => (typeof v === 'number' && Number.isFinite(v) ? v : 0)
@@ -105,6 +146,17 @@ export function parseProgress(raw: unknown): ProgressData {
     }
   }
   progress.unlockAll = data.unlockAll === true
+  for (const [day, n] of Object.entries(obj(data.activity))) if (/^\d{4}-\d{2}-\d{2}$/.test(day) && num(n) > 0) progress.activity[day] = num(n)
+  for (const [id, t] of Object.entries(obj(data.achievements))) if (typeof t === 'number') progress.achievements[id] = t
+  const settings = obj(data.settings)
+  const defaults = defaultSettings()
+  progress.settings = {
+    dailyGoal: (DAILY_GOALS as readonly number[]).includes(num(settings.dailyGoal)) ? num(settings.dailyGoal) : defaults.dailyGoal,
+    theme: settings.theme === 'light' || settings.theme === 'dark' ? settings.theme : defaults.theme,
+    fontScale: settings.fontScale === 'large' ? 'large' : defaults.fontScale,
+    audio: typeof settings.audio === 'boolean' ? settings.audio : defaults.audio,
+    speechRate: num(settings.speechRate) >= 0.5 && num(settings.speechRate) <= 1.2 ? num(settings.speechRate) : defaults.speechRate,
+  }
   return progress
 }
 
@@ -125,3 +177,46 @@ export function readingMastery(stat: KanaStat | undefined): Mastery {
   if (!stat || stat.readTotal === 0) return 'new'
   return stat.readTotal >= 5 && stat.readOk / stat.readTotal >= 0.8 ? 'mastered' : 'learning'
 }
+
+/** Día local en formato "AAAA-MM-DD". */
+export function dayKey(time: number): string {
+  const d = new Date(time)
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+}
+
+/** Mismo día, `days` días antes (o después, si es negativo). */
+export function daysBefore(time: number, days: number): number {
+  const d = new Date(time)
+  d.setDate(d.getDate() - days)
+  return d.getTime()
+}
+
+/**
+ * Días seguidos con actividad. Si hoy todavía no hay actividad, la racha sigue
+ * viva desde ayer (se pierde recién si pasa un día entero sin practicar).
+ */
+export function currentStreak(activity: Record<string, number>, now: number): number {
+  const offset = activity[dayKey(now)] ? 0 : 1
+  let streak = 0
+  while (activity[dayKey(daysBefore(now, offset + streak))]) streak++
+  return streak
+}
+
+/** Racha más larga registrada. */
+export function longestStreak(activity: Record<string, number>): number {
+  const days = Object.keys(activity).sort()
+  let best = 0
+  let run = 0
+  let prev: number | null = null
+  for (const day of days) {
+    const [y, m, d] = day.split('-').map(Number)
+    const t = new Date(y, m - 1, d).getTime()
+    run = prev !== null && dayKey(daysBefore(t, 1)) === dayKey(prev) ? run + 1 : 1
+    best = Math.max(best, run)
+    prev = t
+  }
+  return best
+}
+
+/** Guarda la actividad de unos 6 meses: suficiente para el calendario y las rachas. */
+export const ACTIVITY_DAYS_KEPT = 180

@@ -57,14 +57,24 @@ export function ChartPage() {
 
   return (
     <div className="flex flex-col gap-5">
-      <header className="flex flex-col gap-1">
-        <h1 className="text-2xl font-extrabold">Tabla rápida</h1>
-        <p className="text-sm text-slate-500 dark:text-slate-400">
-          Toca un carácter para escucharlo y ver cómo se escribe.
-        </p>
+      <header className="flex items-start justify-between gap-3">
+        <div className="flex flex-col gap-1">
+          <h1 className="text-2xl font-extrabold">
+            Tabla rápida<span className="hidden print:inline"> · {views.find((v) => v.view === view)!.label} · Polylingual</span>
+          </h1>
+          <p className="text-sm text-slate-500 print:hidden dark:text-slate-400">
+            Toca un carácter para escucharlo y ver cómo se escribe.
+          </p>
+        </div>
+        <button
+          onClick={() => window.print()}
+          className="shrink-0 rounded-full border border-slate-300 px-3 py-1.5 text-sm font-bold hover:bg-slate-100 print:hidden dark:border-slate-700 dark:hover:bg-slate-800"
+        >
+          🖨️ Imprimir
+        </button>
       </header>
 
-      <div role="tablist" aria-label="Silabario" className="flex self-start rounded-xl bg-slate-200 p-1 dark:bg-slate-800">
+      <div role="tablist" aria-label="Silabario" className="flex self-start print:hidden rounded-xl bg-slate-200 p-1 dark:bg-slate-800">
         {views.map((v) => (
           <button key={v.view} role="tab" aria-selected={v.view === view} onClick={() => go({ view: v.view })} className={tabClass(v.view === view)}>
             {v.label}
@@ -72,7 +82,7 @@ export function ChartPage() {
         ))}
       </div>
 
-      <div className="flex flex-wrap items-center justify-between gap-3">
+      <div className="flex flex-wrap items-center justify-between gap-3 print:hidden">
         <div role="tablist" aria-label="Grupo" className="flex flex-wrap rounded-xl bg-slate-200 p-1 dark:bg-slate-800">
           {sections.map((s) => (
             <button key={s.group} role="tab" aria-selected={s === section} onClick={() => go({ group: s.group })} className={tabClass(s === section)}>
@@ -93,10 +103,10 @@ export function ChartPage() {
         </label>
       </div>
 
-      <p className="text-sm text-slate-600 dark:text-slate-400">{section.description}</p>
+      <p className="text-sm text-slate-600 print:hidden dark:text-slate-400">{section.description}</p>
 
       {hasStats && (
-        <ul className="flex flex-wrap gap-3 text-xs font-semibold text-slate-500" aria-label="Leyenda">
+        <ul className="flex flex-wrap gap-3 text-xs font-semibold text-slate-500 print:hidden" aria-label="Leyenda">
           <li className="flex items-center gap-1.5">
             <span className="h-3 w-3 rounded border border-slate-300 bg-white dark:bg-slate-900" /> Sin practicar
           </li>
@@ -109,46 +119,54 @@ export function ChartPage() {
         </ul>
       )}
 
-      <div
-        className="grid gap-1.5 sm:gap-2"
-        style={{ gridTemplateColumns: `1.75rem repeat(${section.columns.length}, minmax(0, 1fr))` }}
-      >
-        <span />
-        {section.columns.map((col) => (
-          <span key={col} className="text-center text-xs font-bold text-slate-400 uppercase">
-            {col}
-          </span>
-        ))}
+      {sections.map((sec) => (
+        <section key={sec.group} className={sec === section ? 'print:break-inside-avoid' : 'hidden print:block print:break-inside-avoid'}>
+          <h2 className="mb-1 hidden text-sm font-extrabold uppercase print:block">{sec.title}</h2>
+          <div
+            className="grid gap-1.5 sm:gap-2 print:gap-1"
+            style={{ gridTemplateColumns: `1.75rem repeat(${sec.columns.length}, minmax(0, 1fr))` }}
+          >
+            <span />
+            {sec.columns.map((col) => (
+              <span key={col} className="text-center text-xs font-bold text-slate-400 uppercase">
+                {col}
+              </span>
+            ))}
 
-        {section.rows.map((row, r) => (
-          <div key={r} className="contents">
-            <span className="flex items-center justify-center text-xs font-bold text-slate-400 uppercase">
-              {row.label || '·'}
-            </span>
-            {row.cells.map((char, c) => {
-              const kana = char ? kanaByChar.get(char) : undefined
-              if (!kana) return <span key={c} />
-              const pair = view === 'ambos' ? counterpart(kana) : undefined
-              return (
-                <button
-                  key={c}
-                  onClick={() => open(kana)}
-                  className={`flex aspect-square flex-col items-center justify-center rounded-xl border transition hover:-translate-y-0.5 hover:border-accent hover:shadow-md focus-visible:ring-2 focus-visible:ring-accent/50 focus-visible:outline-none sm:aspect-[4/3] ${masteryStyle[readingMastery(stats[kana.char])]}`}
-                  aria-label={`${kana.char}${pair ? ` ${pair.char}` : ''}${hideRomaji ? '' : `, ${kana.romaji}`}`}
-                >
-                  <span className={`font-jp leading-none ${kana.parts.length > 1 || pair ? 'text-xl sm:text-3xl' : 'text-3xl sm:text-4xl'}`}>
-                    {kana.char}
-                    {pair && <span className="ml-0.5 text-accent">{pair.char}</span>}
-                  </span>
-                  <span className="mt-1 h-4 text-xs font-bold text-slate-500 dark:text-slate-400">
-                    {hideRomaji ? '' : kana.romaji}
-                  </span>
-                </button>
-              )
-            })}
+            {sec.rows.map((row, r) => (
+              <div key={r} className="contents">
+                <span className="flex items-center justify-center text-xs font-bold text-slate-400 uppercase">
+                  {row.label || '·'}
+                </span>
+                {row.cells.map((char, c) => {
+                  const kana = char ? kanaByChar.get(char) : undefined
+                  if (!kana) return <span key={c} />
+                  const pair = view === 'ambos' ? counterpart(kana) : undefined
+                  return (
+                    <button
+                      key={c}
+                      onClick={() => open(kana)}
+                      className={`print-cell flex aspect-square flex-col items-center justify-center rounded-xl border transition hover:-translate-y-0.5 hover:border-accent hover:shadow-md focus-visible:ring-2 focus-visible:ring-accent/50 focus-visible:outline-none sm:aspect-[4/3] print:aspect-auto print:py-1 ${masteryStyle[readingMastery(stats[kana.char])]}`}
+                      aria-label={`${kana.char}${pair ? ` ${pair.char}` : ''}${hideRomaji ? '' : `, ${kana.romaji}`}`}
+                    >
+                      <span
+                        lang="ja"
+                        className={`font-jp leading-none ${kana.parts.length > 1 || pair ? 'text-xl sm:text-3xl print:text-xl' : 'text-3xl sm:text-4xl print:text-2xl'}`}
+                      >
+                        {kana.char}
+                        {pair && <span className="ml-0.5 text-accent">{pair.char}</span>}
+                      </span>
+                      <span className="mt-1 h-4 text-xs font-bold text-slate-500 dark:text-slate-400">
+                        {hideRomaji ? '' : kana.romaji}
+                      </span>
+                    </button>
+                  )
+                })}
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
+        </section>
+      ))}
 
       <p className="text-xs text-slate-400">
         Trazos:{' '}

@@ -13,6 +13,10 @@
       rel="stylesheet"
     />
     <title>Polylingual</title>
+    <script>
+      // Evita un destello claro antes de que cargue la app (el tema por defecto sigue al sistema).
+      if (matchMedia('(prefers-color-scheme: dark)').matches) document.documentElement.classList.add('dark')
+    </script>
   </head>
   <body>
     <div id="root"></div>

@@ -1,5 +1,8 @@
 @import 'tailwindcss';
 
+/* Modo oscuro por clase: la app pone .dark en <html> según el ajuste (o el sistema). */
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   --font-sans: 'Nunito', ui-sans-serif, system-ui, sans-serif;
   --font-jp: 'Noto Sans JP', 'Hiragino Sans', 'Yu Gothic', sans-serif;
@@ -76,5 +79,28 @@
 @layer base {
   body {
     @apply bg-slate-50 text-slate-800 antialiased dark:bg-slate-950 dark:text-slate-100;
+  }
+}
+
+/* Foco visible para quien navega con teclado */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* Impresión de la tabla rápida: solo la tabla, en blanco y negro, en una hoja A4 */
+@page {
+  size: A4;
+  margin: 12mm;
+}
+@media print {
+  body {
+    background: white !important;
+    color: black !important;
+  }
+  .print-cell {
+    border-color: #999 !important;
+    background: white !important;
+    break-inside: avoid;
   }
 }

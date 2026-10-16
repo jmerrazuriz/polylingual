@@ -1,6 +1,16 @@
 import { create } from 'zustand'
 import { now } from '../time.ts'
-import { emptyProgress, emptyStat, isBetterLesson, isBetterRecord, type ProgressData } from './model.ts'
+import {
+  ACTIVITY_DAYS_KEPT,
+  dayKey,
+  daysBefore,
+  emptyProgress,
+  emptyStat,
+  isBetterLesson,
+  isBetterRecord,
+  type ProgressData,
+  type Settings,
+} from './model.ts'
 import { cardId, gradeForReading, gradeForWriting, newCard, review } from './srs.ts'
 
 type ProgressActions = {
@@ -12,8 +22,21 @@ type ProgressActions = {
   recordReading: (char: string, correct: boolean, weight?: number) => void
   recordWriting: (char: string, score: number) => void
   setUnlockAll: (unlockAll: boolean) => void
+  setSettings: (settings: Partial<Settings>) => void
+  /** Marca logros como obtenidos (los que ya estaban no cambian). */
+  unlockAchievements: (ids: readonly string[], time: number) => void
   replace: (data: ProgressData) => void
   reset: () => void
+}
+
+/** Suma `amount` a la actividad de hoy y descarta los días más viejos. */
+function addActivity(activity: Record<string, number>, amount: number): Record<string, number> {
+  const t = now()
+  const today = dayKey(t)
+  const oldest = dayKey(daysBefore(t, ACTIVITY_DAYS_KEPT))
+  const next: Record<string, number> = { [today]: (activity[today] ?? 0) + amount }
+  for (const [day, n] of Object.entries(activity)) if (day !== today && day >= oldest) next[day] = n
+  return next
 }
 
 /**
@@ -46,10 +69,11 @@ export const useProgress = create<ProgressData & ProgressActions>((set, get) => 
       const prev = s.kana[char] ?? emptyStat()
       const stat = { ...prev, readOk: prev.readOk + (correct ? weight : 0), readTotal: prev.readTotal + weight }
       const kana = { ...s.kana, [char]: stat }
+      const activity = addActivity(s.activity, weight)
       // Solo los ejercicios (peso 1) reprograman la tarjeta; los juegos cuentan para las estadísticas.
-      if (weight < 1) return { kana }
+      if (weight < 1) return { kana, activity }
       const id = cardId(char, 'read')
-      return { kana, cards: { ...s.cards, [id]: review(s.cards[id], gradeForReading(correct), now()) } }
+      return { kana, activity, cards: { ...s.cards, [id]: review(s.cards[id], gradeForReading(correct), now()) } }
     }),
 
   recordWriting: (char, score) =>
@@ -59,17 +83,25 @@ export const useProgress = create<ProgressData & ProgressActions>((set, get) => 
       const id = cardId(char, 'write')
       return {
         kana: { ...s.kana, [char]: stat },
+        activity: addActivity(s.activity, 1),
         cards: { ...s.cards, [id]: review(s.cards[id], gradeForWriting(score), now()) },
       }
     }),
 
   setUnlockAll: (unlockAll) => set({ unlockAll }),
+  setSettings: (settings) => set((s) => ({ settings: { ...s.settings, ...settings } })),
+  unlockAchievements: (ids, time) =>
+    set((s) => {
+      const fresh = ids.filter((id) => !(id in s.achievements))
+      if (fresh.length === 0) return s
+      return { achievements: { ...s.achievements, ...Object.fromEntries(fresh.map((id) => [id, time])) } }
+    }),
 
   replace: (data) => set(data),
   reset: () => set(emptyProgress()),
 }))
 
 export function progressSnapshot(): ProgressData {
-  const { lessons, records, kana, cards, unlockAll } = useProgress.getState()
-  return { lessons, records, kana, cards, unlockAll }
+  const { lessons, records, kana, cards, unlockAll, activity, achievements, settings } = useProgress.getState()
+  return { lessons, records, kana, cards, unlockAll, activity, achievements, settings }
 }

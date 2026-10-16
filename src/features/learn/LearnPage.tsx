@@ -54,6 +54,19 @@ export function LearnPage() {
         ))}
       </div>
 
+      <Link
+        to={`/test-de-nivel${script === 'katakana' ? '?silabario=katakana' : ''}`}
+        className="flex items-center gap-3 rounded-2xl border border-dashed border-slate-300 p-3 text-sm hover:border-accent dark:border-slate-700"
+      >
+        <span className="text-2xl" aria-hidden>
+          🧭
+        </span>
+        <span>
+          <span className="block font-bold">¿Ya sabes algo de {script}?</span>
+          <span className="text-slate-500">Haz el test de nivel y sáltate lo que ya dominas.</span>
+        </span>
+      </Link>
+
       {script === 'katakana' && katakanaLocked && (
         <p className="rounded-xl bg-slate-100 p-3 text-sm text-slate-600 dark:bg-slate-800 dark:text-slate-300">
           🔒 El katakana se abre al completar los básicos del hiragana (hasta la lección «W y N»).

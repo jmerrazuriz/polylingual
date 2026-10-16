@@ -12,13 +12,15 @@ type Props = {
   questions: Question[]
   /** Segundos por pregunta; sin valor no hay contrarreloj. */
   secondsPerQuestion?: number
+  /** Muestra «No lo sé» también en las preguntas de opción múltiple (test de nivel). */
+  allowSkip?: boolean
   onFinish: (answers: Answer[]) => void
 }
 
 const AUTO_ADVANCE_MS = 700
 
 /** Corre una lista de preguntas de lectura y devuelve las respuestas al terminar. */
-export function ReadingSession({ questions, secondsPerQuestion, onFinish }: Props) {
+export function ReadingSession({ questions, secondsPerQuestion, allowSkip, onFinish }: Props) {
   const [index, setIndex] = useState(0)
   const [answers, setAnswers] = useState<Answer[]>([])
   const { speak } = useSpeech()
@@ -62,7 +64,11 @@ export function ReadingSession({ questions, secondsPerQuestion, onFinish }: Prop
 
       {question.type === 'kana-to-romaji' && (
         <Choice
-          prompt={<span className="font-jp text-8xl font-bold">{question.kana.char}</span>}
+          prompt={
+            <span lang="ja" className="font-jp text-8xl font-bold">
+              {question.kana.char}
+            </span>
+          }
           hint="¿Cómo se lee?"
           options={question.options.map((o) => ({ key: o, label: o, isAnswer: o === question.kana.romaji }))}
           picked={current?.given ?? null}
@@ -100,6 +106,12 @@ export function ReadingSession({ questions, secondsPerQuestion, onFinish }: Prop
           done={!!current}
           onSubmit={(text) => answer(matchesReading(text, wordReadings(question.word)), text)}
         />
+      )}
+
+      {allowSkip && !current && (question.type === 'kana-to-romaji' || question.type === 'romaji-to-kana') && (
+        <button onClick={() => answer(false, '')} className="text-sm font-semibold text-slate-500 hover:underline">
+          No lo sé
+        </button>
       )}
 
       {current && <Feedback answer={current} />}
@@ -159,7 +171,9 @@ function TypeAnswer(props: { prompt: string; hint: string; done: boolean; onSubm
   const [text, setText] = useState('')
   return (
     <>
-      <span className={`font-jp font-bold ${[...prompt].length > 2 ? 'text-6xl' : 'text-8xl'}`}>{prompt}</span>
+      <span lang="ja" className={`font-jp font-bold ${[...prompt].length > 2 ? 'text-6xl' : 'text-8xl'}`}>
+        {prompt}
+      </span>
       <p className="text-slate-600 dark:text-slate-400">{hint}</p>
       <form
         className="flex w-full gap-2"

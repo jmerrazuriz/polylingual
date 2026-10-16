@@ -6,6 +6,7 @@ import { authErrorMessage, checkVerification, resendVerification, signOut } from
 import { useAccount } from '../../lib/account/store'
 import { readingMastery } from '../../lib/progress/model'
 import { useProgress } from '../../lib/progress/store'
+import { SettingsSection } from './SettingsSection'
 
 export function ProfilePage() {
   const { status, user } = useAccount()
@@ -18,20 +19,23 @@ export function ProfilePage() {
 
   if (status === 'guest' || !user) {
     return (
-      <div className="mx-auto flex max-w-sm flex-col items-center gap-4 py-10 text-center">
-        <span className="text-5xl" aria-hidden>
-          👤
-        </span>
-        <h1 className="text-2xl font-extrabold">Estás como invitado</h1>
-        <p className="text-slate-600 dark:text-slate-400">
-          Puedes usar toda la app, pero tu progreso se pierde al cerrar o recargar la página.
-        </p>
-        <Link to="/entrar?modo=crear" className="rounded-full bg-ink px-6 py-3 font-bold text-white hover:opacity-90">
-          Crear cuenta gratis
-        </Link>
-        <Link to="/entrar" className="font-semibold text-accent hover:underline">
-          Ya tengo cuenta
-        </Link>
+      <div className="mx-auto flex max-w-md flex-col gap-6">
+        <div className="flex flex-col items-center gap-4 pt-6 text-center">
+          <span className="text-5xl" aria-hidden>
+            👤
+          </span>
+          <h1 className="text-2xl font-extrabold">Estás como invitado</h1>
+          <p className="text-slate-600 dark:text-slate-400">
+            Puedes usar toda la app, pero tu progreso se pierde al cerrar o recargar la página.
+          </p>
+          <Link to="/entrar?modo=crear" className="rounded-full bg-ink px-6 py-3 font-bold text-white hover:opacity-90">
+            Crear cuenta gratis
+          </Link>
+          <Link to="/entrar" className="font-semibold text-accent hover:underline">
+            Ya tengo cuenta
+          </Link>
+        </div>
+        <SettingsSection />
       </div>
     )
   }
@@ -143,6 +147,12 @@ export function ProfilePage() {
       >
         Cerrar sesión
       </button>
+
+      <Link to="/progreso" className="font-bold text-accent hover:underline">
+        Ver mi progreso, racha y logros →
+      </Link>
+
+      <SettingsSection />
     </div>
   )
 }
