@@ -1,5 +1,5 @@
 import { type ReactNode, useEffect, useRef, useState } from 'react'
-import type { Kana } from '../../content/types'
+import type { Kana } from '../../courses/ja/types'
 import { useSpeech } from '../../lib/audio/useSpeech'
 import { type Question, questionPrompt } from '../../lib/quiz'
 import { matchesReading, romajiReadings } from '../../lib/romaji'

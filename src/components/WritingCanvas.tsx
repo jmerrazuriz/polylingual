@@ -1,5 +1,5 @@
 import { type CSSProperties, type PointerEvent, useEffect, useRef, useState } from 'react'
-import { getStrokes } from '../content/kana'
+import { getStrokes } from '../courses/ja/kana'
 import { checkStroke, expectedStrokes, type StrokeCheck } from '../lib/strokes/evaluate'
 import type { Point } from '../lib/strokes/geometry'
 

@@ -1,13 +1,14 @@
 import { doc, getFirestore, onSnapshot, serverTimestamp, setDoc } from 'firebase/firestore'
 import { firebaseApp } from '../firebase/app'
-import { mergeProgress, parseProgress, stableStringify } from '../progress/model'
+import { mergeProgress, parseProgress, stableStringify, toStored } from '../progress/model'
 import { progressSnapshot, useProgress } from '../progress/store'
 
 const db = getFirestore(firebaseApp)
 
 /** Espera tras el último cambio antes de guardar: agrupa una sesión entera en pocas escrituras. */
 const SAVE_DELAY_MS = 2000
-export const PROGRESS_VERSION = 1
+/** 2: progreso separado por cursos (idiomas). */
+export const PROGRESS_VERSION = 2
 
 /**
  * Mantiene el progreso en memoria sincronizado con users/{uid}:
@@ -28,7 +29,7 @@ export function startSync(uid: string): () => void {
     const json = stableStringify(data)
     if (json === synced) return
     synced = json
-    setDoc(ref, { progress: data, version: PROGRESS_VERSION, updatedAt: serverTimestamp() }).catch((e) => {
+    setDoc(ref, { progress: toStored(data), version: PROGRESS_VERSION, updatedAt: serverTimestamp() }).catch((e) => {
       synced = null
       console.error('No se pudo guardar el progreso', e)
     })

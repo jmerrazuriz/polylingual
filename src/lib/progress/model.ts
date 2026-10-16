@@ -1,13 +1,18 @@
-// Modelo del progreso del usuario. Es lo que se guarda en Firestore (users/{uid}.progress).
+// Modelo del progreso del usuario. Se guarda en Firestore (users/{uid}.progress)
+// en el formato de toStored(): datos globales + un bloque por curso (idioma).
 
 import type { SrsCard } from './srs.ts'
 
 export type LessonResult = { correct: number; total: number }
 
-/** Estadísticas por carácter: lectura (aciertos/total) y escritura (suma de puntajes 1–5 / cantidad). */
+/** Estadísticas por elemento (carácter): lectura (aciertos/total) y escritura (suma de puntajes 1–5 / cantidad). */
 export type KanaStat = { readOk: number; readTotal: number; writeScore: number; writeCount: number }
 
-export type ProgressData = {
+/** Lección de un día: qué pasos tiene, qué lección y gramática tocan y qué pasos se completaron. */
+export type DailyRecord = { steps: string[]; lesson?: string; grammar?: string; done: string[] }
+
+/** Progreso de un curso (idioma). */
+export type CourseData = {
   /** Mejor resultado del repaso final de cada lección. */
   lessons: Record<string, LessonResult>
   /** Mejor resultado por juego y selección de grupos (ver recordKey). */
@@ -17,11 +22,27 @@ export type ProgressData = {
   cards: Record<string, SrsCard>
   /** El usuario eligió desbloquear todas las lecciones. */
   unlockAll: boolean
+  /** Mejor resultado de cada lección de gramática. */
+  grammar: Record<string, LessonResult>
+  /** Mejor resultado del repaso de cada unidad. */
+  units: Record<string, LessonResult>
+  /** Lección del día, por día local. */
+  daily: Record<string, DailyRecord>
+}
+
+/**
+ * Progreso en memoria: los datos globales, los del curso activo «aplanados»
+ * (así el resto de la app no necesita saber de cursos) y los de los demás cursos.
+ */
+export type ProgressData = CourseData & {
   /** Respuestas por día local ("2026-10-16": 23), para la racha y el objetivo diario. */
   activity: Record<string, number>
   /** Logros obtenidos y cuándo (ms). */
   achievements: Record<string, number>
   settings: Settings
+  /** Curso activo. */
+  course: string
+  otherCourses: Record<string, CourseData>
 }
 
 export type Settings = {
@@ -35,6 +56,7 @@ export type Settings = {
 }
 
 export const DAILY_GOALS = [10, 20, 40] as const
+export const DEFAULT_COURSE = 'ja'
 
 export const defaultSettings = (): Settings => ({
   dailyGoal: 20,
@@ -44,15 +66,24 @@ export const defaultSettings = (): Settings => ({
   speechRate: 0.8,
 })
 
-export const emptyProgress = (): ProgressData => ({
+export const emptyCourse = (): CourseData => ({
   lessons: {},
   records: {},
   kana: {},
   cards: {},
   unlockAll: false,
+  grammar: {},
+  units: {},
+  daily: {},
+})
+
+export const emptyProgress = (): ProgressData => ({
+  ...emptyCourse(),
   activity: {},
   achievements: {},
   settings: defaultSettings(),
+  course: DEFAULT_COURSE,
+  otherCourses: {},
 })
 
 export const emptyStat = (): KanaStat => ({ readOk: 0, readTotal: 0, writeScore: 0, writeCount: 0 })
@@ -70,14 +101,23 @@ export function isBetterRecord(key: string, value: number, prev: number | undefi
   return prev === undefined || (lowerIsBetter(key) ? value < prev : value > prev)
 }
 
-/**
- * Une dos progresos (p. ej. lo hecho como invitado con lo guardado en la cuenta):
- * se queda con el mejor resultado de cada lección y récord, y suma las estadísticas.
- */
-export function mergeProgress(a: ProgressData, b: ProgressData): ProgressData {
-  const lessons = { ...a.lessons }
-  for (const [id, r] of Object.entries(b.lessons)) if (isBetterLesson(r, lessons[id])) lessons[id] = r
+/** Los datos del curso activo, separados de los globales. */
+export function courseOf(p: ProgressData): CourseData {
+  const { lessons, records, kana, cards, unlockAll, grammar, units, daily } = p
+  return { lessons, records, kana, cards, unlockAll, grammar, units, daily }
+}
 
+function bestResults(a: Record<string, LessonResult>, b: Record<string, LessonResult>) {
+  const out = { ...a }
+  for (const [id, r] of Object.entries(b)) if (isBetterLesson(r, out[id])) out[id] = r
+  return out
+}
+
+/**
+ * Une los datos de un curso: el mejor resultado de cada lección y récord, la
+ * suma de las estadísticas y la tarjeta repasada más recientemente.
+ */
+export function mergeCourse(a: CourseData, b: CourseData): CourseData {
   const records = { ...a.records }
   for (const [key, v] of Object.entries(b.records)) if (isBetterRecord(key, v, records[key])) records[key] = v
 
@@ -91,12 +131,36 @@ export function mergeProgress(a: ProgressData, b: ProgressData): ProgressData {
       writeCount: prev.writeCount + s.writeCount,
     }
   }
-  // De cada tarjeta se queda la repasada más recientemente.
   const cards = { ...a.cards }
   for (const [id, card] of Object.entries(b.cards)) {
     const prev = cards[id]
     if (!prev || (card.last_review ?? 0) > (prev.last_review ?? 0)) cards[id] = card
   }
+  const daily = { ...a.daily }
+  for (const [day, r] of Object.entries(b.daily)) {
+    const prev = daily[day]
+    daily[day] = prev ? { ...r, ...prev, done: [...new Set([...prev.done, ...r.done])] } : r
+  }
+  return {
+    lessons: bestResults(a.lessons, b.lessons),
+    records,
+    kana,
+    cards,
+    unlockAll: a.unlockAll || b.unlockAll,
+    grammar: bestResults(a.grammar, b.grammar),
+    units: bestResults(a.units, b.units),
+    daily,
+  }
+}
+
+/**
+ * Une dos progresos (p. ej. lo guardado en la cuenta `a` con lo hecho como invitado `b`).
+ * Se mantienen el curso activo y los ajustes de la cuenta.
+ */
+export function mergeProgress(a: ProgressData, b: ProgressData): ProgressData {
+  const merged: Record<string, CourseData> = { ...a.otherCourses, [a.course]: courseOf(a) }
+  const fromB: Record<string, CourseData> = { ...b.otherCourses, [b.course]: courseOf(b) }
+  for (const [id, data] of Object.entries(fromB)) merged[id] = merged[id] ? mergeCourse(merged[id], data) : data
 
   const activity = { ...a.activity }
   for (const [day, n] of Object.entries(b.activity)) activity[day] = (activity[day] ?? 0) + n
@@ -104,25 +168,32 @@ export function mergeProgress(a: ProgressData, b: ProgressData): ProgressData {
   const achievements = { ...a.achievements }
   for (const [id, t] of Object.entries(b.achievements)) achievements[id] = Math.min(achievements[id] ?? t, t)
 
-  // Los ajustes de la cuenta mandan sobre los de la visita como invitado.
-  return { lessons, records, kana, cards, unlockAll: a.unlockAll || b.unlockAll, activity, achievements, settings: a.settings }
+  const { [a.course]: active, ...otherCourses } = merged
+  return { ...active, activity, achievements, settings: a.settings, course: a.course, otherCourses }
 }
 
 const num = (v: unknown) => (typeof v === 'number' && Number.isFinite(v) ? v : 0)
 const obj = (v: unknown): Record<string, unknown> => (v && typeof v === 'object' ? (v as Record<string, unknown>) : {})
 
-/** Lee el progreso guardado tolerando datos incompletos o de versiones anteriores. */
-export function parseProgress(raw: unknown): ProgressData {
-  const data = obj(raw)
-  const progress = emptyProgress()
-  for (const [id, r] of Object.entries(obj(data.lessons))) {
+function parseResults(raw: unknown): Record<string, LessonResult> {
+  const out: Record<string, LessonResult> = {}
+  for (const [id, r] of Object.entries(obj(raw))) {
     const { correct, total } = obj(r)
-    if (num(total) > 0) progress.lessons[id] = { correct: num(correct), total: num(total) }
+    if (num(total) > 0) out[id] = { correct: num(correct), total: num(total) }
   }
-  for (const [key, v] of Object.entries(obj(data.records))) if (typeof v === 'number') progress.records[key] = v
+  return out
+}
+
+function parseCourse(raw: unknown): CourseData {
+  const data = obj(raw)
+  const course = emptyCourse()
+  course.lessons = parseResults(data.lessons)
+  course.grammar = parseResults(data.grammar)
+  course.units = parseResults(data.units)
+  for (const [key, v] of Object.entries(obj(data.records))) if (typeof v === 'number') course.records[key] = v
   for (const [char, s] of Object.entries(obj(data.kana))) {
     const stat = obj(s)
-    progress.kana[char] = {
+    course.kana[char] = {
       readOk: num(stat.readOk),
       readTotal: num(stat.readTotal),
       writeScore: num(stat.writeScore),
@@ -132,7 +203,7 @@ export function parseProgress(raw: unknown): ProgressData {
   for (const [id, c] of Object.entries(obj(data.cards))) {
     const card = obj(c)
     if (typeof card.due !== 'number') continue
-    progress.cards[id] = {
+    course.cards[id] = {
       due: card.due,
       stability: num(card.stability),
       difficulty: num(card.difficulty),
@@ -145,8 +216,39 @@ export function parseProgress(raw: unknown): ProgressData {
       last_review: typeof card.last_review === 'number' ? card.last_review : null,
     }
   }
-  progress.unlockAll = data.unlockAll === true
-  for (const [day, n] of Object.entries(obj(data.activity))) if (/^\d{4}-\d{2}-\d{2}$/.test(day) && num(n) > 0) progress.activity[day] = num(n)
+  course.unlockAll = data.unlockAll === true
+  for (const [day, r] of Object.entries(obj(data.daily))) {
+    const rec = obj(r)
+    const strings = (v: unknown) => (Array.isArray(v) ? v.filter((d): d is string => typeof d === 'string') : [])
+    course.daily[day] = {
+      steps: strings(rec.steps),
+      ...(typeof rec.lesson === 'string' ? { lesson: rec.lesson } : {}),
+      ...(typeof rec.grammar === 'string' ? { grammar: rec.grammar } : {}),
+      done: strings(rec.done),
+    }
+  }
+  return course
+}
+
+/**
+ * Lee el progreso guardado tolerando datos incompletos. Acepta el formato por
+ * cursos ({ courses: { ja: … } }) y el anterior, con todo al nivel superior (= japonés).
+ */
+export function parseProgress(raw: unknown): ProgressData {
+  const data = obj(raw)
+  const courses: Record<string, CourseData> = {}
+  if (data.courses && typeof data.courses === 'object') {
+    for (const [id, c] of Object.entries(obj(data.courses))) courses[id] = parseCourse(c)
+  } else if (Object.keys(data).length > 0) {
+    courses[DEFAULT_COURSE] = parseCourse(data)
+  }
+  const course = typeof data.course === 'string' && data.course ? data.course : DEFAULT_COURSE
+  const { [course]: active = emptyCourse(), ...otherCourses } = courses
+
+  const progress: ProgressData = { ...emptyProgress(), ...active, course, otherCourses }
+  for (const [day, n] of Object.entries(obj(data.activity))) {
+    if (/^\d{4}-\d{2}-\d{2}$/.test(day) && num(n) > 0) progress.activity[day] = num(n)
+  }
   for (const [id, t] of Object.entries(obj(data.achievements))) if (typeof t === 'number') progress.achievements[id] = t
   const settings = obj(data.settings)
   const defaults = defaultSettings()
@@ -158,6 +260,17 @@ export function parseProgress(raw: unknown): ProgressData {
     speechRate: num(settings.speechRate) >= 0.5 && num(settings.speechRate) <= 1.2 ? num(settings.speechRate) : defaults.speechRate,
   }
   return progress
+}
+
+/** Formato que se guarda en Firestore: datos globales y un bloque por curso. */
+export function toStored(p: ProgressData) {
+  return {
+    settings: p.settings,
+    activity: p.activity,
+    achievements: p.achievements,
+    course: p.course,
+    courses: { ...p.otherCourses, [p.course]: courseOf(p) },
+  }
 }
 
 /** JSON con las claves ordenadas, para comparar progresos sin importar el orden. */

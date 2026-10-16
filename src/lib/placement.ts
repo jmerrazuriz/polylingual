@@ -1,6 +1,6 @@
-import { allKana, kanaByChar } from '../content/kana.ts'
-import { lessonsByScript } from '../content/lessons.ts'
-import type { Script } from '../content/types.ts'
+import { allKana, kanaByChar } from '../courses/ja/kana.ts'
+import { lessonsByScript } from '../courses/ja/lessons.ts'
+import type { Script } from '../courses/ja/types.ts'
 import { type Question, romajiOptions } from './quiz.ts'
 import { shuffle } from './random.ts'
 

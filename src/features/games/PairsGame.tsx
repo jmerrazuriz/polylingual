@@ -10,6 +10,8 @@ type Props = {
   /** text: se ve el lado derecho. audio: el lado derecho es un sonido (🔊). */
   variant: 'text' | 'audio'
   instructions: string
+  /** Se llama al unir todas las parejas (antes de mostrar el resultado). */
+  onComplete?: () => void
   recordKey: string
   onExit: () => void
 }
@@ -28,7 +30,7 @@ export function PairsGame(props: Props) {
   return <PairsRun key={game} {...props} onRetry={() => setGame((g) => g + 1)} />
 }
 
-function PairsRun({ items, variant, instructions, recordKey, onExit, onRetry }: Props & { onRetry: () => void }) {
+function PairsRun({ items, variant, instructions, recordKey, onExit, onRetry, onComplete }: Props & { onRetry: () => void }) {
   const [rounds] = useState(() => buildPairsRounds(items))
   const [roundIndex, setRoundIndex] = useState(0)
   const [matched, setMatched] = useState<Set<string>>(new Set())
@@ -38,6 +40,11 @@ function PairsRun({ items, variant, instructions, recordKey, onExit, onRetry }: 
   const [stats, setStats] = useState({ score: 0, errors: 0, combo: 0, maxCombo: 0 })
   const [result, setResult] = useState<Result | null>(null)
   const startedAt = useRef(0)
+  // En un ref para que un callback nuevo del padre no reinicie el temporizador de fin de ronda.
+  const completeRef = useRef(onComplete)
+  useEffect(() => {
+    completeRef.current = onComplete
+  })
   const submit = useProgress((s) => s.submitRecord)
   const { speak } = useSpeech()
 
@@ -60,6 +67,7 @@ function PairsRun({ items, variant, instructions, recordKey, onExit, onRetry }: 
       }
       const seconds = secondsSince(startedAt.current)
       setResult({ ...stats, seconds, isRecord: submit(recordKey, stats.score) })
+      completeRef.current?.()
     }, NEXT_ROUND_MS)
     return () => clearTimeout(timer)
   }, [matched, round, roundIndex, rounds.length, stats, recordKey, submit])

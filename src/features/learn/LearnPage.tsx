@@ -1,9 +1,12 @@
 import { Link, useSearchParams } from 'react-router'
-import { lessonsByScript } from '../../content/lessons'
-import type { KanaGroup, Script } from '../../content/types'
+import { lessonsByScript } from '../../courses/ja/lessons'
+import type { KanaGroup, Script } from '../../courses/ja/types'
 import { useAccount } from '../../lib/account/store'
 import { useProgress } from '../../lib/progress/store'
 import { useUnlockedLessons } from '../../lib/progress/unlock'
+import { units } from '../../lib/units'
+import { UnitCard } from '../review/UnitCard'
+import { LearnTabs } from './LearnTabs'
 
 const groups: { group: KanaGroup; title: string }[] = [
   { group: 'basic', title: 'Básicos' },
@@ -21,7 +24,7 @@ export function LearnPage() {
   const setUnlockAll = useProgress((s) => s.setUnlockAll)
   const isUser = useAccount((s) => s.status === 'user')
   const unlocked = useUnlockedLessons()
-  const [params, setParams] = useSearchParams()
+  const [params] = useSearchParams()
   const script: Script = params.get('silabario') === 'katakana' ? 'katakana' : 'hiragana'
   const list = lessonsByScript[script]
   const katakanaLocked = !lessonsByScript.katakana.some((l) => unlocked.has(l.id))
@@ -36,23 +39,7 @@ export function LearnPage() {
         </p>
       </header>
 
-      <div role="tablist" className="flex self-start rounded-xl bg-slate-200 p-1 dark:bg-slate-800">
-        {(['hiragana', 'katakana'] as const).map((s) => (
-          <button
-            key={s}
-            role="tab"
-            aria-selected={s === script}
-            onClick={() => setParams(s === 'hiragana' ? {} : { silabario: s }, { replace: true })}
-            className={`rounded-lg px-4 py-1.5 text-sm font-bold capitalize transition ${
-              s === script
-                ? 'bg-white text-ink shadow-sm dark:bg-slate-950 dark:text-white'
-                : 'text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white'
-            }`}
-          >
-            {s}
-          </button>
-        ))}
-      </div>
+      <LearnTabs current={script} />
 
       <Link
         to={`/test-de-nivel${script === 'katakana' ? '?silabario=katakana' : ''}`}
@@ -116,6 +103,13 @@ export function LearnPage() {
                   </li>
                 )
               })}
+            {units
+              .filter((u) => u.script === script && u.group === group)
+              .map((u) => (
+                <li key={u.id} className="sm:col-span-2">
+                  <UnitCard unit={u} />
+                </li>
+              ))}
           </ol>
         </section>
       ))}

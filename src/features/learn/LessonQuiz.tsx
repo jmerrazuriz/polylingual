@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import type { Kana } from '../../content/types'
+import type { Kana } from '../../courses/ja/types'
 import { type Question, romajiOptions } from '../../lib/quiz'
 import { shuffle } from '../../lib/random'
 import { ReadingSession } from '../practice/ReadingSession'

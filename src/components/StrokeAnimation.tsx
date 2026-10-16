@@ -1,5 +1,5 @@
 import type { CSSProperties } from 'react'
-import { getStrokes } from '../content/kana'
+import { getStrokes } from '../courses/ja/kana'
 
 const STROKE_SECONDS = 0.55
 const GAP_SECONDS = 0.15

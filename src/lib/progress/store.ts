@@ -8,6 +8,9 @@ import {
   emptyStat,
   isBetterLesson,
   isBetterRecord,
+  courseOf,
+  type DailyRecord,
+  emptyCourse,
   type ProgressData,
   type Settings,
 } from './model.ts'
@@ -25,6 +28,12 @@ type ProgressActions = {
   setSettings: (settings: Partial<Settings>) => void
   /** Marca logros como obtenidos (los que ya estaban no cambian). */
   unlockAchievements: (ids: readonly string[], time: number) => void
+  completeGrammar: (lessonId: string, correct: number, total: number) => void
+  completeUnit: (unitId: string, correct: number, total: number) => void
+  /** Crea o actualiza la lección de un día (qué toca y qué pasos se hicieron). */
+  updateDaily: (day: string, update: (record: DailyRecord) => DailyRecord) => void
+  /** Cambia de curso: guarda el actual en otherCourses y trae el elegido. */
+  setCourse: (course: string) => void
   replace: (data: ProgressData) => void
   reset: () => void
 }
@@ -97,11 +106,35 @@ export const useProgress = create<ProgressData & ProgressActions>((set, get) => 
       return { achievements: { ...s.achievements, ...Object.fromEntries(fresh.map((id) => [id, time])) } }
     }),
 
+  completeGrammar: (lessonId, correct, total) =>
+    set((s) =>
+      isBetterLesson({ correct, total }, s.grammar[lessonId]) ? { grammar: { ...s.grammar, [lessonId]: { correct, total } } } : s,
+    ),
+
+  completeUnit: (unitId, correct, total) =>
+    set((s) => (isBetterLesson({ correct, total }, s.units[unitId]) ? { units: { ...s.units, [unitId]: { correct, total } } } : s)),
+
+  updateDaily: (day, update) =>
+    set((s) => {
+      // Se guardan los últimos 30 días: alcanza para ver la semana y no crece sin fin.
+      const days = Object.keys(s.daily).sort().slice(-29)
+      const kept = Object.fromEntries(days.filter((d) => d !== day).map((d) => [d, s.daily[d]]))
+      return { daily: { ...kept, [day]: update(s.daily[day] ?? { steps: [], done: [] }) } }
+    }),
+
+  setCourse: (course) =>
+    set((s) => {
+      if (course === s.course) return s
+      const { [course]: next = emptyCourse(), ...rest } = s.otherCourses
+      return { ...next, course, otherCourses: { ...rest, [s.course]: courseOf(s) } }
+    }),
+
   replace: (data) => set(data),
   reset: () => set(emptyProgress()),
 }))
 
 export function progressSnapshot(): ProgressData {
-  const { lessons, records, kana, cards, unlockAll, activity, achievements, settings } = useProgress.getState()
-  return { lessons, records, kana, cards, unlockAll, activity, achievements, settings }
+  const s = useProgress.getState()
+  const { activity, achievements, settings, course, otherCourses } = s
+  return { ...courseOf(s), activity, achievements, settings, course, otherCourses }
 }

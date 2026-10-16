@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from 'vitest'
-import { lessonsByScript } from '../../content/lessons'
+import { lessonsByScript } from '../../courses/ja/lessons'
 import { buildPlacement, passedLessons } from '../placement'
 import { achievements, newAchievements } from './achievements'
 import { currentStreak, dayKey, daysBefore, emptyProgress, longestStreak, mergeProgress, parseProgress } from './model'

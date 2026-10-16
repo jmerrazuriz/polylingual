@@ -1,16 +1,24 @@
 import { useState } from 'react'
 import { Link, NavLink, Outlet, useLocation } from 'react-router'
+import { type CourseSection, courseById } from '../courses'
 import { useAccount } from '../lib/account/store'
+import { useProgress } from '../lib/progress/store'
 import { useApplySettings } from '../lib/settings/useApplySettings'
 import { useToasts } from '../lib/toasts'
 
-const sections = [
-  { to: '/', label: 'Inicio', glyph: '家' },
-  { to: '/tabla', label: 'Tabla', glyph: 'あ' },
-  { to: '/aprender', label: 'Aprender', glyph: '学' },
-  { to: '/practicar', label: 'Practicar', glyph: '書' },
-  { to: '/juegos', label: 'Juegos', glyph: '遊' },
-] as const
+const allSections: { to: string; label: string; icon: string; section?: CourseSection }[] = [
+  { to: '/', label: 'Inicio', icon: '🏠' },
+  { to: '/tabla', label: 'Tabla', icon: '🔤', section: 'tabla' },
+  { to: '/aprender', label: 'Aprender', icon: '📘', section: 'aprender' },
+  { to: '/practicar', label: 'Practicar', icon: '✍️', section: 'practicar' },
+  { to: '/juegos', label: 'Juegos', icon: '🎮', section: 'juegos' },
+]
+
+/** Secciones del curso activo (cada idioma declara cuáles tiene). */
+function useSections() {
+  const course = courseById(useProgress((s) => s.course))
+  return allSections.filter((s) => !s.section || course.sections.includes(s.section))
+}
 
 const linkClass = ({ isActive }: { isActive: boolean }) =>
   `flex flex-col items-center gap-0.5 rounded-xl px-3 py-1.5 text-xs font-semibold transition-colors md:flex-row md:gap-2 md:text-sm ${
@@ -21,6 +29,8 @@ const linkClass = ({ isActive }: { isActive: boolean }) =>
 
 export function Layout() {
   useApplySettings()
+  const sections = useSections()
+  const course = courseById(useProgress((s) => s.course))
   return (
     <div className="flex min-h-dvh flex-col">
       <a
@@ -31,10 +41,23 @@ export function Layout() {
       </a>
       <header className="sticky top-0 z-10 print:hidden border-b border-slate-200 bg-white/90 backdrop-blur dark:border-slate-800 dark:bg-slate-900/90">
         <div className="mx-auto flex h-14 max-w-5xl items-center justify-between px-4">
-          <Link to="/" className="flex items-center gap-2 text-lg font-extrabold text-ink dark:text-white">
-            <img src="/favicon.svg" alt="" className="h-8 w-8" />
-            Polylingual
-          </Link>
+          <div className="flex items-center gap-2">
+            <Link to="/" className="flex items-center gap-2 text-lg font-extrabold text-ink dark:text-white">
+              <img src="/favicon.svg" alt="" className="h-8 w-8" />
+              <span className="hidden sm:inline">Polylingual</span>
+            </Link>
+            <Link
+              to="/cursos"
+              title="Cambiar de curso"
+              className="flex items-center gap-1 rounded-full border border-slate-300 px-2.5 py-1 text-sm font-bold hover:bg-slate-100 dark:border-slate-700 dark:hover:bg-slate-800"
+            >
+              <span aria-hidden>{course.flag}</span>
+              {course.name}
+              <span className="text-slate-400" aria-hidden>
+                ▾
+              </span>
+            </Link>
+          </div>
           <nav className="hidden gap-1 md:flex">
             {sections.map((s) => (
               <NavLink key={s.to} to={s.to} end={s.to === '/'} className={linkClass}>
@@ -56,7 +79,9 @@ export function Layout() {
       <nav aria-label="Secciones" className="fixed inset-x-0 bottom-0 z-10 flex print:hidden justify-around border-t border-slate-200 bg-white pb-[env(safe-area-inset-bottom)] dark:border-slate-800 dark:bg-slate-900 md:hidden">
         {sections.map((s) => (
           <NavLink key={s.to} to={s.to} end={s.to === '/'} className={linkClass}>
-            <span className="font-jp text-lg leading-none">{s.glyph}</span>
+            <span className="text-lg leading-none" aria-hidden>
+              {s.icon}
+            </span>
             {s.label}
           </NavLink>
         ))}

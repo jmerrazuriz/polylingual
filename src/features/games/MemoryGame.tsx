@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import type { Kana } from '../../content/types'
+import type { Kana } from '../../courses/ja/types'
 import { useSpeech } from '../../lib/audio/useSpeech'
 import { buildMemoryCards } from '../../lib/pairs'
 import { formatSeconds, now, secondsSince } from '../../lib/time'

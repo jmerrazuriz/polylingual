@@ -1,5 +1,5 @@
 import { type ReactNode, useState } from 'react'
-import { useSearchParams } from 'react-router'
+import { Link, useSearchParams } from 'react-router'
 import { GroupPicker } from '../../components/GroupPicker'
 import { SaveProgressPrompt } from '../../components/SaveProgressPrompt'
 import {
@@ -111,6 +111,19 @@ function ReadingPractice({ tabs }: { tabs: ReactNode }) {
         <h1 className="text-2xl font-extrabold">Practicar lectura</h1>
         <p className="text-sm text-slate-500 dark:text-slate-400">Sesiones de 10 preguntas sobre los caracteres que elijas.</p>
       </header>
+
+      <Link
+        to="/repaso/debiles"
+        className="flex items-center gap-3 rounded-2xl border-2 border-dashed border-accent/40 p-3 hover:border-accent"
+      >
+        <span className="text-2xl" aria-hidden>
+          🎯
+        </span>
+        <span>
+          <span className="block font-extrabold">Repaso de puntos débiles</span>
+          <span className="text-sm text-slate-500 dark:text-slate-400">Lo que más te cuesta leer o escribir, en una sesión.</span>
+        </span>
+      </Link>
 
       <section className="flex flex-col gap-3 rounded-2xl border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900">
         <h2 className="font-extrabold">1. Caracteres</h2>

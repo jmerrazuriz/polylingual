@@ -1,4 +1,4 @@
-import { getStrokes } from '../../content/kana.ts'
+import { getStrokes } from '../../courses/ja/kana.ts'
 import { distance, length, meanDistance, pathToPoints, type Point, resample } from './geometry.ts'
 
 const SAMPLES = 32

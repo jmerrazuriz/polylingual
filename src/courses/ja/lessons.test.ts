@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { romajiOptions } from '../lib/quiz'
-import { wordsReadableWith } from '../lib/words'
+import { romajiOptions } from '../../lib/quiz'
+import { wordsReadableWith } from '../../lib/words'
 import { hiragana, kanaByChar } from './kana'
 import { hiraganaLessons, learnedThrough } from './lessons'
 

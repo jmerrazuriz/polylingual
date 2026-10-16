@@ -1,7 +1,7 @@
 import { create } from 'zustand'
-import { kanaByChar } from '../../content/kana'
-import { lessons } from '../../content/lessons'
-import type { Kana } from '../../content/types'
+import { kanaByChar } from '../../courses/ja/kana'
+import { lessons } from '../../courses/ja/lessons'
+import type { Kana } from '../../courses/ja/types'
 import { useAccount } from '../../lib/account/store'
 import { useUnlockedLessons } from '../../lib/progress/unlock'
 

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { learnedThrough } from '../../content/lessons'
+import { learnedThrough } from '../../courses/ja/lessons'
 import { buildReview, describeDue, dueNowCount } from '../review'
 import { emptyProgress, mergeProgress, parseProgress } from './model'
 import { cardId, dueCards, endOfDay, gradeForReading, gradeForWriting, newCard, nextDue, review } from './srs'

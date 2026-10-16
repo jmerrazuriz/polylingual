@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { type WritingHelp, WritingCanvas } from '../../components/WritingCanvas'
-import { kanaByChar } from '../../content/kana'
+import { kanaByChar } from '../../courses/ja/kana'
 import { useSpeech } from '../../lib/audio/useSpeech'
 import { useProgress } from '../../lib/progress/store'
 import { scoreFromMistakes } from '../../lib/strokes/evaluate'

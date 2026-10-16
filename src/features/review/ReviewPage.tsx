@@ -5,22 +5,17 @@ import { nextDue } from '../../lib/progress/srs'
 import { useProgress } from '../../lib/progress/store'
 import { buildReview, describeDue } from '../../lib/review'
 import { now } from '../../lib/time'
-import { type Answer, ReadingSession } from '../practice/ReadingSession'
-import { type WritingResult, WritingSession } from '../practice/WritingSession'
-
-type Phase = 'reading' | 'writing' | 'done'
+import { summarize } from '../../lib/sessionSummary'
+import { type MixedResult, MixedSession } from '../practice/MixedSession'
+import { ResultStats } from './ResultStats'
 
 export function ReviewPage() {
   // El plan se arma una vez al entrar: las respuestas reprograman las tarjetas mientras se repasa.
   const [plan] = useState(() => buildReview(useProgress.getState().cards, now()))
-  const [phase, setPhase] = useState<Phase>(plan.reading.length ? 'reading' : plan.writing.length ? 'writing' : 'done')
-  const [reading, setReading] = useState<Answer[]>([])
-  const [writing, setWriting] = useState<WritingResult[]>([])
+  const [result, setResult] = useState<MixedResult | null>(null)
   const cards = useProgress((s) => s.cards)
 
-  const total = plan.reading.length + plan.writing.length
-
-  if (total === 0) {
+  if (plan.reading.length + plan.writing.length === 0) {
     const next = nextDue(cards, now())
     return (
       <section className="mx-auto flex max-w-md flex-col items-center gap-4 py-12 text-center">
@@ -40,64 +35,25 @@ export function ReviewPage() {
     )
   }
 
-  if (phase === 'reading') {
+  if (!result) {
     return (
-      <div className="flex flex-col gap-3">
-        <PhaseTitle text={`Repaso de lectura · ${plan.reading.length}`} />
-        <ReadingSession
-          questions={plan.reading}
-          onFinish={(answers) => {
-            setReading(answers)
-            setPhase(plan.writing.length ? 'writing' : 'done')
-          }}
-        />
-      </div>
+      <MixedSession
+        reading={plan.reading}
+        writing={plan.writing}
+        labels={{ reading: 'Repaso de lectura', writing: 'Repaso de escritura' }}
+        onFinish={setResult}
+      />
     )
   }
 
-  if (phase === 'writing') {
-    return (
-      <div className="flex flex-col gap-3">
-        <PhaseTitle text={`Repaso de escritura · ${plan.writing.length}`} />
-        <WritingSession
-          items={plan.writing}
-          help="memory"
-          onFinish={(results) => {
-            setWriting(results)
-            setPhase('done')
-          }}
-        />
-      </div>
-    )
-  }
-
-  const readOk = reading.filter((a) => a.correct).length
-  const stars = writing.filter((w) => w.score !== null)
-  const avg = stars.length ? stars.reduce((n, w) => n + w.score!, 0) / stars.length : null
   const next = nextDue(cards, now())
-
   return (
     <section className="mx-auto flex max-w-md flex-col items-center gap-4 py-8 text-center">
       <span className="text-6xl" aria-hidden>
         ✅
       </span>
       <h1 className="text-2xl font-extrabold">Repaso terminado</h1>
-      <dl className="grid w-full grid-cols-2 gap-2">
-        {reading.length > 0 && (
-          <div className="rounded-2xl border border-slate-200 bg-white p-3 dark:border-slate-800 dark:bg-slate-900">
-            <dt className="text-xs font-bold text-slate-500 uppercase">Lectura</dt>
-            <dd className="text-2xl font-extrabold">
-              {readOk}/{reading.length}
-            </dd>
-          </div>
-        )}
-        {avg !== null && (
-          <div className="rounded-2xl border border-slate-200 bg-white p-3 dark:border-slate-800 dark:bg-slate-900">
-            <dt className="text-xs font-bold text-slate-500 uppercase">Escritura</dt>
-            <dd className="text-2xl font-extrabold">{avg.toFixed(1)} ★</dd>
-          </div>
-        )}
-      </dl>
+      <ResultStats summary={summarize(result)} />
       {next && <p className="text-sm text-slate-500">Tu próximo repaso es {describeDue(next, now())}.</p>}
       <SaveProgressPrompt />
       <Link to="/" className="rounded-full bg-ink px-6 py-3 font-bold text-white hover:opacity-90">
@@ -105,8 +61,4 @@ export function ReviewPage() {
       </Link>
     </section>
   )
-}
-
-function PhaseTitle({ text }: { text: string }) {
-  return <p className="text-center text-sm font-extrabold text-slate-500 uppercase">{text}</p>
 }

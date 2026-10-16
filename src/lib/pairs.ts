@@ -1,5 +1,5 @@
-import { counterpart } from '../content/kana.ts'
-import type { Kana, Word } from '../content/types.ts'
+import { counterpart } from '../courses/ja/kana.ts'
+import type { Kana, Word } from '../courses/ja/types.ts'
 import { shuffle } from './random.ts'
 import { wordRomaji } from './words.ts'
 

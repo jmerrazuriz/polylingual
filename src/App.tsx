@@ -3,7 +3,11 @@ import { Route, Routes } from 'react-router'
 import { ComingSoon } from './components/ComingSoon'
 import { Layout } from './components/Layout'
 import { ChartPage } from './features/chart/ChartPage'
+import { CoursesPage } from './features/courses/CoursesPage'
+import { DailyPage } from './features/daily/DailyPage'
 import { GamesPage } from './features/games/GamesPage'
+import { GrammarLessonRoute } from './features/grammar/GrammarLessonPage'
+import { GrammarPage } from './features/grammar/GrammarPage'
 import { HomePage } from './features/home/HomePage'
 import { LearnPage } from './features/learn/LearnPage'
 import { LessonRoute } from './features/learn/LessonPage'
@@ -11,6 +15,8 @@ import { PlacementPage } from './features/learn/PlacementPage'
 import { PracticePage } from './features/practice/PracticePage'
 import { ProgressPage } from './features/progress/ProgressPage'
 import { ReviewPage } from './features/review/ReviewPage'
+import { UnitReviewRoute } from './features/review/UnitReviewPage'
+import { WeakReviewPage } from './features/review/WeakReviewPage'
 
 // Las páginas de cuenta usan Firebase Auth: se cargan solo al visitarlas.
 const LoginPage = lazy(() => import('./features/account/LoginPage').then((m) => ({ default: m.LoginPage })))
@@ -22,13 +28,19 @@ export default function App() {
     <Routes>
       <Route element={<Layout />}>
         <Route index element={<HomePage />} />
+        <Route path="cursos" element={<CoursesPage />} />
+        <Route path="hoy" element={<DailyPage />} />
         <Route path="tabla" element={<ChartPage />} />
         <Route path="aprender" element={<LearnPage />} />
         <Route path="aprender/:lessonId" element={<LessonRoute />} />
         <Route path="test-de-nivel" element={<PlacementPage />} />
+        <Route path="gramatica" element={<GrammarPage />} />
+        <Route path="gramatica/:lessonId" element={<GrammarLessonRoute />} />
         <Route path="practicar" element={<PracticePage />} />
         <Route path="juegos" element={<GamesPage />} />
         <Route path="repasar" element={<ReviewPage />} />
+        <Route path="repaso/unidad/:unitId" element={<UnitReviewRoute />} />
+        <Route path="repaso/debiles" element={<WeakReviewPage />} />
         <Route path="progreso" element={<ProgressPage />} />
         <Route path="entrar" element={<Suspense fallback={loading}><LoginPage /></Suspense>} />
         <Route path="perfil" element={<Suspense fallback={loading}><ProfilePage /></Suspense>} />

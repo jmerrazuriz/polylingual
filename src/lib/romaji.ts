@@ -1,6 +1,6 @@
-import { hiraganaInfo, smallHiragana } from '../content/hiragana.ts'
-import { katakanaInfo, LONG_VOWEL, smallKatakana } from '../content/katakana.ts'
-import type { KanaInfo } from '../content/types.ts'
+import { hiraganaInfo, smallHiragana } from '../courses/ja/hiragana.ts'
+import { katakanaInfo, LONG_VOWEL, smallKatakana } from '../courses/ja/katakana.ts'
+import type { KanaInfo } from '../courses/ja/types.ts'
 
 const infoEntries = (info: Record<string, KanaInfo>) =>
   Object.entries(info).map(([char, i]): [string, string[]] => [char, [i.romaji, ...(i.variants ?? [])]])

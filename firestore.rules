@@ -15,7 +15,8 @@ service cloud.firestore {
       let data = request.resource.data;
       return data.keys().hasOnly(['progress', 'version', 'updatedAt'])
         && data.progress is map
-        && data.progress.keys().hasOnly(['lessons', 'records', 'kana', 'cards', 'unlockAll', 'activity', 'achievements', 'settings'])
+        && data.progress.keys().hasOnly(['settings', 'activity', 'achievements', 'course', 'courses'])
+        && data.progress.courses is map
         && data.version is int
         && data.updatedAt == request.time;
     }

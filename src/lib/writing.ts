@@ -1,4 +1,4 @@
-import type { Kana } from '../content/types.ts'
+import type { Kana } from '../courses/ja/types.ts'
 import { wordsForPool } from './quiz.ts'
 import { shuffle } from './random.ts'
 import { wordRomaji } from './words.ts'

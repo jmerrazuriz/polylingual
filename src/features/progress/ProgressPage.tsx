@@ -1,7 +1,7 @@
 import { Link } from 'react-router'
-import { allKana, hiragana, katakana } from '../../content/kana'
-import { lessonsByScript } from '../../content/lessons'
-import type { Kana } from '../../content/types'
+import { allKana, hiragana, katakana } from '../../courses/ja/kana'
+import { lessonsByScript } from '../../courses/ja/lessons'
+import type { Kana } from '../../courses/ja/types'
 import { achievements } from '../../lib/progress/achievements'
 import { currentStreak, dayKey, daysBefore, longestStreak, readingMastery } from '../../lib/progress/model'
 import { useProgress } from '../../lib/progress/store'
@@ -97,9 +97,11 @@ export function ProgressPage() {
             ))}
           </ul>
         )}
-        <Link to="/practicar" className="self-start text-sm font-bold text-accent hover:underline">
-          Practicar ahora →
-        </Link>
+        {hardest.length > 0 && (
+          <Link to="/repaso/debiles" className="self-start rounded-full bg-ink px-5 py-2 text-sm font-bold text-white hover:opacity-90">
+            Repasar mis puntos débiles →
+          </Link>
+        )}
       </section>
 
       <section className="flex flex-col gap-2">

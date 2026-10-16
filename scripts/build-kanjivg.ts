@@ -1,5 +1,5 @@
-// Descarga los trazos de KanjiVG para cada kana y genera src/content/strokes/<script>.json.
-// Uso: npm run data:strokes
+// Descarga los trazos de KanjiVG para cada kana y genera src/courses/ja/strokes/<script>.json.
+// Uso: npm run data:strokes  (genera src/courses/ja/strokes/*.json)
 //
 // KanjiVG (https://kanjivg.tagaini.net) © Ulrich Apel, CC BY-SA 3.0.
 // Los archivos descargados quedan en scripts/.cache (ignorado por git).
@@ -7,16 +7,16 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { hiraganaInfo, smallHiragana } from '../src/content/hiragana.ts'
-import { katakanaInfo, LONG_VOWEL, smallKatakana } from '../src/content/katakana.ts'
-import type { StrokeData } from '../src/content/types.ts'
+import { hiraganaInfo, smallHiragana } from '../src/courses/ja/hiragana.ts'
+import { katakanaInfo, LONG_VOWEL, smallKatakana } from '../src/courses/ja/katakana.ts'
+import type { StrokeData } from '../src/courses/ja/types.ts'
 
 const KANJIVG_TAG = 'r20260714'
 const BASE_URL = `https://raw.githubusercontent.com/KanjiVG/kanjivg/${KANJIVG_TAG}/kanji`
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..')
 const cacheDir = join(root, 'scripts', '.cache', 'kanjivg', KANJIVG_TAG)
-const outDir = join(root, 'src', 'content', 'strokes')
+const outDir = join(root, 'src', 'courses', 'ja', 'strokes')
 
 const fileName = (char: string) => char.codePointAt(0)!.toString(16).padStart(5, '0') + '.svg'
 

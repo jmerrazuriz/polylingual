@@ -1,5 +1,7 @@
 import { Link } from 'react-router'
-import { lessons as allLessons } from '../../content/lessons'
+import { courseById } from '../../courses'
+import { isDailyComplete } from '../../lib/daily'
+import { lessons as allLessons } from '../../courses/ja/lessons'
 import { nextDue } from '../../lib/progress/srs'
 import { useProgress } from '../../lib/progress/store'
 import { useUnlockedLessons } from '../../lib/progress/unlock'
@@ -11,11 +13,13 @@ import { now } from '../../lib/time'
 const features = [
   { to: '/tabla', glyph: 'あ', title: 'Tabla rápida', text: 'Todos los caracteres de un vistazo.' },
   { to: '/aprender', glyph: '学', title: 'Aprender', text: 'Lecciones con orden de trazos y palabras.' },
+  { to: '/gramatica', glyph: '文', title: 'Gramática', text: 'Partículas y frases básicas con ejercicios.' },
   { to: '/practicar', glyph: '書', title: 'Practicar', text: 'Lee y escribe con el dedo, con corrección.' },
   { to: '/juegos', glyph: '遊', title: 'Juegos', text: 'Une parejas de caracteres y palabras.' },
 ]
 
 export function HomePage() {
+  const course = courseById(useProgress((s) => s.course))
   return (
     <div className="flex flex-col gap-10">
       <section className="flex flex-col items-center gap-4 pt-6 text-center">
@@ -23,13 +27,15 @@ export function HomePage() {
           <span className="text-ink dark:text-white">あ</span>
           <span className="text-accent">ア</span>
         </div>
-        <h1 className="text-3xl font-extrabold md:text-4xl">Aprende hiragana y katakana</h1>
+        <h1 className="text-3xl font-extrabold md:text-4xl">
+          {course.flag} {course.name}
+        </h1>
         <p className="max-w-md text-slate-600 dark:text-slate-400">
-          Lee, escribe y juega con los silabarios japoneses. Tu progreso te acompaña en cualquier
-          dispositivo.
+          {course.tagline} Tu progreso te acompaña en cualquier dispositivo.
         </p>
       </section>
 
+      <DailyCard />
       <DailyStrip />
       <TodayCard />
 
@@ -127,6 +133,33 @@ function DailyStrip() {
       <span className="text-slate-400" aria-hidden>
         →
       </span>
+    </Link>
+  )
+}
+
+/** Lección del día: el punto de partida de cada visita. */
+function DailyCard() {
+  const record = useProgress((s) => s.daily[dayKey(now())])
+  const done = isDailyComplete(record)
+  const progress = record && record.steps.length ? `${record.done.filter((d) => record.steps.includes(d)).length}/${record.steps.length} pasos` : null
+
+  return (
+    <Link
+      to="/hoy"
+      className={`-mb-6 flex items-center gap-4 rounded-2xl p-5 transition hover:-translate-y-0.5 hover:shadow-lg ${
+        done ? 'border-2 border-emerald-400 bg-emerald-50 dark:bg-emerald-950/40' : 'bg-accent text-white'
+      }`}
+    >
+      <span className="text-4xl" aria-hidden>
+        {done ? '✅' : '☀️'}
+      </span>
+      <span className="flex-1">
+        <span className="block text-lg font-extrabold">{done ? 'Lección de hoy completada' : 'Lección de hoy'}</span>
+        <span className={`text-sm ${done ? 'text-slate-600 dark:text-slate-300' : 'opacity-90'}`}>
+          {done ? 'Vuelve mañana por una nueva.' : progress ? `Vas en ${progress}.` : 'Repasos, algo nuevo y un juego: unos 10 minutos.'}
+        </span>
+      </span>
+      {!done && <span className="rounded-full bg-white px-4 py-2 font-bold text-accent">{progress ? 'Seguir' : 'Empezar'}</span>}
     </Link>
   )
 }

@@ -1,5 +1,5 @@
-import { lessonsByScript } from '../content/lessons'
-import type { KanaGroup, Script } from '../content/types'
+import { lessonsByScript } from '../courses/ja/lessons'
+import type { KanaGroup, Script } from '../courses/ja/types'
 
 const groupTitles: Record<KanaGroup, string> = {
   basic: 'Básicos',

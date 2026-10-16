@@ -3,9 +3,9 @@ import { Link, useParams } from 'react-router'
 import { ComingSoon } from '../../components/ComingSoon'
 import { KanaCard } from '../../components/KanaCard'
 import { SaveProgressPrompt } from '../../components/SaveProgressPrompt'
-import { kanaByChar } from '../../content/kana'
-import { learnedThrough, type Lesson, lessons, lessonsByScript } from '../../content/lessons'
-import type { Kana, Word } from '../../content/types'
+import { kanaByChar } from '../../courses/ja/kana'
+import { learnedThrough, type Lesson, lessons, lessonsByScript } from '../../courses/ja/lessons'
+import type { Kana, Word } from '../../courses/ja/types'
 import { useSpeech } from '../../lib/audio/useSpeech'
 import { syllables } from '../../lib/romaji'
 import { wordRomaji, wordsReadableWith } from '../../lib/words'
@@ -43,7 +43,8 @@ export function LessonRoute() {
   return <LessonPage key={lesson.id} lesson={lesson} />
 }
 
-function LessonPage({ lesson }: { lesson: Lesson }) {
+/** `onFinish`: dentro de la lección del día, se avisa al terminar en vez de mostrar el cierre. */
+export function LessonPage({ lesson, onFinish }: { lesson: Lesson; onFinish?: () => void }) {
   const index = lessonsByScript[lesson.script].indexOf(lesson)
   // Después de la última lección de hiragana sigue la primera de katakana.
   const nextLesson = lessons[lessons.indexOf(lesson) + 1]
@@ -70,7 +71,8 @@ function LessonPage({ lesson }: { lesson: Lesson }) {
 
   const finishQuiz = (correct: number, total: number) => {
     complete(lesson.id, correct, total, lesson.chars)
-    setResult({ correct, total })
+    if (onFinish) onFinish()
+    else setResult({ correct, total })
   }
 
   return (

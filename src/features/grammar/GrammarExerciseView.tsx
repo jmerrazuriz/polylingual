@@ -1,0 +1,197 @@
+import { useState } from 'react'
+import type { GrammarExercise } from '../../courses/grammar'
+import { useSpeech } from '../../lib/audio/useSpeech'
+import { shuffle } from '../../lib/random'
+
+const KANA = /[぀-ヿ]/
+const jpClass = (text: string) => (KANA.test(text) ? 'font-jp' : '')
+
+type Props = {
+  exercise: GrammarExercise
+  onDone: (correct: boolean) => void
+}
+
+/** Un ejercicio de gramática con su corrección. Se avanza con «Siguiente». */
+export function GrammarExerciseView({ exercise, onDone }: Props) {
+  const [result, setResult] = useState<boolean | null>(null)
+  const { speak } = useSpeech()
+
+  const check = (correct: boolean, spoken: string) => {
+    setResult(correct)
+    speak(spoken)
+  }
+
+  return (
+    <div className="flex flex-col gap-5">
+      {exercise.type === 'choice' && <Choice exercise={exercise} result={result} onAnswer={(ok) => check(ok, exercise.prompt.replace('＿', exercise.answer))} />}
+      {exercise.type === 'meaning' && <Meaning exercise={exercise} result={result} onAnswer={(ok) => check(ok, exercise.text)} />}
+      {exercise.type === 'order' && <Order exercise={exercise} result={result} onAnswer={(ok) => check(ok, exercise.answer.join(' '))} />}
+
+      {result !== null && (
+        <div
+          role="status"
+          className={`flex flex-col gap-1 rounded-2xl p-3 text-sm ${
+            result
+              ? 'bg-emerald-50 text-emerald-900 dark:bg-emerald-950/50 dark:text-emerald-200'
+              : 'bg-red-50 text-red-900 dark:bg-red-950/50 dark:text-red-200'
+          }`}
+        >
+          <p className="font-extrabold">{result ? '✓ ¡Correcto!' : '✗ No es correcto'}</p>
+          {!result && <p>La respuesta es: <Answer exercise={exercise} /></p>}
+          {exercise.type === 'choice' && exercise.explanation && <p>💡 {exercise.explanation}</p>}
+        </div>
+      )}
+
+      {result !== null && (
+        <button onClick={() => onDone(result)} autoFocus className="self-center rounded-full bg-ink px-8 py-3 font-bold text-white hover:opacity-90">
+          Siguiente
+        </button>
+      )}
+    </div>
+  )
+}
+
+function Answer({ exercise }: { exercise: GrammarExercise }) {
+  const text = exercise.type === 'order' ? exercise.answer.join(' ') : exercise.answer
+  return <span className={`font-bold ${jpClass(text)}`}>{text}</span>
+}
+
+const optionClass = (state: 'idle' | 'right' | 'wrong' | 'faded') =>
+  `rounded-2xl border-2 px-3 py-3 text-lg font-bold transition ${
+    state === 'right'
+      ? 'border-emerald-500 bg-emerald-50 text-emerald-900 dark:bg-emerald-950 dark:text-emerald-200'
+      : state === 'wrong'
+        ? 'border-red-500 bg-red-50 text-red-900 dark:bg-red-950 dark:text-red-200'
+        : state === 'faded'
+          ? 'border-slate-200 bg-white opacity-50 dark:border-slate-800 dark:bg-slate-900'
+          : 'border-slate-200 bg-white hover:border-accent dark:border-slate-800 dark:bg-slate-900'
+  }`
+
+function Options(props: { options: string[]; answer: string; result: boolean | null; onAnswer: (ok: boolean) => void }) {
+  const { answer, result, onAnswer } = props
+  const [options] = useState(() => shuffle(props.options))
+  const [picked, setPicked] = useState<string | null>(null)
+  return (
+    <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+      {options.map((o) => {
+        const state = result === null ? 'idle' : o === answer ? 'right' : o === picked ? 'wrong' : 'faded'
+        return (
+          <button
+            key={o}
+            disabled={result !== null}
+            onClick={() => {
+              setPicked(o)
+              onAnswer(o === answer)
+            }}
+            className={`${optionClass(state)} ${jpClass(o)}`}
+          >
+            {state === 'right' && '✓ '}
+            {state === 'wrong' && '✗ '}
+            {o}
+          </button>
+        )
+      })}
+    </div>
+  )
+}
+
+function Choice({ exercise, result, onAnswer }: { exercise: Extract<GrammarExercise, { type: 'choice' }>; result: boolean | null; onAnswer: (ok: boolean) => void }) {
+  const [before, after] = exercise.prompt.split('＿')
+  const isBlank = after !== undefined
+  return (
+    <>
+      <p className="text-sm font-bold text-slate-500 uppercase">{isBlank ? 'Completa la frase' : 'Elige la respuesta'}</p>
+      <p className={`text-2xl font-bold ${jpClass(exercise.prompt)}`}>
+        {isBlank ? (
+          <>
+            {before}
+            <span className="mx-1 inline-block min-w-12 border-b-4 border-accent text-center text-accent">
+              {result !== null ? exercise.answer : ' '}
+            </span>
+            {after}
+          </>
+        ) : (
+          exercise.prompt
+        )}
+      </p>
+      {exercise.hint && <p className="text-slate-500">«{exercise.hint}»</p>}
+      <Options options={exercise.options} answer={exercise.answer} result={result} onAnswer={onAnswer} />
+    </>
+  )
+}
+
+function Meaning({ exercise, result, onAnswer }: { exercise: Extract<GrammarExercise, { type: 'meaning' }>; result: boolean | null; onAnswer: (ok: boolean) => void }) {
+  return (
+    <>
+      <p className="text-sm font-bold text-slate-500 uppercase">¿Qué significa?</p>
+      <p lang="ja" className="font-jp text-2xl font-bold">
+        {exercise.text}
+      </p>
+      <Options options={exercise.options} answer={exercise.answer} result={result} onAnswer={onAnswer} />
+    </>
+  )
+}
+
+/** Ordenar palabras: se tocan en la bolsa para agregarlas y en la frase para quitarlas. */
+function Order({ exercise, result, onAnswer }: { exercise: Extract<GrammarExercise, { type: 'order' }>; result: boolean | null; onAnswer: (ok: boolean) => void }) {
+  const [bank] = useState(() => {
+    // Desordenadas, pero nunca ya en el orden correcto.
+    let tiles = shuffle(exercise.answer.map((word, i) => ({ word, i })))
+    if (tiles.every((t, k) => t.i === k) && tiles.length > 1) tiles = [...tiles.slice(1), tiles[0]]
+    return tiles
+  })
+  const [chosen, setChosen] = useState<number[]>([])
+  const done = result !== null
+
+  return (
+    <>
+      <p className="text-sm font-bold text-slate-500 uppercase">Ordena las palabras</p>
+      <p className="text-lg">«{exercise.meaning}»</p>
+      <div
+        aria-label="Tu frase"
+        className={`flex min-h-16 flex-wrap items-center gap-2 rounded-2xl border-2 border-dashed p-3 ${
+          done ? (result ? 'border-emerald-500' : 'border-red-500') : 'border-slate-300 dark:border-slate-700'
+        }`}
+      >
+        {chosen.length === 0 && <span className="text-sm text-slate-400">Toca las palabras en orden…</span>}
+        {chosen.map((tileIndex) => (
+          <button
+            key={tileIndex}
+            disabled={done}
+            onClick={() => setChosen(chosen.filter((c) => c !== tileIndex))}
+            className="rounded-xl bg-ink px-3 py-2 font-jp text-lg text-white"
+          >
+            {bank[tileIndex].word}
+          </button>
+        ))}
+      </div>
+      <div className="flex flex-wrap gap-2">
+        {bank.map((tile, tileIndex) =>
+          chosen.includes(tileIndex) ? (
+            <span key={tileIndex} className="rounded-xl border-2 border-dashed border-slate-200 px-3 py-2 font-jp text-lg text-transparent dark:border-slate-800">
+              {tile.word}
+            </span>
+          ) : (
+            <button
+              key={tileIndex}
+              disabled={done}
+              onClick={() => setChosen([...chosen, tileIndex])}
+              className="rounded-xl border-2 border-slate-200 bg-white px-3 py-2 font-jp text-lg hover:border-accent dark:border-slate-800 dark:bg-slate-900"
+            >
+              {tile.word}
+            </button>
+          ),
+        )}
+      </div>
+      {!done && (
+        <button
+          disabled={chosen.length !== bank.length}
+          onClick={() => onAnswer(chosen.map((c) => bank[c].word).join(' ') === exercise.answer.join(' '))}
+          className="self-center rounded-full bg-ink px-8 py-3 font-bold text-white disabled:opacity-40"
+        >
+          Comprobar
+        </button>
+      )}
+    </>
+  )
+}

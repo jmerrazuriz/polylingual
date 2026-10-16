@@ -1,5 +1,5 @@
-import type { Word } from '../content/types.ts'
-import { allWords } from '../content/words.ts'
+import type { Word } from '../courses/ja/types.ts'
+import { allWords } from '../courses/ja/words.ts'
 import { romajiReadings, syllables, toRomaji } from './romaji.ts'
 
 export function wordRomaji(word: Word): string {

@@ -1,5 +1,5 @@
-import { hiragana, kanaByChar } from '../content/kana.ts'
-import type { Kana } from '../content/types.ts'
+import { hiragana, kanaByChar } from '../courses/ja/kana.ts'
+import type { Kana } from '../courses/ja/types.ts'
 import { dueCards, endOfDay, parseCardId, type SrsCard } from './progress/srs.ts'
 import { type Question, romajiOptions } from './quiz.ts'
 import type { WritingItem } from './writing.ts'

@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { counterpart, getStrokes } from '../content/kana'
-import type { Kana, Word } from '../content/types'
+import { counterpart, getStrokes } from '../courses/ja/kana'
+import type { Kana, Word } from '../courses/ja/types'
 import { useSpeech } from '../lib/audio/useSpeech'
 import { wordRomaji } from '../lib/words'
 import { StrokeAnimation } from './StrokeAnimation'

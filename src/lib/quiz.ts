@@ -1,7 +1,7 @@
-import { hiraganaConfusables } from '../content/hiragana.ts'
-import { allKana, kanaByChar } from '../content/kana.ts'
-import { katakanaConfusables, LONG_VOWEL } from '../content/katakana.ts'
-import type { Kana, Word } from '../content/types.ts'
+import { hiraganaConfusables } from '../courses/ja/hiragana.ts'
+import { allKana, kanaByChar } from '../courses/ja/kana.ts'
+import { katakanaConfusables, LONG_VOWEL } from '../courses/ja/katakana.ts'
+import type { Kana, Word } from '../courses/ja/types.ts'
 import { shuffle } from './random.ts'
 import { wordRomaji, wordsReadableWith } from './words.ts'
 

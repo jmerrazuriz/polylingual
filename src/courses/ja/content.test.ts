@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { toRomaji } from '../lib/romaji'
+import { toRomaji } from '../../lib/romaji'
 import { hiraganaChart, hiraganaInfo } from './hiragana'
 import { getStrokes, hiragana } from './kana'
 import { hiraganaWords } from './words'

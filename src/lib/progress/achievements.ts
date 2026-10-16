@@ -1,7 +1,7 @@
-import { allKana } from '../../content/kana.ts'
-import { lessonsByScript } from '../../content/lessons.ts'
-import type { KanaGroup, Script } from '../../content/types.ts'
-import { currentStreak, longestStreak, type ProgressData, readingMastery } from './model.ts'
+import { allKana } from '../../courses/ja/kana.ts'
+import { lessonsByScript } from '../../courses/ja/lessons.ts'
+import type { KanaGroup, Script } from '../../courses/ja/types.ts'
+import { currentStreak, type DailyRecord, longestStreak, type ProgressData, readingMastery } from './model.ts'
 
 export type Achievement = {
   id: string
@@ -15,6 +15,9 @@ const lessonsDone = (p: ProgressData, script: Script, group?: KanaGroup) =>
   lessonsByScript[script].filter((l) => !group || l.group === group).every((l) => p.lessons[l.id])
 
 const masteredCount = (p: ProgressData) => allKana.filter((k) => readingMastery(p.kana[k.char]) === 'mastered').length
+
+// Copia local de isDailyComplete (lib/daily importa contenido y crearía un ciclo).
+const isDailyComplete = (r: DailyRecord) => r.steps.length > 0 && r.steps.every((s) => r.done.includes(s))
 
 const streakAtLeast = (p: ProgressData, now: number, days: number) =>
   Math.max(currentStreak(p.activity, now), longestStreak(p.activity)) >= days
@@ -51,6 +54,20 @@ export const achievements: Achievement[] = [
     title: 'Constancia',
     description: 'Haz 100 repasos de tarjetas.',
     check: (p) => Object.values(p.cards).reduce((n, c) => n + c.reps, 0) >= 100,
+  },
+  {
+    id: 'diaria-1',
+    icon: '☀️',
+    title: 'Buenos días',
+    description: 'Completa tu primera lección del día.',
+    check: (p) => Object.values(p.daily).some(isDailyComplete),
+  },
+  {
+    id: 'diaria-7',
+    icon: '🗓️',
+    title: 'Semana completa',
+    description: 'Completa 7 lecciones del día.',
+    check: (p) => Object.values(p.daily).filter(isDailyComplete).length >= 7,
   },
   { id: 'primer-record', icon: '🏆', title: 'Récord', description: 'Consigue un récord en cualquier juego.', check: (p) => Object.keys(p.records).length > 0 },
 ]

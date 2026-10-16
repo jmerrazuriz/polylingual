@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { GroupPicker } from '../../components/GroupPicker'
-import type { Kana, Word } from '../../content/types'
+import type { Kana, Word } from '../../courses/ja/types'
 import { useSpeech } from '../../lib/audio/useSpeech'
 import { kanaPairItems, type PairItem, scriptPairItems, uniqueByRomaji, uniquePairs, wordPairItems } from '../../lib/pairs'
 import { recordKey } from '../../lib/progress/model'

@@ -309,7 +309,25 @@ app_idiomas/
   - **Accesibilidad:** enlace «Saltar al contenido», foco visible, `lang="ja"` en los kana y avisos con `aria-live`.
   - **Impresión:** la tabla imprime todos los grupos del silabario elegido en A4.
 
-**Las 8 fases de la v1 están completas.** Quedan como ideas para después (sección 9): tarjetas SRS de palabras, temas de palabras en los juegos, pares confusos juntos en los juegos, kanji, frases con furigana y evaluación de pronunciación.
+**Las 8 fases de la v1 están completas.**
+
+### v2: lección del día, repasos, gramática y cursos
+- ✅ **Cursos (multi-idioma):**
+  - Registro en `src/courses/index.ts` con japonés disponible e italiano, alemán y francés como «Próximamente».
+  - Selector en `/cursos` y la bandera del curso en la cabecera.
+  - Cada curso declara sus secciones. El contenido japonés vive en `src/courses/ja/` y los tipos de gramática (`src/courses/grammar.ts`) sirven para cualquier idioma.
+- ✅ **Progreso por curso:**
+  - Firestore guarda `{ settings, activity, achievements, course, courses: { ja: … } }`. La racha y los ajustes son globales; las lecciones, tarjetas y estadísticas van por curso.
+  - Se lee el formato anterior, así que lo guardado antes queda como progreso de japonés.
+- ✅ **Lección del día (`/hoy`):** se arma una vez por día con repasos vencidos (hasta 8) o puntos débiles, algo nuevo (la siguiente lección), la siguiente gramática y un mini juego. Es la tarjeta principal del inicio, avisa al completarla y tiene 2 logros nuevos.
+- ✅ **Lecciones de repaso:**
+  - **Por unidad:** al final de cada bloque de lecciones; mezcla lectura, palabras y escritura, y se aprueba con 80 %.
+  - **De puntos débiles (`/repaso/debiles`):** lo que más se falla al leer o escribir.
+- ✅ **Gramática (`/gramatica`, pestaña en Aprender):**
+  - 11 lecciones en kana: です, は, か, の, これ/それ/あれ, も, を + ます, に/へ, で, adjetivos い/な y あります/います.
+  - Cada una tiene explicación, ejemplos con romaji y audio, y ejercicios de completar, significado y ordenar palabras.
+  - Se abre tras los básicos del hiragana.
+- **Para agregar un idioma:** crear `src/courses/<id>/` con su contenido, registrar la gramática en `src/courses/content.ts`, cambiar su `status` a `available` y darle sus secciones. Las lecciones de vocabulario para idiomas sin silabario propio son lo siguiente a diseñar. Quedan como ideas para después (sección 9): tarjetas SRS de palabras, temas de palabras en los juegos, pares confusos juntos en los juegos, kanji, frases con furigana y evaluación de pronunciación.
 
 **Hiragana primero:** las fases 1 a 6 se construyen solo con hiragana. El código se escribe desde el principio para cualquier silabario (el campo `script` en los datos), así que katakana entra en la fase 7 casi solo como contenido.
 

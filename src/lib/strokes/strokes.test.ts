@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { allKana } from '../../content/kana'
+import { allKana } from '../../courses/ja/kana'
 import { checkStroke, expectedStrokes, matchStroke, scoreFromMistakes } from './evaluate'
 import { length, pathToPoints, type Point, resample } from './geometry'
 

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { KanaCard } from '../../components/KanaCard'
-import type { Kana } from '../../content/types'
+import type { Kana } from '../../courses/ja/types'
 import { wordsContaining } from '../../lib/words'
 
 type Props = {
