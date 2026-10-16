@@ -14,7 +14,8 @@ import {
   type ProgressData,
   type Settings,
 } from './model.ts'
-import { cardId, gradeForReading, gradeForWriting, newCard, review } from './srs.ts'
+import type { PlacementResult } from '../pathPlacement.ts'
+import { cardId, gradeForReading, gradeForWriting, knownCard, newCard, review } from './srs.ts'
 
 type ProgressActions = {
   /** Guarda el resultado y agrega a los repasos los caracteres de la lección (`chars`). */
@@ -29,6 +30,8 @@ type ProgressActions = {
   /** Marca logros como obtenidos (los que ya estaban no cambian). */
   unlockAchievements: (ids: readonly string[], time: number) => void
   completeGrammar: (lessonId: string, correct: number, total: number) => void
+  /** Test de nivelación: marca todo como hecho; las tarjetas nuevas entran como ya sabidas. */
+  applyPlacement: (result: PlacementResult) => void
   completeUnit: (unitId: string, correct: number, total: number) => void
   /** Crea o actualiza la lección de un día (qué toca y qué pasos se hicieron). */
   updateDaily: (day: string, update: (record: DailyRecord) => DailyRecord) => void
@@ -110,6 +113,24 @@ export const useProgress = create<ProgressData & ProgressActions>((set, get) => 
     set((s) =>
       isBetterLesson({ correct, total }, s.grammar[lessonId]) ? { grammar: { ...s.grammar, [lessonId]: { correct, total } } } : s,
     ),
+
+  applyPlacement: ({ lessons, grammar, units }) => {
+    const t = now()
+    const passed = { correct: 1, total: 1 }
+    set((s) => {
+      const cards = { ...s.cards }
+      for (const { chars } of lessons) {
+        for (const char of chars) for (const skill of ['read', 'write'] as const) cards[cardId(char, skill)] ??= knownCard(t)
+      }
+      const keep = <T,>(prev: Record<string, T>, ids: string[]) => ({ ...Object.fromEntries(ids.map((id) => [id, passed])), ...prev })
+      return {
+        cards,
+        lessons: keep(s.lessons, lessons.map((l) => l.id)),
+        grammar: keep(s.grammar, grammar),
+        units: keep(s.units, units),
+      }
+    })
+  },
 
   completeUnit: (unitId, correct, total) =>
     set((s) => (isBetterLesson({ correct, total }, s.units[unitId]) ? { units: { ...s.units, [unitId]: { correct, total } } } : s)),

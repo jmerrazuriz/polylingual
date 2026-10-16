@@ -50,6 +50,15 @@ const fromStored = (card: SrsCard): Card => ({
 /** Tarjeta nueva, para repasar desde ya. */
 export const newCard = (now: number): SrsCard => toStored(createEmptyCard(now))
 
+/**
+ * Tarjeta de algo que ya se sabe (test de nivelación): como si se hubiera respondido
+ * «fácil», con el primer repaso repartido en los próximos días para no juntarlos todos.
+ */
+export function knownCard(now: number, random = Math.random): SrsCard {
+  const card = review(undefined, Rating.Easy, now)
+  return { ...card, due: card.due + Math.floor(random() * 7) * 86_400_000 }
+}
+
 /** Aplica una respuesta a la tarjeta (o a una nueva si aún no existe) y devuelve la tarjeta reprogramada. */
 export function review(card: SrsCard | undefined, grade: Grade, now: number): SrsCard {
   return toStored(scheduler.next(fromStored(card ?? newCard(now)), now, grade).card)

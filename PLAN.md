@@ -367,6 +367,11 @@ app_idiomas/
   - 27 lecciones nuevas, 38 en total: ここ/そこ, ね/よ, grupos de verbos, が, と/や, に (tiempo), から/まで, ましょう, たい/ほしい, forma て, てください, ています, てもいい/てはいけません, forma ない, forma た y たことがある, habla informal, adjetivos en pasado y con くて/で, なる, comparaciones, から (porque)/が (pero), なにか/なにも, 〜にいく, まえに/てから/あとで, もう/まだ, でしょう y のがすき.
   - Nuevo tipo de ejercicio **«type»**: escribir la respuesta. En japonés se escribe en kana.
 - ✅ **Recorrido:** 27 unidades y 95 paradas. Las unidades de vocabulario y de gramática IV–VII se intercalan con kana, contadores y kanji. La lección del día también puede proponer vocabulario.
+- ✅ **Test de nivelación del recorrido (`/nivelacion`):**
+  - Quien no ha empezado el recorrido ve, al comienzo de Aprender, la opción de hacer el test o empezar de cero.
+  - Son 8 bloques de 8 preguntas, de dificultad creciente (hiragana → final del N5), que mezclan kana, vocabulario, gramática, contadores y kanji. Se puede responder «No lo sé».
+  - Cada bloque aprobado con 80 % completa sus unidades del recorrido. El test termina en el primer bloque no aprobado, o cuando la persona decide parar entre bloques.
+  - Lo desbloqueado entra a los repasos como «ya sabido»: el primer repaso se reparte en los próximos días, sin juntarse todo hoy.
 - **Pendiente para cerrar la etapa A:** 20 lecturas cortas, 20 diálogos con preguntas y un simulacro N5.
 - **Riesgo:** todas las tarjetas viven en un solo documento de Firestore (máximo 1 MB). Con ~900 palabras van unas 2.600 tarjetas, lo que todavía cabe. Antes de la etapa B (~1.500 palabras) hay que pasar las tarjetas a una subcolección o compactarlas.
 - **Para agregar un idioma:** crear `src/courses/<id>/` con su contenido, registrar la gramática en `src/courses/content.ts`, cambiar su `status` a `available` y darle sus secciones. Las lecciones de vocabulario para idiomas sin silabario propio son lo siguiente a diseñar. Quedan como ideas para después (sección 9): tarjetas SRS de palabras, temas de palabras en los juegos, pares confusos juntos en los juegos, kanji, frases con furigana y evaluación de pronunciación.

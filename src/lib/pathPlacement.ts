@@ -1,0 +1,122 @@
+// Test de nivelación del recorrido: bloques de preguntas de lo más fácil a lo más
+// difícil. Cada bloque aprobado da por completadas sus unidades del recorrido; el
+// test termina en el primer bloque que no se aprueba.
+
+import { grammarByCourse } from '../courses/content.ts'
+import type { GrammarExercise } from '../courses/grammar.ts'
+import { counterLessons } from '../courses/ja/counters.ts'
+import { allKana, kanaByChar } from '../courses/ja/kana.ts'
+import { kanjiLessons } from '../courses/ja/kanji.ts'
+import { lessons as kanaLessons } from '../courses/ja/lessons.ts'
+import { vocabLessons } from '../courses/ja/vocab.ts'
+import { japanesePath, type PathItem } from './path.ts'
+import { romajiOptions } from './quiz.ts'
+import { shuffle } from './random.ts'
+import { counterLessonExercises, kanjiLessonExercises } from './studyExercises.ts'
+import { wordCardChar, wordMeaningExercise } from './vocabExercises.ts'
+
+export type PlacementBlock = {
+  id: string
+  title: string
+  /** Unidades del recorrido que se dan por completadas al aprobar el bloque. */
+  unitIds: string[]
+}
+
+/** Bloques en orden; cada uno cubre unidades seguidas del recorrido. */
+export const placementBlocks: PlacementBlock[] = [
+  { id: 'hira-basico', title: 'Hiragana básico', unitIds: ['hiragana-basic'] },
+  { id: 'hira-completo', title: 'Hiragana completo y primeras frases', unitIds: ['grammar-1', 'hiragana-dakuten', 'hiragana-yoon'] },
+  { id: 'vocab-1', title: 'Primeras palabras y números', unitIds: ['vocab-1', 'counters-1'] },
+  { id: 'katakana', title: 'Katakana y partículas', unitIds: ['katakana-basic', 'grammar-2', 'vocab-2'] },
+  { id: 'kanji-1', title: 'Primeros kanji y contadores', unitIds: ['kanji-1', 'katakana-more', 'counters-2', 'grammar-3', 'vocab-3'] },
+  { id: 'verbos', title: 'Kanji, verbos y katakana extendido', unitIds: ['kanji-2', 'grammar-4', 'katakana-extended', 'vocab-kata', 'vocab-4'] },
+  { id: 'forma-te', title: 'Formas て, ない y た', unitIds: ['kanji-3', 'grammar-5', 'vocab-5'] },
+  { id: 'n5', title: 'Cierre del N5', unitIds: ['kanji-4', 'grammar-6', 'vocab-6', 'grammar-7', 'vocab-7'] },
+]
+
+/** Preguntas por bloque y aciertos para aprobarlo (80 %). */
+export const QUESTIONS_PER_BLOCK = 8
+export const passMark = (total: number) => Math.ceil(total * 0.8)
+
+export const blockItems = (block: PlacementBlock): PathItem[] =>
+  block.unitIds.flatMap((id) => japanesePath.find((u) => u.id === id)!.stops.flatMap((s) => s.items))
+
+/** Una pregunta sobre un elemento del recorrido (los repasos de unidad no tienen). */
+export function itemQuestion(item: PathItem, random = Math.random): GrammarExercise | null {
+  const pick = <T>(list: readonly T[]) => list[Math.floor(random() * list.length)]
+  switch (item.kind) {
+    case 'kana': {
+      const kana = kanaByChar.get(pick(kanaLessons.find((l) => l.id === item.id)!.chars))!
+      const pool = allKana.filter((k) => k.script === kana.script && k.group === kana.group)
+      return { type: 'choice', prompt: `¿Cómo se lee «${kana.char}»?`, options: romajiOptions(kana, pool, 4, random), answer: kana.romaji }
+    }
+    case 'grammar': {
+      // Sin ejercicios para escribir: el test es de elegir, para que sea rápido.
+      const exercises = grammarByCourse.ja.find((g) => g.id === item.id)!.exercises.filter((e) => e.type !== 'type')
+      return pick(exercises)
+    }
+    case 'counters':
+      return counterLessonExercises(counterLessons.find((l) => l.id === item.id)!, random)[0]
+    case 'kanji':
+      return kanjiLessonExercises(kanjiLessons.find((l) => l.id === item.id)!, random)[0]
+    case 'vocab':
+      return wordMeaningExercise(pick(vocabLessons.find((l) => l.id === item.id)!.words), random)
+    case 'unit':
+      return null
+  }
+}
+
+/**
+ * Preguntas de un bloque: elementos al azar de sus unidades, repartidos entre los
+ * distintos tipos (kana, gramática, kanji…) para que el bloque los pruebe todos.
+ */
+export function buildBlock(block: PlacementBlock, random = Math.random): GrammarExercise[] {
+  const items = blockItems(block).filter((i) => i.kind !== 'unit')
+  const byKind = [...new Set(items.map((i) => i.kind))].map((kind) => shuffle(items.filter((i) => i.kind === kind), random))
+  const picked: PathItem[] = []
+  for (let round = 0; picked.length < QUESTIONS_PER_BLOCK && round < items.length; round++) {
+    for (const list of byKind) if (list[round] && picked.length < QUESTIONS_PER_BLOCK) picked.push(list[round])
+  }
+  return shuffle(
+    picked.map((i) => itemQuestion(i, random)).filter((q): q is GrammarExercise => q !== null),
+    random,
+  )
+}
+
+/** Lo que hay que marcar como hecho al aprobar unos bloques. */
+export type PlacementResult = {
+  lessons: { id: string; chars: string[] }[]
+  grammar: string[]
+  units: string[]
+}
+
+export function placementResult(blocks: PlacementBlock[]): PlacementResult {
+  const result: PlacementResult = { lessons: [], grammar: [], units: [] }
+  for (const item of blocks.flatMap(blockItems)) {
+    switch (item.kind) {
+      case 'kana':
+        result.lessons.push({ id: item.id, chars: kanaLessons.find((l) => l.id === item.id)!.chars })
+        break
+      case 'kanji':
+        result.lessons.push({ id: item.id, chars: kanjiLessons.find((l) => l.id === item.id)!.chars })
+        break
+      case 'vocab':
+        result.lessons.push({ id: item.id, chars: vocabLessons.find((l) => l.id === item.id)!.words.map(wordCardChar) })
+        break
+      case 'counters':
+        result.lessons.push({ id: item.id, chars: [] })
+        break
+      case 'grammar':
+        result.grammar.push(item.id)
+        break
+      case 'unit':
+        result.units.push(item.id)
+        break
+    }
+  }
+  return result
+}
+
+/** ¿Todavía no empezó el recorrido? (ninguna lección, gramática ni repaso hecho) */
+export const hasNotStarted = (p: { lessons: object; grammar: object; units: object }) =>
+  Object.keys(p.lessons).length === 0 && Object.keys(p.grammar).length === 0 && Object.keys(p.units).length === 0

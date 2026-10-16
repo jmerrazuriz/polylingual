@@ -11,10 +11,12 @@ const jpClass = (text: string) => (KANA.test(text) ? 'font-jp' : '')
 type Props = {
   exercise: GrammarExercise
   onDone: (correct: boolean) => void
+  /** Muestra «No lo sé» mientras no se responde; cuenta como incorrecta. */
+  onSkip?: () => void
 }
 
 /** Un ejercicio de gramática con su corrección. Se avanza con «Siguiente». */
-export function GrammarExerciseView({ exercise, onDone }: Props) {
+export function GrammarExerciseView({ exercise, onDone, onSkip }: Props) {
   const [result, setResult] = useState<boolean | null>(null)
   const { speak } = useSpeech()
 
@@ -43,6 +45,12 @@ export function GrammarExerciseView({ exercise, onDone }: Props) {
           {!result && <p>La respuesta es: <Answer exercise={exercise} /></p>}
           {(exercise.type === 'choice' || exercise.type === 'type') && exercise.explanation && <p>💡 {exercise.explanation}</p>}
         </div>
+      )}
+
+      {result === null && onSkip && (
+        <button onClick={onSkip} className="self-center text-sm font-bold text-slate-500 underline hover:text-slate-800 dark:hover:text-white">
+          No lo sé
+        </button>
       )}
 
       {result !== null && (

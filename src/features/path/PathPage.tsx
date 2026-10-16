@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router'
 import { useAccount } from '../../lib/account/store'
 import { japanesePath, type PathStop, pathStatus, type StopStatus } from '../../lib/path'
+import { hasNotStarted } from '../../lib/pathPlacement'
 import { progressSnapshot, useProgress } from '../../lib/progress/store'
 import { LearnTabs } from '../learn/LearnTabs'
 
@@ -41,6 +42,8 @@ export function PathPage() {
       </header>
 
       <LearnTabs current="recorrido" />
+
+      {hasNotStarted(progressSnapshot()) && <PlacementOffer />}
 
       <div className="grid grid-cols-2 gap-2">
         <Link to="/hoy" className="flex items-center gap-2 rounded-2xl border border-slate-200 bg-white p-3 hover:border-accent dark:border-slate-800 dark:bg-slate-900">
@@ -148,5 +151,30 @@ function StopPanel({ stop, itemStatus }: { stop: PathStop; itemStatus: ReturnTyp
         })}
       </ul>
     </div>
+  )
+}
+
+/** Para quien no empezó el recorrido: hacer el test de nivelación o partir de cero. */
+function PlacementOffer() {
+  return (
+    <section className="flex flex-col gap-3 rounded-2xl border-2 border-accent/40 bg-accent/5 p-4 sm:flex-row sm:items-center">
+      <span className="text-4xl" aria-hidden>
+        🧭
+      </span>
+      <span className="flex-1">
+        <span className="block text-lg font-extrabold">¿Ya sabes algo de japonés?</span>
+        <span className="text-sm text-slate-600 dark:text-slate-400">
+          Haz el test de nivelación y desbloquea la parte del recorrido que ya dominas. O empieza desde la primera lección.
+        </span>
+      </span>
+      <span className="flex flex-wrap gap-2">
+        <Link to="/nivelacion" className="rounded-full bg-ink px-5 py-2.5 font-bold text-white hover:opacity-90">
+          Hacer el test
+        </Link>
+        <Link to="/aprender/vocales" className="rounded-full border border-slate-300 px-5 py-2.5 font-bold dark:border-slate-700">
+          Empezar de cero
+        </Link>
+      </span>
+    </section>
   )
 }
