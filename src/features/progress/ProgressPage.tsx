@@ -1,5 +1,6 @@
 import { Link } from 'react-router'
 import { allKana, hiragana, katakana } from '../../courses/ja/kana'
+import { kanjiLessons, kanjiList } from '../../courses/ja/kanji'
 import { lessonsByScript } from '../../courses/ja/lessons'
 import type { Kana } from '../../courses/ja/types'
 import { achievements } from '../../lib/progress/achievements'
@@ -23,8 +24,11 @@ export function ProgressPage() {
   ]
 
   // Los que más cuestan: al menos 3 respuestas, ordenados por porcentaje de aciertos.
-  const hardest = allKana
-    .map((k) => ({ kana: k, stat: progress.kana[k.char] }))
+  const hardest = [
+    ...allKana.map((k) => ({ char: k.char, label: k.romaji })),
+    ...kanjiList.map((k) => ({ char: k.char, label: k.meaning })),
+  ]
+    .map((item) => ({ ...item, stat: progress.kana[item.char] }))
     .filter(({ stat }) => stat && stat.readTotal >= 3 && stat.readOk / stat.readTotal < 0.8)
     .sort((a, b) => a.stat!.readOk / a.stat!.readTotal - b.stat!.readOk / b.stat!.readTotal)
     .slice(0, 10)
@@ -78,20 +82,32 @@ export function ProgressPage() {
       })}
 
       <section className="flex flex-col gap-2">
+        <h2 className="text-sm font-extrabold text-slate-500 uppercase">Kanji</h2>
+        <dl className="grid grid-cols-3 gap-2">
+          <Stat label="Lecciones" value={`${kanjiLessons.filter((l) => progress.lessons[l.id]).length}/${kanjiLessons.length}`} />
+          <Stat label="Lectura dominada" value={`${kanjiList.filter((k) => readingMastery(progress.kana[k.char]) === 'mastered').length}/${kanjiList.length}`} />
+          <Stat
+            label="En repaso"
+            value={String(kanjiList.filter((k) => progress.cards[`${k.char}:read`]).length)}
+          />
+        </dl>
+      </section>
+
+      <section className="flex flex-col gap-2">
         <h2 className="text-sm font-extrabold text-slate-500 uppercase">Los que más te cuestan</h2>
         {hardest.length === 0 ? (
           <p className="text-sm text-slate-500">Aún no hay suficientes respuestas. ¡Sigue practicando!</p>
         ) : (
           <ul className="flex flex-wrap gap-2">
-            {hardest.map(({ kana, stat }) => (
+            {hardest.map(({ char, label, stat }) => (
               <li
-                key={kana.char}
+                key={char}
                 className="flex items-baseline gap-2 rounded-xl border border-amber-300 bg-amber-50 px-3 py-1.5 dark:border-amber-800 dark:bg-amber-950/40"
               >
                 <span lang="ja" className="font-jp text-2xl">
-                  {kana.char}
+                  {char}
                 </span>
-                <span className="text-sm font-bold">{kana.romaji}</span>
+                <span className="text-sm font-bold">{label}</span>
                 <span className="text-xs text-slate-500">{Math.round((stat!.readOk / stat!.readTotal) * 100)} %</span>
               </li>
             ))}

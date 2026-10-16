@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { type WritingHelp, WritingCanvas } from '../../components/WritingCanvas'
 import { kanaByChar } from '../../courses/ja/kana'
+import { kanjiByChar } from '../../courses/ja/kanji'
 import { useSpeech } from '../../lib/audio/useSpeech'
 import { useProgress } from '../../lib/progress/store'
 import { scoreFromMistakes } from '../../lib/strokes/evaluate'
@@ -30,7 +31,7 @@ export function WritingSession({ items, help, onFinish }: Props) {
   const completePart = (m: number) => {
     setMistakes((prev) => [...prev, m])
     const char = item.parts[part]
-    if (kanaByChar.has(char)) useProgress.getState().recordWriting(char, scoreFromMistakes(m))
+    if (kanaByChar.has(char) || kanjiByChar.has(char)) useProgress.getState().recordWriting(char, scoreFromMistakes(m))
     if (part + 1 < item.parts.length) setPart(part + 1)
     else speak(item.kana)
   }

@@ -143,9 +143,14 @@ function DailyStepRunner({ step, lessonId, grammarId, onDone, onExit }: RunnerPr
     const p = progressSnapshot()
     if (step === 'repasos') {
       const review = buildReview(p.cards, now())
-      // Hasta 8 tarjetas en total, priorizando lectura (lo más rápido).
-      const reading = review.reading.slice(0, DAILY_REVIEW_LIMIT)
-      return { reading, writing: review.writing.slice(0, Math.max(0, DAILY_REVIEW_LIMIT - reading.length)) }
+      // Hasta 8 en total: primero kana, luego kanji y al final escritura.
+      let left = DAILY_REVIEW_LIMIT
+      const take = <T,>(list: T[]) => {
+        const part = list.slice(0, left)
+        left -= part.length
+        return part
+      }
+      return { reading: take(review.reading), exercises: take(review.exercises), writing: take(review.writing) }
     }
     if (step === 'debiles') return buildWeakReview(p)
     return null
@@ -162,7 +167,7 @@ function DailyStepRunner({ step, lessonId, grammarId, onDone, onExit }: RunnerPr
   )
 
   if ((step === 'repasos' || step === 'debiles') && plan) {
-    if (plan.reading.length + plan.writing.length === 0) {
+    if (plan.reading.length + (plan.exercises?.length ?? 0) + plan.writing.length === 0) {
       return (
         <div className="mx-auto flex max-w-md flex-col items-center gap-4 py-10 text-center">
           <p className="text-slate-600 dark:text-slate-400">No queda nada pendiente en este paso. ¡Bien!</p>
@@ -175,7 +180,13 @@ function DailyStepRunner({ step, lessonId, grammarId, onDone, onExit }: RunnerPr
     return (
       <div className="flex flex-col gap-3">
         {back}
-        <MixedSession reading={plan.reading} writing={plan.writing} onFinish={onDone} writingHelp={step === 'debiles' ? 'guide' : 'memory'} />
+        <MixedSession
+          reading={plan.reading}
+          exercises={plan.exercises}
+          writing={plan.writing}
+          onFinish={onDone}
+          writingHelp={step === 'debiles' ? 'guide' : 'memory'}
+        />
       </div>
     )
   }

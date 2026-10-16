@@ -133,3 +133,27 @@ export function kanjiWritingItems(lesson: KanjiLesson, random = Math.random): Wr
       return { prompt: kanji.meaning, kana: char, parts: [char] }
     })
 }
+
+/** Ejercicio con el carácter al que pertenece: al responderlo se reprograma su tarjeta SRS. */
+export type TaggedExercise = { char?: string; exercise: GrammarExercise }
+
+/** Repaso de un kanji: su significado o la lectura de una de sus palabras de ejemplo. */
+export function kanjiReviewExercise(char: string, random = Math.random): TaggedExercise {
+  const kanji = kanjiByChar.get(char)!
+  const example = kanji.examples[Math.floor(random() * kanji.examples.length)]
+  const exercise: GrammarExercise =
+    random() < 0.5
+      ? { type: 'meaning', text: kanji.char, options: withDistractors(kanji.meaning, allMeanings, 4, random), answer: kanji.meaning }
+      : {
+          type: 'choice',
+          prompt: `¿Cómo se lee «${example.word}» (${example.meaning})?`,
+          options: withDistractors(example.reading, allReadings, 4, random),
+          answer: example.reading,
+        }
+  return { char, exercise }
+}
+
+/** Escribir un kanji a partir de su significado. */
+export function kanjiWritingItem(char: string): WritingItem {
+  return { prompt: kanjiByChar.get(char)!.meaning, kana: char, parts: [char] }
+}

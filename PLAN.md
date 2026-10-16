@@ -337,10 +337,16 @@ app_idiomas/
   - Un test revisa que cada lectura regular sea número + contador y que las especiales estén marcadas.
   - Se abre al terminar el hiragana.
 - ✅ **Kanji (`/kanji`):**
-  - 76 kanji del nivel N5 en 14 lecciones (números, tiempo, personas, naturaleza y lugares, adjetivos y verbos), con trazos de KanjiVG.
+  - 106 kanji del nivel N5 en 20 lecciones (números, tiempo, personas, naturaleza y lugares, adjetivos, verbos, cuerpo, cosas, ciudad y trabajo), con trazos de KanjiVG.
   - Cada kanji tiene significado, lecturas on y kun con romaji, 2 palabras de ejemplo, ejercicios de significado y lectura, y escritura calcando.
   - Se abre al terminar los básicos del katakana.
-  - **Pendiente:** el resto del N5, el nivel N4 y tarjetas de repaso (SRS) para kanji.
+- ✅ **Repasos SRS de kanji:**
+  - Completar una lección de kanji crea tarjetas de lectura y de escritura para sus kanji.
+  - En `/repasar`, la lección del día y el repaso de puntos débiles, la lectura se pregunta como significado o lectura de una palabra de ejemplo, y la escritura se pide a partir del significado.
+  - La sesión mixta ahora tiene tres fases: lectura de kana, ejercicios y escritura.
+  - Quien ya había completado lecciones de kanji recibe sus tarjetas automáticamente al abrir la app.
+  - El panel de progreso muestra los kanji (lecciones, dominados y en repaso) y los incluye en «los que más te cuestan».
+  - **Pendiente:** nivel N4.
 - **Para agregar un idioma:** crear `src/courses/<id>/` con su contenido, registrar la gramática en `src/courses/content.ts`, cambiar su `status` a `available` y darle sus secciones. Las lecciones de vocabulario para idiomas sin silabario propio son lo siguiente a diseñar. Quedan como ideas para después (sección 9): tarjetas SRS de palabras, temas de palabras en los juegos, pares confusos juntos en los juegos, kanji, frases con furigana y evaluación de pronunciación.
 
 **Hiragana primero:** las fases 1 a 6 se construyen solo con hiragana. El código se escribe desde el principio para cualquier silabario (el campo `script` en los datos), así que katakana entra en la fase 7 casi solo como contenido.

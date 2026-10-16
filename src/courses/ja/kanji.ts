@@ -110,6 +110,48 @@ export const kanjiList: Kanji[] = [
   k('話', 'hablar', ['ワ'], ['はな(す)', 'はなし'], [['話す', 'はなす', 'hablar'], ['電話', 'でんわ', 'teléfono']]),
   k('読', 'leer', ['ドク'], ['よ(む)'], [['読む', 'よむ', 'leer'], ['読書', 'どくしょ', 'lectura']]),
   k('書', 'escribir', ['ショ'], ['か(く)'], [['書く', 'かく', 'escribir'], ['辞書', 'じしょ', 'diccionario']]),
+
+  // Más naturaleza y tiempo
+  k('花', 'flor', ['カ'], ['はな'], [['花', 'はな', 'flor'], ['花火', 'はなび', 'fuegos artificiales']]),
+  k('朝', 'mañana (del día)', ['チョウ'], ['あさ'], [['朝', 'あさ', 'la mañana'], ['朝ご飯', 'あさごはん', 'desayuno']]),
+  k('夜', 'noche', ['ヤ'], ['よる', 'よ'], [['夜', 'よる', 'noche'], ['今夜', 'こんや', 'esta noche']]),
+  k('魚', 'pez', ['ギョ'], ['さかな', 'うお'], [['魚', 'さかな', 'pez, pescado'], ['金魚', 'きんぎょ', 'pez dorado']]),
+  k('犬', 'perro', ['ケン'], ['いぬ'], [['犬', 'いぬ', 'perro'], ['子犬', 'こいぬ', 'cachorro']]),
+  k('空', 'firmamento, vacío', ['クウ'], ['そら', 'あ(く)', 'から'], [['空', 'そら', 'cielo, firmamento'], ['空港', 'くうこう', 'aeropuerto']]),
+
+  // Más adjetivos
+  k('白', 'blanco', ['ハク'], ['しろ', 'しろ(い)'], [['白い', 'しろい', 'blanco'], ['白鳥', 'はくちょう', 'cisne']]),
+  k('多', 'mucho', ['タ'], ['おお(い)'], [['多い', 'おおい', 'muchos'], ['多分', 'たぶん', 'quizás']]),
+  k('少', 'poco', ['ショウ'], ['すく(ない)', 'すこ(し)'], [['少し', 'すこし', 'un poco'], ['少ない', 'すくない', 'pocos']]),
+  k('間', 'entre, intervalo', ['カン', 'ケン'], ['あいだ', 'ま'], [['間', 'あいだ', 'entre, intervalo'], ['一週間', 'いっしゅうかん', 'una semana']]),
+
+  // Cuerpo
+  k('口', 'boca', ['コウ', 'ク'], ['くち'], [['口', 'くち', 'boca'], ['人口', 'じんこう', 'población']]),
+  k('目', 'ojo', ['モク'], ['め'], [['目', 'め', 'ojo'], ['目的', 'もくてき', 'objetivo']]),
+  k('耳', 'oreja', ['ジ'], ['みみ'], [['耳', 'みみ', 'oreja'], ['右耳', 'みぎみみ', 'oreja derecha']]),
+  k('手', 'mano', ['シュ'], ['て'], [['手', 'て', 'mano'], ['手紙', 'てがみ', 'carta']]),
+  k('足', 'pie, pierna', ['ソク'], ['あし', 'た(りる)'], [['足', 'あし', 'pie, pierna'], ['一足', 'いっそく', 'un par (de zapatos)']]),
+
+  // Cosas y preguntas
+  k('何', 'qué', ['カ'], ['なに', 'なん'], [['何', 'なに', 'qué'], ['何人', 'なんにん', 'cuántas personas']]),
+  k('本', 'libro, origen', ['ホン'], ['もと'], [['本', 'ほん', 'libro'], ['日本', 'にほん', 'Japón']]),
+  k('名', 'nombre', ['メイ', 'ミョウ'], ['な'], [['名前', 'なまえ', 'nombre'], ['有名', 'ゆうめい', 'famoso']]),
+  k('語', 'idioma, palabra', ['ゴ'], ['かた(る)'], [['日本語', 'にほんご', 'japonés (idioma)'], ['英語', 'えいご', 'inglés']]),
+  k('国', 'país', ['コク'], ['くに'], [['国', 'くに', 'país'], ['国語', 'こくご', 'lengua nacional']]),
+
+  // Ciudad
+  k('電', 'electricidad', ['デン'], [], [['電車', 'でんしゃ', 'tren'], ['電気', 'でんき', 'electricidad, luz']]),
+  k('車', 'auto, vehículo', ['シャ'], ['くるま'], [['車', 'くるま', 'auto'], ['自転車', 'じてんしゃ', 'bicicleta']]),
+  k('駅', 'estación', ['エキ'], [], [['駅', 'えき', 'estación'], ['駅員', 'えきいん', 'empleado de estación']]),
+  k('道', 'camino', ['ドウ'], ['みち'], [['道', 'みち', 'camino'], ['柔道', 'じゅうどう', 'judo']]),
+  k('店', 'tienda', ['テン'], ['みせ'], [['店', 'みせ', 'tienda'], ['店員', 'てんいん', 'dependiente']]),
+
+  // Trabajo y acciones
+  k('会', 'reunirse', ['カイ'], ['あ(う)'], [['会う', 'あう', 'encontrarse con alguien'], ['会社', 'かいしゃ', 'empresa']]),
+  k('社', 'empresa, santuario', ['シャ'], ['やしろ'], [['会社', 'かいしゃ', 'empresa'], ['神社', 'じんじゃ', 'santuario sintoísta']]),
+  k('言', 'decir', ['ゲン', 'ゴン'], ['い(う)', 'こと'], [['言う', 'いう', 'decir'], ['言葉', 'ことば', 'palabra']]),
+  k('買', 'comprar', ['バイ'], ['か(う)'], [['買う', 'かう', 'comprar'], ['買い物', 'かいもの', 'compras']]),
+  k('立', 'ponerse de pie', ['リツ'], ['た(つ)'], [['立つ', 'たつ', 'pararse'], ['国立', 'こくりつ', 'nacional']]),
 ]
 
 export const kanjiByChar = new Map(kanjiList.map((kj) => [kj.char, kj]))
@@ -128,7 +170,13 @@ export const kanjiLessons: KanjiLesson[] = [
   lesson('naturaleza', 'Naturaleza y clima', 'Naturaleza y lugares', '山川天気雨'),
   lesson('posicion', 'Arriba, abajo y a los lados', 'Naturaleza y lugares', '上下中右左外'),
   lesson('puntos', 'Los puntos cardinales', 'Naturaleza y lugares', '東西南北'),
+  lesson('naturaleza-2', 'Flores, animales, mañana y noche', 'Naturaleza y lugares', '花朝夜魚犬空'),
   lesson('adjetivos', 'Grande, pequeño, nuevo…', 'Adjetivos', '大小長高安新古'),
+  lesson('adjetivos-2', 'Blanco, mucho, poco y entre', 'Adjetivos', '白多少間'),
   lesson('verbos-1', 'Ver, oír, comer, ir…', 'Verbos', '見聞食飲行来'),
   lesson('verbos-2', 'Salir, entrar, hablar…', 'Verbos', '出入休話読書'),
+  lesson('cuerpo', 'Partes del cuerpo', 'Cuerpo y cosas', '口目耳手足'),
+  lesson('cosas', 'Qué, libro, nombre, idioma y país', 'Cuerpo y cosas', '何本名語国'),
+  lesson('ciudad', 'Transporte y ciudad', 'Ciudad y trabajo', '電車駅道店'),
+  lesson('trabajo', 'Empresa, decir, comprar…', 'Ciudad y trabajo', '会社言買立'),
 ]

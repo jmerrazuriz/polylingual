@@ -52,8 +52,8 @@ describe('contadores', () => {
 })
 
 describe('kanji', () => {
-  it('76 kanji, cada uno en una sola lección y con sus trazos', () => {
-    expect(kanjiList).toHaveLength(76)
+  it('106 kanji, cada uno en una sola lección y con sus trazos', () => {
+    expect(kanjiList).toHaveLength(106)
     const taught = kanjiLessons.flatMap((l) => l.chars)
     expect(new Set(taught).size).toBe(taught.length)
     expect(new Set(taught)).toEqual(new Set(kanjiList.map((k) => k.char)))

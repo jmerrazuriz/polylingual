@@ -1,10 +1,12 @@
 import { allKana, kanaByChar } from '../courses/ja/kana.ts'
+import { kanjiList } from '../courses/ja/kanji.ts'
 import { learnedThrough, lessonsByScript } from '../courses/ja/lessons.ts'
 import type { Kana, KanaGroup, Script } from '../courses/ja/types.ts'
 import type { ProgressData } from './progress/model.ts'
 import { type Question, romajiOptions } from './quiz.ts'
 import { shuffle } from './random.ts'
 import { syllables } from './romaji.ts'
+import { kanjiReviewExercise, kanjiWritingItem, type TaggedExercise } from './studyExercises.ts'
 import { wordsReadableWith } from './words.ts'
 import type { WritingItem } from './writing.ts'
 
@@ -33,7 +35,7 @@ export const units: Unit[] = (Object.keys(lessonsByScript) as Script[]).flatMap(
 /** Aprobar el repaso de una unidad pide 80 % de aciertos. */
 export const UNIT_PASS = 0.8
 
-export type SessionPlan = { reading: Question[]; writing: WritingItem[] }
+export type SessionPlan = { reading: Question[]; exercises?: TaggedExercise[]; writing: WritingItem[] }
 
 const writingItem = (kana: Kana): WritingItem => ({ prompt: kana.romaji, kana: kana.char, parts: kana.parts })
 
@@ -56,36 +58,48 @@ export function buildUnitReview(unit: Unit, random = Math.random): SessionPlan {
   return { reading, writing }
 }
 
-/** Puntos débiles: lo que más falla en lectura y en escritura. */
-export function weakItems(p: ProgressData): { read: Kana[]; write: Kana[] } {
-  const accuracy = (k: Kana) => {
-    const s = p.kana[k.char]
+/** Puntos débiles: lo que más falla en lectura y en escritura, en kana y en kanji. */
+export function weakItems(p: ProgressData): { read: Kana[]; write: Kana[]; kanjiRead: string[]; kanjiWrite: string[] } {
+  const accuracy = (char: string) => {
+    const s = p.kana[char]
     return s && s.readTotal > 0 ? s.readOk / s.readTotal : 1
   }
-  const lapses = (k: Kana) => p.cards[`${k.char}:read`]?.lapses ?? 0
-  const read = allKana
-    .filter((k) => {
-      const s = p.kana[k.char]
-      return (s && s.readTotal >= 2 && accuracy(k) < 0.8) || lapses(k) >= 2
-    })
-    .sort((a, b) => accuracy(a) - accuracy(b) || lapses(b) - lapses(a))
-    .slice(0, 10)
+  const lapses = (char: string) => p.cards[`${char}:read`]?.lapses ?? 0
+  const weakRead = (chars: string[], limit: number) =>
+    chars
+      .filter((c) => {
+        const s = p.kana[c]
+        return (s && s.readTotal >= 2 && accuracy(c) < 0.8) || lapses(c) >= 2
+      })
+      .sort((a, b) => accuracy(a) - accuracy(b) || lapses(b) - lapses(a))
+      .slice(0, limit)
 
-  const writeAvg = (k: Kana) => {
-    const s = p.kana[k.char]
+  const writeAvg = (char: string) => {
+    const s = p.kana[char]
     return s && s.writeCount > 0 ? s.writeScore / s.writeCount : 5
   }
-  const write = allKana
-    .filter((k) => writeAvg(k) < 4)
-    .sort((a, b) => writeAvg(a) - writeAvg(b))
-    .slice(0, 4)
+  const weakWrite = (chars: string[], limit: number) =>
+    chars
+      .filter((c) => writeAvg(c) < 4)
+      .sort((a, b) => writeAvg(a) - writeAvg(b))
+      .slice(0, limit)
 
-  return { read, write }
+  const kanaChars = allKana.map((k) => k.char)
+  const kanjiChars = kanjiList.map((k) => k.char)
+  return {
+    read: weakRead(kanaChars, 10).map((c) => kanaByChar.get(c)!),
+    write: weakWrite(kanaChars, 4).map((c) => kanaByChar.get(c)!),
+    kanjiRead: weakRead(kanjiChars, 6),
+    kanjiWrite: weakWrite(kanjiChars, 2),
+  }
 }
 
-/** Repaso de puntos débiles: cada carácter débil dos veces (reconocer y escribir su romaji) y la escritura floja. */
+/**
+ * Repaso de puntos débiles: cada kana débil dos veces (reconocerlo y escribir su
+ * romaji), los kanji débiles como ejercicios y la escritura floja.
+ */
 export function buildWeakReview(p: ProgressData, random = Math.random): SessionPlan {
-  const { read, write } = weakItems(p)
+  const { read, write, kanjiRead, kanjiWrite } = weakItems(p)
   const reading = shuffle(
     read.flatMap((kana): Question[] => {
       const pool = allKana.filter((k) => k.script === kana.script && k.group === kana.group)
@@ -96,5 +110,9 @@ export function buildWeakReview(p: ProgressData, random = Math.random): SessionP
     }),
     random,
   )
-  return { reading, writing: write.map(writingItem) }
+  return {
+    reading,
+    exercises: kanjiRead.map((c) => kanjiReviewExercise(c, random)),
+    writing: [...write.map(writingItem), ...kanjiWrite.map(kanjiWritingItem)],
+  }
 }

@@ -12,7 +12,7 @@ export function WeakReviewPage() {
   const [plan, setPlan] = useState(() => buildWeakReview(progressSnapshot()))
   const [result, setResult] = useState<MixedResult | null>(null)
 
-  if (plan.reading.length + plan.writing.length === 0) {
+  if (plan.reading.length + (plan.exercises?.length ?? 0) + plan.writing.length === 0) {
     return (
       <section className="mx-auto flex max-w-md flex-col items-center gap-4 py-12 text-center">
         <span className="text-6xl" aria-hidden>
@@ -33,9 +33,10 @@ export function WeakReviewPage() {
     return (
       <MixedSession
         reading={plan.reading}
+        exercises={plan.exercises}
         writing={plan.writing}
         writingHelp="guide"
-        labels={{ reading: 'Puntos débiles · lectura', writing: 'Puntos débiles · escritura' }}
+        labels={{ reading: 'Puntos débiles · lectura', exercises: 'Puntos débiles · kanji', writing: 'Puntos débiles · escritura' }}
         onFinish={setResult}
       />
     )

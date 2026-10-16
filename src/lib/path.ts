@@ -125,7 +125,11 @@ export const japanesePath: PathUnit[] = [
     id: 'kanji-2',
     title: 'Kanji · Personas y lugares',
     icon: '人',
-    stops: [stop('kanji', kanji('personas-1', 'personas-2')), stop('kanji', kanji('naturaleza', 'posicion')), stop('kanji', kanji('puntos'))],
+    stops: [
+      stop('kanji', kanji('personas-1', 'personas-2')),
+      stop('kanji', kanji('naturaleza', 'posicion')),
+      stop('kanji', kanji('puntos', 'naturaleza-2')),
+    ],
   },
   {
     id: 'katakana-extended',
@@ -133,7 +137,18 @@ export const japanesePath: PathUnit[] = [
     icon: 'ファ',
     stops: [stop('kana', kata('ext-1', 'ext-2')), stop('kana', kata('ext-3')), review('katakana-extended')],
   },
-  { id: 'kanji-3', title: 'Kanji · Adjetivos y verbos', icon: '見', stops: [stop('kanji', kanji('adjetivos')), stop('kanji', kanji('verbos-1', 'verbos-2'))] },
+  {
+    id: 'kanji-3',
+    title: 'Kanji · Adjetivos y verbos',
+    icon: '見',
+    stops: [stop('kanji', kanji('adjetivos', 'adjetivos-2')), stop('kanji', kanji('verbos-1', 'verbos-2'))],
+  },
+  {
+    id: 'kanji-4',
+    title: 'Kanji · Cuerpo, ciudad y trabajo',
+    icon: '手',
+    stops: [stop('kanji', kanji('cuerpo', 'cosas')), stop('kanji', kanji('ciudad', 'trabajo'))],
+  },
 ]
 
 export type ItemStatus = 'done' | 'open' | 'locked'

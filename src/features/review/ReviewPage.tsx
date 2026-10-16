@@ -15,7 +15,7 @@ export function ReviewPage() {
   const [result, setResult] = useState<MixedResult | null>(null)
   const cards = useProgress((s) => s.cards)
 
-  if (plan.reading.length + plan.writing.length === 0) {
+  if (plan.reading.length + plan.exercises.length + plan.writing.length === 0) {
     const next = nextDue(cards, now())
     return (
       <section className="mx-auto flex max-w-md flex-col items-center gap-4 py-12 text-center">
@@ -39,8 +39,9 @@ export function ReviewPage() {
     return (
       <MixedSession
         reading={plan.reading}
+        exercises={plan.exercises}
         writing={plan.writing}
-        labels={{ reading: 'Repaso de lectura', writing: 'Repaso de escritura' }}
+        labels={{ reading: 'Repaso de lectura', exercises: 'Repaso de kanji', writing: 'Repaso de escritura' }}
         onFinish={setResult}
       />
     )

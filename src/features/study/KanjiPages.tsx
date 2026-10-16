@@ -82,7 +82,8 @@ export function KanjiLessonView({ lesson, onFinish }: { lesson: KanjiLesson; onF
       next={next && !onFinish ? { to: `/kanji/${next.id}`, title: next.title } : undefined}
       embedded={!!onFinish}
       onComplete={(correct, total) => {
-        complete(lesson.id, correct, total)
+        // Los kanji de la lección entran a los repasos (tarjetas de lectura y escritura).
+        complete(lesson.id, correct, total, lesson.chars)
         onFinish?.()
       }}
     />

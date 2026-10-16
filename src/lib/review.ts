@@ -1,12 +1,21 @@
 import { hiragana, kanaByChar } from '../courses/ja/kana.ts'
+import { kanjiByChar } from '../courses/ja/kanji.ts'
 import type { Kana } from '../courses/ja/types.ts'
 import { dueCards, endOfDay, parseCardId, type SrsCard } from './progress/srs.ts'
 import { type Question, romajiOptions } from './quiz.ts'
+import { kanjiReviewExercise, kanjiWritingItem, type TaggedExercise } from './studyExercises.ts'
 import type { WritingItem } from './writing.ts'
 
 export const REVIEW_LIMIT = 20
 
-export type ReviewPlan = { reading: Question[]; writing: WritingItem[] }
+/**
+ * Plan de una sesión de repaso: preguntas de lectura de kana, ejercicios de
+ * kanji (significado o lectura) y escritura (kana o kanji).
+ */
+export type ReviewPlan = { reading: Question[]; exercises: TaggedExercise[]; writing: WritingItem[] }
+
+/** Caracteres que tienen tarjetas de repaso: kana y kanji. */
+export const isReviewable = (char: string) => kanaByChar.has(char) || kanjiByChar.has(char)
 
 /**
  * Repasos pendientes: las tarjetas ya vencidas, las más atrasadas primero. Las que
@@ -14,7 +23,7 @@ export type ReviewPlan = { reading: Question[]; writing: WritingItem[] }
  */
 export function buildReview(cards: Record<string, SrsCard>, now: number, random = Math.random): ReviewPlan {
   const due = dueCards(cards, now)
-    .filter((c) => kanaByChar.has(c.char))
+    .filter((c) => isReviewable(c.char))
     .slice(0, REVIEW_LIMIT)
 
   // Opciones incorrectas: caracteres que el usuario ya conoce (o los básicos, si aún son pocos).
@@ -26,7 +35,7 @@ export function buildReview(cards: Record<string, SrsCard>, now: number, random 
   const pool: Kana[] = known.length >= 4 ? known : hiragana.filter((k) => k.group === 'basic')
 
   const reading = due
-    .filter((c) => c.skill === 'read')
+    .filter((c) => c.skill === 'read' && kanaByChar.has(c.char))
     .map(({ char }): Question => {
       const kana = kanaByChar.get(char)!
       return random() < 0.5
@@ -34,19 +43,23 @@ export function buildReview(cards: Record<string, SrsCard>, now: number, random 
         : { type: 'type-romaji', kana }
     })
 
+  const exercises = due
+    .filter((c) => c.skill === 'read' && kanjiByChar.has(c.char))
+    .map(({ char }) => kanjiReviewExercise(char, random))
+
   const writing = due
     .filter((c) => c.skill === 'write')
     .map(({ char }): WritingItem => {
-      const kana = kanaByChar.get(char)!
-      return { prompt: kana.romaji, kana: kana.char, parts: kana.parts }
+      const kana = kanaByChar.get(char)
+      return kana ? { prompt: kana.romaji, kana: kana.char, parts: kana.parts } : kanjiWritingItem(char)
     })
 
-  return { reading, writing }
+  return { reading, exercises, writing }
 }
 
 /** Cuántos repasos están pendientes ahora. */
 export function dueNowCount(cards: Record<string, SrsCard>, now: number): number {
-  return dueCards(cards, now).filter((c) => kanaByChar.has(c.char)).length
+  return dueCards(cards, now).filter((c) => isReviewable(c.char)).length
 }
 
 /** «hoy a las 18:30», «mañana» o «en 3 días». */
