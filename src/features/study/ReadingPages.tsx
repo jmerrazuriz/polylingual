@@ -1,12 +1,14 @@
 import { useState } from 'react'
 import { Link, useParams } from 'react-router'
 import { ComingSoon } from '../../components/ComingSoon'
+import { Furigana } from '../../components/Furigana'
 import { SaveProgressPrompt } from '../../components/SaveProgressPrompt'
 import { grammarByCourse } from '../../courses/content'
 import type { ReadingText, TextLine } from '../../courses/reading'
 import { useSpeech } from '../../lib/audio/useSpeech'
 import { posLabel } from '../../courses/ja/vocab'
 import { useProgress } from '../../lib/progress/store'
+import { furiganaToPlain, hasFurigana } from '../../lib/furigana'
 import { glossary, type GlossaryEntry, lineTokens, readingById, readingTexts } from '../../lib/readings'
 import { useUnlockedReadings } from '../../lib/progress/unlock'
 import { GrammarExerciseView } from '../grammar/GrammarExerciseView'
@@ -18,9 +20,9 @@ const grammarTitle = (id: string) => grammarByCourse.ja.find((g) => g.id === id)
 export function ReadingsPage() {
   const results = useProgress((s) => s.lessons)
   const unlocked = useUnlockedReadings()
-  const list = (kind: ReadingText['kind']) =>
+  const list = (kind: ReadingText['kind'], level: ReadingText['level']) =>
     readingTexts
-      .filter((t) => t.kind === kind)
+      .filter((t) => t.kind === kind && t.level === level)
       .map((t) => ({
         id: t.id,
         title: t.title,
@@ -37,12 +39,20 @@ export function ReadingsPage() {
       </header>
       <LearnTabs current="lectura" />
       <section className="flex flex-col gap-2">
-        <h2 className="text-sm font-extrabold text-slate-500 uppercase">📖 Lecturas</h2>
-        <LessonList lessons={list('reading')} results={results} unlocked={unlocked} />
+        <h2 className="text-sm font-extrabold text-slate-500 uppercase">📖 Lecturas · N5</h2>
+        <LessonList lessons={list('reading', 'N5')} results={results} unlocked={unlocked} />
       </section>
       <section className="flex flex-col gap-2">
-        <h2 className="text-sm font-extrabold text-slate-500 uppercase">🎧 Diálogos</h2>
-        <LessonList lessons={list('dialogue')} results={results} unlocked={unlocked} />
+        <h2 className="text-sm font-extrabold text-slate-500 uppercase">🎧 Diálogos · N5</h2>
+        <LessonList lessons={list('dialogue', 'N5')} results={results} unlocked={unlocked} />
+      </section>
+      <section className="flex flex-col gap-2">
+        <h2 className="text-sm font-extrabold text-slate-500 uppercase">📖 Lecturas · N4 (con kanji)</h2>
+        <LessonList lessons={list('reading', 'N4')} results={results} unlocked={unlocked} />
+      </section>
+      <section className="flex flex-col gap-2">
+        <h2 className="text-sm font-extrabold text-slate-500 uppercase">🎧 Diálogos · N4 (con kanji)</h2>
+        <LessonList lessons={list('dialogue', 'N4')} results={results} unlocked={unlocked} />
       </section>
       <Link
         to="/simulacro"
@@ -71,7 +81,9 @@ export function ReadingRoute() {
 }
 
 /** Una frase con sus palabras tocables, su audio y (si se pide) la traducción. */
-function Line({ line, showMeaning, onWord }: { line: TextLine; showMeaning: boolean; onWord: (token: string) => void }) {
+type View = { showMeaning: boolean; furigana?: boolean; spaced?: boolean }
+
+function Line({ line, showMeaning, furigana = true, spaced = true, onWord }: View & { line: TextLine; onWord: (token: string) => void }) {
   const { available, speak } = useSpeech()
   return (
     <li className="flex gap-2">
@@ -85,15 +97,15 @@ function Line({ line, showMeaning, onWord }: { line: TextLine; showMeaning: bool
         </button>
       )}
       <div className="flex flex-col gap-0.5">
-        <p lang="ja" className="font-jp text-xl leading-relaxed">
+        <p lang="ja" className="font-jp text-xl leading-loose">
           {line.speaker && <span className="mr-2 text-sm font-bold text-accent">{line.speaker}:</span>}
           {line.text.split(/\s+/).map((token, i) => (
             <button
               key={i}
-              onClick={() => onWord(lineTokens(token)[0] ?? token)}
-              className="mr-1.5 rounded px-0.5 hover:bg-accent/10 focus-visible:bg-accent/10"
+              onClick={() => onWord(token)}
+              className={`${spaced ? 'mr-1.5 px-0.5' : ''} rounded hover:bg-accent/10 focus-visible:bg-accent/10`}
             >
-              {token}
+              <Furigana text={token} show={furigana} />
             </button>
           ))}
         </p>
@@ -104,13 +116,22 @@ function Line({ line, showMeaning, onWord }: { line: TextLine; showMeaning: bool
 }
 
 /** El texto completo, con glosario al tocar una palabra. */
-export function TextBody({ text, showMeaning }: { text: ReadingText; showMeaning: boolean }) {
+export function TextBody({ text, ...view }: View & { text: ReadingText }) {
   const [word, setWord] = useState<{ token: string; info?: GlossaryEntry } | null>(null)
   return (
     <div className="flex flex-col gap-3">
       <ul className="flex flex-col gap-3 rounded-2xl border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900">
         {text.lines.map((line, i) => (
-          <Line key={i} line={line} showMeaning={showMeaning} onWord={(token) => setWord({ token, info: glossary(token) })} />
+          <Line
+            key={i}
+            line={line}
+            {...view}
+            onWord={(raw) => {
+              const kana = lineTokens(raw)[0] ?? raw
+              const written = lineTokens(furiganaToPlain(raw))[0] ?? kana
+              setWord({ token: written === kana ? kana : `${written}（${kana}）`, info: glossary(kana) })
+            }}
+          />
         ))}
       </ul>
       {word && (
@@ -127,8 +148,8 @@ export function TextBody({ text, showMeaning }: { text: ReadingText; showMeaning
                   , de{' '}
                   <span lang="ja" className="font-jp">
                     {word.info.entry.kana}
-                  </span>{' '}
-                  en forma {word.info.form}
+                  </span>
+                  : {word.info.form}
                 </>
               )}
               )
@@ -154,6 +175,9 @@ export function ReadingTextView({ text, onFinish }: { text: ReadingText; onFinis
   const [correct, setCorrect] = useState(0)
   const [showText, setShowText] = useState(text.kind === 'reading')
   const [showMeaning, setShowMeaning] = useState(false)
+  const withKanji = text.lines.some((l) => hasFurigana(l.text))
+  const [furigana, setFurigana] = useState(true)
+  const [spaced, setSpaced] = useState(true)
   const [playing, setPlaying] = useState(false)
   const complete = useProgress((s) => s.completeLesson)
   const { available, voiceFound, speakLines, stop } = useSpeech()
@@ -209,11 +233,25 @@ export function ReadingTextView({ text, onFinish }: { text: ReadingText; onFinis
 
           {showText || !available ? (
             <>
-              <TextBody text={text} showMeaning={showMeaning} />
-              <label className="flex items-center gap-2 text-sm">
-                <input type="checkbox" checked={showMeaning} onChange={(e) => setShowMeaning(e.target.checked)} className="h-4 w-4" />
-                Mostrar la traducción
-              </label>
+              <TextBody text={text} showMeaning={showMeaning} furigana={furigana} spaced={spaced} />
+              <div className="flex flex-wrap gap-x-5 gap-y-2 text-sm">
+                <label className="flex items-center gap-2">
+                  <input type="checkbox" checked={showMeaning} onChange={(e) => setShowMeaning(e.target.checked)} className="h-4 w-4" />
+                  Mostrar la traducción
+                </label>
+                {withKanji && (
+                  <>
+                    <label className="flex items-center gap-2">
+                      <input type="checkbox" checked={furigana} onChange={(e) => setFurigana(e.target.checked)} className="h-4 w-4" />
+                      Furigana (lectura sobre los kanji)
+                    </label>
+                    <label className="flex items-center gap-2">
+                      <input type="checkbox" checked={spaced} onChange={(e) => setSpaced(e.target.checked)} className="h-4 w-4" />
+                      Espacios entre palabras
+                    </label>
+                  </>
+                )}
+              </div>
             </>
           ) : (
             <button onClick={() => setShowText(true)} className="self-start text-sm font-bold text-slate-500 underline">
@@ -248,7 +286,7 @@ export function ReadingTextView({ text, onFinish }: { text: ReadingText; onFinis
             <details className="rounded-xl bg-slate-100 p-3 text-sm dark:bg-slate-800">
               <summary className="cursor-pointer font-bold">Ver el texto</summary>
               <div className="mt-2">
-                <TextBody text={text} showMeaning={false} />
+                <TextBody text={text} showMeaning={false} furigana={furigana} spaced={spaced} />
               </div>
             </details>
           )}
@@ -281,7 +319,7 @@ export function ReadingTextView({ text, onFinish }: { text: ReadingText; onFinis
             </h1>
             <p className="text-slate-600 dark:text-slate-400">Repasa el texto con su traducción:</p>
           </div>
-          <TextBody text={text} showMeaning />
+          <TextBody text={text} showMeaning furigana={furigana} spaced={spaced} />
           <SaveProgressPrompt />
           <div className="flex flex-wrap justify-center gap-3">
             <Link to="/lectura" className="rounded-full border border-slate-300 px-6 py-3 font-bold dark:border-slate-700">

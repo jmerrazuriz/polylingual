@@ -30,6 +30,7 @@ export const kanjiN4: Kanji[] = [
   k('顔', 'cara', ['ガン'], ['かお'], [['顔', 'かお', 'cara'], ['洗顔', 'せんがん', 'lavado de cara']]),
   k('首', 'cuello', ['シュ'], ['くび'], [['首', 'くび', 'cuello'], ['首都', 'しゅと', 'capital']]),
   k('声', 'voz', ['セイ'], ['こえ'], [['声', 'こえ', 'voz'], ['大声', 'おおごえ', 'voz alta']]),
+  k('音', 'sonido', ['オン', 'イン'], ['おと', 'ね'], [['音', 'おと', 'sonido'], ['音楽', 'おんがく', 'música']]),
   k('心', 'corazón, mente', ['シン'], ['こころ'], [['心', 'こころ', 'corazón, mente'], ['安心', 'あんしん', 'tranquilidad']]),
   k('力', 'fuerza', ['リョク', 'リキ'], ['ちから'], [['力', 'ちから', 'fuerza'], ['協力', 'きょうりょく', 'cooperación']]),
 
@@ -233,7 +234,7 @@ export const kanjiLessonsN4: KanjiLesson[] = [
   lesson('n4-familia-1', 'Casa y hermanos', 'N4 · Personas', '家兄弟姉妹'),
   lesson('n4-familia-2', 'Padres, familia y uno mismo', 'N4 · Personas', '親族私自者'),
   lesson('n4-cuerpo-1', 'Cuerpo, cabeza y cara', 'N4 · Personas', '体頭顔首'),
-  lesson('n4-cuerpo-2', 'Voz, corazón y fuerza', 'N4 · Personas', '声心力'),
+  lesson('n4-cuerpo-2', 'Voz, sonido, corazón y fuerza', 'N4 · Personas', '声音心力'),
   lesson('n4-estaciones', 'Las cuatro estaciones', 'N4 · Tiempo', '春夏秋冬'),
   lesson('n4-dia', 'Mediodía, tarde y noche', 'N4 · Tiempo', '昼夕晩早曜'),
   lesson('n4-tiempo', 'Empezar, terminar y veces', 'N4 · Tiempo', '始終代度回'),

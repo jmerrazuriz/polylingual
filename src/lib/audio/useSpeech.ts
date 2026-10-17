@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
+import { furiganaToKana } from '../furigana'
 import { useProgress } from '../progress/store'
 
 const supported = typeof window !== 'undefined' && 'speechSynthesis' in window
@@ -17,7 +18,8 @@ const NOT_JAPANESE = /[A-Za-zÀ-ÿ¿¡«»"“”'‘’()?!.,:;→+·/[\]=-]+/g
  * nada en japonés devuelve '' y no se lee nada (la voz japonesa leería mal el español).
  */
 export function japaneseSpeech(text: string): string {
-  const parts = text
+  // Con furigana se lee la lectura (駅[えき] → えき), que es la pronunciación correcta.
+  const parts = furiganaToKana(text)
     .replace(NOT_JAPANESE, '\n')
     .split('\n')
     .map((p) => p.trim())

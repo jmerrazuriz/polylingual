@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Furigana } from '../../components/Furigana'
 import { KanaInput } from '../../components/KanaInput'
 import type { GrammarExercise } from '../../courses/grammar'
 import { finishKana, matchesKana } from '../../lib/kanaInput'
@@ -73,7 +74,11 @@ export function GrammarExerciseView({ exercise, onDone, onSkip }: Props) {
 
 function Answer({ exercise }: { exercise: GrammarExercise }) {
   const text = exercise.type === 'order' ? exercise.answer.join(' ') : exercise.type === 'type' ? exercise.answers[0] : exercise.answer
-  return <span className={`font-bold ${jpClass(text)}`}>{text}</span>
+  return (
+    <span className={`font-bold ${jpClass(text)}`}>
+      <Furigana text={text} />
+    </span>
+  )
 }
 
 const optionClass = (state: 'idle' | 'right' | 'wrong' | 'faded') =>
@@ -107,7 +112,7 @@ function Options(props: { options: string[]; answer: string; result: boolean | n
           >
             {state === 'right' && '✓ '}
             {state === 'wrong' && '✗ '}
-            {o}
+            <Furigana text={o} />
           </button>
         )
       })}
@@ -124,14 +129,14 @@ function Choice({ exercise, result, onAnswer }: { exercise: Extract<GrammarExerc
       <p className={`text-2xl font-bold ${jpClass(exercise.prompt)}`}>
         {isBlank ? (
           <>
-            {before}
+            <Furigana text={before} />
             <span className="mx-1 inline-block min-w-12 border-b-4 border-accent text-center text-accent">
               {result !== null ? exercise.answer : ' '}
             </span>
-            {after}
+            <Furigana text={after} />
           </>
         ) : (
-          exercise.prompt
+          <Furigana text={exercise.prompt} />
         )}
       </p>
       {exercise.hint && <p className="text-slate-500">«{exercise.hint}»</p>}
@@ -144,8 +149,8 @@ function Meaning({ exercise, result, onAnswer }: { exercise: Extract<GrammarExer
   return (
     <>
       <p className="text-sm font-bold text-slate-500 uppercase">¿Qué significa?</p>
-      <p lang="ja" className="font-jp text-2xl font-bold">
-        {exercise.text}
+      <p lang="ja" className="font-jp text-2xl leading-loose font-bold">
+        <Furigana text={exercise.text} />
       </p>
       <Options options={exercise.options} answer={exercise.answer} result={result} onAnswer={onAnswer} />
     </>

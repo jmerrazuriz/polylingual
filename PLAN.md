@@ -418,8 +418,15 @@ Meta: que quien termine la etapa pueda aprobar el JLPT N4. Va por tandas, cada u
   - Cada página, salvo el inicio y el recorrido, va en su propio archivo y se carga al abrirla.
   - La primera carga bajó de 1.110 KB (358 KB comprimido) a 735 KB (234 KB comprimido).
   - Lo que queda es sobre todo contenido que el recorrido necesita para calcular estados. Para bajarlo más habría que cargar el contenido N4/N3 de forma asíncrona.
-- **B4 · Furigana:** lector con kanji y lectura encima, que se puede ocultar, y opción de texto sin espacios.
-- **B5 · Lecturas y diálogos N4:** de ~200 caracteres, con audio más lento opcional.
+- ✅ **B4 · Furigana (`src/lib/furigana.ts`):**
+  - Los textos marcan cada kanji con su lectura, `駅[えき]`, y la app la muestra encima (`<ruby>`).
+  - El lector permite ocultar el furigana y quitar los espacios, como se escribe en japonés real.
+  - La voz lee la lectura correcta. El glosario reconoce palabras con kanji, conjugadas o con la partícula pegada.
+  - Los ejercicios también muestran furigana.
+- ✅ **B5 · Lecturas y diálogos N4:** 10 lecturas y 10 diálogos con kanji y furigana, cada uno con la gramática N4 que practica (potencial, condicionales, pasiva, causativa, keigo…).
+  - Un test exige que cada kanji tenga lectura y sea uno que el curso enseña. Por eso se agregó 音 al N4: 303 kanji en total.
+  - Son 2 unidades «N4 · Lectura y audición» en el recorrido y en la nivelación. El simulacro N5 usa solo contenido N5.
+  - La velocidad de la voz ya se puede bajar en los ajustes.
 - **B6 · Simulacro N4,** unidades N4 en el recorrido y bloques N4 en la nivelación.
 - **Para agregar un idioma:** crear `src/courses/<id>/` con su contenido, registrar la gramática en `src/courses/content.ts`, cambiar su `status` a `available` y darle sus secciones. Las lecciones de vocabulario para idiomas sin silabario propio son lo siguiente a diseñar. Quedan como ideas para después (sección 9): tarjetas SRS de palabras, temas de palabras en los juegos, pares confusos juntos en los juegos, kanji, frases con furigana y evaluación de pronunciación.
 

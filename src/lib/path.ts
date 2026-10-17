@@ -75,12 +75,12 @@ const n4Vocab = (n: number, last = false): PathUnit => ({
   id: `vocab-n4-${n}`,
 })
 
-/** Unidad de lectura y audición: 10 textos (lecturas y diálogos), de a 3 por parada. */
-function readingUnit(n: number, title: string): PathUnit {
-  const texts = readingTexts.slice((n - 1) * 10, n * 10)
+/** Unidad de lectura y audición: 10 textos (lecturas y diálogos) del nivel, de a 3 por parada. */
+function readingUnit(n: number, title: string, level: 'N5' | 'N4' = 'N5'): PathUnit {
+  const texts = readingTexts.filter((t) => t.level === level).slice((n - 1) * 10, n * 10)
   const stops: PathStop[] = []
   for (let i = 0; i < texts.length; i += 3) stops.push(stop('reading', texts.slice(i, i + 3).map((t) => t.id)))
-  return { id: `lectura-${n}`, title, icon: '読', stops }
+  return { id: level === 'N5' ? `lectura-${n}` : `lectura-n4-${n}`, title, icon: '読', stops }
 }
 
 export const japanesePath: PathUnit[] = [
@@ -262,6 +262,7 @@ export const japanesePath: PathUnit[] = [
   },
   n4Vocab(2),
   kanjiUnitN4('kanji-n4-2', ['N4 · Adjetivos'], 'N4 · Kanji: colores y adjetivos', '赤'),
+  readingUnit(1, 'N4 · Lectura y audición I (con kanji)', 'N4'),
   {
     id: 'grammar-n4-3',
     title: 'N4 · Gramática III: opinar, comparar y propósito',
@@ -284,6 +285,7 @@ export const japanesePath: PathUnit[] = [
   kanjiUnitN4('kanji-n4-4', ['N4 · Escuela', 'N4 · Verbos'], 'N4 · Kanji: escuela y verbos', '教'),
   n4Vocab(5, true),
   kanjiUnitN4('kanji-n4-5', ['N4 · Trabajo y sociedad'], 'N4 · Kanji: trabajo y sociedad', '仕'),
+  readingUnit(2, 'N4 · Lectura y audición II (con kanji)', 'N4'),
 ]
 
 export type ItemStatus = 'done' | 'open' | 'locked'

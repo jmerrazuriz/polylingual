@@ -1,7 +1,9 @@
 // Lecturas y diálogos: desbloqueo, glosario de palabras y preguntas sueltas.
 
 import type { GrammarExercise } from '../courses/grammar.ts'
+import { readingsN4 } from '../courses/ja/readingsN4.ts'
 import { readingsN5 } from '../courses/ja/readingsN5.ts'
+import { furiganaToKana } from './furigana.ts'
 import { type VocabEntry, vocab } from '../courses/ja/vocab.ts'
 import { conjugateAdjective, conjugateVerb, type VerbForm, verbFormInfo } from './conjugation.ts'
 import { adjFormInfo, DRILL_ADJ_FORMS, N5_VERB_FORMS } from './conjugationDrill.ts'
@@ -9,7 +11,7 @@ import type { ReadingText } from '../courses/reading.ts'
 import type { LessonResult } from './progress/model.ts'
 import { shuffle } from './random.ts'
 
-export const readingTexts: ReadingText[] = readingsN5
+export const readingTexts: ReadingText[] = [...readingsN5, ...readingsN4]
 export const readingById = new Map(readingTexts.map((t) => [t.id, t]))
 
 /** Cada texto se abre al completar su lección de gramática. */
@@ -59,16 +61,28 @@ for (const [kana, meaning] of grammarWords) {
 
 const PUNCTUATION = /[、。？！?!「」]/g
 
-/** Palabras de una frase (separadas por espacios), sin puntuación. */
+/** Palabras de una frase (separadas por espacios), en kana y sin puntuación. */
 export const lineTokens = (text: string) =>
-  text
+  furiganaToKana(text)
     .split(/\s+/)
     .map((t) => t.replace(PUNCTUATION, ''))
     .filter(Boolean)
 
-/** Qué significa una palabra de la frase (también conjugada), si está en el vocabulario. */
+/** Partículas que en los textos N4 van pegadas a la palabra (銀行[ぎんこう]も), de la más larga a la más corta. */
+const TRAILING = ['から', 'まで', 'より', 'には', 'では', 'とは', 'へは', 'も', 'は', 'が', 'を', 'に', 'へ', 'で', 'と', 'の', 'や', 'ね', 'よ', 'か']
+
+/**
+ * Qué significa una palabra de la frase (también conjugada), si está en el vocabulario.
+ * Prueba también sin tratamientos (さん…) y sin la partícula del final.
+ */
 export function glossary(token: string): GlossaryEntry | undefined {
-  return glossaryMap.get(token) ?? glossaryMap.get(token.replace(/(さん|さま|ちゃん|じん|ご)$/, ''))
+  const candidates = [token, token.replace(/(さん|さま|ちゃん|じん|ご)$/, '')]
+  for (const p of TRAILING) if (token.endsWith(p) && token.length > p.length) candidates.push(token.slice(0, -p.length))
+  for (const c of candidates) {
+    const found = glossaryMap.get(c)
+    if (found) return found
+  }
+  return undefined
 }
 
 /** Una pregunta de comprensión sobre una frase del texto (para la nivelación). */

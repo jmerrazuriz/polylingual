@@ -33,8 +33,8 @@ export const placementBlocks: PlacementBlock[] = [
   { id: 'verbos', title: 'Kanji, verbos y katakana extendido', unitIds: ['kanji-2', 'grammar-4', 'lectura-1', 'katakana-extended', 'vocab-kata', 'vocab-4'] },
   { id: 'forma-te', title: 'Formas て, ない y た', unitIds: ['kanji-3', 'grammar-5', 'lectura-2', 'vocab-5'] },
   { id: 'n5', title: 'Cierre del N5', unitIds: ['kanji-4', 'grammar-6', 'lectura-3', 'vocab-6', 'grammar-7', 'vocab-7', 'lectura-4'] },
-  { id: 'n4-gramatica', title: 'N4: formas, condicionales, vocabulario y kanji', unitIds: ['grammar-n4-1', 'vocab-n4-1', 'kanji-n4-1', 'grammar-n4-2', 'vocab-n4-2', 'kanji-n4-2'] },
-  { id: 'n4-gramatica-2', title: 'N4: propósito, keigo, vocabulario y kanji', unitIds: ['grammar-n4-3', 'vocab-n4-3', 'kanji-n4-3', 'grammar-n4-4', 'vocab-n4-4', 'kanji-n4-4', 'vocab-n4-5', 'kanji-n4-5'] },
+  { id: 'n4-gramatica', title: 'N4: formas, condicionales, vocabulario y kanji', unitIds: ['grammar-n4-1', 'vocab-n4-1', 'kanji-n4-1', 'grammar-n4-2', 'vocab-n4-2', 'kanji-n4-2', 'lectura-n4-1'] },
+  { id: 'n4-gramatica-2', title: 'N4: propósito, keigo, vocabulario y kanji', unitIds: ['grammar-n4-3', 'vocab-n4-3', 'kanji-n4-3', 'grammar-n4-4', 'vocab-n4-4', 'kanji-n4-4', 'vocab-n4-5', 'kanji-n4-5', 'lectura-n4-2'] },
 ]
 
 /** Preguntas por bloque y aciertos para aprobarlo (80 %). */

@@ -27,13 +27,16 @@ const TEXTS_PER_SECTION = 2
 
 /** Arma un simulacro N5 al azar con todo el contenido del nivel. */
 export function buildMockExam(random = Math.random): ExamItem[] {
-  const words = shuffle(vocab, random).slice(0, VOCAB_QUESTIONS)
+  const words = shuffle(
+    vocab.filter((v) => v.level === 'N5'),
+    random,
+  ).slice(0, VOCAB_QUESTIONS)
   const vocabItems = words.map(
     (w, i): ExamItem => ({ section: 'vocab', exercise: i % 2 === 0 ? wordMeaningExercise(w, random) : wordChoiceExercise(w, random) }),
   )
 
   // Gramática: frases para completar (con ＿) y alguna para ordenar.
-  const all = grammarByCourse.ja.flatMap((g) => g.exercises)
+  const all = grammarByCourse.ja.filter((g) => (g.level ?? 'N5') === 'N5').flatMap((g) => g.exercises)
   const blanks = shuffle(
     all.filter((e) => e.type === 'choice' && e.prompt.includes('＿')),
     random,
@@ -46,7 +49,7 @@ export function buildMockExam(random = Math.random): ExamItem[] {
 
   const texts = (kind: ReadingText['kind'], section: ExamSection) =>
     shuffle(
-      readingTexts.filter((t) => t.kind === kind),
+      readingTexts.filter((t) => t.kind === kind && t.level === 'N5'),
       random,
     )
       .slice(0, TEXTS_PER_SECTION)

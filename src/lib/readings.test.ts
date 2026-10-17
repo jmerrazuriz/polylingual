@@ -2,15 +2,17 @@ import { describe, expect, it } from 'vitest'
 import { grammarByCourse } from '../courses/content'
 import { buildMockExam, scoreExam } from './mockExam'
 import { glossary, lineMeaningExercise, lineTokens, readingTexts, unlockedReadings } from './readings'
+import { kanjiByChar } from '../courses/ja/kanji'
+import { furiganaToKana, KANJI_CHAR, parseFurigana } from './furigana'
 import { romajiReadings } from './romaji'
 
 const JP = /[぀-ヿ]/
-const kanaOnly = (text: string) => text.replace(/[\s、。？！＿]/g, '')
+const kanaOnly = (text: string) => furiganaToKana(text).replace(/[\s、。？！＿「」]/g, '')
 
 describe('lecturas y diálogos N5', () => {
-  it('hay 20 lecturas y 20 diálogos con ids únicos', () => {
-    expect(readingTexts.filter((t) => t.kind === 'reading')).toHaveLength(20)
-    expect(readingTexts.filter((t) => t.kind === 'dialogue')).toHaveLength(20)
+  it('20 lecturas y 20 diálogos N5, 10 y 10 N4, con ids únicos', () => {
+    const count = (kind: string, level: string) => readingTexts.filter((t) => t.kind === kind && t.level === level).length
+    expect([count('reading', 'N5'), count('dialogue', 'N5'), count('reading', 'N4'), count('dialogue', 'N4')]).toEqual([20, 20, 10, 10])
     expect(new Set(readingTexts.map((t) => t.id)).size).toBe(readingTexts.length)
   })
 
@@ -29,7 +31,22 @@ describe('lecturas y diálogos N5', () => {
     }
   })
 
-  it('todo el japonés usa kana que la app conoce (sin números ni kanji)', () => {
+  it('N4: cada kanji lleva su lectura y es un kanji que el curso enseña', () => {
+    for (const t of readingTexts.filter((r) => r.level === 'N4')) {
+      for (const l of t.lines) {
+        const segments = parseFurigana(l.text)
+        for (const s of segments) {
+          if (s.ruby) {
+            for (const ch of s.text) expect(kanjiByChar.has(ch), `${t.id}: ${ch} (${l.text})`).toBe(true)
+          } else {
+            expect(s.text, `${t.id}: kanji sin lectura en «${l.text}»`).not.toMatch(KANJI_CHAR)
+          }
+        }
+      }
+    }
+  })
+
+  it('todo el japonés se puede leer en kana (sin números)', () => {
     for (const t of readingTexts) {
       for (const l of t.lines) {
         expect(l.text, t.id).not.toMatch(/[0-9０-９]/)
