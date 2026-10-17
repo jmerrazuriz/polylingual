@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useParams } from 'react-router'
 import { ComingSoon } from '../../components/ComingSoon'
-import { type VocabEntry, type VocabLesson, vocabLessons, vocabLessonsHira, vocabLessonsKata } from '../../courses/ja/vocab'
+import { type VocabEntry, type VocabLesson, vocabLessons, vocabLessonsHira, vocabLessonsKata, vocabLessonsN4 } from '../../courses/ja/vocab'
 import { useSpeech } from '../../lib/audio/useSpeech'
 import { conjugateVerb } from '../../lib/conjugation'
 import { useProgress } from '../../lib/progress/store'
@@ -25,7 +25,7 @@ export function VocabPage() {
       <header className="flex flex-col gap-1">
         <h1 className="text-2xl font-extrabold">Aprender</h1>
         <p className="text-sm text-slate-500 dark:text-slate-400">
-          El vocabulario del nivel N5, por temas: verbos, adjetivos, la casa, el tiempo… Llevas {done} de {total} palabras.
+          El vocabulario de los niveles N5 y N4, por temas: verbos, adjetivos, la casa, el trabajo… Llevas {done} de {total} palabras.
         </p>
       </header>
       <LearnTabs current="vocabulario" />
@@ -50,6 +50,20 @@ export function VocabPage() {
           </p>
         )}
         <LessonList lessons={list(vocabLessonsKata)} results={results} unlocked={unlocked} start={vocabLessonsHira.length + 1} />
+      </section>
+      <section className="flex flex-col gap-2">
+        <h2 className="text-sm font-extrabold text-slate-500 uppercase">Nivel N4</h2>
+        {!unlocked.has(vocabLessonsN4[0].id) && (
+          <p className="rounded-xl bg-slate-100 p-3 text-sm text-slate-600 dark:bg-slate-800 dark:text-slate-300">
+            🔒 Se abren con la primera lección de gramática N4 («Forma potencial»).
+          </p>
+        )}
+        <LessonList
+          lessons={list(vocabLessonsN4)}
+          results={results}
+          unlocked={unlocked}
+          start={vocabLessonsHira.length + vocabLessonsKata.length + 1}
+        />
       </section>
     </div>
   )

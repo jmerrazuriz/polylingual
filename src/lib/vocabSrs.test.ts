@@ -62,6 +62,10 @@ describe('vocabulario con repasos', () => {
     const afterKata = unlockedVocab(done(['yoon-4', 'kata-ext-3']), false)
     expect(afterKata.size).toBe(2)
     expect(unlockedVocab(emptyProgress().lessons, true).size).toBe(vocabLessons.length)
+    // N4: con la primera lección de gramática N4.
+    const n4 = unlockedVocab({}, false, done(['potencial']))
+    expect(n4.size).toBe(1)
+    expect([...n4][0]).toMatch(/^voc4-/)
   })
 })
 

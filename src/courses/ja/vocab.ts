@@ -3,7 +3,8 @@
 
 import type { VerbGroup } from '../../lib/conjugation.ts'
 import type { WordTheme } from './types.ts'
-import { type PosCode, vocabData, type VocabThemeId, vocabThemes } from './vocabData.ts'
+import { type PosCode, type RawWord, vocabData, type VocabThemeId, vocabThemes } from './vocabData.ts'
+import { vocabDataN4 } from './vocabDataN4.ts'
 import { allWords } from './words.ts'
 
 export type PartOfSpeech = 'noun' | 'verb' | 'i-adj' | 'na-adj' | 'adverb' | 'question' | 'expression'
@@ -16,6 +17,7 @@ export type VocabEntry = {
   pos: PartOfSpeech
   group?: VerbGroup
   theme: VocabThemeId
+  level: 'N5' | 'N4'
   /** Solo si la lectura no sale directo de los caracteres (こんにちは → konnichiwa). */
   romaji?: string
 }
@@ -24,8 +26,8 @@ export type VocabLesson = {
   id: string
   title: string
   theme: VocabThemeId
-  /** hira: solo hiragana (se abre al terminar el hiragana); kata: con katakana. */
-  track: 'hira' | 'kata'
+  /** hira: N5 solo en hiragana · kata: N5 con katakana · n4: vocabulario N4. */
+  track: 'hira' | 'kata' | 'n4'
   words: VocabEntry[]
 }
 
@@ -101,7 +103,7 @@ function build(): VocabEntry[] {
   const byKey = new Map<string, Raw>()
   const key = (kana: string, code: PosCode) => `${kana}|${code}`
   const dataByKana = new Map<string, { code: PosCode; theme: VocabThemeId }>()
-  for (const [theme, list] of Object.entries(vocabData) as [VocabThemeId, typeof vocabData.expresiones][]) {
+  for (const [theme, list] of Object.entries(vocabData) as [VocabThemeId, RawWord[]][]) {
     for (const [kana, , code] of list) if (code !== 'n' && !dataByKana.has(kana)) dataByKana.set(kana, { code, theme })
   }
   // Primero las palabras de siempre (las conocidas de los juegos), luego las nuevas.
@@ -117,7 +119,7 @@ function build(): VocabEntry[] {
     }
     if (!byKey.has(key(w.kana, code))) byKey.set(key(w.kana, code), { kana: w.kana, meaning: w.meaning, code, theme, romaji: w.romaji })
   }
-  for (const [theme, list] of Object.entries(vocabData) as [VocabThemeId, typeof vocabData.expresiones][]) {
+  for (const [theme, list] of Object.entries(vocabData) as [VocabThemeId, RawWord[]][]) {
     for (const [kana, meaning, code] of list) if (!byKey.has(key(kana, code))) byKey.set(key(kana, code), { kana, meaning, code, theme })
   }
   const raws = [...byKey.values()]
@@ -132,12 +134,41 @@ function build(): VocabEntry[] {
       pos,
       ...(group ? { group } : {}),
       theme: r.theme,
+      level: 'N5' as const,
       ...(r.romaji ? { romaji: r.romaji } : {}),
     }
   })
 }
 
-export const vocab: VocabEntry[] = build()
+/**
+ * El N4 se agrega después sin tocar los ids del N5 (de ellos dependen las tarjetas
+ * guardadas): una palabra nueva usa su kana como id si está libre y, si no, kana·clase.
+ * Las que ya están en el N5 con la misma clase se ignoran.
+ */
+function buildN4(n5: VocabEntry[]): VocabEntry[] {
+  const codeOf = (v: VocabEntry): PosCode =>
+    (Object.entries(fromCode) as [PosCode, [PartOfSpeech, VerbGroup?]][]).find(([, [pos, group]]) => pos === v.pos && group === v.group)![0]
+  const seen = new Set(n5.map((v) => `${v.kana}|${codeOf(v)}`))
+  const usedIds = new Set([...n5.map((v) => v.id), ...n5.map((v) => v.kana)])
+  const out: VocabEntry[] = []
+  for (const [theme, list] of Object.entries(vocabDataN4) as [VocabThemeId, RawWord[]][]) {
+    for (const [kana, meaning, code] of list) {
+      if (seen.has(`${kana}|${code}`)) continue
+      const id = usedIds.has(kana) ? `${kana}·${code}` : kana
+      if (usedIds.has(id)) continue
+      seen.add(`${kana}|${code}`)
+      usedIds.add(id)
+      usedIds.add(kana)
+      const [pos, group] = fromCode[code]
+      out.push({ id, kana, meaning, pos, ...(group ? { group } : {}), theme, level: 'N4' })
+    }
+  }
+  return out
+}
+
+const vocabN5 = build()
+export const vocabN4 = buildN4(vocabN5)
+export const vocab: VocabEntry[] = [...vocabN5, ...vocabN4]
 export const vocabById = new Map(vocab.map((v) => [v.id, v]))
 export const verbs = vocab.filter((v) => v.pos === 'verb')
 export const iAdjectives = vocab.filter((v) => v.pos === 'i-adj')
@@ -162,7 +193,7 @@ function chunk<T>(list: T[], size: number): T[][] {
 function hiraganaLessons(): VocabLesson[] {
   const perTheme = themeOrder.map((theme) => {
     const parts = chunk(
-      vocab.filter((v) => v.theme === theme && !hasKatakana(v.kana)),
+      vocabN5.filter((v) => v.theme === theme && !hasKatakana(v.kana)),
       10,
     )
     return parts.map(
@@ -183,7 +214,7 @@ function hiraganaLessons(): VocabLesson[] {
 
 /** Lecciones de palabras con katakana (casi todas préstamos), en orden de tema. */
 function katakanaLessons(): VocabLesson[] {
-  const words = themeOrder.flatMap((theme) => vocab.filter((v) => v.theme === theme && hasKatakana(v.kana)))
+  const words = themeOrder.flatMap((theme) => vocabN5.filter((v) => v.theme === theme && hasKatakana(v.kana)))
   return chunk(words, 12).map((part, i) => ({
     id: `voc-kata-${i + 1}`,
     title: `Palabras en katakana ${i + 1}`,
@@ -193,10 +224,59 @@ function katakanaLessons(): VocabLesson[] {
   }))
 }
 
+/** Temas del N4 en el orden en que se intercalan (con los nuevos: trabajo y sociedad). */
+const themeOrderN4: VocabThemeId[] = [
+  'expresiones',
+  'verbos-1',
+  'personas',
+  'adjetivos-i',
+  'trabajo',
+  'verbos-2',
+  'tiempo',
+  'adjetivos-na',
+  'lugares',
+  'verbos-3',
+  'escuela',
+  'adverbios',
+  'casa',
+  'comida',
+  'cuerpo',
+  'sociedad',
+  'ocio',
+  'naturaleza',
+  'preguntas',
+]
+
+/** Lecciones N4: por tema, intercalando los temas en cada vuelta, como las del N5. */
+function n4Lessons(): VocabLesson[] {
+  const perTheme = themeOrderN4.map((theme) => {
+    const parts = chunk(
+      vocabN4.filter((v) => v.theme === theme),
+      10,
+    )
+    return parts.map(
+      (words, i): VocabLesson => ({
+        id: `voc4-${theme}-${i + 1}`,
+        title: `N4 · ${vocabThemes[theme]}${parts.length > 1 ? ` · ${i + 1}` : ''}`,
+        theme,
+        track: 'n4',
+        words,
+      }),
+    )
+  })
+  const rounds = Math.max(...perTheme.map((p) => p.length))
+  const out: VocabLesson[] = []
+  for (let r = 0; r < rounds; r++) for (const p of perTheme) if (p[r]) out.push(p[r])
+  return out
+}
+
 export const vocabLessonsHira = hiraganaLessons()
 export const vocabLessonsKata = katakanaLessons()
-export const vocabLessons: VocabLesson[] = [...vocabLessonsHira, ...vocabLessonsKata]
+export const vocabLessonsN4 = n4Lessons()
+export const vocabLessons: VocabLesson[] = [...vocabLessonsHira, ...vocabLessonsKata, ...vocabLessonsN4]
 
 /** Las palabras solo en hiragana se abren al terminar el hiragana; las de katakana, al terminar el katakana. */
 export const VOCAB_UNLOCKED_BY = 'yoon-4'
 export const VOCAB_KATA_UNLOCKED_BY = 'kata-ext-3'
+/** El vocabulario N4 se abre con la primera lección de gramática N4. */
+export const VOCAB_N4_UNLOCKED_BY_GRAMMAR = 'potencial'

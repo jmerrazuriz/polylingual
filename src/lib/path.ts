@@ -5,7 +5,7 @@ import { grammarByCourse } from '../courses/content.ts'
 import { counterLessons } from '../courses/ja/counters.ts'
 import { kanjiLessons } from '../courses/ja/kanji.ts'
 import { lessons as kanaLessons } from '../courses/ja/lessons.ts'
-import { vocabLessons, vocabLessonsHira, vocabLessonsKata } from '../courses/ja/vocab.ts'
+import { vocabLessons, vocabLessonsHira, vocabLessonsKata, vocabLessonsN4 } from '../courses/ja/vocab.ts'
 import { readingById, readingTexts, unlockedReadings } from './readings.ts'
 import type { ProgressData } from './progress/model.ts'
 import {
@@ -61,6 +61,11 @@ function vocabUnit(n: number, title: string, lessons: { id: string }[]): PathUni
   return { id: `vocab-${n}`, title, icon: '語', stops }
 }
 const hiraVocab = (from: number, to?: number) => vocabLessonsHira.slice(from, to)
+/** Vocabulario N4 en unidades de 12 lecciones (la última se lleva el resto). */
+const n4Vocab = (n: number, last = false): PathUnit => ({
+  ...vocabUnit(0, `N4 · Vocabulario ${['I', 'II', 'III', 'IV', 'V'][n - 1]}`, vocabLessonsN4.slice((n - 1) * 12, last ? undefined : n * 12)),
+  id: `vocab-n4-${n}`,
+})
 
 /** Unidad de lectura y audición: 10 textos (lecturas y diálogos), de a 3 por parada. */
 function readingUnit(n: number, title: string): PathUnit {
@@ -234,6 +239,7 @@ export const japanesePath: PathUnit[] = [
       stop('grammar', ['te-ageru', 'pasiva']),
     ],
   },
+  n4Vocab(1),
   {
     id: 'grammar-n4-2',
     title: 'N4 · Gramática II: matices',
@@ -245,12 +251,14 @@ export const japanesePath: PathUnit[] = [
       stop('grammar', ['kamoshirenai', 'node-noni']),
     ],
   },
+  n4Vocab(2),
   {
     id: 'grammar-n4-3',
     title: 'N4 · Gramática III: opinar, comparar y propósito',
     icon: '文',
     stops: [stop('grammar', ['to-omou', 'you-da']), stop('grammar', ['nagara', 'sugiru']), stop('grammar', ['shi-tari', 'tame-ni'])],
   },
+  n4Vocab(3),
   {
     id: 'grammar-n4-4',
     title: 'N4 · Gramática IV: decisiones y keigo',
@@ -261,6 +269,8 @@ export const japanesePath: PathUnit[] = [
       stop('grammar', ['keigo-respeto', 'keigo-humildad']),
     ],
   },
+  n4Vocab(4),
+  n4Vocab(5, true),
 ]
 
 export type ItemStatus = 'done' | 'open' | 'locked'
@@ -282,7 +292,7 @@ export function pathItemStatus(p: ProgressData, everythingOpen: boolean): (i: Pa
     COUNTERS_UNLOCKED_BY,
     all,
   )
-  const voc = unlockedVocab(p.lessons, all)
+  const voc = unlockedVocab(p.lessons, all, p.grammar)
   const read = unlockedReadings(p.grammar, all)
   const kanj = unlockedSequence(
     kanjiLessons.map((l) => l.id),

@@ -16,6 +16,8 @@ export type VocabThemeId =
   | 'comida'
   | 'cuerpo'
   | 'escuela'
+  | 'trabajo'
+  | 'sociedad'
   | 'ocio'
   | 'naturaleza'
   | 'animales'
@@ -39,7 +41,9 @@ export const vocabThemes: Record<VocabThemeId, string> = {
   casa: 'Casa y objetos',
   comida: 'Comida y bebida',
   cuerpo: 'Cuerpo y salud',
-  escuela: 'Escuela y trabajo',
+  escuela: 'Escuela y estudios',
+  trabajo: 'Trabajo y dinero',
+  sociedad: 'Sociedad y vida',
   ocio: 'Ocio, transporte y compras',
   naturaleza: 'Naturaleza y clima',
   animales: 'Animales',
@@ -55,7 +59,7 @@ export const vocabThemes: Record<VocabThemeId, string> = {
   adverbios: 'Adverbios y palabras útiles',
 }
 
-export const vocabData: Record<VocabThemeId, RawWord[]> = {
+export const vocabData: Partial<Record<VocabThemeId, RawWord[]>> = {
   expresiones: [
     ['おはようございます', 'buenos días (formal)', 'exp'],
     ['ありがとうございます', 'muchas gracias', 'exp'],

@@ -54,7 +54,7 @@ const grammarWords: [string, string][] = [
   ['ううん', 'no (informal)'],
 ]
 for (const [kana, meaning] of grammarWords) {
-  if (!glossaryMap.has(kana)) glossaryMap.set(kana, { entry: { id: kana, kana, meaning, pos: 'expression', theme: 'expresiones' } })
+  if (!glossaryMap.has(kana)) glossaryMap.set(kana, { entry: { id: kana, kana, meaning, pos: 'expression', theme: 'expresiones', level: 'N5' } })
 }
 
 const PUNCTUATION = /[、。？！?!「」]/g

@@ -404,7 +404,11 @@ Meta: que quien termine la etapa pueda aprobar el JLPT N4. Va por tandas, cada u
   - Dar y recibir (あげる/くれる/もらう y sus formas て).
   - てしまう, ておく, てみる, なければならない, たほうがいい, そうだ/ようだ/みたい, かもしれない, ながら, ので/のに, すぎる, し, ために/ように, はず, ことにする, ところ y keigo básico.
   - El motor de conjugación ya tiene las formas N4.
-- **B2 · Vocabulario N4:** unas 600 palabras más (~1.500 en total), con lecciones y SRS como el N5.
+- ✅ **B2 · Vocabulario N4:** 604 palabras nuevas (1.507 en total, 150 verbos N4).
+  - Hay 2 temas nuevos: trabajo y dinero, y sociedad y vida.
+  - Son 71 lecciones N4 de hasta 10 palabras, con SRS como el N5. Se abren con la primera lección de gramática N4.
+  - Los ids del N5 no cambian (de ellos dependen las tarjetas guardadas); un test lo vigila.
+  - En el recorrido son 5 unidades de vocabulario N4 intercaladas con la gramática, y entran en los bloques N4 de la nivelación. Los verbos nuevos ya sirven en la práctica de conjugación y en el glosario de las lecturas.
 - **B3 · Kanji N4:** unos 200 kanji más (~300), con trazos de KanjiVG, lecciones y SRS.
 - **B4 · Furigana:** lector con kanji y lectura encima, que se puede ocultar, y opción de texto sin espacios.
 - **B5 · Lecturas y diálogos N4:** de ~200 caracteres, con audio más lento opcional.

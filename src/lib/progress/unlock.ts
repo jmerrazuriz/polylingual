@@ -1,5 +1,12 @@
 import { lessons as allLessons, lessonsByScript } from '../../courses/ja/lessons.ts'
-import { VOCAB_KATA_UNLOCKED_BY, VOCAB_UNLOCKED_BY, vocabLessonsHira, vocabLessonsKata } from '../../courses/ja/vocab.ts'
+import {
+  VOCAB_KATA_UNLOCKED_BY,
+  VOCAB_N4_UNLOCKED_BY_GRAMMAR,
+  VOCAB_UNLOCKED_BY,
+  vocabLessonsHira,
+  vocabLessonsKata,
+  vocabLessonsN4,
+} from '../../courses/ja/vocab.ts'
 import { useAccount } from '../account/store.ts'
 import { unlockedReadings } from '../readings.ts'
 import type { LessonResult } from './model.ts'
@@ -84,12 +91,26 @@ export function useUnlockedSequence(ids: readonly string[], gate: string): Set<s
 
 const vocabHiraIds = vocabLessonsHira.map((l) => l.id)
 const vocabKataIds = vocabLessonsKata.map((l) => l.id)
+const vocabN4Ids = vocabLessonsN4.map((l) => l.id)
 
-/** Vocabulario: las lecciones en hiragana tras el hiragana; las de katakana tras el katakana. Cada una abre la siguiente. */
-export function unlockedVocab(lessons: Record<string, LessonResult>, unlockAll: boolean): Set<string> {
+/**
+ * Vocabulario: las lecciones N5 en hiragana tras el hiragana; las de katakana tras el katakana;
+ * las N4 tras la primera lección de gramática N4. En cada grupo, cada lección abre la siguiente.
+ */
+export function unlockedVocab(
+  lessons: Record<string, LessonResult>,
+  unlockAll: boolean,
+  grammar: Record<string, LessonResult> = {},
+): Set<string> {
+  const n4Open = unlockAll || !!grammar[VOCAB_N4_UNLOCKED_BY_GRAMMAR]
+  const n4 = new Set<string>()
+  vocabN4Ids.forEach((id, i) => {
+    if (unlockAll || (i === 0 && n4Open) || (i > 0 && lessons[vocabN4Ids[i - 1]]) || lessons[id]) n4.add(id)
+  })
   return new Set([
     ...unlockedSequence(vocabHiraIds, lessons, VOCAB_UNLOCKED_BY, unlockAll),
     ...unlockedSequence(vocabKataIds, lessons, VOCAB_KATA_UNLOCKED_BY, unlockAll),
+    ...n4,
   ])
 }
 
@@ -97,7 +118,8 @@ export function useUnlockedVocab(): Set<string> {
   const guest = useAccount((s) => s.status !== 'user')
   const lessons = useProgress((s) => s.lessons)
   const unlockAll = useProgress((s) => s.unlockAll)
-  return unlockedVocab(lessons, guest || unlockAll)
+  const grammar = useProgress((s) => s.grammar)
+  return unlockedVocab(lessons, guest || unlockAll, grammar)
 }
 
 export function useUnlockedReadings(): Set<string> {
