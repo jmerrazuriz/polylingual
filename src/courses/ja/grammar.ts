@@ -4,6 +4,7 @@ import { grammarN4b } from './grammarN4b.ts'
 import { grammarN3 } from './grammarN3.ts'
 import { grammarN3b } from './grammarN3b.ts'
 import { grammarN3c } from './grammarN3c.ts'
+import { grammarN3d } from './grammarN3d.ts'
 import { grammarN5 } from './grammarN5.ts'
 
 // Gramática básica de japonés usando solo kana. Las palabras van separadas por
@@ -313,4 +314,4 @@ const basics: GrammarLesson[] = [
 ]
 
 /** Todas las lecciones de gramática, en orden: las básicas, el resto del N5, el N4 y el N3. */
-export const japaneseGrammar: GrammarLesson[] = [...basics, ...grammarN5, ...grammarN4, ...grammarN4b, ...grammarN3, ...grammarN3b, ...grammarN3c]
+export const japaneseGrammar: GrammarLesson[] = [...basics, ...grammarN5, ...grammarN4, ...grammarN4b, ...grammarN3, ...grammarN3b, ...grammarN3c, ...grammarN3d]

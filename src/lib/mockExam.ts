@@ -30,7 +30,7 @@ export const sectionInfo: Record<ExamSection, { title: string; jp: string }> = {
 export const examInfo: Record<ExamLevel, { minutes: number; passTotal: number; recordKey: string; path: string; lastGrammar: string }> = {
   N5: { minutes: 30, passTotal: 80, recordKey: 'simulacro-n5', path: '/simulacro', lastGrammar: 'no-ga-suki' },
   N4: { minutes: 35, passTotal: 90, recordKey: 'simulacro-n4', path: '/simulacro/n4', lastGrammar: 'keigo-humildad' },
-  N3: { minutes: 40, passTotal: 95, recordKey: 'simulacro-n3', path: '/simulacro/n3', lastGrammar: 'tsumori-de' },
+  N3: { minutes: 40, passTotal: 95, recordKey: 'simulacro-n3', path: '/simulacro/n3', lastGrammar: 'keigo-rareru' },
 }
 export const PASS_LANGUAGE = 38
 export const PASS_LISTENING = 19

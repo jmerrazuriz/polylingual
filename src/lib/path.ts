@@ -403,6 +403,28 @@ export const japanesePath: PathUnit[] = [
   kanjiUnitN4('kanji-n3-9', ['N3 · Realidad y dinero'], 'N3 · Kanji: realidad y dinero', '実'),
   kanjiUnitN4('kanji-n3-10', ['N3 · Seguridad, salud y arte'], 'N3 · Kanji: seguridad, salud y arte', '救'),
   kanjiUnitN4('kanji-n3-11', ['N3 · Comunicación y orden'], 'N3 · Kanji: comunicación y orden', '続'),
+  {
+    id: 'grammar-n3-7',
+    title: 'N3 · Gramática VII: actitudes, comparaciones y tendencias',
+    icon: '文',
+    stops: [
+      stop('grammar', ['you-to-shinai', 'ni-kawatte']),
+      stop('grammar', ['ageku', 'ta-tokoro-de']),
+      stop('grammar', ['nagara-mo', 'gachi']),
+      stop('grammar', ['gimi', 'ni-taishite']),
+    ],
+  },
+  {
+    id: 'grammar-n3-8',
+    title: 'N3 · Gramática VIII: keigo avanzado y matices de tiempo',
+    icon: '文',
+    stops: [
+      stop('grammar', ['ni-kurabete', 'wo-hajime']),
+      stop('grammar', ['ba-yokatta', 'te-kara-de-nai-to']),
+      stop('grammar', ['to-iu-koto-da', 'ni-tsurete']),
+      stop('grammar', ['keigo-itadaku', 'keigo-rareru']),
+    ],
+  },
   examUnit('N3'),
 ]
 

@@ -443,10 +443,12 @@ Meta: que quien termine el curso entienda el japonés a nivel JLPT N3. Es la eta
   - Temas: ものだ, ことだ/ことはない, べき, しかない, だけでなく, ば〜ほど, ほど, としたら, くせに, ついでに, てほしい, って, わりに, ように言う, させてもらう y conectores (それなのに, そのうえ, つまり, ところが, それとも).
   - Ejercicios con **formato JLPT**: paráfrasis (elegir la frase que significa lo mismo) y uso (elegir la frase que usa bien la expresión), con su propio encabezado. Están en cada lección de esta tanda y en 8 de la primera.
   - Son 2 unidades más en el recorrido y un bloque más en la nivelación.
-- 🟡 **C2b · Gramática N3, tercera tanda publicada (16 lecciones, 48 N3 y 114 en total):**
+- ✅ **C2b · Gramática N3, tercera tanda publicada (16 lecciones, 48 N3 y 114 en total):**
   - はずだった, ことになっている, ものの, にしては, からには, ばかりか, とおり/どおり, ことから, たって/ても, なんて, ようがない, ずに, っけ, まま, 〜きる/〜かける y つもりで. Todas con paráfrasis o uso.
   - Son 2 unidades más (V y VI) antes del simulacro N3, que ahora se abre al terminar つもりで, y un bloque más en la nivelación.
-  - Quedan para una cuarta tanda: ようとしない, にかわって, 敬語 avanzado, あげく, ところで, ほど〜ない y ながら (aunque).
+- ✅ **C2c · Gramática N3, cuarta tanda publicada (16 lecciones, 64 N3 y 130 en total):**
+  - ようとしない, にかわって, あげく, たところで, ながら(も), がち, 気味, に対して, に比べて, をはじめ, ばよかった, てからでないと, ということだ, につれて y keigo avanzado (お〜いただく, ご〜ください; respeto con れる・られる).
+  - Son 2 unidades más (VII y VIII) antes del simulacro N3, que ahora se abre al terminar el keigo con られる, y un bloque más en la nivelación.
 - 🟡 **C3 · Kanji N3, cuatro tandas publicadas (292 kanji N3, 595 en total):**
   - 76 kanji N3 (379 en total), cada uno con significado, lecturas on/kun, 2 ejemplos y trazos de KanjiVG. Son 13 lecciones en 2 grupos (personas y vida diaria; trabajo y sociedad), con SRS.
   - Los trazos de kanji ahora van **separados por nivel** (`kanji-n5/n4/n3.json`) y se carga solo el nivel que hace falta: una lección N3 baja 74 KB en vez de 244 KB.
