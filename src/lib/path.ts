@@ -245,6 +245,22 @@ export const japanesePath: PathUnit[] = [
       stop('grammar', ['kamoshirenai', 'node-noni']),
     ],
   },
+  {
+    id: 'grammar-n4-3',
+    title: 'N4 · Gramática III: opinar, comparar y propósito',
+    icon: '文',
+    stops: [stop('grammar', ['to-omou', 'you-da']), stop('grammar', ['nagara', 'sugiru']), stop('grammar', ['shi-tari', 'tame-ni'])],
+  },
+  {
+    id: 'grammar-n4-4',
+    title: 'N4 · Gramática IV: decisiones y keigo',
+    icon: '敬',
+    stops: [
+      stop('grammar', ['koto-ni-suru', 'tokoro']),
+      stop('grammar', ['te-aru', 'ka-dou-ka']),
+      stop('grammar', ['keigo-respeto', 'keigo-humildad']),
+    ],
+  },
 ]
 
 export type ItemStatus = 'done' | 'open' | 'locked'

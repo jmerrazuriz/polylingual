@@ -34,6 +34,7 @@ export const placementBlocks: PlacementBlock[] = [
   { id: 'forma-te', title: 'Formas て, ない y た', unitIds: ['kanji-3', 'grammar-5', 'lectura-2', 'vocab-5'] },
   { id: 'n5', title: 'Cierre del N5', unitIds: ['kanji-4', 'grammar-6', 'lectura-3', 'vocab-6', 'grammar-7', 'vocab-7', 'lectura-4'] },
   { id: 'n4-gramatica', title: 'N4: formas, condicionales y matices', unitIds: ['grammar-n4-1', 'grammar-n4-2'] },
+  { id: 'n4-gramatica-2', title: 'N4: propósito, decisiones y keigo', unitIds: ['grammar-n4-3', 'grammar-n4-4'] },
 ]
 
 /** Preguntas por bloque y aciertos para aprobarlo (80 %). */

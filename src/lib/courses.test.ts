@@ -109,6 +109,12 @@ describe('gramática de japonés', () => {
     for (const t of texts.filter((t) => !/[a-zA-Z¿«]/.test(t))) expect(() => romajiReadings(kanaOnly(t)), t).not.toThrow()
   })
 
+  it('tiene el N5 completo y 28 lecciones N4 después, en orden de nivel', () => {
+    const levels = japaneseGrammar.map((l) => l.level ?? 'N5')
+    expect(levels.filter((l) => l === 'N4')).toHaveLength(28)
+    expect(levels.lastIndexOf('N5')).toBeLessThan(levels.indexOf('N4'))
+  })
+
   it('se abre tras los básicos del hiragana y en orden', () => {
     const ids = japaneseGrammar.map((l) => l.id)
     expect(unlockedGrammar(ids, {}, {}, false).size).toBe(0)
