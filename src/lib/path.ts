@@ -346,6 +346,9 @@ export const japanesePath: PathUnit[] = [
     ],
   },
   kanjiUnitN4('kanji-n3-2', ['N3 · Trabajo y sociedad'], 'N3 · Kanji: trabajo y sociedad', '働'),
+  kanjiUnitN4('kanji-n3-3', ['N3 · Sentimientos y cuerpo'], 'N3 · Kanji: sentimientos y cuerpo', '愛'),
+  kanjiUnitN4('kanji-n3-4', ['N3 · Naturaleza y sociedad'], 'N3 · Kanji: naturaleza y sociedad', '島'),
+  kanjiUnitN4('kanji-n3-5', ['N3 · Movimiento y cambio'], 'N3 · Kanji: movimiento y cambio', '進'),
 ]
 
 export type ItemStatus = 'done' | 'open' | 'locked'

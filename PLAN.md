@@ -446,11 +446,12 @@ Meta: que quien termine el curso entienda el japonés a nivel JLPT N3. Es la eta
 - **C2b · Gramática N3, tercera tanda** (pendiente, ~25 lecciones):
   - はずだった, ことになっている, ようとしない, ものの, にしては, からには, おかげ/せい (matices), ばかりか, とおり, にかわって, ことから, 敬語 avanzado, あげく, ところで, ても/たって, なんて, ほど〜ない, ながら (aunque), つもりで, ようがない, 〜ずに, 〜っけ, 〜まま y 〜きる/〜かける.
   - Con ejercicios de paráfrasis y uso como la segunda tanda.
-- 🟡 **C3 · Kanji N3, primera tanda publicada:**
+- 🟡 **C3 · Kanji N3, dos tandas publicadas (148 kanji N3, 451 en total):**
   - 76 kanji N3 (379 en total), cada uno con significado, lecturas on/kun, 2 ejemplos y trazos de KanjiVG. Son 13 lecciones en 2 grupos (personas y vida diaria; trabajo y sociedad), con SRS.
   - Los trazos de kanji ahora van **separados por nivel** (`kanji-n5/n4/n3.json`) y se carga solo el nivel que hace falta: una lección N3 baja 74 KB en vez de 244 KB.
   - Hay 2 unidades de kanji N3 en el recorrido, en los bloques N3 de la nivelación. Los simulacros N5 y N4 usan los kanji de su nivel.
-  - Faltan ~270 kanji N3, en tandas de ~70.
+  - Segunda tanda: 72 kanji en 12 lecciones (sentimientos y cuerpo; naturaleza y sociedad; movimiento y cambio). Son 3 unidades más en el recorrido y un bloque más en la nivelación.
+  - Faltan ~200 kanji N3, en tandas de ~70.
 - **C4 · Vocabulario N3** (~2.200 más, ~3.700 en total), en tandas de ~400 por tema, con kanji y furigana en las fichas.
   - Las palabras pasan a tener forma escrita (`kanji?`) además del kana.
   - Hace falta cargar el contenido por nivel de forma asíncrona.
