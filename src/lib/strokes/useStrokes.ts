@@ -7,8 +7,10 @@ import { loadKanjiStrokes, strokesReady, subscribeStrokes } from '../../courses/
  */
 export function useStrokesReady(chars: readonly string[]): boolean {
   const ready = useSyncExternalStore(subscribeStrokes, () => strokesReady(chars))
+  const key = chars.join('')
   useEffect(() => {
-    if (!ready) void loadKanjiStrokes()
-  }, [ready])
+    // Solo el archivo del nivel de estos kanji (N5, N4 o N3).
+    if (!ready) void loadKanjiStrokes([...key])
+  }, [ready, key])
   return ready
 }

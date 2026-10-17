@@ -35,8 +35,8 @@ export const placementBlocks: PlacementBlock[] = [
   { id: 'n5', title: 'Cierre del N5', unitIds: ['kanji-4', 'grammar-6', 'lectura-3', 'vocab-6', 'grammar-7', 'vocab-7', 'lectura-4'] },
   { id: 'n4-gramatica', title: 'N4: formas, condicionales, vocabulario y kanji', unitIds: ['grammar-n4-1', 'vocab-n4-1', 'kanji-n4-1', 'grammar-n4-2', 'vocab-n4-2', 'kanji-n4-2', 'lectura-n4-1'] },
   { id: 'n4-gramatica-2', title: 'N4: propósito, keigo, vocabulario y kanji', unitIds: ['grammar-n4-3', 'vocab-n4-3', 'kanji-n4-3', 'grammar-n4-4', 'vocab-n4-4', 'kanji-n4-4', 'vocab-n4-5', 'kanji-n4-5', 'lectura-n4-2'] },
-  { id: 'n3-gramatica-1', title: 'N3: gramática I y II', unitIds: ['grammar-n3-1', 'grammar-n3-2'] },
-  { id: 'n3-gramatica-2', title: 'N3: gramática III y IV', unitIds: ['grammar-n3-3', 'grammar-n3-4'] },
+  { id: 'n3-gramatica-1', title: 'N3: gramática I y II y kanji', unitIds: ['grammar-n3-1', 'grammar-n3-2', 'kanji-n3-1'] },
+  { id: 'n3-gramatica-2', title: 'N3: gramática III y IV y kanji', unitIds: ['grammar-n3-3', 'grammar-n3-4', 'kanji-n3-2'] },
 ]
 
 /** Preguntas por bloque y aciertos para aprobarlo (80 %). */

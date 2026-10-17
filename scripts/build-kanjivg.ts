@@ -9,7 +9,9 @@ import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { hiraganaInfo, smallHiragana } from '../src/courses/ja/hiragana.ts'
 import { katakanaInfo, LONG_VOWEL, smallKatakana } from '../src/courses/ja/katakana.ts'
-import { kanjiList } from '../src/courses/ja/kanji.ts'
+import { kanjiN5 } from '../src/courses/ja/kanji.ts'
+import { kanjiN3 } from '../src/courses/ja/kanjiN3.ts'
+import { kanjiN4 } from '../src/courses/ja/kanjiN4.ts'
 import type { StrokeData } from '../src/courses/ja/types.ts'
 
 const KANJIVG_TAG = 'r20260714'
@@ -83,4 +85,7 @@ const katakanaChars = [
 ]
 await build('katakana', katakanaChars)
 
-await build('kanji', kanjiList.map((k) => k.char))
+// Kanji por nivel: la app carga cada archivo la primera vez que hace falta uno de sus kanji.
+await build('kanji-n5', kanjiN5.map((k) => k.char))
+await build('kanji-n4', kanjiN4.map((k) => k.char))
+await build('kanji-n3', kanjiN3.map((k) => k.char))

@@ -2,36 +2,56 @@ import { hiraganaChart, hiraganaInfo, hiraganaMnemonics } from './hiragana.ts'
 import { katakanaChart, katakanaInfo, katakanaMnemonics, toHiragana, toKatakana } from './katakana.ts'
 import hiraganaStrokes from './strokes/hiragana.json'
 import katakanaStrokes from './strokes/katakana.json'
+import { kanjiN3 } from './kanjiN3.ts'
+import { kanjiN4 } from './kanjiN4.ts'
 import type { ChartSection, Kana, KanaInfo, Script, StrokeData } from './types.ts'
 
 // Generados por scripts/build-kanjivg.ts; la forma de los datos la valida content.test.ts.
-// Los trazos de kana van en el paquete principal (son pocos). Los de kanji (~300 KB) se
-// cargan aparte la primera vez que se necesitan: loadKanjiStrokes().
+// Los trazos de kana van en el paquete principal (son pocos). Los de kanji van en un
+// archivo por nivel (N5, N4, N3) que se carga la primera vez que hace falta: loadKanjiStrokes().
 const kanaStrokes = {
   ...(hiraganaStrokes as unknown as Record<string, StrokeData>),
   ...(katakanaStrokes as unknown as Record<string, StrokeData>),
 }
-let kanjiStrokes: Record<string, StrokeData> | null = null
-let kanjiLoading: Promise<void> | null = null
+type KanjiLevel = 'n5' | 'n4' | 'n3'
+const kanjiFiles: Record<KanjiLevel, () => Promise<{ default: unknown }>> = {
+  n5: () => import('./strokes/kanji-n5.json'),
+  n4: () => import('./strokes/kanji-n4.json'),
+  n3: () => import('./strokes/kanji-n3.json'),
+}
+const n4Chars = new Set(kanjiN4.map((k) => k.char))
+const n3Chars = new Set(kanjiN3.map((k) => k.char))
+const levelOf = (char: string): KanjiLevel => (n3Chars.has(char) ? 'n3' : n4Chars.has(char) ? 'n4' : 'n5')
+
+const kanjiStrokes: Partial<Record<KanjiLevel, Record<string, StrokeData>>> = {}
+const kanjiLoading: Partial<Record<KanjiLevel, Promise<void>>> = {}
 const strokeListeners = new Set<() => void>()
 
-/** Carga (una sola vez) los trazos de los kanji y avisa a quien esté esperando. */
-export function loadKanjiStrokes(): Promise<void> {
-  kanjiLoading ??= import('./strokes/kanji.json').then((m) => {
-    kanjiStrokes = m.default as unknown as Record<string, StrokeData>
+function loadLevel(level: KanjiLevel): Promise<void> {
+  kanjiLoading[level] ??= kanjiFiles[level]().then((m) => {
+    kanjiStrokes[level] = m.default as Record<string, StrokeData>
     for (const listener of strokeListeners) listener()
   })
-  return kanjiLoading
+  return kanjiLoading[level]
 }
 
-/** Avisa cuando llegan los trazos de kanji (para useSyncExternalStore). */
+/**
+ * Carga (una sola vez por nivel) los trazos de los kanji pedidos; sin argumentos, los de
+ * todos los niveles. Avisa a quien esté esperando cuando llegan.
+ */
+export function loadKanjiStrokes(chars?: readonly string[]): Promise<void> {
+  const levels = chars ? new Set(chars.filter((c) => !(c in kanaStrokes)).map(levelOf)) : (Object.keys(kanjiFiles) as KanjiLevel[])
+  return Promise.all([...levels].map(loadLevel)).then(() => undefined)
+}
+
+/** Avisa cuando llegan trazos de kanji (para useSyncExternalStore). */
 export function subscribeStrokes(listener: () => void): () => void {
   strokeListeners.add(listener)
   return () => strokeListeners.delete(listener)
 }
 
-/** ¿Ya se pueden dibujar estos caracteres? Los kana siempre; los kanji, cuando se cargaron sus trazos. */
-export const strokesReady = (chars: readonly string[]) => chars.every((c) => c in kanaStrokes || kanjiStrokes !== null)
+/** ¿Ya se pueden dibujar estos caracteres? Los kana siempre; los kanji, cuando se cargó su nivel. */
+export const strokesReady = (chars: readonly string[]) => chars.every((c) => c in kanaStrokes || kanjiStrokes[levelOf(c)] !== undefined)
 
 export const charts: Record<Script, ChartSection[]> = { hiragana: hiraganaChart, katakana: katakanaChart }
 
@@ -59,9 +79,9 @@ export const allKana = [...hiragana, ...katakana]
 
 export const kanaByChar = new Map(allKana.map((k) => [k.char, k]))
 
-/** Trazos de un carácter. Los de kanji son undefined hasta que termina loadKanjiStrokes(). */
+/** Trazos de un carácter. Los de kanji son undefined hasta que se carga su nivel. */
 export function getStrokes(char: string): StrokeData | undefined {
-  return kanaStrokes[char] ?? kanjiStrokes?.[char]
+  return kanaStrokes[char] ?? kanjiStrokes[levelOf(char)]?.[char]
 }
 
 /** La misma sílaba en el otro silabario (か ↔ カ), si existe. */

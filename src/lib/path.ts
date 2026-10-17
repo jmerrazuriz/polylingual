@@ -64,7 +64,7 @@ function vocabUnit(n: number, title: string, lessons: { id: string }[]): PathUni
   return { id: `vocab-${n}`, title, icon: '語', stops }
 }
 const hiraVocab = (from: number, to?: number) => vocabLessonsHira.slice(from, to)
-/** Kanji N4: una unidad por grupo de lecciones (kanjiLessons agrupa por `unit`), de a 2 por parada. */
+/** Kanji N4 y N3: una unidad por grupo de lecciones (kanjiLessons agrupa por `unit`), de a 2 por parada. */
 function kanjiUnitN4(id: string, units: string[], title: string, icon: string): PathUnit {
   const ids = kanjiLessons.filter((l) => units.includes(l.unit)).map((l) => l.id)
   const stops: PathStop[] = []
@@ -322,6 +322,7 @@ export const japanesePath: PathUnit[] = [
       stop('grammar', ['okage-sei', 'kawari-ni']),
     ],
   },
+  kanjiUnitN4('kanji-n3-1', ['N3 · Personas y vida diaria'], 'N3 · Kanji: personas y vida diaria', '夢'),
   {
     id: 'grammar-n3-3',
     title: 'N3 · Gramática III: consejos, deber y grado',
@@ -344,6 +345,7 @@ export const japanesePath: PathUnit[] = [
       stop('grammar', ['sasete-morau', 'conectores']),
     ],
   },
+  kanjiUnitN4('kanji-n3-2', ['N3 · Trabajo y sociedad'], 'N3 · Kanji: trabajo y sociedad', '働'),
 ]
 
 export type ItemStatus = 'done' | 'open' | 'locked'

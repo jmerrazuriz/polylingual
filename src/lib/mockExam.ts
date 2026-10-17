@@ -3,7 +3,7 @@
 
 import { grammarByCourse } from '../courses/content.ts'
 import type { GrammarExercise } from '../courses/grammar.ts'
-import { kanjiList } from '../courses/ja/kanji.ts'
+import { kanjiN5 } from '../courses/ja/kanji.ts'
 import { kanjiN4 } from '../courses/ja/kanjiN4.ts'
 import { vocab } from '../courses/ja/vocab.ts'
 import type { ReadingText } from '../courses/reading.ts'
@@ -42,8 +42,7 @@ const WORD_QUESTIONS = 6
 const GRAMMAR_QUESTIONS = 10
 const TEXTS_PER_SECTION = 2
 
-const n4Chars = new Set(kanjiN4.map((k) => k.char))
-const kanjiOf = (level: ExamLevel) => kanjiList.filter((k) => n4Chars.has(k.char) === (level === 'N4'))
+const kanjiOf = (level: ExamLevel) => (level === 'N4' ? kanjiN4 : kanjiN5)
 
 /** Lectura de una palabra con kanji, como en la parte 漢字読み del examen. */
 function kanjiReadingExercises(level: ExamLevel, random: () => number): GrammarExercise[] {

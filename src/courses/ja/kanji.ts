@@ -2,6 +2,7 @@
 // on: lectura china (en katakana) · kun: lectura japonesa (en hiragana; entre
 // paréntesis va el okurigana, la parte que se escribe en kana: た(べる) → 食べる).
 
+import { kanjiLessonsN3, kanjiN3 } from './kanjiN3.ts'
 import { kanjiLessonsN4, kanjiN4 } from './kanjiN4.ts'
 
 export type KanjiExample = { word: string; reading: string; meaning: string }
@@ -24,7 +25,7 @@ const k = (char: string, meaning: string, on: string[], kun: string[], examples:
   examples: examples.map(([word, reading, m]) => ({ word, reading, meaning: m })),
 })
 
-const kanjiN5: Kanji[] = [
+export const kanjiN5: Kanji[] = [
   // Números
   k('一', 'uno', ['イチ', 'イツ'], ['ひと(つ)'], [['一つ', 'ひとつ', 'uno (cosa)'], ['一月', 'いちがつ', 'enero']]),
   k('二', 'dos', ['ニ'], ['ふた(つ)'], [['二つ', 'ふたつ', 'dos (cosas)'], ['二人', 'ふたり', 'dos personas']]),
@@ -156,8 +157,8 @@ const kanjiN5: Kanji[] = [
   k('立', 'ponerse de pie', ['リツ'], ['た(つ)'], [['立つ', 'たつ', 'pararse'], ['国立', 'こくりつ', 'nacional']]),
 ]
 
-/** Todos los kanji del curso: N5 y luego N4. */
-export const kanjiList: Kanji[] = [...kanjiN5, ...kanjiN4]
+/** Todos los kanji del curso: N5, N4 y N3. */
+export const kanjiList: Kanji[] = [...kanjiN5, ...kanjiN4, ...kanjiN3]
 
 export const kanjiByChar = new Map(kanjiList.map((kj) => [kj.char, kj]))
 
@@ -186,5 +187,5 @@ const kanjiLessonsN5: KanjiLesson[] = [
   lesson('trabajo', 'Empresa, decir, comprar…', 'Ciudad y trabajo', '会社言買立'),
 ]
 
-/** Lecciones en orden: las del N4 siguen a las del N5 (cada una abre la siguiente). */
-export const kanjiLessons: KanjiLesson[] = [...kanjiLessonsN5, ...kanjiLessonsN4]
+/** Lecciones en orden: N5, N4 y N3 (cada una abre la siguiente). */
+export const kanjiLessons: KanjiLesson[] = [...kanjiLessonsN5, ...kanjiLessonsN4, ...kanjiLessonsN3]
