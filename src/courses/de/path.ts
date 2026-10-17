@@ -98,12 +98,28 @@ const unitsB2: PathUnit[] = [
   examUnit('B2'),
 ]
 
+const unitsC1: PathUnit[] = [
+  unit('de-c1-1', 'C1 · La Meisterschule', '🎓', ['de-fokuspartikeln', 'de-modalpartikeln-2', 'de-irgend'], ['handwerk', 'verben5'], ['lt-c1-meisterschule']),
+  unit('de-c1-2', 'C1 · Lo que se dijo', '🗞️', ['de-konj1-zeiten', 'de-redeeinleitung', 'de-zitieren'], ['journalismus', 'akademisch'], ['lt-c1-kommentar']),
+  unit('de-c1-3', 'C1 · Normas y procesos', '📋', ['de-passiv-unpersoenlich', 'de-fvg-passiv', 'de-gerundiv'], ['gesetzgebung', 'fvg-c1'], ['lt-c1-gesetz']),
+  unit('de-c1-4', 'C1 · Textos densos', '🧱', ['de-partizipialsatz', 'de-genitivattribut', 'de-substantivierte-adjektive'], ['nomen-c1', 'industrie'], ['lt-c1-zusammenfassung']),
+  unit('de-c1-5', 'C1 · Suposiciones', '🔍', ['de-modal-subjektiv-perfekt', 'de-konj2-formen', 'de-hypothesen'], ['adjektive5', 'gesundheitswesen'], ['dt-c1-hans-zweifel']),
+  unit('de-c1-6', 'C1 · El propio taller', '🔧', ['de-insofern', 'de-zu-als-dass', 'de-zusammenfassung'], ['gruendung', 'konjunktur'], ['lt-c1-businessplan', 'dt-c1-handwerkskammer']),
+  unit('de-c1-7', 'C1 · Negociar', '🤝', ['de-ohne-dass', 'de-konzessiv-c1', 'de-geschaeftskorrespondenz'], ['verhandlung', 'rhetorik'], ['dt-c1-bank', 'dt-c1-verhandlung-lieferant']),
+  unit('de-c1-8', 'C1 · Debatir', '🎙️', ['de-argument-entkraeften', 'de-diskussion-c1', 'de-konsekutiv-c1'], ['staat', 'redemittel-c1'], ['dt-c1-talkshow']),
+  unit('de-c1-9', 'C1 · Prefijos y compuestos', '🧬', ['de-praefix-trennbar', 'de-praefixe-bedeutung', 'de-komposita'], ['oekologie', 'konnektoren-c1'], []),
+  unit('de-c1-10', 'C1 · Rección culta', '⚖️', ['de-verben-genitiv', 'de-adjektiv-kasus', 'de-es-funktionen'], ['geschichte'], ['lt-c1-mauerfall']),
+  unit('de-c1-11', 'C1 · Estilo y coherencia', '✒️', ['de-vorfeld-nachfeld', 'de-textverweise', 'de-reformulieren'], ['kunst', 'redewendungen-c1'], ['lt-c1-erzaehlung', 'dt-c1-pruefung']),
+  unit('de-c1-12', 'C1 · Mi voz en alemán', '🏁', ['de-modalitaetsverben', 'de-sprichwoerter'], ['sprichwoerter'], ['lt-c1-essay', 'dt-c1-podcast', 'dt-c1-eroeffnung']),
+  examUnit('C1'),
+]
+
 const unitsByLevel: Record<CefrLevel, PathUnit[]> = {
   A1: unitsA1,
   A2: unitsA2,
   B1: unitsB1,
   B2: unitsB2,
-  C1: [],
+  C1: unitsC1,
   C2: [],
 }
 

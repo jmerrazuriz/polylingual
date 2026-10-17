@@ -4,6 +4,7 @@ import { vocabA1 } from './vocabA1.ts'
 import { vocabA2 } from './vocabA2.ts'
 import { vocabB1 } from './vocabB1.ts'
 import { vocabB2 } from './vocabB2.ts'
+import { vocabC1 } from './vocabC1.ts'
 
 // Vocabulario del alemán. Cada sustantivo se aprende con su artículo y su plural.
 // Los ids (la palabra, o palabra·clase si se repite) no deben cambiar: de ellos dependen
@@ -80,11 +81,13 @@ export const germanThemesA1 = vocabA1
 export const germanThemesA2 = vocabA2
 export const germanThemesB1 = vocabB1
 export const germanThemesB2 = vocabB2
+export const germanThemesC1 = vocabC1
 export const germanVocabA1 = build(vocabA1, 'A1')
 export const germanVocabA2 = build(vocabA2, 'A2', germanVocabA1)
 export const germanVocabB1 = build(vocabB1, 'B1', [...germanVocabA1, ...germanVocabA2])
 export const germanVocabB2 = build(vocabB2, 'B2', [...germanVocabA1, ...germanVocabA2, ...germanVocabB1])
-export const germanVocab: GermanWord[] = [...germanVocabA1, ...germanVocabA2, ...germanVocabB1, ...germanVocabB2]
+export const germanVocabC1 = build(vocabC1, 'C1', [...germanVocabA1, ...germanVocabA2, ...germanVocabB1, ...germanVocabB2])
+export const germanVocab: GermanWord[] = [...germanVocabA1, ...germanVocabA2, ...germanVocabB1, ...germanVocabB2, ...germanVocabC1]
 export const germanWordById = new Map(germanVocab.map((w) => [w.id, w]))
 
 const articleOf: Record<Gender | 'pl', string> = { m: 'der', f: 'die', n: 'das', pl: 'die' }
@@ -118,7 +121,8 @@ export const germanVocabLessonsA1 = lessonsOf(vocabA1, germanVocabA1, 'A1')
 export const germanVocabLessonsA2 = lessonsOf(vocabA2, germanVocabA2, 'A2')
 export const germanVocabLessonsB1 = lessonsOf(vocabB1, germanVocabB1, 'B1')
 export const germanVocabLessonsB2 = lessonsOf(vocabB2, germanVocabB2, 'B2')
-export const germanVocabLessons: GermanVocabLesson[] = [...germanVocabLessonsA1, ...germanVocabLessonsA2, ...germanVocabLessonsB1, ...germanVocabLessonsB2]
+export const germanVocabLessonsC1 = lessonsOf(vocabC1, germanVocabC1, 'C1')
+export const germanVocabLessons: GermanVocabLesson[] = [...germanVocabLessonsA1, ...germanVocabLessonsA2, ...germanVocabLessonsB1, ...germanVocabLessonsB2, ...germanVocabLessonsC1]
 export const germanVocabLessonById = new Map(germanVocabLessons.map((l) => [l.id, l]))
 
 /** Tarjetas de repaso de palabras alemanas: «dw-<id>». */

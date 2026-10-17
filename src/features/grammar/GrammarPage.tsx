@@ -15,6 +15,8 @@ const levelTitles: Record<string, string> = {
   A2: "Nivel A2 · elemental",
   B1: "Nivel B1 · intermedio",
   B2: "Nivel B2 · intermedio alto",
+  C1: "Nivel C1 · avanzado",
+  C2: "Nivel C2 · maestría",
 };
 
 /** Lista de lecciones de gramática del curso activo, agrupadas por nivel. */

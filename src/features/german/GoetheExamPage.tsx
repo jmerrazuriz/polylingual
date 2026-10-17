@@ -171,6 +171,45 @@ const tasks: Partial<Record<CefrLevel, LevelTasks>> = {
       'Hablé con fluidez, con registro formal y corregí mis errores sin bloquearme',
     ],
   },
+  C1: {
+    form: {
+      context: 'Completa la carta formal de Otto a un proveedor que no cumplió un plazo (1–6). Registro C1: fórmulas fijas, Funktionsverbgefüge y conectores cultos.',
+      text: 'Sehr geehrte Frau Lorenz, (1) ___ nehmend auf unseren Rahmenvertrag vom 2. Mai muss ich Ihnen leider mitteilen, dass die bestellten Teile erneut nicht fristgerecht geliefert wurden. (2) ___ wiederholter Zusicherungen Ihrerseits warten wir nun seit zwei Wochen. Dies hat (3) ___, dass drei Kundenaufträge nicht abgeschlossen werden konnten. Ich sehe mich daher (4) ___, eine Vertragsstrafe geltend zu machen. Ich bitte Sie, die Lieferung (5) ___ zu veranlassen. Andernfalls werde ich eine Kündigung des Vertrags in (6) ___ ziehen. Mit freundlichen Grüßen, Otto Martínez',
+      fields: [
+        { label: '(1) – ___ nehmend auf (fórmula de referencia)', answers: ['Bezug'] },
+        { label: '(2) – a pesar de (+ genitivo, formal)', answers: ['Ungeachtet', 'Trotz'] },
+        { label: '(3) – ___ haben, dass (tener como consecuencia)', answers: ['zur Folge'] },
+        { label: '(4) – sich ___ sehen (verse obligado)', answers: ['gezwungen', 'veranlasst'] },
+        { label: '(5) – de inmediato (formal)', answers: ['umgehend', 'unverzüglich'] },
+        { label: '(6) – in ___ ziehen (tomar en consideración)', answers: ['Erwägung', 'Betracht'] },
+      ],
+    },
+    message: {
+      prompt:
+        'Para la sección de opinión de una revista: «¿Debería introducirse la semana laboral de cuatro días en toda Alemania?». Escribe un texto argumentativo de unas 230 palabras.',
+      checks: [
+        'Introduces el tema con una referencia actual y planteas la pregunta central',
+        'Desarrollas al menos dos argumentos a favor y dos en contra, con ejemplos',
+        'Rebates un argumento contrario (Zwar …, doch … / Dem lässt sich entgegenhalten, dass …)',
+        'Matizas tus afirmaciones (Es ist davon auszugehen … / nicht zwingend / weitgehend)',
+        'Usas estilo nominal y estructuras C1 (pasiva, participios, Konjunktiv I para citar)',
+        'Usas conectores variados y referencias en el texto (insofern, wenngleich, folglich; Letzteres, dies)',
+        'Terminas con una conclusión matizada y propia',
+        'El registro es formal y homogéneo, sin expresiones coloquiales',
+      ],
+      model:
+        'Kaum eine arbeitsmarktpolitische Idee wird derzeit so kontrovers diskutiert wie die Einführung der Vier-Tage-Woche. Im Mittelpunkt steht die Frage, ob eine Verkürzung der Arbeitswoche die Produktivität steigert oder die ohnehin angespannte Lage auf dem Arbeitsmarkt verschärft. Befürworter verweisen auf Pilotprojekte, denen zufolge die Zahl der Krankheitstage deutlich gesunken sei. Hinzu kommt, dass Arbeitgeber mit flexiblen Modellen leichter Fachkräfte gewinnen können. Kritiker wenden dagegen ein, angesichts des Fachkräftemangels sei es widersprüchlich, weniger zu arbeiten. Zwar ist dieser Einwand nicht von der Hand zu weisen, doch wird dabei außer Acht gelassen, dass viele Modelle die Arbeitszeit lediglich auf vier Tage verteilen. Letzteres dürfte vor allem für Branchen mit Schichtbetrieb schwer umsetzbar sein. In meiner eigenen Werkstatt hat sich das Modell insofern bewährt, als die Mitarbeiter motivierter und seltener krank sind. Allerdings lässt sich diese Erfahrung nicht zwingend auf Großbetriebe übertragen. Alles in allem halte ich eine gesetzliche Vorgabe für verfehlt; sinnvoller wäre es, den Betrieben Spielraum für eigene Lösungen zu lassen.',
+    },
+    speaking: [
+      'Parte 1: hice una presentación de 3–4 minutos sobre un tema abstracto, con introducción, desarrollo estructurado y conclusión',
+      'Parte 1: comparé distintas posturas, di ejemplos concretos y matizé mis afirmaciones',
+      'Parte 1: respondí a las preguntas del examinador sin perder el hilo',
+      'Parte 2: discutí con mi pareja un tema polémico: tomé la palabra, la mantuve y reaccioné a sus argumentos (Darf ich da kurz einhaken? / Das trifft nur bedingt zu …)',
+      'Parte 2: rebatí al menos un argumento y propuse un compromiso o una conclusión común',
+      'Usé un vocabulario amplio y preciso (Funktionsverbgefüge, conectores cultos), sin repetir las mismas palabras',
+      'Hablé con fluidez y espontaneidad, y me corregí sin interrumpir la comunicación',
+    ],
+  },
 }
 
 function pickTexts(level: CefrLevel, kind: 'reading' | 'dialogue', n: number): ReadingText[] {

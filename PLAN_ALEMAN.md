@@ -235,7 +235,7 @@ El curso alemán ya está en `src/courses/index.ts` con `status: 'soon'` y `spee
 | ✅ **D2 · A2** (17-10-2026) | ~30 lecciones, +650 palabras, dativo y Wechselpräpositionen con ejercicios generados, simulacro A2. | Igual que D1. |
 | ✅ **D3 · B1** (17-10-2026) | ~35 lecciones, +1.100 palabras, SRS de rección (verbo + preposición), simulacro B1 con 4 módulos. | Simulacro B1 con puntaje Goethe. |
 | ✅ **D4 · B2** (17-10-2026) | ~35 lecciones, +1.600 palabras, Konjunktiv I y participios, Schreiben con lista de control (sin audio grabado: se usa la voz del navegador). | Simulacro B2. |
-| **D5 · C1** | ~35 lecciones, +2.000 palabras, nominalización, estilo académico y Modalpartikeln. | Simulacro C1. |
+| ✅ **D5 · C1** (17-10-2026) | ~35 lecciones, +2.000 palabras, nominalización, estilo académico y Modalpartikeln. | Simulacro C1. |
 | **D6 · C2** | ~30 lecciones, +2.000 palabras, variedades, modismos, literatura y matices. | Simulacro C2. |
 | **D7 · Revisión** | Revisión de un hablante nativo (o profesor de alemán como lengua extranjera) de cada nivel, empezando por A1–B1. | Contenido revisado y errores corregidos. |
 
@@ -324,6 +324,32 @@ El curso alemán ya está en `src/courses/index.ts` con `status: 'soon'` y `spee
 - **Recorrido B2:** 12 unidades más el simulacro Goethe B2 (modular, 60/100 por módulo). La nivelación cubre ahora del A1 al B2.
   - Escribir tiene un correo formal con huecos (preposiciones con genitivo, Nomen-Verb, *sein + zu*) que se corrige solo y un texto argumentativo autoevaluado con lista de control y modelo.
   - Hablar sigue las partes del B2: presentación, preguntas y discusión.
+
+### Cursos independientes (17-10-2026)
+- Cada idioma muestra solo lo suyo:
+  - El repaso, el inicio y la lección del día usan solo las tarjetas del curso activo (`cardsOfCourse` en `lib/review.ts`): en alemán ya no aparecen kana ni kanji.
+  - Las secciones propias de un idioma (kana, kanji, contadores, juegos, Practicar, simulacro JLPT, palabras y textos alemanes, Goethe) se cierran en otro curso, con la opción de cambiar al curso dueño.
+  - Progreso y perfil son por curso: en alemán hay una tabla por nivel (gramática, palabras, textos y Goethe).
+  - Los logros son generales (racha, objetivo, repasos) o propios de cada idioma. Hay 8 logros nuevos del alemán.
+  - Sin rastros del japonés en ajustes de voz (saludo y aviso según el idioma), la página «no encontrada», los íconos del recorrido y la oferta de nivelación.
+
+### Qué quedó hecho en D5 (C1)
+- **Gramática C1** (`grammarC1a/b/c.ts`): 35 lecciones (de la 131 a la 165).
+  - Konjunktiv I en todos los tiempos y verbos introductorios del discurso.
+  - Pasiva impersonal y con dativo, Funktionsverbgefüge de sentido pasivo, oraciones de participio, *zu* + participio I, cadenas de genitivo y aposiciones.
+  - Conectores cultos: *insofern … als*, *ohne dass/anstatt dass*, *wenngleich/ungeachtet/so … auch*, *derart … dass*, *zu … als dass*.
+  - Modales subjetivos en pasado, *scheinen/drohen/pflegen zu*, formas propias del Konjunktiv II, primera posición y Nachfeld, usos de *es*, prefijos dobles y su significado, verbos y adjetivos con genitivo o dativo, *irgend-*, partículas de foco y más partículas modales.
+  - Escribir y hablar en registro C1: citar, resumir, matizar, rebatir, moderar una discusión, correspondencia profesional, reformular, compuestos, adjetivos sustantivados, refranes y referencias en el texto.
+- **Vocabulario C1** (`vocabC1.ts`): unas 510 palabras nuevas (unas 2.840 en total) en 22 temas.
+  - Temas: lenguaje académico, coyuntura económica, fundar una empresa, negociar, leyes, Estado y sociedad, sistema de salud, industria, ecología, retórica, periodismo, arte y literatura, historia de Alemania y la Meisterschule.
+  - Expresiones completas: Funktionsverbgefüge, frases académicas y de debate, modismos y refranes.
+  - **Nota:** la meta del plan (~6.000 al terminar el C1) queda lejos; sigue pendiente una tanda extra de vocabulario.
+- **Ottos Weg C1** (`readingsC1.ts`): 16 episodios.
+  - Otto estudia en la Meisterschule, escribe un plan de negocios, se asesora en la cámara de oficios, negocia con el banco y con un proveedor, debate en televisión, rinde el examen oral de maestro y abre «Martínez Kfz-Service».
+  - También: una columna sobre falta de trabajadores, un resumen de un artículo, una circular de normas, los recuerdos de Hans del 9 de noviembre, un relato literario propio, un ensayo sobre integración y un podcast.
+- **Recorrido C1:** 12 unidades más el simulacro Goethe C1 (60/100 por módulo). La nivelación cubre ahora del A1 al C1.
+  - Escribir tiene una carta formal con huecos que se corrige sola y un texto argumentativo de ~230 palabras autoevaluado con lista de control y modelo.
+  - Hablar sigue las dos partes del C1: presentación y discusión.
 
 ---
 

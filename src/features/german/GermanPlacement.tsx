@@ -82,7 +82,7 @@ export function GermanPlacement() {
         </span>
         <h1 className="text-2xl font-extrabold">Test de nivelación de alemán</h1>
         <p className="text-slate-600 dark:text-slate-400">
-          ¿Ya sabes algo de alemán? Responde bloques de {QUESTIONS} preguntas, de lo más fácil (A1) a lo más difícil (B2). Cada bloque que apruebes con
+          ¿Ya sabes algo de alemán? Responde bloques de {QUESTIONS} preguntas, de lo más fácil (A1) a lo más difícil (C1). Cada bloque que apruebes con
           80 % completa esa parte del recorrido, y sus palabras entran a tus repasos. Puedes parar cuando quieras.
         </p>
         {start >= blocks.length ? (
