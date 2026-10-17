@@ -67,6 +67,7 @@ export function itemQuestion(item: PathItem, random = Math.random): GrammarExerc
     case 'reading':
       return lineMeaningExercise(readingById.get(item.id)!, random)
     case 'unit':
+    case 'exam':
       return null
   }
 }

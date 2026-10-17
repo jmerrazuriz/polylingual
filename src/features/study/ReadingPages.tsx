@@ -54,19 +54,22 @@ export function ReadingsPage() {
         <h2 className="text-sm font-extrabold text-slate-500 uppercase">🎧 Diálogos · N4 (con kanji)</h2>
         <LessonList lessons={list('dialogue', 'N4')} results={results} unlocked={unlocked} />
       </section>
-      <Link
-        to="/simulacro"
-        className="flex items-center gap-3 rounded-2xl bg-ink p-4 text-white transition hover:-translate-y-0.5 hover:shadow-lg"
-      >
-        <span className="text-3xl" aria-hidden>
-          📝
-        </span>
-        <span className="flex-1">
-          <span className="block font-extrabold">Simulacro del JLPT N5</span>
-          <span className="text-sm opacity-80">Vocabulario, gramática, lectura y audición, con tiempo.</span>
-        </span>
-        <span aria-hidden>→</span>
-      </Link>
+      {(['N5', 'N4'] as const).map((level) => (
+        <Link
+          key={level}
+          to={level === 'N5' ? '/simulacro' : '/simulacro/n4'}
+          className="flex items-center gap-3 rounded-2xl bg-ink p-4 text-white transition hover:-translate-y-0.5 hover:shadow-lg"
+        >
+          <span className="text-3xl" aria-hidden>
+            📝
+          </span>
+          <span className="flex-1">
+            <span className="block font-extrabold">Simulacro del JLPT {level}</span>
+            <span className="text-sm opacity-80">Vocabulario y kanji, gramática, lectura y audición, con tiempo.</span>
+          </span>
+          <span aria-hidden>→</span>
+        </Link>
+      ))}
     </div>
   )
 }

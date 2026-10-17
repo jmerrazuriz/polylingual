@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { grammarByCourse } from '../courses/content'
-import { buildMockExam, scoreExam } from './mockExam'
+import { buildMockExam, examInfo, scoreExam } from './mockExam'
 import { glossary, lineMeaningExercise, lineTokens, readingTexts, unlockedReadings } from './readings'
 import { kanjiByChar } from '../courses/ja/kanji'
 import { furiganaToKana, KANJI_CHAR, parseFurigana } from './furigana'
@@ -96,6 +96,15 @@ describe('simulacro N5', () => {
     expect(sections.filter((s) => s === 'listening').length).toBeGreaterThanOrEqual(6)
     expect(sections.indexOf('listening')).toBeGreaterThan(sections.lastIndexOf('reading'))
     for (const i of exam) if (i.section === 'listening') expect(i.text?.kind).toBe('dialogue')
+  })
+
+  it('el simulacro N4 usa solo contenido N4 y se aprueba con 90', () => {
+    const exam = buildMockExam('N4')
+    expect(exam.filter((i) => i.section === 'vocab')).toHaveLength(10)
+    expect(exam.filter((i) => i.section === 'grammar')).toHaveLength(10)
+    for (const i of exam) if (i.text) expect(i.text.level).toBe('N4')
+    expect(scoreExam(exam, exam.map(() => true), 'N4').passed).toBe(true)
+    expect([examInfo.N5.passTotal, examInfo.N4.passTotal]).toEqual([80, 90])
   })
 
   it('puntúa como el JLPT: total y mínimos por sección', () => {

@@ -389,7 +389,7 @@ app_idiomas/
   - Se guardan solo los documentos que cambiaron. El progreso del formato anterior se lee igual y se pasa al nuevo al entrar, en una escritura atómica.
   - Las reglas de Firestore validan los documentos nuevos.
 - ✅ **Audio:** la voz japonesa lee solo el japonés de cada texto; lo que está en español no se lee.
-### Etapa B: nivel N4 (en curso)
+### Etapa B: nivel N4 (terminada)
 Meta: que quien termine la etapa pueda aprobar el JLPT N4. Va por tandas, cada una publicada y probada:
 - ✅ **B1 · Gramática N4 completa (28 lecciones, 66 en total):**
   - Formas: potencial, volitiva y つもり, condicionales ば, たら, と y なら, pasiva y causativa.
@@ -427,7 +427,10 @@ Meta: que quien termine la etapa pueda aprobar el JLPT N4. Va por tandas, cada u
   - Un test exige que cada kanji tenga lectura y sea uno que el curso enseña. Por eso se agregó 音 al N4: 303 kanji en total.
   - Son 2 unidades «N4 · Lectura y audición» en el recorrido y en la nivelación. El simulacro N5 usa solo contenido N5.
   - La velocidad de la voz ya se puede bajar en los ajustes.
-- **B6 · Simulacro N4,** unidades N4 en el recorrido y bloques N4 en la nivelación.
+- ✅ **B6 · Simulacro N4 (`/simulacro/n4`):**
+  - Igual que el N5 pero solo con contenido N4, 35 minutos y aprobación con 90/180 (más los mínimos oficiales por sección). La sección de vocabulario ahora incluye lectura de kanji (漢字読み), también en el N5.
+  - Cada nivel cierra el recorrido con su simulacro como meta. La parada se completa al aprobarlo (no se puede saltar con la nivelación).
+- ✅ **Etapa B terminada:** el contenido cubre el N4 (66 lecciones de gramática, 1.507 palabras, 303 kanji, 60 textos y 2 simulacros).
 - **Para agregar un idioma:** crear `src/courses/<id>/` con su contenido, registrar la gramática en `src/courses/content.ts`, cambiar su `status` a `available` y darle sus secciones. Las lecciones de vocabulario para idiomas sin silabario propio son lo siguiente a diseñar. Quedan como ideas para después (sección 9): tarjetas SRS de palabras, temas de palabras en los juegos, pares confusos juntos en los juegos, kanji, frases con furigana y evaluación de pronunciación.
 
 **Hiragana primero:** las fases 1 a 6 se construyen solo con hiragana. El código se escribe desde el principio para cualquier silabario (el campo `script` en los datos), así que katakana entra en la fase 7 casi solo como contenido.

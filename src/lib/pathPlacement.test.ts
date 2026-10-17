@@ -7,8 +7,9 @@ import { progressSnapshot, useProgress } from './progress/store'
 describe('test de nivelación del recorrido', () => {
   beforeEach(() => useProgress.getState().reset())
 
-  it('los bloques cubren todas las unidades del recorrido, en orden y una sola vez', () => {
-    expect(placementBlocks.flatMap((b) => b.unitIds)).toEqual(japanesePath.map((u) => u.id))
+  it('los bloques cubren todas las unidades del recorrido (menos los simulacros), en orden y una sola vez', () => {
+    // Los simulacros no se pueden dar por aprobados con la nivelación: hay que rendirlos.
+    expect(placementBlocks.flatMap((b) => b.unitIds)).toEqual(japanesePath.map((u) => u.id).filter((id) => !id.startsWith('examen-')))
   })
 
   it('cada bloque tiene 8 preguntas con la respuesta entre las opciones', () => {
@@ -51,11 +52,16 @@ describe('test de nivelación del recorrido', () => {
     expect(current?.items[0].id).toBe('desu')
   })
 
-  it('aprobar todo completa el recorrido entero', () => {
+  it('aprobar todo completa el recorrido entero, salvo los simulacros, que quedan abiertos', () => {
     useProgress.getState().applyPlacement(placementResult(placementBlocks))
     const { stops, current } = pathStatus(progressSnapshot(), false)
-    expect(current).toBeNull()
-    expect([...stops.values()].every((s) => s === 'done')).toBe(true)
+    expect(current?.items[0]).toMatchObject({ kind: 'exam', id: 'N5' })
+    const notDone = [...stops].filter(([, s]) => s !== 'done').map(([id]) => id)
+    expect(notDone).toEqual(['exam:N5', 'exam:N4'])
+    // Al aprobar los simulacros el recorrido queda completo.
+    useProgress.getState().submitRecord('simulacro-n5:aprobado', 1)
+    useProgress.getState().submitRecord('simulacro-n4:aprobado', 1)
+    expect(pathStatus(progressSnapshot(), false).current).toBeNull()
   })
 
   it('no empeora resultados que ya existían', () => {

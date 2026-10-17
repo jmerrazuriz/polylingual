@@ -117,6 +117,8 @@ describe('recorrido', () => {
       ...kanjiLessons.map((l) => `kanji:${l.id}`),
       ...vocabLessons.map((l) => `vocab:${l.id}`),
       ...readingTexts.map((t) => `reading:${t.id}`),
+      'exam:N5',
+      'exam:N4',
       ...units.map((u) => `unit:${u.id}`),
     ]
     expect(new Set(ids)).toEqual(new Set(expected))

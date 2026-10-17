@@ -6,6 +6,7 @@ import { counterLessons } from '../courses/ja/counters.ts'
 import { kanjiLessons } from '../courses/ja/kanji.ts'
 import { lessons as kanaLessons } from '../courses/ja/lessons.ts'
 import { vocabLessons, vocabLessonsHira, vocabLessonsKata, vocabLessonsN4 } from '../courses/ja/vocab.ts'
+import { examInfo, type ExamLevel, passedKey } from './mockExam.ts'
 import { readingById, readingTexts, unlockedReadings } from './readings.ts'
 import type { ProgressData } from './progress/model.ts'
 import {
@@ -18,7 +19,7 @@ import {
 } from './progress/unlock.ts'
 import { units } from './units.ts'
 
-export type PathItemKind = 'kana' | 'grammar' | 'counters' | 'kanji' | 'vocab' | 'reading' | 'unit'
+export type PathItemKind = 'kana' | 'grammar' | 'counters' | 'kanji' | 'vocab' | 'reading' | 'exam' | 'unit'
 export type PathItem = { kind: PathItemKind; id: string; title: string; to: string }
 export type PathStop = { id: string; title: string; items: PathItem[] }
 export type PathUnit = { id: string; title: string; icon: string; stops: PathStop[] }
@@ -39,6 +40,8 @@ const item = (kind: PathItemKind, id: string): PathItem => {
       return { kind, id, title: vocabLessons.find((l) => l.id === id)!.title, to: `/vocabulario/${id}` }
     case 'reading':
       return { kind, id, title: readingById.get(id)!.title, to: `/lectura/${id}` }
+    case 'exam':
+      return { kind, id, title: `Simulacro del JLPT ${id}`, to: examInfo[id as ExamLevel].path }
     case 'unit':
       return { kind, id, title: `Repaso: ${units.find((u) => u.id === id)!.title}`, to: `/repaso/unidad/${id}` }
   }
@@ -73,6 +76,14 @@ function kanjiUnitN4(id: string, units: string[], title: string, icon: string): 
 const n4Vocab = (n: number, last = false): PathUnit => ({
   ...vocabUnit(0, `N4 · Vocabulario ${['I', 'II', 'III', 'IV', 'V'][n - 1]}`, vocabLessonsN4.slice((n - 1) * 12, last ? undefined : n * 12)),
   id: `vocab-n4-${n}`,
+})
+
+/** Meta de cada nivel: el simulacro del JLPT (se completa al aprobarlo). */
+const examUnit = (level: ExamLevel): PathUnit => ({
+  id: `examen-${level.toLowerCase()}`,
+  title: `Meta: simulacro del JLPT ${level}`,
+  icon: '📝',
+  stops: [stop('exam', [level], `Simulacro del JLPT ${level}`)],
 })
 
 /** Unidad de lectura y audición: 10 textos (lecturas y diálogos) del nivel, de a 3 por parada. */
@@ -235,6 +246,7 @@ export const japanesePath: PathUnit[] = [
   },
   vocabUnit(7, 'Vocabulario VII', hiraVocab(72)),
   readingUnit(4, 'Lectura y audición IV'),
+  examUnit('N5'),
   // ── Etapa B: N4 ──
   {
     id: 'grammar-n4-1',
@@ -286,6 +298,7 @@ export const japanesePath: PathUnit[] = [
   n4Vocab(5, true),
   kanjiUnitN4('kanji-n4-5', ['N4 · Trabajo y sociedad'], 'N4 · Kanji: trabajo y sociedad', '仕'),
   readingUnit(2, 'N4 · Lectura y audición II (con kanji)', 'N4'),
+  examUnit('N4'),
 ]
 
 export type ItemStatus = 'done' | 'open' | 'locked'
@@ -329,6 +342,11 @@ export function pathItemStatus(p: ProgressData, everythingOpen: boolean): (i: Pa
         return p.lessons[i.id] ? 'done' : voc.has(i.id) ? 'open' : 'locked'
       case 'reading':
         return p.lessons[i.id] ? 'done' : read.has(i.id) ? 'open' : 'locked'
+      case 'exam': {
+        const level = i.id as ExamLevel
+        if (p.records[passedKey(level)]) return 'done'
+        return all || p.grammar[examInfo[level].lastGrammar] ? 'open' : 'locked'
+      }
       case 'unit': {
         if (p.units[i.id]) return 'done'
         const unit = units.find((u) => u.id === i.id)!
@@ -362,5 +380,5 @@ export function nextPathLesson(p: ProgressData, everythingOpen: boolean): PathIt
   const itemStatus = pathItemStatus(p, everythingOpen)
   return japanesePath
     .flatMap((u) => u.stops.flatMap((s) => s.items))
-    .find((i) => i.kind !== 'grammar' && i.kind !== 'unit' && itemStatus(i) === 'open')
+    .find((i) => i.kind !== 'grammar' && i.kind !== 'unit' && i.kind !== 'exam' && itemStatus(i) === 'open')
 }

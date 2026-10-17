@@ -60,6 +60,7 @@ export default function App() {
         <Route path="lectura" element={<ReadingsPage />} />
         <Route path="lectura/:textId" element={<ReadingRoute />} />
         <Route path="simulacro" element={<MockExamPage />} />
+        <Route path="simulacro/:level" element={<MockExamPage />} />
         <Route path="vocabulario" element={<VocabPage />} />
         <Route path="vocabulario/:lessonId" element={<VocabLessonRoute />} />
         <Route path="contadores" element={<CountersPage />} />

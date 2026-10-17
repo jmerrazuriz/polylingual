@@ -1,9 +1,21 @@
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router'
+import { Link, useParams } from 'react-router'
 import { SaveProgressPrompt } from '../../components/SaveProgressPrompt'
 import type { ReadingText } from '../../courses/reading'
 import { useSpeech } from '../../lib/audio/useSpeech'
-import { buildMockExam, EXAM_MINUTES, EXAM_RECORD_KEY, type ExamItem, type ExamScore, type ExamSection, scoreExam, sectionInfo } from '../../lib/mockExam'
+import {
+  buildMockExam,
+  examInfo,
+  type ExamItem,
+  type ExamLevel,
+  type ExamScore,
+  type ExamSection,
+  PASS_LANGUAGE,
+  PASS_LISTENING,
+  passedKey,
+  scoreExam,
+  sectionInfo,
+} from '../../lib/mockExam'
 import { useProgress } from '../../lib/progress/store'
 import { now } from '../../lib/time'
 import { GrammarExerciseView } from '../grammar/GrammarExerciseView'
@@ -17,25 +29,43 @@ const clock = (ms: number) => {
   return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`
 }
 
-/** Simulacro del JLPT N5: 4 secciones seguidas con 30 minutos en total. */
+/** Simulacro del JLPT (N5 en /simulacro, N4 en /simulacro/n4): 4 secciones seguidas con tiempo. */
 export function MockExamPage() {
+  const { level: param } = useParams()
+  const level: ExamLevel = param?.toLowerCase() === 'n4' ? 'N4' : 'N5'
+  return <MockExam key={level} level={level} />
+}
+
+function MockExam({ level }: { level: ExamLevel }) {
+  const info = examInfo[level]
   const [exam, setExam] = useState<{ items: ExamItem[]; endsAt: number } | null>(null)
   const [answers, setAnswers] = useState<(boolean | undefined)[]>([])
   const [score, setScore] = useState<ExamScore | null>(null)
-  const best = useProgress((s) => s.records[EXAM_RECORD_KEY])
+  const best = useProgress((s) => s.records[info.recordKey])
   const submitRecord = useProgress((s) => s.submitRecord)
   const [isRecord, setIsRecord] = useState(false)
 
   const finish = (items: ExamItem[], final: (boolean | undefined)[]) => {
-    const result = scoreExam(items, final)
-    setIsRecord(submitRecord(EXAM_RECORD_KEY, result.total))
+    const result = scoreExam(items, final, level)
+    setIsRecord(submitRecord(info.recordKey, result.total))
+    if (result.passed) submitRecord(passedKey(level), 1)
     setScore(result)
   }
 
-  if (score && exam) return <ExamResult score={score} best={best} isRecord={isRecord} onRetry={() => {
+  if (score && exam) {
+    return (
+      <ExamResult
+        level={level}
+        score={score}
+        best={best}
+        isRecord={isRecord}
+        onRetry={() => {
           setExam(null)
           setScore(null)
-        }} />
+        }}
+      />
+    )
+  }
 
   if (!exam) {
     return (
@@ -43,9 +73,9 @@ export function MockExamPage() {
         <span className="text-6xl" aria-hidden>
           📝
         </span>
-        <h1 className="text-2xl font-extrabold">Simulacro del JLPT N5</h1>
+        <h1 className="text-2xl font-extrabold">Simulacro del JLPT {level}</h1>
         <p className="text-slate-600 dark:text-slate-400">
-          Como el examen real, en cuatro partes y con tiempo: {EXAM_MINUTES} minutos para todo. Los diálogos se escuchan sin el
+          Como el examen real, en cuatro partes y con tiempo: {info.minutes} minutos para todo. Los diálogos se escuchan sin el
           texto, como máximo {MAX_PLAYS} veces.
         </p>
         <ol className="flex w-full flex-col gap-1 text-left text-sm">
@@ -60,14 +90,15 @@ export function MockExamPage() {
           ))}
         </ol>
         <p className="text-sm text-slate-500">
-          Se aprueba como el JLPT: 80 de 180 puntos, con al menos 38 de 120 en idioma y lectura, y 19 de 60 en audición.
+          Se aprueba como el JLPT: {info.passTotal} de 180 puntos, con al menos {PASS_LANGUAGE} de 120 en idioma y lectura, y{' '}
+          {PASS_LISTENING} de 60 en audición.
           {best !== undefined && ` Tu mejor puntaje: ${best}/180.`}
         </p>
         <button
           onClick={() => {
-            const items = buildMockExam()
+            const items = buildMockExam(level)
             setAnswers([])
-            setExam({ items, endsAt: now() + EXAM_MINUTES * 60_000 })
+            setExam({ items, endsAt: now() + info.minutes * 60_000 })
           }}
           className="rounded-full bg-ink px-8 py-3 font-bold text-white hover:opacity-90"
         >
@@ -185,13 +216,26 @@ function ListeningPlayer({ text, plays, onPlay }: { text: ReadingText; plays: nu
   )
 }
 
-function ExamResult({ score, best, isRecord, onRetry }: { score: ExamScore; best?: number; isRecord: boolean; onRetry: () => void }) {
+function ExamResult({
+  level,
+  score,
+  best,
+  isRecord,
+  onRetry,
+}: {
+  level: ExamLevel
+  score: ExamScore
+  best?: number
+  isRecord: boolean
+  onRetry: () => void
+}) {
+  const info = examInfo[level]
   return (
     <section className="mx-auto flex max-w-md flex-col items-center gap-4 py-6 text-center">
       <span className="text-6xl" aria-hidden>
         {score.passed ? '🎓' : '📚'}
       </span>
-      <h1 className="text-2xl font-extrabold">{score.passed ? '¡Aprobarías el N5!' : 'Todavía no alcanza'}</h1>
+      <h1 className="text-2xl font-extrabold">{score.passed ? `¡Aprobarías el ${level}!` : 'Todavía no alcanza'}</h1>
       <p className="text-4xl font-extrabold">
         {score.total}
         <span className="text-lg text-slate-500">/180</span>
@@ -201,11 +245,11 @@ function ExamResult({ score, best, isRecord, onRetry }: { score: ExamScore; best
       <dl className="grid w-full grid-cols-2 gap-2 text-left">
         <div className="rounded-2xl border border-slate-200 bg-white p-3 dark:border-slate-800 dark:bg-slate-900">
           <dt className="text-xs font-bold text-slate-500 uppercase">Idioma y lectura</dt>
-          <dd className={`text-2xl font-extrabold ${score.language < 38 ? 'text-red-600' : ''}`}>{score.language}/120</dd>
+          <dd className={`text-2xl font-extrabold ${score.language < PASS_LANGUAGE ? 'text-red-600' : ''}`}>{score.language}/120</dd>
         </div>
         <div className="rounded-2xl border border-slate-200 bg-white p-3 dark:border-slate-800 dark:bg-slate-900">
           <dt className="text-xs font-bold text-slate-500 uppercase">Audición</dt>
-          <dd className={`text-2xl font-extrabold ${score.listening < 19 ? 'text-red-600' : ''}`}>{score.listening}/60</dd>
+          <dd className={`text-2xl font-extrabold ${score.listening < PASS_LISTENING ? 'text-red-600' : ''}`}>{score.listening}/60</dd>
         </div>
       </dl>
       <ul className="flex w-full flex-col gap-1 text-left text-sm">
@@ -218,11 +262,13 @@ function ExamResult({ score, best, isRecord, onRetry }: { score: ExamScore; best
           </li>
         ))}
       </ul>
-      <p className="text-sm text-slate-500">Para aprobar: 80 de 180, con al menos 38 en idioma y lectura y 19 en audición.</p>
+      <p className="text-sm text-slate-500">
+        Para aprobar: {info.passTotal} de 180, con al menos {PASS_LANGUAGE} en idioma y lectura y {PASS_LISTENING} en audición.
+      </p>
       <SaveProgressPrompt />
       <div className="flex flex-wrap justify-center gap-3">
-        <Link to="/lectura" className="rounded-full border border-slate-300 px-6 py-3 font-bold dark:border-slate-700">
-          Volver
+        <Link to="/aprender" className="rounded-full border border-slate-300 px-6 py-3 font-bold dark:border-slate-700">
+          Ir al recorrido
         </Link>
         <button onClick={onRetry} className="rounded-full bg-ink px-6 py-3 font-bold text-white hover:opacity-90">
           Otro simulacro
