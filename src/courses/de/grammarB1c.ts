@@ -218,7 +218,7 @@ export const grammarB1c: GrammarLesson[] = [
       { text: 'Ich freue mich auf Ihre Antwort. Mit freundlichen Grüßen, Otto Martínez', meaning: 'Quedo atento a su respuesta. Saludos cordiales, Otto Martínez' },
     ],
     exercises: [
-      { type: 'choice', prompt: 'No sabes el nombre de la persona. ¿Cómo empiezas?', options: ['Sehr geehrte Damen und Herren,', 'Hallo Leute,', 'Lieber Herr,', 'Guten Tag Frau,'], answer: 'Sehr geehrte Damen und Herren,' },
+      { type: 'choice', prompt: 'No sabes el nombre de la persona. ¿Cómo empiezas?', options: ['Sehr geehrte Damen und Herren,', 'Liebe Kolleginnen und Kollegen,', 'Sehr geehrter Herr Kunde,', 'Hallo, liebe Damen und Herren,'], answer: 'Sehr geehrte Damen und Herren,' },
       { type: 'choice', prompt: '¿Cuál es un cierre formal?', options: ['Mit freundlichen Grüßen', 'Tschüss', 'Bis bald', 'Liebe Grüße'], answer: 'Mit freundlichen Grüßen' },
       { type: 'choice', prompt: 'Ich wäre Ihnen dankbar, ＿ Sie mich zurückrufen könnten.', options: ['wenn', 'dass', 'ob', 'weil'], answer: 'wenn' },
       { type: 'choice', prompt: 'Para quejarte: Ich möchte mich über den Service ＿.', options: ['beschweren', 'beschwere', 'freuen', 'bewerben'], answer: 'beschweren' },

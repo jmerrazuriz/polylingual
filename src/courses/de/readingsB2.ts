@@ -49,9 +49,9 @@ export const readingsB2: ReadingText[] = [
       l('Na gut, probieren wir es aus. Aber nicht ohne eine Besprechung in einem Monat!', 'Bueno, probemos. ¡Pero no sin una reunión en un mes!', 'Lukas'),
     ],
     questions: [
-      q('¿Qué problema quiere resolver Otto?', 'Los clientes de autos eléctricos esperan demasiado', ['Hay demasiados mecánicos', 'Los aprendices no vienen', 'El taller es muy pequeño']),
+      q('¿Qué problema quiere resolver Otto?', 'Los clientes de autos eléctricos esperan demasiado', ['Hay demasiados mecánicos para el trabajo', 'Los aprendices no vienen a trabajar', 'El taller es muy pequeño para tantos autos']),
       q('¿Qué propone Otto?', 'Que dos especialistas se encarguen de los autos eléctricos', ['Cerrar el taller los sábados', 'Despedir a un mecánico', 'Que los aprendices trabajen solos']),
-      q('¿Qué pide Lukas al final?', 'Una reunión de evaluación en un mes', ['Más sueldo', 'Un auto nuevo', 'No hacer cambios']),
+      q('¿Qué pide Lukas al final?', 'Una reunión de evaluación en un mes', ['Un aumento de sueldo para todos', 'Un auto nuevo para el taller', 'No hacer ningún cambio por ahora']),
     ],
   },
   {
@@ -72,8 +72,8 @@ export const readingsB2: ReadingText[] = [
     ],
     questions: [
       q('¿Cuántos puestos estarían sin cubrir?', 'Unos 20.000', ['Unos 2.000', 'Unos 200.000', 'Unos 12.000']),
-      q('¿Qué exige la asociación?', 'Reconocer más rápido los títulos extranjeros', ['Subir los impuestos', 'Cerrar las panaderías', 'Bajar los sueldos']),
-      q('¿Por qué el texto usa «seien», «könnten», «arbeite»?', 'Porque reproduce lo que otros dijeron (discurso indirecto)', ['Porque son deseos', 'Porque son órdenes', 'Porque hablan del futuro']),
+      q('¿Qué exige la asociación?', 'Reconocer más rápido los títulos extranjeros', ['Subir los impuestos a las empresas', 'Cerrar las panaderías pequeñas', 'Bajar los sueldos en el sector']),
+      q('¿Por qué el texto usa «seien», «könnten», «arbeite»?', 'Porque reproduce lo que otros dijeron (discurso indirecto)', ['Porque expresa deseos del periodista', 'Porque son órdenes para los lectores', 'Porque habla de hechos en el futuro']),
     ],
   },
   {
@@ -94,7 +94,7 @@ export const readingsB2: ReadingText[] = [
     ],
     questions: [
       q('¿Quién puede trabajar en sistemas de alto voltaje?', 'Solo empleados capacitados', ['Todos los mecánicos', 'Los aprendices', 'Los clientes']),
-      q('¿Qué hay que hacer antes de empezar?', 'Desconectar la tensión del vehículo', ['Lavar el auto', 'Llamar al cliente', 'Cargar la batería']),
+      q('¿Qué hay que hacer antes de empezar?', 'Desconectar la tensión del vehículo', ['Lavar el auto por fuera', 'Llamar al cliente para avisar', 'Cargar la batería por completo']),
       q('¿Qué se hace con una batería dañada?', 'Se informa de inmediato', ['Se repara en el taller', 'Se guarda en el auto', 'Se vende']),
     ],
   },
@@ -160,7 +160,7 @@ export const readingsB2: ReadingText[] = [
     ],
     questions: [
       q('¿Qué solicitó Otto?', 'Un permiso de residencia permanente', ['La nacionalidad alemana', 'Una licencia de conducir', 'Un subsidio']),
-      q('¿Qué documentos faltan?', 'El certificado B1 y un certificado del empleador', ['Su pasaporte y una foto', 'Su contrato de arriendo', 'Su licencia de conducir']),
+      q('¿Qué documentos faltan?', 'El certificado B1 y un certificado del empleador', ['Su pasaporte nuevo y una foto actual', 'Su contrato de arriendo y una factura', 'Su licencia de conducir y el pasaporte']),
       q('¿Qué pasa si no cumple el plazo?', 'La solicitud no se sigue tramitando', ['Tiene que pagar una multa', 'Debe salir del país al día siguiente', 'Nada']),
     ],
   },
@@ -182,9 +182,9 @@ export const readingsB2: ReadingText[] = [
       l('Nein, bis zur Entscheidung gilt Ihr Aufenthalt als erlaubt. Sie bekommen dafür eine Fiktionsbescheinigung.', 'No, hasta la decisión su estadía se considera permitida. Para eso recibe un certificado provisional.', 'Sachbearbeiterin'),
     ],
     questions: [
-      q('¿Qué entrega Otto?', 'El certificado B1 y el certificado del empleador', ['Su pasaporte nuevo', 'Su contrato de arriendo', 'Una carta de Hans']),
+      q('¿Qué entrega Otto?', 'El certificado B1 y el certificado del empleador', ['Su pasaporte nuevo y dos fotos', 'Su contrato de arriendo firmado', 'Una carta de Hans y su contrato']),
       q('¿Cuánto tarda normalmente la tramitación?', 'De seis a ocho semanas', ['Dos días', 'Un año', 'Seis meses']),
-      q('¿Qué pasa con su permiso actual que vence?', 'Su estadía sigue permitida hasta la decisión', ['Tiene que salir del país', 'Debe pagar una multa', 'Pierde su trabajo']),
+      q('¿Qué pasa con su permiso actual que vence?', 'Su estadía sigue permitida hasta la decisión', ['Tiene que salir del país el próximo mes', 'Debe pagar una multa por el retraso', 'Pierde su trabajo hasta la decisión']),
     ],
   },
   {
@@ -206,8 +206,8 @@ export const readingsB2: ReadingText[] = [
     ],
     questions: [
       q('¿Qué le pasó al auto de Otto?', 'Lo chocaron en un estacionamiento', ['Se lo robaron', 'Se le rompió el motor', 'Se inundó']),
-      q('¿Quién paga si encuentran al responsable?', 'El seguro de responsabilidad civil del responsable', ['Otto', 'El taller', 'La policía']),
-      q('¿Cómo puede enviar Otto el presupuesto?', 'Subiéndolo con fotos al portal en línea', ['Por fax', 'Llevándolo en persona', 'Por carta']),
+      q('¿Quién paga si encuentran al responsable?', 'El seguro de responsabilidad civil del responsable', ['Otto, con su deducible de 300 euros', 'El taller donde estaba estacionado', 'La policía, si encuentra testigos']),
+      q('¿Cómo puede enviar Otto el presupuesto?', 'Subiéndolo con fotos al portal en línea', ['Enviándolo por fax a la oficina', 'Llevándolo en persona a la sucursal', 'Mandándolo por carta certificada']),
     ],
   },
   {
@@ -227,7 +227,7 @@ export const readingsB2: ReadingText[] = [
       l('Was München braucht, ist eine Mischung: bezahlbare Wohnungen für alle, die die Stadt am Laufen halten.', 'Lo que Múnich necesita es una mezcla: viviendas asequibles para todos los que mantienen funcionando la ciudad.'),
     ],
     questions: [
-      q('¿Qué contraste plantea el texto?', 'La ciudad es muy agradable pero cada vez menos gente puede pagarla', ['La ciudad es fea pero barata', 'Hay demasiadas viviendas vacías', 'Nadie quiere vivir en Múnich']),
+      q('¿Qué contraste plantea el texto?', 'La ciudad es muy agradable pero cada vez menos gente puede pagarla', ['La ciudad es fea, pero los arriendos son muy baratos', 'Hay demasiadas viviendas vacías en el centro', 'Nadie quiere vivir en Múnich por el clima']),
       q('¿Qué hacen muchas familias y artesanos?', 'Se mudan a la periferia y viajan a diario', ['Compran casas en el centro', 'Vuelven a su país', 'Viven en el taller']),
       q('¿Qué opinan los críticos de las nuevas viviendas sociales?', 'Que son muy pocas', ['Que son demasiadas', 'Que son muy caras', 'Que están muy lejos']),
     ],
@@ -251,7 +251,7 @@ export const readingsB2: ReadingText[] = [
     questions: [
       q('¿Cuántas horas extra se pueden ordenar al mes como máximo?', 'Diez', ['Sesenta', 'Tres', 'Veinte']),
       q('¿Qué problema tiene el señor Wagner?', 'Acumuló sesenta horas extra', ['Está enfermo', 'Quiere renunciar', 'Llega tarde']),
-      q('¿Qué solución propone Otto?', 'Dos semanas de compensación en tiempo libre', ['Pagarle más', 'Despedirlo', 'Cambiarlo de taller']),
+      q('¿Qué solución propone Otto?', 'Dos semanas de compensación en tiempo libre', ['Pagarle las 60 horas extra con un bono', 'Despedirlo por trabajar demasiado', 'Cambiarlo a otro taller de la empresa']),
     ],
   },
   {
@@ -273,7 +273,7 @@ export const readingsB2: ReadingText[] = [
     ],
     questions: [
       q('¿Por qué está molesto el cliente?', 'Su auto no está listo como le prometieron', ['La reparación fue muy cara', 'Le rayaron el auto', 'Nadie contestó el teléfono']),
-      q('¿Cuál es la razón del retraso?', 'Un problema de suministro del repuesto', ['Un mecánico enfermo', 'Un error de Otto', 'Una huelga']),
+      q('¿Cuál es la razón del retraso?', 'Un problema de suministro del repuesto', ['Un mecánico enfermo esta semana', 'Un error de Otto con la fecha', 'Una huelga de los trabajadores']),
       q('¿Qué solución ofrece Otto?', 'Un auto de reemplazo gratis', ['Un descuento del 50 %', 'Llevarlo a Augsburgo', 'Devolverle el dinero']),
     ],
   },
@@ -338,7 +338,7 @@ export const readingsB2: ReadingText[] = [
       l('Alles in allem halte ich ein Tempolimit für eine sinnvolle Maßnahme, die Leben retten kann.', 'En resumen, considero que un límite de velocidad es una medida sensata que puede salvar vidas.'),
     ],
     questions: [
-      q('¿Qué argumento a favor del límite se menciona?', 'Habría menos accidentes graves y se consumiría menos combustible', ['Los autos serían más baratos', 'Habría más autopistas', 'Se podría ir más rápido']),
+      q('¿Qué argumento a favor del límite se menciona?', 'Habría menos accidentes graves y se consumiría menos combustible', ['Los autos serían más baratos y más seguros', 'Habría más autopistas y menos tacos', 'Se podría manejar más rápido y sin multas']),
       q('¿Qué objetan los críticos?', 'Que las autopistas ya son muy seguras y que limita la libertad', ['Que el límite es muy alto', 'Que no hay autopistas', 'Que los autos eléctricos son lentos']),
       q('¿Cuál es la opinión de Otto?', 'Está a favor del límite de velocidad', ['Está en contra del límite', 'No tiene opinión', 'Quiere prohibir los autos']),
     ],

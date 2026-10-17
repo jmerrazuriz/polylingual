@@ -339,7 +339,7 @@ export const readingsN5: ReadingText[] = [
     ],
     questions: [
       q('¿Qué le agradece María a Yuki?', 'La fiesta de ayer', ['Un regalo', 'Un libro', 'La comida de hoy']),
-      q('¿A qué la invita?', 'A ir juntas a la biblioteca', ['A una fiesta', 'Al cine', 'A comer']),
+      q('¿A qué la invita?', 'A ir juntas a la biblioteca', ['A una fiesta en su casa', 'A ver una película al cine', 'A comer juntas al mediodía']),
       m('いっしょに としょかん へ いかない？', '¿Vamos juntas a la biblioteca?', ['No voy a la biblioteca.', 'Fui a la biblioteca.', '¿Dónde está la biblioteca?']),
     ],
   },
@@ -378,7 +378,7 @@ export const readingsN5: ReadingText[] = [
     questions: [
       q('¿A qué hora se levantó?', 'A las seis', ['A las siete', 'A las ocho', 'A las cinco']),
       q('¿Qué olvidó?', 'El paraguas', ['El desayuno', 'La toalla', 'El celular']),
-      q('¿Qué hizo al llegar a la escuela?', 'Se secó el pelo con una toalla', ['Se duchó', 'Desayunó', 'Volvió a casa']),
+      q('¿Qué hizo al llegar a la escuela?', 'Se secó el pelo con una toalla', ['Se cambió los zapatos mojados', 'Tomó un té caliente', 'Llamó a su mamá por teléfono']),
     ],
   },
   {
@@ -645,7 +645,7 @@ export const readingsN5: ReadingText[] = [
     ],
     questions: [
       q('¿Qué hace después de volver a casa?', 'Se ducha', ['Cena', 'Estudia', 'Duerme']),
-      q('¿Qué hace después de cenar?', 'Estudia un poco de japonés', ['Lee un libro', 'Se ducha', 'Ve televisión']),
+      q('¿Qué hace después de cenar?', 'Estudia un poco de japonés', ['Lee un libro en la cama', 'Se da un baño caliente', 'Ve televisión con su familia']),
       q('¿A qué hora se acuesta?', 'Alrededor de las once', ['A las siete', 'A las diez en punto', 'A medianoche']),
     ],
   },
@@ -742,7 +742,7 @@ export const readingsN5: ReadingText[] = [
     questions: [
       q('¿Desde cuándo le duele la cabeza?', 'Desde ayer', ['Desde hoy', 'Desde la semana pasada', 'Desde hace un mes']),
       q('¿Qué tiene, según el médico?', 'Probablemente un resfriado', ['Una alergia', 'Nada grave', 'Dolor de estómago']),
-      q('¿Puede ir a la escuela?', 'No, debe descansar hoy y mañana', ['Sí, mañana', 'Sí, hoy mismo', 'Solo en la tarde']),
+      q('¿Puede ir a la escuela?', 'No, debe descansar hoy y mañana', ['Sí, pero solo en la tarde', 'Sí, puede ir mañana temprano', 'No, debe ir al hospital hoy']),
     ],
   },
   {

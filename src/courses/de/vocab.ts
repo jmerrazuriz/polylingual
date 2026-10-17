@@ -2,8 +2,10 @@ import type { Gender } from './engine/declension.ts'
 import type { CefrLevel } from './levels.ts'
 import { vocabA1 } from './vocabA1.ts'
 import { vocabA2 } from './vocabA2.ts'
+import { vocabA2x } from './vocabA2x.ts'
 import { vocabB1 } from './vocabB1.ts'
 import { vocabB1x } from './vocabB1x.ts'
+import { vocabB1y } from './vocabB1y.ts'
 import { vocabB2 } from './vocabB2.ts'
 import { vocabB2x } from './vocabB2x.ts'
 import { vocabC1 } from './vocabC1.ts'
@@ -83,14 +85,14 @@ function build(themes: GermanTheme[], level: CefrLevel, previous: GermanWord[] =
 }
 
 export const germanThemesA1 = vocabA1
-export const germanThemesA2 = vocabA2
+export const germanThemesA2 = [...vocabA2, ...vocabA2x]
 // Las tandas extra («…x») van después de los temas originales, así los ids no cambian.
-export const germanThemesB1 = [...vocabB1, ...vocabB1x]
+export const germanThemesB1 = [...vocabB1, ...vocabB1x, ...vocabB1y]
 export const germanThemesB2 = [...vocabB2, ...vocabB2x]
 export const germanThemesC1 = [...vocabC1, ...vocabC1x]
 export const germanThemesC2 = [...vocabC2, ...vocabC2x]
 export const germanVocabA1 = build(vocabA1, 'A1')
-export const germanVocabA2 = build(vocabA2, 'A2', germanVocabA1)
+export const germanVocabA2 = build(germanThemesA2, 'A2', germanVocabA1)
 export const germanVocabB1 = build(germanThemesB1, 'B1', [...germanVocabA1, ...germanVocabA2])
 export const germanVocabB2 = build(germanThemesB2, 'B2', [...germanVocabA1, ...germanVocabA2, ...germanVocabB1])
 export const germanVocabC1 = build(germanThemesC1, 'C1', [...germanVocabA1, ...germanVocabA2, ...germanVocabB1, ...germanVocabB2])
@@ -126,7 +128,7 @@ function lessonsOf(themes: GermanTheme[], words: GermanWord[], level: CefrLevel)
 }
 
 export const germanVocabLessonsA1 = lessonsOf(vocabA1, germanVocabA1, 'A1')
-export const germanVocabLessonsA2 = lessonsOf(vocabA2, germanVocabA2, 'A2')
+export const germanVocabLessonsA2 = lessonsOf(germanThemesA2, germanVocabA2, 'A2')
 export const germanVocabLessonsB1 = lessonsOf(germanThemesB1, germanVocabB1, 'B1')
 export const germanVocabLessonsB2 = lessonsOf(germanThemesB2, germanVocabB2, 'B2')
 export const germanVocabLessonsC1 = lessonsOf(germanThemesC1, germanVocabC1, 'C1')

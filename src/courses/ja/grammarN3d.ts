@@ -275,7 +275,7 @@ export const grammarN3d: GrammarLesson[] = [
         options: ['英語[えいご]など、 五[いつ]つの 言葉[ことば]が 話[はな]せる。', '英語[えいご]だけ 話[はな]せる。', '英語[えいご]を 話[はな]し はじめた。', '英語[えいご]以外[いがい]は 話[はな]せない。'],
         answer: '英語[えいご]など、 五[いつ]つの 言葉[ことば]が 話[はな]せる。',
       },
-      { type: 'meaning', text: '先生[せんせい]を はじめ、 クラスの みんなが 来[き]て くれた。', options: ['Vinieron todos los de la clase, empezando por el profesor.', 'El profesor empezó la clase.', 'Solo vino el profesor.', 'La clase empezó sin el profesor.'], answer: 'Vinieron todos los de la clase, empezando por el profesor.' },
+      { type: 'meaning', text: '先生[せんせい]を はじめ、 クラスの みんなが 来[き]て くれた。', options: ['Vinieron todos los de la clase, empezando por el profesor.', 'Vino el profesor, pero los de la clase no pudieron venir.', 'La clase empezó cuando llegaron todos, menos el profesor.', 'El profesor invitó a toda la clase a empezar el curso.'], answer: 'Vinieron todos los de la clase, empezando por el profesor.' },
     ],
   },
   {

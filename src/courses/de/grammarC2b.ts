@@ -177,7 +177,7 @@ export const grammarC2b: GrammarLesson[] = [
       { type: 'choice', prompt: '«Preisanpassung» casi siempre significa…', options: ['subida de precios', 'bajada de precios', 'precio fijo', 'oferta especial'], answer: 'subida de precios' },
       { type: 'choice', prompt: '«Mitarbeiter freisetzen» significa…', options: ['despedir empleados', 'dar vacaciones', 'liberar presos', 'contratar'], answer: 'despedir empleados' },
       { type: 'choice', prompt: '«negatives Wachstum» es un eufemismo de…', options: ['decrecimiento', 'crecimiento fuerte', 'estabilidad', 'inflación'], answer: 'decrecimiento' },
-      { type: 'meaning', text: 'Wir stehen vor großen Herausforderungen.', options: ['Tenemos problemas serios (dicho con suavidad).', 'Todo va perfecto.', 'Vamos a ganar un premio.', 'Nos aburrimos.'], answer: 'Tenemos problemas serios (dicho con suavidad).' },
+      { type: 'meaning', text: 'Wir stehen vor großen Herausforderungen.', options: ['Tenemos problemas serios (dicho con suavidad).', 'Todo va perfecto (dicho con modestia).', 'Vamos a ganar un premio importante.', 'Nos estamos aburriendo con este tema.'], answer: 'Tenemos problemas serios (dicho con suavidad).' },
     ],
   },
   {
@@ -221,7 +221,7 @@ export const grammarC2b: GrammarLesson[] = [
       { type: 'choice', prompt: 'Una historia que atrapa es…', options: ['fesselnd', 'langatmig', 'vorhersehbar', 'blass'], answer: 'fesselnd' },
       { type: 'choice', prompt: 'Si ya sabes cómo termina desde la página 10, la historia es…', options: ['vorhersehbar', 'vielschichtig', 'gelungen', 'einfühlsam'], answer: 'vorhersehbar' },
       { type: 'choice', prompt: 'Personajes exagerados, como caricaturas, son…', options: ['überzeichnet', 'einfühlsam', 'pointiert', 'gelungen'], answer: 'überzeichnet' },
-      { type: 'choice', prompt: '¿Qué frase cierra bien una reseña?', options: ['Ein lesenswertes Buch für alle, die Familiengeschichten mögen.', 'Das Buch hat 300 Seiten.', 'Der Autor wurde 1970 geboren.', 'Ich habe das Buch gekauft.'], answer: 'Ein lesenswertes Buch für alle, die Familiengeschichten mögen.' },
+      { type: 'choice', prompt: '¿Qué frase cierra bien una reseña?', options: ['Ein lesenswertes Buch für alle, die Familiengeschichten mögen.', 'Das Buch hat 300 Seiten und kostet 22 Euro.', 'Die Autorin wurde 1970 in Hamburg geboren.', 'Ich habe das Buch letzte Woche gekauft.'], answer: 'Ein lesenswertes Buch für alle, die Familiengeschichten mögen.' },
     ],
   },
   {
@@ -331,7 +331,7 @@ export const grammarC2b: GrammarLesson[] = [
       { type: 'choice', prompt: '«Schloss» puede ser…', options: ['castillo o cerradura', 'solo castillo', 'cerrado o abierto', 'llave o puerta'], answer: 'castillo o cerradura' },
       { type: 'choice', prompt: 'Un «Kalauer» es…', options: ['un chiste fácil de palabras', 'un poema largo', 'un insulto', 'un refrán antiguo'], answer: 'un chiste fácil de palabras' },
       { type: 'choice', prompt: '«Absatz» NO significa…', options: ['velocidad', 'párrafo', 'taco del zapato', 'ventas'], answer: 'velocidad' },
-      { type: 'meaning', text: 'Was ist ein Keks unter einem Baum? – Ein schattiges Plätzchen.', options: ['Juego con «Plätzchen»: galleta y lugarcito a la sombra.', 'Una receta de galletas.', 'Un consejo para el verano.', 'Una pregunta de biología.'], answer: 'Juego con «Plätzchen»: galleta y lugarcito a la sombra.' },
+      { type: 'meaning', text: 'Was ist ein Keks unter einem Baum? – Ein schattiges Plätzchen.', options: ['Juego con «Plätzchen»: galleta y lugarcito a la sombra.', 'Una receta de galletas para comer bajo un árbol.', 'Un consejo para buscar sombra en verano.', 'Una pregunta de biología sobre los árboles.'], answer: 'Juego con «Plätzchen»: galleta y lugarcito a la sombra.' },
     ],
   },
 ]

@@ -24,7 +24,7 @@ export const readingsC2: ReadingText[] = [
       l('Ich habe heuer viel gelernt. Und ja: Ich habe das Wort «heuer» inzwischen in meinen Wortschatz aufgenommen.', 'Este año aprendí mucho. Y sí: a estas alturas ya incorporé la palabra «heuer» a mi vocabulario.'),
     ],
     questions: [
-      q('¿Qué error cometió Otto en el desayuno?', 'Usó palabras de Alemania en vez de las austriacas', ['Pidió en español', 'No pagó', 'Llegó muy tarde']),
+      q('¿Qué error cometió Otto en el desayuno?', 'Usó palabras de Alemania en vez de las austriacas', ['Pidió el desayuno en español', 'Se fue sin pagar la cuenta', 'Llegó tarde y ya estaba cerrado']),
       q('¿Cómo describe Otto al mozo?', 'Malhumorado, pero casi encantador', ['Muy amable y sonriente', 'Grosero y violento', 'Indiferente']),
       q('¿Qué idea le explicó el señor mayor?', 'El alemán de Austria no es incorrecto, sino distinto', ['El alemán de Austria es más correcto', 'En Austria no se habla alemán', 'Otto habla muy mal']),
     ],
@@ -47,7 +47,7 @@ export const readingsC2: ReadingText[] = [
     ],
     questions: [
       q('¿Por qué le interesa a Otto el sistema?', 'Funciona con todas las marcas', ['Es muy barato', 'Es suizo', 'No necesita licencia']),
-      q('¿Qué opina Otto del precio?', 'No es barato, pero se paga rápido si funciona', ['Es una ganga', 'Es imposible de pagar', 'No le importa']),
+      q('¿Qué opina Otto del precio?', 'No es barato, pero se paga rápido si funciona', ['Es una ganga y lo compra de inmediato', 'Es tan caro que es imposible pagarlo', 'El precio no le importa en absoluto']),
       q('¿Qué significa «Pendenz» en el contexto suizo?', 'Un asunto pendiente', ['Una deuda', 'Un descuento', 'Una queja']),
     ],
   },
@@ -135,7 +135,7 @@ export const readingsC2: ReadingText[] = [
     questions: [
       q('¿Qué recurso narrativo hay en «War das wirklich richtig?»', 'Estilo indirecto libre: los pensamientos del personaje', ['Diálogo directo', 'Discurso indirecto con Konjunktiv I', 'Una cita de otro autor']),
       q('¿Cómo se expresa el futuro del personaje en el relato?', 'Con «würde» + infinitivo', ['Con el presente', 'Con Futur II', 'Con el imperativo']),
-      q('¿Cómo se despidió la madre?', 'Le puso la mano en la mejilla, sin llorar frente a él', ['Lloró mucho en el terminal', 'No se despidió', 'Le escribió una carta']),
+      q('¿Cómo se despidió la madre?', 'Le puso la mano en la mejilla, sin llorar frente a él', ['Lloró mucho en el terminal de buses', 'No se despidió porque estaba enojada', 'Le escribió una carta para el viaje']),
     ],
   },
   {
@@ -154,8 +154,8 @@ export const readingsC2: ReadingText[] = [
       l('§ 14 Salvatorische Klausel: Sollte eine Bestimmung dieses Vertrages unwirksam sein, so bleibt die Wirksamkeit der übrigen Bestimmungen davon unberührt.', '§ 14 Cláusula de salvaguarda: si una disposición de este contrato fuera inválida, la validez de las demás disposiciones no se ve afectada.'),
     ],
     questions: [
-      q('¿Hasta cuándo hay que pagar el arriendo?', 'El tercer día hábil de cada mes, por adelantado', ['A fin de mes', 'Cada tres meses', 'Cuando quiera']),
-      q('¿Qué se necesita para subarrendar?', 'Autorización previa y por escrito del arrendador', ['Nada', 'Un aviso verbal', 'Pagar una multa']),
+      q('¿Hasta cuándo hay que pagar el arriendo?', 'El tercer día hábil de cada mes, por adelantado', ['El último día de cada mes, al final', 'Cada tres meses, al inicio del trimestre', 'Cuando el arrendatario quiera, sin plazo']),
+      q('¿Qué se necesita para subarrendar?', 'Autorización previa y por escrito del arrendador', ['Nada, el subarriendo siempre está permitido', 'Un aviso verbal al arrendador', 'Pagar una multa al arrendador']),
       q('¿Qué dice la cláusula de salvaguarda?', 'Si una disposición es inválida, las demás siguen vigentes', ['Todo el contrato se anula', 'El arrendador puede cambiar todo', 'El contrato dura para siempre']),
     ],
   },
@@ -176,7 +176,7 @@ export const readingsC2: ReadingText[] = [
       l('Vielen Dank, Herr Martínez. Sie sind als Zeuge entlassen.', 'Muchas gracias, señor Martínez. Puede retirarse como testigo.', 'Richterin'),
     ],
     questions: [
-      q('¿Qué constató Otto en el vehículo?', 'Las pastillas de freno estaban totalmente gastadas', ['El motor estaba roto', 'No había ninguna falla', 'Los neumáticos eran nuevos']),
+      q('¿Qué constató Otto en el vehículo?', 'Las pastillas de freno estaban totalmente gastadas', ['El motor estaba roto desde hacía meses', 'No había ninguna falla en el vehículo', 'La dirección estaba suelta y desalineada']),
       q('¿Qué responde Otto sobre la credibilidad del acusado?', 'Que no lo puede juzgar', ['Que miente', 'Que dice la verdad', 'Que no lo conoce']),
       q('¿Qué recomienda Otto en general?', 'Inspecciones regulares', ['Comprar autos nuevos', 'No manejar de noche', 'Frenar menos']),
     ],
@@ -262,9 +262,9 @@ export const readingsC2: ReadingText[] = [
       l('Und so bleibt mein Schraubenzieher, wo er hingehört: griffbereit. Man weiß ja nie, wann das nächste Update kommt.', 'Y así mi destornillador se queda donde debe estar: a mano. Uno nunca sabe cuándo llega la próxima actualización.'),
     ],
     questions: [
-      q('¿Con qué escena empieza la columna?', 'Un cliente pide «actualizar» su auto y Otto toma un destornillador', ['Una cifra de ventas', 'Una definición de diccionario', 'Una cita de Goethe']),
+      q('¿Con qué escena empieza la columna?', 'Un cliente pide «actualizar» su auto y Otto toma un destornillador', ['Una cifra sobre las ventas de autos eléctricos', 'Una definición de «taller» del diccionario', 'Una cita de Goethe sobre el trabajo manual']),
       q('¿Qué recurso usa «Rechenzentrum mit Ölgeruch»?', 'Una metáfora irónica', ['Una abreviatura', 'Un eufemismo jurídico', 'Una cita textual']),
-      q('¿Cuál es la Pointe final?', 'El destornillador queda a mano porque siempre llega otra actualización', ['Otto vende su taller', 'Otto deja de usar computadores', 'Los clientes dejan de venir']),
+      q('¿Cuál es la Pointe final?', 'El destornillador queda a mano porque siempre llega otra actualización', ['Otto vende su taller y se dedica a la informática', 'Otto deja de usar computadores en su taller', 'Los clientes dejan de venir por las actualizaciones']),
     ],
   },
   {
@@ -283,9 +283,9 @@ export const readingsC2: ReadingText[] = [
       l('Ein lesenswertes Buch für alle, die wissen wollen, wie es sich anfühlt, in zwei Sprachen zu Hause zu sein – und in keiner ganz.', 'Un libro que vale la pena para todos los que quieran saber qué se siente estar en casa en dos lenguas, y en ninguna del todo.'),
     ],
     questions: [
-      q('¿De qué trata la novela?', 'De tres generaciones de una familia entre Chile y Alemania', ['De un taller mecánico', 'De la caída del Muro', 'De un viaje a Viena']),
-      q('¿Qué critica la reseña?', 'La parte central: la historia de amor es artificial y lenta', ['El lenguaje', 'La portada', 'El final feliz']),
-      q('¿Cuál es la valoración general?', 'Positiva, sobre todo por el lenguaje', ['Muy negativa', 'Indiferente', 'No da valoración']),
+      q('¿De qué trata la novela?', 'De tres generaciones de una familia entre Chile y Alemania', ['De un taller mecánico en Hamburgo y su dueño', 'De la caída del Muro vista por una niña', 'De un viaje a Viena de dos amigas']),
+      q('¿Qué critica la reseña?', 'La parte central: la historia de amor es artificial y lenta', ['El lenguaje: es demasiado simple y plano', 'La portada y el título, poco originales', 'El final feliz, que parece forzado']),
+      q('¿Cuál es la valoración general?', 'Positiva, sobre todo por el lenguaje', ['Muy negativa, sobre todo por la trama', 'Indiferente: ni buena ni mala', 'No da ninguna valoración']),
     ],
   },
   {
@@ -306,7 +306,7 @@ export const readingsC2: ReadingText[] = [
     questions: [
       q('¿Qué juego de palabras hace Otto con el refrán «Handwerk hat goldenen Boden»?', 'Dice que el oficio tiene más bien «suelo aceitoso»', ['Dice que el oficio no paga', 'Dice que el oro está en el suelo', 'No hace ningún juego']),
       q('¿Qué recurso hay en «Kollegen, die Geduld hatten. Kunden, die Vertrauen hatten.»?', 'Una anáfora / paralelismo', ['Un eufemismo', 'Una abreviatura', 'Una elipsis jurídica']),
-      q('¿Cómo define Otto la integración?', 'Como un camino que se construye juntos', ['Como una meta final', 'Como un examen', 'Como un trámite']),
+      q('¿Cómo define Otto la integración?', 'Como un camino que se construye juntos', ['Como una meta a la que se llega', 'Como un examen que hay que aprobar', 'Como un trámite en la oficina']),
     ],
   },
   {
@@ -327,7 +327,7 @@ export const readingsC2: ReadingText[] = [
     ],
     questions: [
       q('¿Cuál es el dilema de Otto?', 'En ningún país se siente del todo de ahí', ['No sabe si volver a Chile mañana', 'No quiere aprender más alemán', 'No le gusta su trabajo']),
-      q('¿Qué paralelo hace Hans?', 'Su infancia en la RDA, que tampoco existe ya', ['Su viaje a Chile', 'Su trabajo en Berlín', 'Su matrimonio']),
+      q('¿Qué paralelo hace Hans?', 'Su infancia en la RDA, que tampoco existe ya', ['Su viaje a Chile hace algunos años', 'Su trabajo en Berlín, que dejó hace poco', 'Su matrimonio, que terminó hace tiempo']),
       q('¿Cómo define Otto la patria al final?', 'Como una sensación de abrigo más que un lugar', ['Como el lugar de nacimiento', 'Como un pasaporte', 'Como un idioma']),
     ],
   },

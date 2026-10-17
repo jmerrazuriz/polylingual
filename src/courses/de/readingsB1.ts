@@ -26,7 +26,7 @@ export const readingsB1: ReadingText[] = [
     questions: [
       q('¿Cuántos años trabajó Otto en el taller de Chile?', 'Unos ocho años', ['Tres años', 'Dos años', 'Doce años']),
       q('¿Qué reparaba sobre todo?', 'Motores y frenos', ['Bicicletas', 'Computadores', 'Neumáticos']),
-      q('¿Qué conocimiento técnico especial menciona?', 'Autos eléctricos y equipos de diagnóstico', ['Programación', 'Construcción', 'Cocina profesional']),
+      q('¿Qué conocimiento técnico especial menciona?', 'Autos eléctricos y equipos de diagnóstico', ['Programación y redes informáticas', 'Construcción y electricidad de casas', 'Cocina profesional y repostería']),
     ],
   },
   {
@@ -66,7 +66,7 @@ export const readingsB1: ReadingText[] = [
     ],
     questions: [
       q('¿Por qué Lisa se cambió a las afueras?', 'Por el arriendo más bajo y la tranquilidad', ['Porque encontró trabajo ahí', 'Porque tiene auto', 'Porque no le gustaba Berlín']),
-      q('¿Qué desventaja tiene Lisa?', 'Tarda una hora en llegar al trabajo', ['El arriendo es caro', 'Hay mucho ruido', 'No tiene vecinos']),
+      q('¿Qué desventaja tiene Lisa?', 'Tarda una hora en llegar al trabajo', ['El arriendo es muy caro para ella', 'Hay mucho ruido en la calle', 'No conoce a ningún vecino']),
       q('¿Qué opina Kemal?', 'Prefiere el centro aunque sea más caro', ['Prefiere las afueras', 'Quiere comprar un auto', 'Quiere irse de Berlín']),
     ],
   },
@@ -108,8 +108,8 @@ export const readingsB1: ReadingText[] = [
     ],
     questions: [
       q('¿En qué áreas faltan más trabajadores?', 'En oficios y cuidados', ['En bancos', 'En escuelas', 'En el turismo']),
-      q('¿Qué cambia con la nueva ley?', 'Los títulos extranjeros se reconocerán más rápido', ['Los sueldos suben', 'Se cierran talleres', 'Se exige nivel C1']),
-      q('¿Qué ofrecen muchas empresas?', 'Cursos de alemán en horario laboral', ['Vivienda gratis', 'Autos de empresa', 'Viajes']),
+      q('¿Qué cambia con la nueva ley?', 'Los títulos extranjeros se reconocerán más rápido', ['Los sueldos de los mecánicos van a subir', 'Se cerrarán muchos talleres pequeños', 'Se exigirá nivel C1 para trabajar']),
+      q('¿Qué ofrecen muchas empresas?', 'Cursos de alemán en horario laboral', ['Vivienda gratis para los nuevos', 'Autos de la empresa para todos', 'Viajes pagados a su país']),
     ],
   },
   {
@@ -128,7 +128,7 @@ export const readingsB1: ReadingText[] = [
       l('Sprich ruhig mit ihm. Wenn das nicht hilft, kannst du immer noch den Chef fragen.', 'Habla con él con calma. Si eso no resulta, siempre puedes hablar con el jefe.', 'Hans'),
     ],
     questions: [
-      q('¿Qué problema tiene Otto?', 'Un colega toma sus herramientas sin preguntar', ['El jefe no le paga', 'Llega tarde', 'No entiende el trabajo']),
+      q('¿Qué problema tiene Otto?', 'Un colega toma sus herramientas sin preguntar', ['El jefe no le paga las horas extra', 'Llega tarde todos los días', 'No entiende las tareas del taller']),
       q('¿Por qué Otto no quiere pelear?', 'Porque trabajan juntos todos los días', ['Porque el colega es su amigo', 'Porque se va a ir', 'Porque el colega es el jefe']),
       q('¿Qué le aconseja Hans?', 'Hablar con calma con el colega', ['Renunciar', 'Esconder las herramientas', 'No hacer nada']),
     ],
@@ -150,8 +150,8 @@ export const readingsB1: ReadingText[] = [
     ],
     questions: [
       q('¿Cuál es el problema?', 'La lavadora no ha llegado', ['La lavadora llegó rota', 'Le cobraron dos veces', 'Pidió la máquina equivocada']),
-      q('¿Qué hizo Otto antes de escribir?', 'Llamó dos veces al servicio al cliente', ['Fue a la tienda', 'Escribió a un abogado', 'Nada']),
-      q('¿Qué pide Otto?', 'Una fecha de entrega antes del viernes o el dinero de vuelta', ['Una lavadora más grande', 'Un descuento', 'Hablar con el jefe']),
+      q('¿Qué hizo Otto antes de escribir?', 'Llamó dos veces al servicio al cliente', ['Fue a la tienda a reclamar', 'Escribió a un abogado', 'Esperó un mes sin hacer nada']),
+      q('¿Qué pide Otto?', 'Una fecha de entrega antes del viernes o el dinero de vuelta', ['Una lavadora más grande por el mismo precio', 'Un descuento del 50 % en su próxima compra', 'Hablar directamente con el jefe de la tienda']),
     ],
   },
   {
@@ -190,7 +190,7 @@ export const readingsB1: ReadingText[] = [
     ],
     questions: [
       q('¿En qué piensa Otto cuando tiene nostalgia?', 'En el mar y la comida de su mamá', ['En su antiguo trabajo', 'En el fútbol', 'En la nieve']),
-      q('¿Qué hace contra la nostalgia?', 'Cocina comida chilena e invita a amigos', ['Llora', 'Trabaja más', 'Se va a dormir']),
+      q('¿Qué hace contra la nostalgia?', 'Cocina comida chilena e invita a amigos', ['Llama a su familia todos los días', 'Trabaja más horas para no pensar', 'Se va a dormir temprano']),
       q('¿Qué haría si tuviera más vacaciones?', 'Volaría a Chile cada año', ['Viajaría por Europa', 'Haría un curso', 'Se cambiaría de casa']),
     ],
   },
@@ -250,8 +250,8 @@ export const readingsB1: ReadingText[] = [
       l('Wir würden dich vermissen, aber du solltest die Chance nutzen.', 'Te extrañaríamos, pero deberías aprovechar la oportunidad.', 'Hans'),
     ],
     questions: [
-      q('¿Qué ventaja tiene el puesto en Múnich?', 'Está mejor pagado y es de jefe de taller', ['Está más cerca', 'Tiene más vacaciones', 'Es de media jornada']),
-      q('¿Qué desventaja menciona Otto?', 'Los arriendos altos y dejar a sus amigos', ['El trabajo es aburrido', 'El sueldo es bajo', 'No le gusta Múnich']),
+      q('¿Qué ventaja tiene el puesto en Múnich?', 'Está mejor pagado y es de jefe de taller', ['Está más cerca de la casa de Hans', 'Tiene más vacaciones y menos horas', 'Es de media jornada y en la mañana']),
+      q('¿Qué desventaja menciona Otto?', 'Los arriendos altos y dejar a sus amigos', ['El trabajo es aburrido y repetitivo', 'El sueldo es más bajo que en Berlín', 'No le gusta el clima de Múnich']),
       q('¿Qué le aconseja Hans?', 'Aprovechar la oportunidad', ['Quedarse en Berlín', 'Pedir más dinero', 'No decidir nada']),
     ],
   },
@@ -292,7 +292,7 @@ export const readingsB1: ReadingText[] = [
     ],
     questions: [
       q('Según la profesora, ¿qué es lo más importante?', 'Practicar un poco cada día', ['Estudiar mucho el fin de semana', 'Tener un buen libro', 'Vivir en el extranjero']),
-      q('¿A qué le tienen miedo los estudiantes?', 'A cometer errores al hablar', ['A los exámenes', 'A la gramática', 'A leer']),
+      q('¿A qué le tienen miedo los estudiantes?', 'A cometer errores al hablar', ['A los exámenes escritos', 'A la gramática alemana', 'A leer textos largos']),
       q('¿Qué recomienda a quienes se mudan a Alemania?', 'Buscar contacto con vecinos y clubes', ['Ver solo películas', 'Hacer muchos cursos', 'Hablar solo alemán en casa']),
     ],
   },
@@ -313,7 +313,7 @@ export const readingsB1: ReadingText[] = [
     ],
     questions: [
       q('¿Para qué puesto postula Otto?', 'Jefe de taller', ['Aprendiz', 'Vendedor de autos', 'Profesor']),
-      q('¿De qué está a cargo actualmente?', 'De la formación de los aprendices', ['De las finanzas', 'De la venta', 'De la limpieza']),
+      q('¿De qué está a cargo actualmente?', 'De la formación de los aprendices', ['De las finanzas del taller', 'De la venta de autos usados', 'De la limpieza del taller']),
       q('¿Por qué le interesa la empresa?', 'Por su trabajo con autos eléctricos', ['Por el sueldo', 'Porque está cerca', 'Porque conoce al jefe']),
     ],
   },

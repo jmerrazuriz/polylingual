@@ -63,6 +63,8 @@ const unitsA2: PathUnit[] = [
   unit('de-a2-10', 'A2 · Papeles y planes', '🗂️', ['de-indefinit', 'de-genitiv-von', 'de-zu-infinitiv'], ['medien', 'autoverkehr'], ['lt-a2-brief-behoerde']),
   unit('de-a2-11', 'A2 · Fechas y lugares', '📅', ['de-ordinal', 'de-temporal', 'de-zum-beim-vom'], ['bildung', 'verben2'], ['dt-a2-weihnachten']),
   unit('de-a2-12', 'A2 · Un año en Alemania', '🌱', ['de-welcher-dieser', 'de-praeteritum-text', 'de-noch-schon'], ['adjektive2', 'woerter2'], ['lt-a2-ein-jahr']),
+  unit('de-a2-extra-1', 'A2 · Más palabras I', '🧺', [], ['grundwoerter', 'alltag-a2', 'orte-a2', 'freizeit-a2x', 'zahlen-a2x', 'schule-a2x', 'imprescindibles'], []),
+  unit('de-a2-extra-2', 'A2 · Más palabras II', '🧺', [], ['nomen-a2y', 'leute-a2x', 'sachen-a2x', 'unterwegs-a2x', 'verben-a2y', 'adjektive-a2y', 'adverbien-a2x'], []),
   examUnit('A2'),
 ]
 
@@ -81,6 +83,9 @@ const unitsB1: PathUnit[] = [
   unit('de-b1-12', 'B1 · Mi opinión', '🗣️', ['de-meinung', 'de-wortbildung', 'de-futur-vermutung', 'de-adjektiv-stark', 'de-indefinitpronomen'], ['diskussion', 'abstrakt', 'verben3', 'adjektive3', 'konnektoren-b1'], ['lt-b1-bewerbung', 'dt-b1-entscheidung']),
   unit('de-b1-extra-1', 'B1 · Más palabras I', '🧰', [], ['werkzeug', 'kueche', 'koerper2', 'beschwerden', 'kleidung2', 'tiere2', 'garten', 'sport', 'unterkunft', 'haushaltsgeraete'], []),
   unit('de-b1-extra-2', 'B1 · Más palabras II', '🧰', [], ['buero', 'lebensmittel2', 'mengen', 'material', 'lebensereignisse', 'landschaft', 'alltagsverben2', 'zeitangaben', 'adjektive-b1x', 'stadtorte'], []),
+  unit('de-b1-familien', 'B1 · Familias de palabras', '🌳', [], ['familie-fahren', 'familie-stellen', 'familie-sprechen', 'familie-schreiben', 'familie-nehmen', 'familie-ziehen', 'familie-legen', 'familie-halten', 'familie-arbeiten', 'familie-wohnen', 'familie-kaufen', 'familie-bilden'], []),
+  unit('de-b1-extra-3', 'B1 · Más palabras III', '🧰', [], ['nomen-b1y-1', 'nomen-b1y-2', 'welt-b1y', 'natur-b1y', 'verben-b1y-1', 'verben-b1y-2'], []),
+  unit('de-b1-extra-4', 'B1 · Más palabras IV', '🧰', [], ['verben-b1y-3', 'verben-b1y-4', 'verben-b1y-5', 'adjektive-b1y-1', 'adjektive-b1y-2', 'adjektive-b1y-3'], []),
   examUnit('B1'),
 ]
 

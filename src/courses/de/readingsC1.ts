@@ -68,7 +68,7 @@ export const readingsC1: ReadingText[] = [
       l('Für Rückfragen sowie zur Anmeldung zu den anzubietenden Schulungen wenden Sie sich bitte an Ihre Innung.', 'Para consultas y para inscribirse en las capacitaciones que se ofrecerán, diríjase por favor a su gremio.'),
     ],
     questions: [
-      q('¿Qué tiene que designar cada empresa?', 'Una persona especializada responsable de la seguridad', ['Un nuevo gerente', 'Un abogado', 'Un portavoz de prensa']),
+      q('¿Qué tiene que designar cada empresa?', 'Una persona especializada responsable de la seguridad', ['Un nuevo gerente para la parte técnica', 'Un abogado que revise los contratos', 'Un portavoz de prensa para la cámara']),
       q('¿Cada cuánto se actualiza la evaluación de riesgos?', 'Cada año', ['Cada mes', 'Cada cinco años', 'Solo una vez']),
       q('¿Qué plazo tienen las empresas para adaptarse?', 'Seis meses', ['Un mes', 'Dos años', 'Ninguno']),
     ],
@@ -90,7 +90,7 @@ export const readingsC1: ReadingText[] = [
     ],
     questions: [
       q('¿De qué trata el artículo resumido?', 'De la digitalización y los talleres independientes', ['De la historia del automóvil', 'De los precios de la gasolina', 'De la formación universitaria']),
-      q('¿Qué problema menciona sobre los datos de diagnóstico?', 'Solo se accede a ellos por los servidores de los fabricantes', ['Están en papel', 'Son gratuitos', 'Se perdieron']),
+      q('¿Qué problema menciona sobre los datos de diagnóstico?', 'Solo se accede a ellos por los servidores de los fabricantes', ['Todavía se guardan solo en papel en los talleres', 'Son gratuitos para todos los talleres', 'Se pierden cada vez que se apaga el auto']),
       q('¿Qué solución propone el autor?', 'Cooperar y formar continuamente al personal', ['Cerrar los talleres pequeños', 'Volver a los autos antiguos', 'No usar computadores']),
     ],
   },
@@ -112,8 +112,8 @@ export const readingsC1: ReadingText[] = [
     ],
     questions: [
       q('¿Por qué duda Hans al principio?', 'Muchas empresas fracasan el primer año', ['No le gusta Múnich', 'Otto no sabe de autos', 'Hans quiere el taller para él']),
-      q('¿Cómo reaccionó el jefe de Otto?', 'Parece contento porque quiere jubilarse', ['Se enojó mucho', 'Lo despidió', 'No dijo nada']),
-      q('¿Por qué cree Otto que recibirá fondos de fomento?', 'Porque pronto tendrá el título de maestro', ['Porque es chileno', 'Porque Hans lo ayuda', 'Porque ya es rico']),
+      q('¿Cómo reaccionó el jefe de Otto?', 'Parece contento porque quiere jubilarse', ['Se enojó mucho y no le habla', 'Lo despidió al día siguiente', 'No dijo nada y cambió de tema']),
+      q('¿Por qué cree Otto que recibirá fondos de fomento?', 'Porque pronto tendrá el título de maestro', ['Porque es chileno y hay fondos para extranjeros', 'Porque Hans le va a prestar el dinero', 'Porque ya tiene mucho capital propio']),
     ],
   },
   {
@@ -132,7 +132,7 @@ export const readingsC1: ReadingText[] = [
       l('Insofern als die Nachfrage nach E-Auto-Service stetig steigt, ist bereits im zweiten Geschäftsjahr mit einem Gewinn zu rechnen.', 'En la medida en que la demanda de servicio para autos eléctricos sube constantemente, ya en el segundo año se puede contar con ganancias.'),
     ],
     questions: [
-      q('¿En qué se especializa el taller?', 'En vehículos híbridos y eléctricos', ['En motos', 'En camiones', 'En autos clásicos']),
+      q('¿En qué se especializa el taller?', 'En vehículos híbridos y eléctricos', ['En motos y bicicletas eléctricas', 'En camiones y buses grandes', 'En autos clásicos y de colección']),
       q('¿Cuánto capital propio aporta Otto?', '40.000 euros', ['180.000 euros', '140.000 euros', 'Nada']),
       q('¿Cuándo espera ganancias?', 'En el segundo año', ['En el primer mes', 'En diez años', 'Nunca']),
     ],
@@ -220,7 +220,7 @@ export const readingsC1: ReadingText[] = [
       l('Halten wir fest: Es gibt Chancen, aber keine Lösung für alle. Vielen Dank an meine Gäste.', 'Dejemos constancia: hay oportunidades, pero no una solución para todos. Muchas gracias a mis invitados.', 'Moderatorin'),
     ],
     questions: [
-      q('¿Qué resultado tuvo la semana de cuatro días en el taller?', 'Menos licencias médicas y más postulantes', ['Más accidentes', 'Menos clientes', 'Pérdidas económicas']),
+      q('¿Qué resultado tuvo la semana de cuatro días en el taller?', 'Menos licencias médicas y más postulantes', ['Más accidentes y más horas extra', 'Menos clientes y menos ventas', 'Pérdidas económicas y despidos']),
       q('¿Qué argumenta el representante de la asociación?', 'Que en la industria no es viable', ['Que es una idea excelente', 'Que hay que trabajar seis días', 'Que los talleres deben cerrar']),
       q('¿Qué aclara Otto al final?', 'No redujo las horas, las repartió en cuatro días', ['Redujo los sueldos', 'Contrató robots', 'Cerró los viernes sin aviso']),
     ],
@@ -265,7 +265,7 @@ export const readingsC1: ReadingText[] = [
     questions: [
       q('¿Qué sentía el narrador de niño por las manos de su padre?', 'Vergüenza', ['Orgullo', 'Miedo', 'Indiferencia']),
       q('¿A qué se refiere «Ersteres» en la tercera oración?', 'A la bencina', ['Al café', 'A la madre', 'Al taller']),
-      q('¿Qué heredó el narrador según el final?', 'La misma sonrisa y las manos sucias de mecánico', ['El taller de Valparaíso', 'Mucho dinero', 'Una casa en Chile']),
+      q('¿Qué heredó el narrador según el final?', 'La misma sonrisa y las manos sucias de mecánico', ['El taller de Valparaíso y sus herramientas', 'Mucho dinero y una casa en la costa', 'Su forma de hablar y su acento']),
     ],
   },
   {
@@ -285,8 +285,8 @@ export const readingsC1: ReadingText[] = [
       l('Sehr gut, Herr Martínez. Das war präzise und fachgerecht. Sie hören in einer Stunde von uns.', 'Muy bien, señor Martínez. Fue preciso y profesional. Tendrá noticias nuestras en una hora.', 'Prüfer'),
     ],
     questions: [
-      q('¿Qué hace Otto primero con el auto híbrido?', 'Lee la memoria de fallas de todas las unidades de control', ['Cambia la batería', 'Llama al fabricante', 'Lava el auto']),
-      q('¿Qué hace si no hay una falla clara?', 'Una prueba de manejo con registro de datos', ['Devuelve el auto', 'Cambia el motor', 'Espera una semana']),
+      q('¿Qué hace Otto primero con el auto híbrido?', 'Lee la memoria de fallas de todas las unidades de control', ['Cambia la batería de alto voltaje de inmediato', 'Llama al fabricante para pedir instrucciones', 'Revisa el aceite y el nivel de agua']),
+      q('¿Qué hace si no hay una falla clara?', 'Una prueba de manejo con registro de datos', ['Devuelve el auto sin hacer nada', 'Cambia el motor eléctrico completo', 'Espera una semana a que vuelva la falla']),
       q('¿Cómo evalúa el examinador la respuesta de Otto?', 'Precisa y profesional', ['Demasiado larga', 'Incorrecta', 'Muy insegura']),
     ],
   },
@@ -330,7 +330,7 @@ export const readingsC1: ReadingText[] = [
     ],
     questions: [
       q('¿Hace cuánto llegó Otto a Alemania?', 'Siete años', ['Dos años', 'Diez años', 'Un año']),
-      q('¿Qué papel tuvo Hans?', 'Siempre le dijo la verdad y lo apoyó', ['Le prestó dinero', 'Le enseñó mecánica', 'Le dio trabajo']),
+      q('¿Qué papel tuvo Hans?', 'Siempre le dijo la verdad y lo apoyó', ['Le prestó dinero para el taller', 'Le enseñó mecánica de autos eléctricos', 'Le dio trabajo en su empresa']),
       q('¿Qué consejo da Otto a los recién llegados?', 'Hablar aunque cometan errores', ['No hablar hasta saber bien', 'Volver a su país', 'Estudiar solo gramática']),
     ],
   },
@@ -351,9 +351,9 @@ export const readingsC1: ReadingText[] = [
       l('Das klingt nach Arbeit. Willkommen bei Martínez Kfz-Service!', 'Eso suena a trabajo. ¡Bienvenida a Martínez Kfz-Service!', 'Otto'),
     ],
     questions: [
-      q('¿Qué celebra Otto?', 'La inauguración de su propio taller', ['Su cumpleaños', 'Su matrimonio', 'Su regreso a Chile']),
+      q('¿Qué celebra Otto?', 'La inauguración de su propio taller', ['Su cumpleaños con los vecinos', 'Su matrimonio en Múnich', 'Su regreso definitivo a Chile']),
       q('¿Qué admite Hans?', 'Que antes dijo que Otto estaba loco', ['Que no sabe manejar', 'Que quiere trabajar con Otto', 'Que se va de Múnich']),
-      q('¿Quién es la primera clienta?', 'Una señora cuyo auto hace un ruido extraño', ['La madre de Otto', 'Una periodista', 'La asesora del banco']),
+      q('¿Quién es la primera clienta?', 'Una señora cuyo auto hace un ruido extraño', ['La madre de Otto, que vino de Chile', 'Una periodista que hace una entrevista', 'La asesora del banco que dio el préstamo']),
     ],
   },
 ]

@@ -221,7 +221,7 @@ export const grammarC1b: GrammarLesson[] = [
       { type: 'choice', prompt: '＿ werden wir uns wiedersehen.', hint: 'algún día', options: ['Irgendwann', 'Irgendwo', 'Irgendwer', 'Irgendwie'], answer: 'Irgendwann' },
       { type: 'choice', prompt: 'Gib mir ＿ Buch, egal welches.', options: ['irgendein', 'irgendwer', 'irgendwo', 'irgendwelche'], answer: 'irgendein' },
       { type: 'choice', prompt: 'Das schaffen wir ＿.', hint: 'de alguna manera', options: ['irgendwie', 'irgendwann', 'irgendwas', 'irgendwer'], answer: 'irgendwie' },
-      { type: 'meaning', text: 'Sie ist nicht irgendeine Kollegin, sie ist meine beste Freundin.', options: ['No es una colega cualquiera, es mi mejor amiga.', 'No es ninguna colega.', 'Es una colega como todas.', 'No conozco a esa colega.'], answer: 'No es una colega cualquiera, es mi mejor amiga.' },
+      { type: 'meaning', text: 'Sie ist nicht irgendeine Kollegin, sie ist meine beste Freundin.', options: ['No es una colega cualquiera, es mi mejor amiga.', 'No es ninguna colega mía, es una amiga.', 'Es una colega cualquiera, no mi amiga.', 'No conozco a esa colega ni a su amiga.'], answer: 'No es una colega cualquiera, es mi mejor amiga.' },
     ],
   },
   {

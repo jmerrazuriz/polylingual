@@ -4,6 +4,7 @@
 import type { GrammarExercise } from '../courses/grammar.ts'
 import { groupLabel, posLabel, vocab, type VocabEntry, vocabById, type VocabLesson } from '../courses/ja/vocab.ts'
 import { furiganaToPlain } from './furigana.ts'
+import { looksNumeric, similarOptions } from './distractors.ts'
 import { shuffle } from './random.ts'
 import type { TaggedExercise } from './studyExercises.ts'
 
@@ -13,13 +14,32 @@ export const wordFromCard = (char: string) => (char.startsWith(WORD_PREFIX) ? vo
 
 export const wordPosText = (entry: VocabEntry) => (entry.group ? `${posLabel[entry.pos]}, ${groupLabel[entry.group]}` : posLabel[entry.pos])
 
-/** Distractores de la misma clase de palabra (verbos con verbos…), sin repetir el texto. */
+const byTheme = new Map<VocabEntry['theme'], VocabEntry[]>()
+for (const v of vocab) byTheme.set(v.theme, [...(byTheme.get(v.theme) ?? []), v])
+
+/**
+ * Distractores parecidos: primero del mismo tema y clase (un número con otros números, un
+ * familiar con otros familiares), luego del mismo tema, luego de la misma clase y nivel.
+ */
 function options(entry: VocabEntry, pick: (v: VocabEntry) => string, random: () => number): string[] {
+  const others = (list: readonly VocabEntry[]) => list.filter((v) => v.id !== entry.id)
+  const theme = others(byTheme.get(entry.theme) ?? [])
   const answer = pick(entry)
-  const same = vocab.filter((v) => v.pos === entry.pos && v.id !== entry.id)
-  const pool = same.length >= 8 ? same : vocab.filter((v) => v.id !== entry.id)
-  const others = [...new Set(shuffle(pool, random).map(pick))].filter((o) => o !== answer)
-  return [answer, ...others.slice(0, 3)]
+  // Si la respuesta es un número («nueve»), primero otros números.
+  const sameShape = (v: VocabEntry) => looksNumeric(pick(v)) === looksNumeric(answer)
+  return similarOptions(answer, {
+    tiers: [
+      theme.filter((v) => v.pos === entry.pos && sameShape(v)),
+      theme.filter((v) => v.pos === entry.pos),
+      theme,
+      others(vocab).filter((v) => v.pos === entry.pos && v.level === entry.level),
+      others(vocab).filter((v) => v.pos === entry.pos),
+      others(vocab),
+    ],
+    pick,
+    closeness: (v) => Math.abs(pick(v).length - answer.length) / 3,
+    random,
+  })
 }
 
 /** ¿Qué significa la palabra? (kana, o kanji con furigana → español) */

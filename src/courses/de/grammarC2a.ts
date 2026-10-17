@@ -155,7 +155,7 @@ export const grammarC2a: GrammarLesson[] = [
       { type: 'choice', prompt: '¿Qué tiempo es el habitual en una novela?', options: ['Präteritum', 'Perfekt', 'Futur I', 'Plusquamperfekt'], answer: 'Präteritum' },
       { type: 'choice', prompt: '«1989. Die Mauer fällt.» – ¿Qué recurso es?', options: ['Presente histórico', 'Futuro', 'Perfekt hablado', 'Konjunktiv'], answer: 'Presente histórico' },
       { type: 'choice', prompt: '«Bis 2040 wird sich die Branche verändert haben.» ¿Qué tiempo es?', options: ['Futur II', 'Präteritum', 'Plusquamperfekt', 'Presente'], answer: 'Futur II' },
-      { type: 'meaning', text: 'Sie hatte den Brief nie geöffnet. Jetzt lag er vor ihr.', options: ['Nunca había abierto la carta. Ahora estaba frente a ella.', 'Abrió la carta ahora.', 'La carta nunca llegó.', 'Ella escribió una carta.'], answer: 'Nunca había abierto la carta. Ahora estaba frente a ella.' },
+      { type: 'meaning', text: 'Sie hatte den Brief nie geöffnet. Jetzt lag er vor ihr.', options: ['Nunca había abierto la carta. Ahora estaba frente a ella.', 'Abrió la carta y la dejó frente a ella.', 'La carta nunca llegó. Ahora la esperaba.', 'Ella escribió una carta y ahora la leía.'], answer: 'Nunca había abierto la carta. Ahora estaba frente a ella.' },
     ],
   },
   {
@@ -287,7 +287,7 @@ export const grammarC2a: GrammarLesson[] = [
       { type: 'choice', prompt: 'Komm ＿ her, ich zeig dir was!', options: ['doch mal', 'mal doch', 'ja denn', 'wohl ja'], answer: 'doch mal' },
       { type: 'choice', prompt: 'Das ist ＿ die Höhe!', hint: 'indignación', options: ['ja wohl', 'wohl ja', 'mal doch', 'denn mal'], answer: 'ja wohl' },
       { type: 'choice', prompt: 'Was willst du ＿ eigentlich?', options: ['denn', 'mal', 'halt', 'eben'], answer: 'denn' },
-      { type: 'meaning', text: 'Das ist halt einfach so.', options: ['Así es nomás, no hay nada que hacer.', 'Es muy fácil.', 'No es así.', 'Hay que cambiarlo.'], answer: 'Así es nomás, no hay nada que hacer.' },
+      { type: 'meaning', text: 'Das ist halt einfach so.', options: ['Así es nomás, no hay nada que hacer.', 'Es muy fácil, lo hace cualquiera.', 'No es así, hay que verlo de nuevo.', 'Hay que cambiarlo, así no sirve.'], answer: 'Así es nomás, no hay nada que hacer.' },
     ],
   },
   {

@@ -47,7 +47,7 @@ export const readingsA1: ReadingText[] = [
     questions: [
       q('¿De dónde es Otto?', 'De Chile', ['De España', 'De México', 'De Alemania']),
       q('¿Cuál es su profesión?', 'Mecánico', ['Profesor', 'Cocinero', 'Estudiante']),
-      q('¿Qué idiomas habla?', 'Español, un poco de inglés y un poco de alemán', ['Solo español', 'Alemán perfecto', 'Español y francés']),
+      q('¿Qué idiomas habla?', 'Español, un poco de inglés y un poco de alemán', ['Solo español y un poco de inglés', 'Alemán perfecto y un poco de español', 'Español, francés y un poco de alemán']),
     ],
   },
   {
@@ -146,8 +146,8 @@ export const readingsA1: ReadingText[] = [
       l('Ja, dieses Formular. Unterschreiben Sie bitte unten.', 'Sí, este formulario. Firme abajo, por favor.', 'Beamtin'),
     ],
     questions: [
-      q('¿Qué quiere hacer Otto?', 'Inscribirse en la ciudad (Anmeldung)', ['Abrir una cuenta', 'Pedir una visa', 'Buscar trabajo']),
-      q('¿Qué documentos necesita?', 'El pasaporte y la confirmación del arrendador', ['Solo una foto', 'El contrato de trabajo', 'La licencia de conducir']),
+      q('¿Qué quiere hacer Otto?', 'Inscribirse en la ciudad (Anmeldung)', ['Abrir una cuenta en el banco', 'Pedir una visa de trabajo', 'Buscar trabajo en la ciudad']),
+      q('¿Qué documentos necesita?', 'El pasaporte y la confirmación del arrendador', ['Una foto y el certificado de nacimiento', 'El contrato de trabajo y una foto', 'La licencia de conducir y el contrato']),
       q('¿Qué tiene que hacer al final?', 'Firmar el formulario', ['Pagar 50 euros', 'Volver mañana', 'Llamar al arrendador']),
     ],
   },
@@ -332,7 +332,7 @@ export const readingsA1: ReadingText[] = [
       l('Jetzt bin ich müde, aber glücklich. Danke für deine Hilfe! Otto', 'Ahora estoy cansado, pero feliz. ¡Gracias por tu ayuda! Otto'),
     ],
     questions: [
-      q('¿Por qué se levantó Otto a las seis?', 'Porque tenía que estar a las siete en el taller', ['Porque tenía curso', 'Porque llamó a su familia', 'Porque fue al médico']),
+      q('¿Por qué se levantó Otto a las seis?', 'Porque tenía que estar a las siete en el taller', ['Porque tenía curso de alemán a las siete', 'Porque llamó a su familia en Chile', 'Porque tenía hora con el médico']),
       q('¿Qué problema tiene con los colegas?', 'Hablan rápido', ['No son simpáticos', 'No hablan alemán', 'Llegan tarde']),
       q('¿Cómo se siente Otto?', 'Cansado pero feliz', ['Triste', 'Enfermo', 'Aburrido']),
     ],

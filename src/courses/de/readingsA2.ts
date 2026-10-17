@@ -25,7 +25,7 @@ export const readingsA2: ReadingText[] = [
     questions: [
       q('¿Qué le pide el jefe a Otto?', 'Que trabaje dos horas más', ['Que venga el sábado', 'Que llame a un cliente', 'Que se vaya temprano']),
       q('¿Hasta qué hora trabajará Otto hoy?', 'Hasta las seis', ['Hasta las cuatro', 'Hasta las ocho', 'Hasta las dos']),
-      q('¿Por qué quiere irse temprano mañana?', 'Tiene una cita en una oficina pública', ['Está enfermo', 'Va al médico', 'Visita a Hans']),
+      q('¿Por qué quiere irse temprano mañana?', 'Tiene una cita en una oficina pública', ['Está enfermo y va al médico', 'Tiene que ir a buscar a un amigo', 'Visita a Hans en el hospital']),
     ],
   },
   {
@@ -45,7 +45,7 @@ export const readingsA2: ReadingText[] = [
     questions: [
       q('¿Cuándo hay que estar en silencio?', 'De 22 a 6 y todo el domingo', ['Solo el domingo', 'De 20 a 8', 'Nunca']),
       q('¿Dónde se dejan las bicicletas?', 'En el sótano', ['En el pasillo', 'En el patio', 'En el departamento']),
-      q('¿Dónde va el plástico?', 'En el contenedor amarillo', ['En el azul', 'En el negro', 'En la calle']),
+      q('¿Dónde va el plástico?', 'En el contenedor amarillo', ['En el contenedor azul', 'En el contenedor negro', 'En la bolsa de la calle']),
     ],
   },
   {
@@ -64,7 +64,7 @@ export const readingsA2: ReadingText[] = [
       l('Ja, und sie ist ruhiger. Danke für deine Hilfe – ich lade dich zum Essen ein!', 'Sí, y es más tranquilo. Gracias por tu ayuda: ¡te invito a comer!', 'Otto'),
     ],
     questions: [
-      q('¿Dónde ponen el sofá?', 'En el living, junto a la ventana', ['En el dormitorio', 'En la cocina', 'En el pasillo']),
+      q('¿Dónde ponen el sofá?', 'En el living, junto a la ventana', ['En el dormitorio, junto a la cama', 'En la cocina, junto a la mesa', 'En el pasillo, junto a la puerta']),
       q('¿Dónde quedan las cajas de libros por ahora?', 'Debajo de la mesa', ['En el sótano', 'Sobre el sofá', 'En el balcón']),
       q('¿Cómo es el departamento nuevo comparado con el viejo?', 'Más luminoso y más tranquilo', ['Más grande y más caro', 'Más oscuro', 'Igual']),
     ],
@@ -146,9 +146,9 @@ export const readingsA2: ReadingText[] = [
       l('Ja, hier am Schalter, mit Ihrem Ausweis.', 'Sí, aquí en la ventanilla, con su carné.', 'Bankangestellter'),
     ],
     questions: [
-      q('¿Por qué está bloqueada la tarjeta?', 'Ingresó tres veces la clave equivocada', ['Se le perdió', 'Está vencida', 'No tiene dinero']),
+      q('¿Por qué está bloqueada la tarjeta?', 'Ingresó tres veces la clave equivocada', ['Se le perdió en el supermercado', 'Está vencida desde el mes pasado', 'No tiene dinero en la cuenta']),
       q('¿Cuándo llega la tarjeta nueva?', 'En una semana, por correo', ['Hoy', 'Mañana en el banco', 'En un mes']),
-      q('¿Cómo puede sacar dinero mientras tanto?', 'En la ventanilla con su carné', ['En el cajero', 'No puede', 'Por internet']),
+      q('¿Cómo puede sacar dinero mientras tanto?', 'En la ventanilla con su carné', ['En el cajero con otra tarjeta', 'No puede sacar dinero', 'Por internet con el celular']),
     ],
   },
   {
@@ -168,7 +168,7 @@ export const readingsA2: ReadingText[] = [
     questions: [
       q('¿Qué nivel de alemán piden?', 'B1', ['A1', 'C1', 'No lo dicen']),
       q('¿Cuántos días de vacaciones ofrecen?', '30', ['20', '13', '25']),
-      q('¿Qué hay que enviar?', 'Postulación con currículum y certificados', ['Solo una foto', 'Una carta a mano', 'El pasaporte']),
+      q('¿Qué hay que enviar?', 'Postulación con currículum y certificados', ['Solo una foto y el pasaporte', 'Una carta escrita a mano', 'El pasaporte y el contrato actual']),
     ],
   },
   {
@@ -266,8 +266,8 @@ export const readingsA2: ReadingText[] = [
       l('Die Firma bezahlt die Hälfte. Die Agentur für Arbeit hilft vielleicht auch.', 'La empresa paga la mitad. Quizás la agencia de empleo también ayude.', 'Chef'),
     ],
     questions: [
-      q('¿Qué le recomienda el jefe a Otto?', 'Hacer un curso de perfeccionamiento', ['Cambiar de trabajo', 'Tomar vacaciones', 'Trabajar menos']),
-      q('¿Qué necesita Otto primero?', 'Aprobar el examen B1', ['Comprar herramientas', 'Un contrato nuevo', 'Una licencia de conducir']),
+      q('¿Qué le recomienda el jefe a Otto?', 'Hacer un curso de perfeccionamiento', ['Cambiar de trabajo pronto', 'Tomar vacaciones en verano', 'Trabajar menos horas al día']),
+      q('¿Qué necesita Otto primero?', 'Aprobar el examen B1', ['Comprar herramientas nuevas', 'Un contrato de 2 años', 'Aprobar el examen de manejo']),
       q('¿Cuánto paga la empresa?', 'La mitad', ['Todo', 'Nada', 'Un tercio']),
     ],
   },
@@ -328,7 +328,7 @@ export const readingsA2: ReadingText[] = [
     questions: [
       q('¿Cuánto alemán hablaba Otto al llegar?', 'Casi nada', ['Bastante', 'Nivel B1', 'Solo inglés']),
       q('¿Cuándo encontró trabajo?', 'Después de tres meses', ['La primera semana', 'Después de un año', 'Todavía no tiene']),
-      q('¿Cuál es su próxima meta?', 'El examen B1', ['Volver a Chile', 'Comprar un auto', 'Casarse']),
+      q('¿Cuál es su próxima meta?', 'El examen B1', ['Repetir el examen A2', 'Un curso de inglés B1', 'Comprar un auto']),
     ],
   },
 ]

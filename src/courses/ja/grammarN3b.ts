@@ -139,7 +139,7 @@ export const grammarN3b: GrammarLesson[] = [
         options: ['この 部屋[へや]は 広[ひろ]くて、 そのうえ 明[あか]るい。', 'この 部屋[へや]は 広[ひろ]いが、 暗[くら]い。', 'この 部屋[へや]は 広[ひろ]く ないが、 明[あか]るい。', 'この 部屋[へや]は 明[あか]るい だけだ。'],
         answer: 'この 部屋[へや]は 広[ひろ]くて、 そのうえ 明[あか]るい。',
       },
-      { type: 'meaning', text: '子[こ]どもだけで なく、 大人[おとな]も この 本[ほん]を 楽[たの]しめます。', options: ['No solo los niños, también los adultos pueden disfrutar este libro.', 'Este libro es solo para niños.', 'Los adultos no disfrutan este libro.', 'Los niños leen el libro con adultos.'], answer: 'No solo los niños, también los adultos pueden disfrutar este libro.' },
+      { type: 'meaning', text: '子[こ]どもだけで なく、 大人[おとな]も この 本[ほん]を 楽[たの]しめます。', options: ['No solo los niños, también los adultos pueden disfrutar este libro.', 'Este libro lo disfrutan los niños, pero no los adultos.', 'Los adultos disfrutan este libro más que los niños.', 'Solo los niños que leen con adultos disfrutan este libro.'], answer: 'No solo los niños, también los adultos pueden disfrutar este libro.' },
     ],
   },
   {

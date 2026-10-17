@@ -221,7 +221,7 @@ export const grammarB2a: GrammarLesson[] = [
     exercises: [
       { type: 'choice', prompt: 'Bis morgen ＿ ich den Bericht geschrieben haben.', options: ['werde', 'habe', 'würde', 'wurde'], answer: 'werde' },
       { type: 'choice', prompt: 'Hans antwortet nicht. Er wird schon ＿ sein.', hint: 'einschlafen', options: ['eingeschlafen', 'einschlafen', 'eingeschlafen haben', 'schläft'], answer: 'eingeschlafen' },
-      { type: 'meaning', text: 'Er wird sich verfahren haben.', options: ['Seguramente se perdió (manejando).', 'Se va a perder.', 'No se perdió.', 'Se perdería.'], answer: 'Seguramente se perdió (manejando).' },
+      { type: 'meaning', text: 'Er wird sich verfahren haben.', options: ['Seguramente se perdió (manejando).', 'Mañana se va a perder (manejando).', 'No se perdió, llegó a tiempo.', 'Se perdería si fuera manejando.'], answer: 'Seguramente se perdió (manejando).' },
       { type: 'order', meaning: 'Para el lunes habremos hecho todo.', answer: ['Bis', 'Montag', 'werden', 'wir', 'alles', 'erledigt', 'haben'] },
     ],
   },

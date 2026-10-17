@@ -3,7 +3,8 @@
 
 import type { GrammarExercise } from '../courses/grammar.ts'
 import { bigNumbers, type Counter, counterById, type CounterLesson, counters, numbers } from '../courses/ja/counters.ts'
-import { kanjiByChar, type KanjiLesson, kanjiList } from '../courses/ja/kanji.ts'
+import { type Kanji, kanjiByChar, type KanjiLesson, kanjiLessons, kanjiList } from '../courses/ja/kanji.ts'
+import { similarOptions } from './distractors.ts'
 import { shuffle } from './random.ts'
 import type { WritingItem } from './writing.ts'
 
@@ -103,8 +104,25 @@ export function counterLessonExercises(lesson: CounterLesson, random = Math.rand
   return shuffle(exercises, random)
 }
 
-const allMeanings = kanjiList.map((k) => k.meaning)
-const allReadings = kanjiList.flatMap((k) => k.examples.map((e) => e.reading))
+/** Kanji de la misma lección y luego de la misma unidad: parecidos en tema (números con números). */
+const lessonOfKanji = new Map(kanjiLessons.flatMap((l) => l.chars.map((c) => [c, l] as const)))
+function kanjiNeighbors(char: string): Kanji[][] {
+  const lesson = lessonOfKanji.get(char)
+  const near = (l?: KanjiLesson) => (l ? l.chars.filter((c) => c !== char).map((c) => kanjiByChar.get(c)!) : [])
+  const unit = lesson ? kanjiLessons.filter((l) => l.unit === lesson.unit && l !== lesson).flatMap((l) => near(l)) : []
+  return [near(lesson), unit, kanjiList.filter((k) => k.char !== char)]
+}
+
+const kanjiMeaningOptions = (kanji: Kanji, random: () => number) =>
+  similarOptions(kanji.meaning, { tiers: kanjiNeighbors(kanji.char), pick: (k) => k.meaning, random })
+
+export const kanjiReadingOptions = (kanji: Kanji, reading: string, random: () => number) =>
+  similarOptions(reading, {
+    tiers: kanjiNeighbors(kanji.char).map((tier) => tier.flatMap((k) => k.examples)),
+    pick: (e) => e.reading,
+    closeness: (e) => Math.abs(e.reading.length - reading.length),
+    random,
+  })
 
 /** Ejercicios de una lección de kanji: significado y lectura de una palabra de ejemplo. */
 export function kanjiLessonExercises(lesson: KanjiLesson, random = Math.random): GrammarExercise[] {
@@ -112,11 +130,11 @@ export function kanjiLessonExercises(lesson: KanjiLesson, random = Math.random):
     const kanji = kanjiByChar.get(char)!
     const example = kanji.examples[Math.floor(random() * kanji.examples.length)]
     return [
-      { type: 'meaning', text: kanji.char, options: withDistractors(kanji.meaning, allMeanings, 4, random), answer: kanji.meaning },
+      { type: 'meaning', text: kanji.char, options: kanjiMeaningOptions(kanji, random), answer: kanji.meaning },
       {
         type: 'choice',
         prompt: `¿Cómo se lee «${example.word}» (${example.meaning})?`,
-        options: withDistractors(example.reading, allReadings, 4, random),
+        options: kanjiReadingOptions(kanji, example.reading, random),
         answer: example.reading,
       },
     ]
@@ -146,11 +164,11 @@ export function kanjiReviewExercise(char: string, random = Math.random): TaggedE
   const example = kanji.examples[Math.floor(random() * kanji.examples.length)]
   const exercise: GrammarExercise =
     random() < 0.5
-      ? { type: 'meaning', text: kanji.char, options: withDistractors(kanji.meaning, allMeanings, 4, random), answer: kanji.meaning }
+      ? { type: 'meaning', text: kanji.char, options: kanjiMeaningOptions(kanji, random), answer: kanji.meaning }
       : {
           type: 'choice',
           prompt: `¿Cómo se lee «${example.word}» (${example.meaning})?`,
-          options: withDistractors(example.reading, allReadings, 4, random),
+          options: kanjiReadingOptions(kanji, example.reading, random),
           answer: example.reading,
         }
   return { char, exercise }

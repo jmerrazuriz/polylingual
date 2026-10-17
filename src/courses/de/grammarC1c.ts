@@ -133,7 +133,7 @@ export const grammarC1c: GrammarLesson[] = [
       { type: 'choice', prompt: '＿ nehmend auf Ihr Schreiben …', options: ['Bezug', 'Bezüglich', 'Betreff', 'Beziehung'], answer: 'Bezug' },
       { type: 'choice', prompt: 'Wir bedauern, Ihnen mitteilen zu ＿, dass …', options: ['müssen', 'sollen', 'können', 'wollen'], answer: 'müssen' },
       { type: 'choice', prompt: 'Bitte überweisen Sie den Betrag ＿.', hint: 'de inmediato (formal)', options: ['umgehend', 'irgendwann', 'eventuell', 'neulich'], answer: 'umgehend' },
-      { type: 'choice', prompt: 'Para cerrar un correo formal:', options: ['Für Rückfragen stehen wir Ihnen gern zur Verfügung.', 'Meld dich mal!', 'Bis dann!', 'Tschüs und so.'], answer: 'Für Rückfragen stehen wir Ihnen gern zur Verfügung.' },
+      { type: 'choice', prompt: 'Para cerrar un correo formal:', options: ['Für Rückfragen stehen wir Ihnen gern zur Verfügung.', 'Melde dich einfach, wenn du Fragen hast.', 'Bis bald und liebe Grüße an alle!', 'Schreib mir, wenn noch was ist, ja?'], answer: 'Für Rückfragen stehen wir Ihnen gern zur Verfügung.' },
     ],
   },
   {
@@ -155,7 +155,7 @@ export const grammarC1c: GrammarLesson[] = [
       { type: 'choice', prompt: 'Ich komme morgen, ＿ gegen acht.', hint: 'en concreto', options: ['und zwar', 'beziehungsweise', 'mit anderen Worten', 'darunter'], answer: 'und zwar' },
       { type: 'choice', prompt: 'Er ist Mechatroniker, ＿ er repariert Autos und Elektronik.', options: ['das heißt', 'und zwar nicht', 'darunter', 'etwa'], answer: 'das heißt' },
       { type: 'choice', prompt: 'Viele Länder, ＿ Deutschland und Österreich, haben das Gesetz.', hint: 'entre ellos', options: ['darunter', 'sprich', 'und zwar', 'beziehungsweise'], answer: 'darunter' },
-      { type: 'meaning', text: 'Das Projekt ist gescheitert, besser gesagt: Es wurde nie richtig begonnen.', options: ['El proyecto fracasó, o mejor dicho: nunca empezó de verdad.', 'El proyecto fue un éxito.', 'El proyecto va a empezar pronto.', 'El proyecto se repitió.'], answer: 'El proyecto fracasó, o mejor dicho: nunca empezó de verdad.' },
+      { type: 'meaning', text: 'Das Projekt ist gescheitert, besser gesagt: Es wurde nie richtig begonnen.', options: ['El proyecto fracasó, o mejor dicho: nunca empezó de verdad.', 'El proyecto fue un éxito, mejor dicho: superó lo esperado.', 'El proyecto va a empezar pronto, o sea: la próxima semana.', 'El proyecto se repitió, es decir: se hizo dos veces.'], answer: 'El proyecto fracasó, o mejor dicho: nunca empezó de verdad.' },
     ],
   },
   {

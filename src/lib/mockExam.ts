@@ -10,6 +10,7 @@ import { vocab } from '../courses/ja/vocab.ts'
 import type { ReadingText } from '../courses/reading.ts'
 import { shuffle } from './random.ts'
 import { readingTexts } from './readings.ts'
+import { kanjiReadingOptions } from './studyExercises.ts'
 import { wordChoiceExercise, wordMeaningExercise } from './vocabExercises.ts'
 
 export type ExamLevel = 'N5' | 'N4' | 'N3'
@@ -49,14 +50,12 @@ const kanjiOf = (level: ExamLevel) => (level === 'N3' ? kanjiN3 : level === 'N4'
 
 /** Lectura de una palabra con kanji, como en la parte 漢字読み del examen. */
 function kanjiReadingExercises(level: ExamLevel, random: () => number): GrammarExercise[] {
-  const list = kanjiOf(level)
-  const allReadings = list.flatMap((k) => k.examples.map((e) => e.reading))
-  return shuffle(list, random)
+  return shuffle(kanjiOf(level), random)
     .slice(0, KANJI_QUESTIONS)
     .map((k): GrammarExercise => {
       const ex = k.examples[Math.floor(random() * k.examples.length)]
-      const others = [...new Set(shuffle(allReadings, random))].filter((r) => r !== ex.reading).slice(0, 3)
-      return { type: 'choice', prompt: `¿Cómo se lee «${ex.word}»?`, options: [ex.reading, ...others], answer: ex.reading }
+      // Lecturas de kanji de la misma lección y de largo parecido, para que no sea obvio.
+      return { type: 'choice', prompt: `¿Cómo se lee «${ex.word}»?`, options: kanjiReadingOptions(k, ex.reading, random), answer: ex.reading }
     })
 }
 

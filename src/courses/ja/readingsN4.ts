@@ -83,7 +83,7 @@ export const readingsN4: ReadingText[] = [
     questions: [
       q('¿Qué propone Yuki?', 'Ir de picnic mañana', ['Ir al cine hoy', 'Estudiar juntos', 'Quedarse en casa']),
       q('¿Qué harán si llueve?', 'Ir al cine', ['Ir de picnic igual', 'Quedarse en casa', 'Ir a la biblioteca']),
-      q('¿Cuándo va a llamar Ken?', 'Cuando se levante en la mañana', ['En la noche', 'Si llueve', 'No va a llamar']),
+      q('¿Cuándo va a llamar Ken?', 'Cuando se levante en la mañana', ['Cuando llegue a la estación', 'Si deja de llover en la noche', 'Antes de salir de la oficina']),
     ],
   },
   {
@@ -140,7 +140,7 @@ export const readingsN4: ReadingText[] = [
     questions: [
       q('¿Por qué faltó al colegio?', 'Se lesionó el pie', ['Estaba resfriado', 'Viajó con su familia', 'Se mudó']),
       q('¿Qué hacía Yuki?', 'Le mostraba los apuntes de clase', ['Le llevaba comida', 'Le devolvía los libros', 'Lo visitaba en el hospital']),
-      q('¿Qué hizo Ken?', 'Devolvió sus libros a la biblioteca', ['Le prestó apuntes', 'Lo llevó al médico', 'Nada']),
+      q('¿Qué hizo Ken?', 'Devolvió sus libros a la biblioteca', ['Le prestó sus apuntes de clase', 'Lo llevó al médico en auto', 'Le compró comida en la tienda']),
     ],
   },
   {
@@ -178,7 +178,7 @@ export const readingsN4: ReadingText[] = [
     ],
     questions: [
       q('¿Cómo eran sus padres?', 'Muy estrictos', ['Muy relajados', 'Siempre ocupados', 'Muy jóvenes']),
-      q('¿Qué le hacía hacer su mamá?', 'Practicar piano todos los días', ['Comer verduras', 'Estudiar inglés', 'Limpiar la casa']),
+      q('¿Qué le hacía hacer su mamá?', 'Practicar piano todos los días', ['Comer verduras en cada comida', 'Estudiar inglés los fines de semana', 'Limpiar su pieza todos los días']),
       q('¿Qué pasaba los domingos?', 'Lo dejaban jugar libremente', ['Practicaba más piano', 'Iba al colegio', 'Visitaba a sus abuelos']),
     ],
   },
@@ -274,7 +274,7 @@ export const readingsN4: ReadingText[] = [
       l('こんどは 来[き]て くださいね。', 'La próxima vez ven, ¿ya?', 'ゆき'),
     ],
     questions: [
-      q('¿Por qué no fue Ken a la fiesta?', 'Le salió trabajo de repente', ['Estaba enfermo', 'Se le olvidó', 'No quería ir']),
+      q('¿Por qué no fue Ken a la fiesta?', 'Le salió trabajo de repente', ['Se enfermó esa misma mañana', 'Se le olvidó por completo', 'No tenía ganas de salir']),
       q('¿Qué siente Yuki?', 'Que fue una lástima', ['Que está enojada', 'Que no importa', 'Que fue mejor así']),
       q('¿Ken quería ir?', 'Sí', ['No', 'No lo dice', 'Solo un rato']),
     ],
@@ -332,8 +332,8 @@ export const readingsN4: ReadingText[] = [
       l('いつか 日本語[にほんご]で ニュースが わかる ように なりたいです。', 'Algún día quiero llegar a entender las noticias en japonés.'),
     ],
     questions: [
-      q('¿Qué decidió?', 'Estudiar en una universidad japonesa', ['Trabajar en Japón', 'Viajar por Japón', 'Dejar de estudiar']),
-      q('¿Qué tiene que hacer para lograrlo?', 'Aprobar un examen de japonés', ['Ahorrar dinero', 'Aprender inglés', 'Mudarse']),
+      q('¿Qué decidió?', 'Estudiar en una universidad japonesa', ['Trabajar en una empresa japonesa', 'Viajar por todo Japón un año', 'Enseñar español en Japón']),
+      q('¿Qué tiene que hacer para lograrlo?', 'Aprobar un examen de japonés', ['Ahorrar dinero para el viaje', 'Aprender inglés muy bien', 'Conseguir trabajo en Japón']),
       q('¿Qué hace para no olvidar los kanji?', 'Los escribe todos los días', ['Ve noticias', 'Se levanta temprano', 'Lee manga']),
     ],
   },
@@ -373,7 +373,7 @@ export const readingsN4: ReadingText[] = [
     questions: [
       q('¿A quién le escribe María?', 'Al profesor Yamada', ['A su mamá', 'A una amiga', 'A la universidad']),
       q('¿Qué hace María todos los días?', 'Lee libros en japonés', ['Va a la universidad', 'Escribe cartas', 'Estudia inglés']),
-      q('¿Qué pide al final?', 'Permiso para visitar su oficina', ['Una recomendación', 'Un libro prestado', 'Una nota']),
+      q('¿Qué pide al final?', 'Permiso para visitar su oficina', ['Una carta de recomendación', 'Que le preste un libro', 'La nota de su último examen']),
     ],
   },
   {
@@ -394,7 +394,7 @@ export const readingsN4: ReadingText[] = [
     questions: [
       q('¿Con quién quiere reunirse María?', 'Con el presidente, el señor Yamada', ['Con la recepcionista', 'Con un profesor', 'Con un amigo']),
       q('¿A qué hora es la cita?', 'A las tres', ['A las dos', 'A las cuatro', 'No tiene cita']),
-      q('¿Por qué la recepcionista dice «Yamada» sin «さま» y usa まいります?', 'Porque habla con humildad de alguien de su propia empresa', ['Porque es de mala educación', 'Porque Yamada es su amigo', 'Porque se equivocó']),
+      q('¿Por qué la recepcionista dice «Yamada» sin «さま» y usa まいります?', 'Porque habla con humildad de alguien de su propia empresa', ['Porque Yamada es más joven que ella', 'Porque Yamada es su amigo personal', 'Porque se equivocó al hablar con el cliente']),
     ],
   },
 ]

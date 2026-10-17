@@ -1,3 +1,4 @@
+import { looksNumeric, similarOptions } from '../../lib/distractors.ts'
 import type { GrammarExercise } from '../grammar.ts'
 import { articleFor, type GermanWord, germanVocab, germanWordCard, germanWordFromCard, withArticle } from './vocab.ts'
 
@@ -11,22 +12,34 @@ const pickDistinct = <T,>(pool: T[], n: number, random: () => number) => {
   return out
 }
 
-/** Palabras por clase, para buscar distractores sin recorrer todo el vocabulario. */
-const byPos = new Map<GermanWord['pos'], GermanWord[]>()
-for (const x of germanVocab) byPos.set(x.pos, [...(byPos.get(x.pos) ?? []), x])
+const groupBy = (key: (w: GermanWord) => string) => {
+  const map = new Map<string, GermanWord[]>()
+  for (const x of germanVocab) map.set(key(x), [...(map.get(key(x)) ?? []), x])
+  return map
+}
+const byThemePos = groupBy((x) => `${x.theme}|${x.pos}`)
+const byLevelPos = groupBy((x) => `${x.level}|${x.pos}`)
+const byPos = groupBy((x) => x.pos)
 
-/** Tres distractores de la misma clase de palabra, sin repetir el texto de la respuesta. */
+/**
+ * Tres distractores parecidos: del mismo tema y clase de palabra (herramientas con
+ * herramientas, refranes con refranes), luego del mismo nivel y al final de la misma clase.
+ */
 function options(w: GermanWord, pick: (x: GermanWord) => string, random: () => number): string[] {
   const answer = pick(w)
-  const pool = byPos.get(w.pos) ?? []
-  const out = new Set<string>([answer])
-  // Muestreo al azar (el vocabulario es grande); si no alcanza, se recorre la lista completa.
-  for (let tries = 0; out.size < 4 && tries < 40; tries++) out.add(pick(pool[Math.floor(random() * pool.length)]))
-  for (const x of pool) {
-    if (out.size >= 4) break
-    out.add(pick(x))
-  }
-  return [...out]
+  const others = (list?: GermanWord[]) => (list ?? []).filter((x) => x.id !== w.id)
+  return similarOptions(answer, {
+    tiers: [
+      // Si la respuesta es un número («el tercio»), primero otros números del tema.
+      others(byThemePos.get(`${w.theme}|${w.pos}`)).filter((x) => looksNumeric(pick(x)) === looksNumeric(answer)),
+      others(byThemePos.get(`${w.theme}|${w.pos}`)),
+      others(byLevelPos.get(`${w.level}|${w.pos}`)),
+      others(byPos.get(w.pos)),
+    ],
+    pick,
+    closeness: (x) => Math.abs(pick(x).length - answer.length) / 4,
+    random,
+  })
 }
 
 /** ¿Qué significa «der Tisch»? */

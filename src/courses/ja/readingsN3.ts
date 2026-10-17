@@ -69,7 +69,7 @@ export const readingsN3: ReadingText[] = [
     questions: [
       q('¿A qué hora será la reunión ahora?', 'A las cuatro de la tarde', ['A las dos de la tarde', 'A las cuatro de la mañana', 'No dice la hora']),
       q('¿Dónde será?', 'En la pieza grande del quinto piso', ['En la sala de reuniones de siempre', 'En la oficina del jefe', 'En otra empresa']),
-      q('¿Qué le pide Yamada a Tanaka?', 'Preparar veinte copias de los materiales', ['Avisar al jefe', 'Reservar la sala', 'Cambiar la hora']),
+      q('¿Qué le pide Yamada a Tanaka?', 'Preparar veinte copias de los materiales', ['Avisar al jefe sobre la reunión', 'Reservar una sala para el lunes', 'Cambiar la hora de la reunión']),
     ],
   },
   {
@@ -147,7 +147,7 @@ export const readingsN3: ReadingText[] = [
       l('そうか。 じゃあ、 また 今度[こんど] さそうね。', 'Ya veo. Entonces te invito la próxima vez.', 'ケン'),
     ],
     questions: [
-      q('¿Por qué no puede ir María?', 'Tiene que ir a buscar a sus padres al aeropuerto', ['Tiene que trabajar', 'Está enferma', 'No le gusta la montaña']),
+      q('¿Por qué no puede ir María?', 'Tiene que ir a buscar a sus padres al aeropuerto', ['Tiene que trabajar todo el fin de semana', 'Está enferma y debe quedarse en casa', 'No le gusta subir a la montaña con frío']),
       q('¿Adónde van a ir los demás?', 'A la montaña', ['Al mar', 'Al aeropuerto', 'A un concierto']),
       q('¿Qué dice Ken al final?', 'Que la invitará la próxima vez', ['Que no irá tampoco', 'Que la acompañará al aeropuerto', 'Que está enojado']),
     ],
@@ -167,8 +167,8 @@ export const readingsN3: ReadingText[] = [
     ],
     questions: [
       q('¿Cuánto bajó la población?', 'Cinco mil personas en diez años', ['Diez mil personas en cinco años', 'Cinco mil personas en un año', 'No bajó']),
-      q('¿Cuál parece ser la causa principal?', 'Los jóvenes se mudan a ciudades grandes', ['Nacen menos niños', 'No hay trabajo', 'Hubo un desastre']),
-      q('¿Qué hará la ciudad?', 'Atención médica gratis para niños y un parque nuevo', ['Bajar los impuestos', 'Construir una estación', 'Abrir una universidad']),
+      q('¿Cuál parece ser la causa principal?', 'Los jóvenes se mudan a ciudades grandes', ['Nacen muchos menos niños que antes', 'No hay trabajo para los mayores', 'Hubo un terremoto hace poco']),
+      q('¿Qué hará la ciudad?', 'Atención médica gratis para niños y un parque nuevo', ['Bajar los impuestos a las familias jóvenes', 'Construir una estación de tren nueva', 'Abrir una universidad y un hospital']),
     ],
   },
 
@@ -189,7 +189,7 @@ export const readingsN3: ReadingText[] = [
       l('便利[べんり]な ものこそ、 使[つか]い方[かた]を 考[かんが]える べきだと 思[おも]う。', 'Creo que precisamente con las cosas prácticas hay que pensar en cómo usarlas.'),
     ],
     questions: [
-      q('¿Qué problema tenía quien escribe?', 'No se le quitaba el cansancio', ['No tenía celular', 'Perdía el tren', 'Leía demasiado']),
+      q('¿Qué problema tenía quien escribe?', 'No se le quitaba el cansancio', ['No tenía tiempo para el celular', 'Llegaba tarde al tren cada día', 'Leía demasiado en la noche']),
       q('¿Qué decidió hacer?', 'No usar el celular después de las diez', ['Comprar un celular nuevo', 'Dormir menos', 'Leer en el tren']),
       q('¿Cuál es la idea principal del texto?', 'Hay que pensar en cómo usar las cosas prácticas', ['El celular es malo y hay que dejarlo', 'Hay que leer más libros', 'Los trenes están llenos']),
     ],
@@ -413,7 +413,7 @@ export const readingsN3: ReadingText[] = [
       l('じゃあ、 時間[じかん]が ある ときに 行[い]った ほうが いいね。', 'Entonces conviene ir cuando uno tenga tiempo.', 'おんな'),
     ],
     questions: [
-      q('¿Qué opina el hombre del restaurante?', 'Barato y rico, pero hay que esperar', ['Caro pero rápido', 'Barato pero malo', 'Caro y lento']),
+      q('¿Qué opina el hombre del restaurante?', 'Barato y rico, pero hay que esperar', ['Caro, pero rápido y muy rico', 'Barato, pero la comida es mala', 'Caro, lento y con poca comida']),
       q('¿Por qué tuvo que esperar?', 'Había pocos dependientes', ['Había mucha gente', 'La comida tardaba en cocinarse', 'Llegó antes de que abrieran']),
       q('¿Qué recomienda la mujer?', 'Ir cuando haya tiempo', ['No ir', 'Ir temprano en la mañana', 'Reservar antes']),
     ],
@@ -475,7 +475,7 @@ export const readingsN3: ReadingText[] = [
     ],
     questions: [
       q('¿Qué quiere hacer María?', 'Inscribirse en la clase avanzada', ['Dejar la clase', 'Cambiar de profesor', 'Tomar un examen']),
-      q('¿Qué problema tiene?', 'No puede asistir los miércoles por el trabajo', ['No tiene dinero', 'La clase es muy difícil', 'Se va a mudar']),
+      q('¿Qué problema tiene?', 'No puede asistir los miércoles por el trabajo', ['No tiene dinero para pagar el curso', 'La clase le parece muy difícil', 'Se va a mudar a otra ciudad pronto']),
       q('¿Qué le pregunta al profesor?', 'Si puede venir otro día', ['Cuánto cuesta la clase', 'Cuándo es el examen', 'Dónde está el aula']),
     ],
   },
@@ -537,7 +537,7 @@ export const readingsN3: ReadingText[] = [
     questions: [
       q('¿Cuál es el problema del hombre?', 'Su hijo no quiere estudiar', ['Su hijo estudia demasiado', 'Su hijo reprobó el examen', 'Su hijo no juega fútbol']),
       q('¿Qué pasa cuando el hombre regaña a su hijo?', 'Estudia todavía menos', ['Empieza a estudiar', 'Se va a jugar fútbol', 'Llora']),
-      q('¿Qué le aconseja la mujer?', 'Unir el estudio con lo que le gusta al hijo', ['Regañarlo más', 'Mandarlo a una academia', 'Prohibirle el fútbol']),
+      q('¿Qué le aconseja la mujer?', 'Unir el estudio con lo que le gusta al hijo', ['Regañarlo más cuando no estudia', 'Mandarlo a una academia en la tarde', 'Prohibirle el fútbol hasta que estudie']),
     ],
   },
   {
@@ -593,8 +593,8 @@ export const readingsN3: ReadingText[] = [
       l('町[まち]が 大[おお]きく なっても、 川[かわ]や 林[はやし]は のこして ほしいと 思[おも]う。', 'Aunque el pueblo crezca, quisiera que conservaran el río y los bosques.'),
     ],
     questions: [
-      q('¿Cómo era el pueblo antes?', 'Tranquilo y lleno de arrozales', ['Grande y ruidoso', 'Lleno de tiendas', 'Junto al mar']),
-      q('¿Qué hizo que el pueblo cambiara?', 'La construcción de una nueva estación', ['Una fábrica nueva', 'Un terremoto', 'Una universidad']),
+      q('¿Cómo era el pueblo antes?', 'Tranquilo y lleno de arrozales', ['Grande, ruidoso y lleno de autos', 'Lleno de tiendas y restaurantes', 'Pequeño y junto al mar']),
+      q('¿Qué hizo que el pueblo cambiara?', 'La construcción de una nueva estación', ['La apertura de una fábrica grande', 'Un terremoto que destruyó casas', 'La llegada de una universidad']),
       q('¿Qué desea el autor?', 'Que se conserven el río y los bosques', ['Que haya más tiendas', 'Mudarse a otra ciudad', 'Que cierren la estación']),
     ],
   },
@@ -651,7 +651,7 @@ export const readingsN3: ReadingText[] = [
       l('そうなの。 もっと 早[はや]く 予約[よやく]すれば よかった。 毎日[まいにち] バスで 一時間[いちじかん]も かかって、 疲[つか]れちゃった。', 'Sí. Debí haber reservado antes. Todos los días tardaba una hora en bus y terminé agotada.', 'おんな'),
     ],
     questions: [
-      q('¿Qué siente la mujer sobre el viaje?', 'Le gustó el paisaje, pero lamenta no haber reservado antes', ['Todo salió perfecto', 'No le gustó nada', 'Quiere volver mañana']),
+      q('¿Qué siente la mujer sobre el viaje?', 'Le gustó el paisaje, pero lamenta no haber reservado antes', ['Todo salió perfecto y quiere volver pronto', 'No le gustó nada y no quiere volver', 'Le gustó el hotel, pero el paisaje no tanto']),
       q('¿Por qué los hoteles estaban llenos?', 'Eran días feriados seguidos', ['Había un festival', 'Eran pocos hoteles', 'Estaban en obras']),
       q('¿Por qué se cansó?', 'Tardaba una hora en bus cada día', ['Caminó mucho por la montaña', 'Durmió poco en el hotel', 'El viaje fue muy largo']),
     ],

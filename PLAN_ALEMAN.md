@@ -378,7 +378,18 @@ El curso alemán ya está en `src/courses/index.ts` con `status: 'soon'` y `spee
   - **C2** (`vocabC2x.ts`, 152 palabras, 8 temas): humanidades, cine y series, reacciones en la conversación, registro culto, verbos y adjetivos con matiz, modismos y refranes.
 - Se escribieron ~1.400 palabras y se quitaron unas 420 que ya estaban en el curso: ninguna palabra se repite entre niveles.
 - Los temas nuevos van **después** de los originales, así no cambia ningún id de palabra ni de lección y el progreso guardado sigue valiendo. En el recorrido aparecen como dos unidades «Más palabras I y II» antes de cada simulacro (B1–C2).
-- **Lo que falta para la meta (~8.000):** unas 3.800 palabras. Lo más útil sería ampliar A2–B1 (léxico de alta frecuencia) y agregar familias de palabras derivadas.
+- **Lo que faltaba para la meta (~8.000):** unas 3.800 palabras. Siguió una segunda tanda A2–B1 (abajo).
+
+### Segunda tanda: alta frecuencia A2–B1 y familias de palabras (17-10-2026)
+- Unas 640 palabras nuevas, que llevan el curso a **~4.860 palabras** (494 lecciones):
+  - **A2** (`vocabA2x.ts`, 278 palabras, 14 temas). Se cruzó una lista de ~1.000 palabras frecuentes con el curso: faltaban palabras básicas como *haben, können, müssen, Zeit, Frage, Welt, Wort*. También rutina diaria, direcciones, objetos de la casa, transporte, colegio, números y precios, y verbos, adjetivos y adverbios frecuentes.
+  - **B1** (`vocabB1y.ts`, 358 palabras): 12 **familias de palabras** (*fahren, stellen, sprechen, schreiben, nehmen, ziehen, legen, halten, arbeiten, wohnen, kaufen, bilden*) y 12 temas de sustantivos, verbos y adjetivos útiles.
+  - En las familias aparecen solo los miembros nuevos; los que ya estaban en el curso siguen en su lección original.
+- En el recorrido: «A2 · Más palabras I y II», «B1 · Familias de palabras» y «B1 · Más palabras III y IV», antes de cada simulacro.
+- **Distractores más parecidos (japonés y alemán):** las alternativas de las preguntas de palabras se eligen por niveles (`lib/distractors.ts`). Primero vienen del mismo tema y clase de palabra (si la respuesta es un número, otros números), luego del mismo nivel y al final del resto. En kanji, primero los de la misma lección y unidad.
+  - Se reescribieron ~100 preguntas hechas a mano (gramática y lecturas de ambos cursos) en las que la respuesta correcta era mucho más larga que las demás.
+  - `scripts/scan-options.ts` busca ese tipo de pistas obvias.
+- **Falta para la meta:** unas 3.100 palabras.
 
 ---
 
