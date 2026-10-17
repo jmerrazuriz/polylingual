@@ -5,7 +5,7 @@ import { SaveProgressPrompt } from '../../components/SaveProgressPrompt'
 import { germanUnlockedIds } from '../../courses/de/progress'
 import { lookupGerman } from '../../courses/de/glossary'
 import { germanTexts } from '../../courses/de/texts'
-import { type GermanWord, germanThemesA1, germanThemesA2, germanThemesB1, germanThemesB2, germanThemesC1, germanVocabLessonById, germanVocabLessons, germanWordCard, nounLine, withArticle } from '../../courses/de/vocab'
+import { type GermanWord, germanThemesA1, germanThemesA2, germanThemesB1, germanThemesB2, germanThemesC1, germanThemesC2, germanVocabLessonById, germanVocabLessons, germanWordCard, nounLine, withArticle } from '../../courses/de/vocab'
 import { germanLessonExercises } from '../../courses/de/vocabExercises'
 import type { ReadingText } from '../../courses/reading'
 import { useAccount } from '../../lib/account/store'
@@ -62,7 +62,7 @@ export function GermanVocabPage() {
         </p>
       </header>
       <LearnTabs current="palabras" />
-      {[...germanThemesA1.map((t) => ({ ...t, level: 'A1' })), ...germanThemesA2.map((t) => ({ ...t, level: 'A2' })), ...germanThemesB1.map((t) => ({ ...t, level: 'B1' })), ...germanThemesB2.map((t) => ({ ...t, level: 'B2' })), ...germanThemesC1.map((t) => ({ ...t, level: 'C1' }))].map((theme) => (
+      {[...germanThemesA1.map((t) => ({ ...t, level: 'A1' })), ...germanThemesA2.map((t) => ({ ...t, level: 'A2' })), ...germanThemesB1.map((t) => ({ ...t, level: 'B1' })), ...germanThemesB2.map((t) => ({ ...t, level: 'B2' })), ...germanThemesC1.map((t) => ({ ...t, level: 'C1' })), ...germanThemesC2.map((t) => ({ ...t, level: 'C2' }))].map((theme) => (
         <section key={theme.id} className="flex flex-col gap-2">
           <h2 className="text-sm font-extrabold text-slate-500 uppercase">
             {theme.level} · {theme.title}

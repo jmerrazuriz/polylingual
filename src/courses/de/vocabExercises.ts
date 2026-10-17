@@ -11,12 +11,22 @@ const pickDistinct = <T,>(pool: T[], n: number, random: () => number) => {
   return out
 }
 
+/** Palabras por clase, para buscar distractores sin recorrer todo el vocabulario. */
+const byPos = new Map<GermanWord['pos'], GermanWord[]>()
+for (const x of germanVocab) byPos.set(x.pos, [...(byPos.get(x.pos) ?? []), x])
+
 /** Tres distractores de la misma clase de palabra, sin repetir el texto de la respuesta. */
 function options(w: GermanWord, pick: (x: GermanWord) => string, random: () => number): string[] {
   const answer = pick(w)
-  const same = germanVocab.filter((x) => x.pos === w.pos && x.id !== w.id && pick(x) !== answer)
-  const unique = [...new Map(same.map((x) => [pick(x), x])).values()]
-  return [answer, ...pickDistinct(unique, 3, random).map(pick)]
+  const pool = byPos.get(w.pos) ?? []
+  const out = new Set<string>([answer])
+  // Muestreo al azar (el vocabulario es grande); si no alcanza, se recorre la lista completa.
+  for (let tries = 0; out.size < 4 && tries < 40; tries++) out.add(pick(pool[Math.floor(random() * pool.length)]))
+  for (const x of pool) {
+    if (out.size >= 4) break
+    out.add(pick(x))
+  }
+  return [...out]
 }
 
 /** ¿Qué significa «der Tisch»? */

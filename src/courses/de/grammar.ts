@@ -12,6 +12,8 @@ import { grammarB2c } from './grammarB2c.ts'
 import { grammarC1a } from './grammarC1a.ts'
 import { grammarC1b } from './grammarC1b.ts'
 import { grammarC1c } from './grammarC1c.ts'
+import { grammarC2a } from './grammarC2a.ts'
+import { grammarC2b } from './grammarC2b.ts'
 
 /** Gramática del alemán, en el orden del recorrido por nivel. */
-export const germanGrammar: GrammarLesson[] = [...grammarA1a, ...grammarA1b, ...grammarA2a, ...grammarA2b, ...grammarB1a, ...grammarB1b, ...grammarB1c, ...grammarB2a, ...grammarB2b, ...grammarB2c, ...grammarC1a, ...grammarC1b, ...grammarC1c]
+export const germanGrammar: GrammarLesson[] = [...grammarA1a, ...grammarA1b, ...grammarA2a, ...grammarA2b, ...grammarB1a, ...grammarB1b, ...grammarB1c, ...grammarB2a, ...grammarB2b, ...grammarB2c, ...grammarC1a, ...grammarC1b, ...grammarC1c, ...grammarC2a, ...grammarC2b]

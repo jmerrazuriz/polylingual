@@ -210,6 +210,45 @@ const tasks: Partial<Record<CefrLevel, LevelTasks>> = {
       'Hablé con fluidez y espontaneidad, y me corregí sin interrumpir la comunicación',
     ],
   },
+  C2: {
+    form: {
+      context: 'Completa la columna de Otto (1–6). Nivel C2: preposiciones raras, condición sin «wenn», doble infinitivo, Konjunktiv I y matices del léxico.',
+      text: 'Man hätte es kommen (1) ___: (2) ___ Fachkräften müssen immer mehr Werkstätten schließen. (3) ___ die Politik früher gehandelt, stünden wir heute nicht vor diesem Scherbenhaufen. Der Minister beteuert zwar, man (4) ___ das Problem im Griff, doch die Zahlen sprechen eine andere Sprache. Die Verbände reden die Lage keineswegs (5) ___, im Gegenteil: Sie schlagen seit Jahren Alarm. Es bleibt zu hoffen, dass die Reform nicht – wie so viele zuvor – auf der (6) ___ bleibt.',
+      fields: [
+        { label: '(1) – doble infinitivo de «sehen»', answers: ['sehen', 'sehen können', 'sehen müssen'] },
+        { label: '(2) – por falta de (+ genitivo/dativo plural)', answers: ['Mangels'] },
+        { label: '(3) – condición sin «wenn» (haben, Konj. II)', answers: ['Hätte'] },
+        { label: '(4) – Konjunktiv I de «haben»', answers: ['habe'] },
+        { label: '(5) – restar importancia: ___reden', answers: ['klein'] },
+        { label: '(6) – auf der ___ bleiben (quedarse en el camino)', answers: ['Strecke'] },
+      ],
+    },
+    message: {
+      prompt:
+        'Escribe para el suplemento cultural de un diario una columna o un ensayo de unas 350 palabras sobre la pregunta: «¿Qué es la patria (Heimat) en un mundo de migraciones?». Puedes elegir un tono reflexivo o irónico.',
+      checks: [
+        'Empiezas con un gancho (una escena, una cita, una pregunta) y planteas una tesis clara',
+        'Desarrollas la idea con ejemplos concretos y propios, y consideras al menos una postura contraria',
+        'Usas recursos de estilo con intención (metáfora, anáfora, ironía, pregunta retórica)',
+        'Varías el registro de forma consciente y precisa (gehoben, neutral, una cita coloquial si aporta)',
+        'Usas estructuras C2 sin errores (Ersatzinfinitiv, condición sin «wenn», atributos extensos, Konjunktiv I y II)',
+        'Eliges el léxico con matiz (sinónimos precisos, sin repetir palabras)',
+        'Das coherencia al texto (tema-rema, referencias, conectores variados)',
+        'Terminas con una Pointe o una conclusión que queda en la memoria',
+      ],
+      model:
+        'Heimat, sagte meine Großmutter, sei dort, wo man nicht erklären müsse, warum man lacht. Lange hielt ich das für eine hübsche Floskel. Erst in München, achttausend Kilometer von ihrem Küchentisch entfernt, habe ich begriffen, wie recht sie hatte. Wer auswandert, erklärt ständig: seinen Akzent, seine Witze, seine Art, zu spät zu kommen. Man könnte meinen, Heimat sei folglich ein Ort, den man verliert, sobald man geht. Doch diese Lesart greift zu kurz. Hätte ich in Deutschland nur Fremdheit erlebt, wäre ich längst zurückgekehrt. Stattdessen gibt es den Stammtisch, an dem man mich inzwischen ungefragt einschenkt, den Lehrling, der mich «Ehrenmann» nennt, und einen Freund aus Berlin, der mir nie nach dem Mund geredet hat. Heimat, so scheint es, ist weniger ein Ort als ein Netz von Beziehungen – eines, das man nicht erbt, sondern knüpft. Kritiker mögen einwenden, eine solche Definition mache den Begriff beliebig. Wer überall zu Hause sei, sei nirgends zu Hause. Dem lässt sich entgegenhalten, dass gerade Menschen mit zwei Sprachen ein feines Gespür dafür entwickeln, was Zugehörigkeit bedeutet: Sie wissen, dass sie nicht selbstverständlich ist. Vielleicht liegt darin sogar ein Gewinn. Wer die eigene Heimat einmal hat verlassen müssen, betrachtet die neue mit wacheren Augen – und die alte mit milderen. Am Ende bleibt mir eine Erkenntnis, die meine Großmutter wohl schon immer kannte: Heimat ist kein Besitz, sondern eine Übung. Und Übung, wie man hier so schön sagt, macht den Meister.',
+    },
+    speaking: [
+      'Parte 1: presenté un tema complejo de forma libre y estructurada (unos 5 minutos), con una tesis clara y ejemplos',
+      'Parte 1: integré y comenté información de una fuente (un texto, un gráfico, una cita) sin leerla',
+      'Parte 2: discutí espontáneamente con el examinador, defendí mi postura y reaccioné con matices a objeciones inesperadas',
+      'Parte 2: ajusté el registro a la situación y usé ironía o atenuación cuando correspondía',
+      'Usé vocabulario preciso y expresiones idiomáticas con naturalidad, sin buscar palabras',
+      'Mi pronunciación y entonación fueron claras; entendí también acentos regionales o habla rápida',
+      'Pude reformular y precisar lo dicho (mit anderen Worten / genauer gesagt) sin perder el hilo',
+    ],
+  },
 }
 
 function pickTexts(level: CefrLevel, kind: 'reading' | 'dialogue', n: number): ReadingText[] {

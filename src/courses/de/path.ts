@@ -114,13 +114,29 @@ const unitsC1: PathUnit[] = [
   examUnit('C1'),
 ]
 
+const unitsC2: PathUnit[] = [
+  unit('de-c2-1', 'C2 · Austria', '🎻', ['de-oesterreich', 'de-konj1-optativ'], ['oesterreich', 'gehoben'], ['lt-c2-wien']),
+  unit('de-c2-2', 'C2 · Suiza', '🧀', ['de-schweiz', 'de-thema-rhema'], ['schweiz', 'wirtschaft3'], ['dt-c2-zuerich']),
+  unit('de-c2-3', 'C2 · Dialectos', '🗺️', ['de-dialekte', 'de-partikeln-kombination'], ['dialekt', 'gefuehle3'], ['dt-c2-dialekt']),
+  unit('de-c2-4', 'C2 · Registro y matices', '📱', ['de-jugendsprache', 'de-verwechslungen', 'de-synonyme'], ['jugendsprache', 'adjektive6'], ['dt-c2-jugend']),
+  unit('de-c2-5', 'C2 · Lo que debió hacerse', '🔁', ['de-ersatzinfinitiv', 'de-wahrnehmungsverben', 'de-uneingeleitete-saetze'], ['verben6'], ['dt-c2-reklamation']),
+  unit('de-c2-6', 'C2 · Narrar', '📚', ['de-erlebte-rede', 'de-tempus-stil'], ['literaturanalyse'], ['lt-c2-erzaehlung']),
+  unit('de-c2-7', 'C2 · Contratos y tribunales', '⚖️', ['de-rechtssprache', 'de-redewiedergabe-c2', 'de-konditional-c2'], ['strafrecht'], ['lt-c2-vertrag', 'dt-c2-gericht']),
+  unit('de-c2-8', 'C2 · Lenguaje técnico', '🛠️', ['de-infinitiv-imperativ', 'de-attribut-komplex', 'de-abkuerzungen'], ['kfz-fachsprache', 'abkuerzungen'], ['lt-c2-anleitung']),
+  unit('de-c2-9', 'C2 · Prensa y poder', '📰', ['de-pressesprache', 'de-euphemismen', 'de-praep-c2'], ['politik3', 'wissenschaft3'], ['lt-c2-pressemitteilung']),
+  unit('de-c2-10', 'C2 · Hablar rápido', '📻', ['de-ellipse', 'de-ironie'], ['redewendungen-c2'], ['dt-c2-radio']),
+  unit('de-c2-11', 'C2 · Escribir con estilo', '✍️', ['de-stilmittel', 'de-glosse', 'de-rezension'], ['stilfiguren'], ['lt-c2-glosse', 'lt-c2-rezension']),
+  unit('de-c2-12', 'C2 · Ottos Weg', '🏡', ['de-final-c2', 'de-wortspiele'], ['philosophie', 'sprichwoerter2'], ['lt-c2-rede', 'dt-c2-philosophie', 'dt-c2-einbuergerung']),
+  examUnit('C2'),
+]
+
 const unitsByLevel: Record<CefrLevel, PathUnit[]> = {
   A1: unitsA1,
   A2: unitsA2,
   B1: unitsB1,
   B2: unitsB2,
   C1: unitsC1,
-  C2: [],
+  C2: unitsC2,
 }
 
 export const germanPath: PathUnit[] = cefrLevels.flatMap((l) => unitsByLevel[l])

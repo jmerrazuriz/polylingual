@@ -236,7 +236,7 @@ El curso alemán ya está en `src/courses/index.ts` con `status: 'soon'` y `spee
 | ✅ **D3 · B1** (17-10-2026) | ~35 lecciones, +1.100 palabras, SRS de rección (verbo + preposición), simulacro B1 con 4 módulos. | Simulacro B1 con puntaje Goethe. |
 | ✅ **D4 · B2** (17-10-2026) | ~35 lecciones, +1.600 palabras, Konjunktiv I y participios, Schreiben con lista de control (sin audio grabado: se usa la voz del navegador). | Simulacro B2. |
 | ✅ **D5 · C1** (17-10-2026) | ~35 lecciones, +2.000 palabras, nominalización, estilo académico y Modalpartikeln. | Simulacro C1. |
-| **D6 · C2** | ~30 lecciones, +2.000 palabras, variedades, modismos, literatura y matices. | Simulacro C2. |
+| ✅ **D6 · C2** (17-10-2026) | ~30 lecciones, +2.000 palabras, variedades, modismos, literatura y matices. | Simulacro C2. |
 | **D7 · Revisión** | Revisión de un hablante nativo (o profesor de alemán como lengua extranjera) de cada nivel, empezando por A1–B1. | Contenido revisado y errores corregidos. |
 
 ### Qué quedó hecho en D0
@@ -350,6 +350,25 @@ El curso alemán ya está en `src/courses/index.ts` con `status: 'soon'` y `spee
 - **Recorrido C1:** 12 unidades más el simulacro Goethe C1 (60/100 por módulo). La nivelación cubre ahora del A1 al C1.
   - Escribir tiene una carta formal con huecos que se corrige sola y un texto argumentativo de ~230 palabras autoevaluado con lista de control y modelo.
   - Hablar sigue las dos partes del C1: presentación y discusión.
+
+### Qué quedó hecho en D6 (C2)
+- **Gramática C2** (`grammarC2a/b.ts`): 30 lecciones (de la 166 a la 195). Con esto el curso tiene 195 lecciones de gramática, como planeaba el plan.
+  - Sintaxis y Konjunktiv: Konjunktiv I en deseos y fórmulas, matices del discurso indirecto, doble infinitivo (*hätte machen sollen*), *sehen/hören/lassen* + infinitivo, condiciones sin *wenn* y otras inversiones, estilo indirecto libre y los tiempos como recurso de estilo.
+  - Construcciones cultas: atributos muy extensos, condiciones cultas, preposiciones raras (*mangels, mittels, seitens*), finalidad culta (*um … willen*), elipsis, ironía y atenuación, combinaciones de partículas, y tema-rema.
+  - Variedades y lenguajes especializados: Austria, Suiza, dialectos, lenguaje juvenil, lenguaje jurídico, instrucciones técnicas, prensa y eufemismos.
+  - Estilo: recursos retóricos, reseña, columna y glosa, sinónimos con matiz, palabras que se confunden, abreviaturas, y juegos de palabras.
+- **Vocabulario C2** (`vocabC2.ts`): unas 400 palabras nuevas (unas 3.240 en total) en 19 temas.
+  - Temas: Austria, Suiza, dialectos, lenguaje juvenil, registro elevado, análisis literario, figuras de estilo, filosofía, derecho penal, lenguaje técnico del taller, ciencia, política, empresa, abreviaturas, verbos y adjetivos con matiz, sentimientos intraducibles, modismos, y refranes y citas.
+  - **Nota:** la meta del plan (~8.000 palabras) queda lejos. El curso cubre bien la gramática y los textos, pero el vocabulario necesita más tandas.
+- **Ottos Weg C2** (`readingsC2.ts`): 16 episodios.
+  - Otto viaja a Viena y a una feria en Zúrich, escucha dialectos en el Stammtisch, corrige el registro de su aprendiz y discute con un cliente.
+  - También: un relato en estilo indirecto libre, el contrato de arriendo del taller, una declaración como testigo, una instrucción técnica, un comunicado de prensa con eufemismos, una llamada a la radio, una columna y una reseña.
+  - Cierre: un discurso al recibir un premio, una conversación con Hans sobre la patria y la ceremonia de naturalización.
+- **Recorrido C2:** 12 unidades más el simulacro Goethe C2 (60/100 por módulo). La nivelación cubre ahora del A1 al C2.
+  - Escribir tiene una columna con huecos que se corrige sola y un ensayo de ~350 palabras sobre la patria, autoevaluado con lista de control y modelo.
+  - Hablar es una presentación libre y una discusión espontánea.
+- **Rendimiento:** con ~3.200 palabras, la elección de distractores se volvió lenta. Ahora se muestrea por clase de palabra.
+- **Lo que queda:** D7 (revisión por un hablante nativo o profesor de alemán) y las tandas extra de vocabulario.
 
 ---
 
