@@ -234,7 +234,7 @@ El curso alemán ya está en `src/courses/index.ts` con `status: 'soon'` y `spee
 | ✅ **D1 · A1** (17-10-2026) | Pronunciación, ~30 lecciones, ~650 palabras con artículo y plural, lecturas y audición, juegos y simulacro A1. Test de nivelación A1. | Se puede hacer el A1 entero y aprobar el simulacro. El curso pasa a «disponible». |
 | ✅ **D2 · A2** (17-10-2026) | ~30 lecciones, +650 palabras, dativo y Wechselpräpositionen con ejercicios generados, simulacro A2. | Igual que D1. |
 | ✅ **D3 · B1** (17-10-2026) | ~35 lecciones, +1.100 palabras, SRS de rección (verbo + preposición), simulacro B1 con 4 módulos. | Simulacro B1 con puntaje Goethe. |
-| **D4 · B2** | ~35 lecciones, +1.600 palabras, Konjunktiv I y participios, audio pregenerado, Schreiben con lista de control. | Simulacro B2. |
+| ✅ **D4 · B2** (17-10-2026) | ~35 lecciones, +1.600 palabras, Konjunktiv I y participios, Schreiben con lista de control (sin audio grabado: se usa la voz del navegador). | Simulacro B2. |
 | **D5 · C1** | ~35 lecciones, +2.000 palabras, nominalización, estilo académico y Modalpartikeln. | Simulacro C1. |
 | **D6 · C2** | ~30 lecciones, +2.000 palabras, variedades, modismos, literatura y matices. | Simulacro C2. |
 | **D7 · Revisión** | Revisión de un hablante nativo (o profesor de alemán como lengua extranjera) de cada nivel, empezando por A1–B1. | Contenido revisado y errores corregidos. |
@@ -303,6 +303,27 @@ El curso alemán ya está en `src/courses/index.ts` con `status: 'soon'` y `spee
   - Cuatro módulos; leer y escuchar necesitan 60/100 cada uno.
   - Escribir tiene un correo formal con huecos (conectores, Konjunktiv II, terminaciones) que se corrige solo y una opinión para un foro autoevaluada.
   - Hablar sigue las tres partes del B1: planificar, presentación y preguntas.
+
+### Qué quedó hecho en D4 (B2)
+- **Gramática B2** (`grammarB2a/b/c.ts`): 35 lecciones (de la 96 a la 130).
+  - Discurso indirecto: Konjunktiv I y sus formas sustitutas.
+  - Pasiva en todos los tiempos, pasiva de estado y sus alternativas (*sich lassen*, *-bar*, *sein/haben + zu*).
+  - Participios I y II como adjetivo y atributos extendidos.
+  - Modales subjetivos, futuro II, Konjunktiv II con modales en pasado e infinitivo perfecto.
+  - Nomen-Verb-Verbindungen, estilo nominal y verbalización.
+  - Conectores *falls/sofern/es sei denn*, *indem*, *während/wohingegen/zumal*, *als ob* y *je nachdem*.
+  - Preposiciones formales con genitivo y dativo, relativos *wer/was* y *dessen/deren*, y el correlato *es/darauf, dass*.
+  - Orden en el campo medio (TeKaMoLo y pronombres), negación, formación de palabras, adjetivos y sustantivos con preposición, partículas modales, describir gráficos, texto argumentativo y registro.
+- **Vocabulario B2** (`vocabB2.ts`): unas 605 palabras nuevas (unas 2.330 en total) en 32 temas.
+  - Hay temas de expresiones completas: Nomen-Verb (*eine Entscheidung treffen*), adjetivos y sustantivos con preposición (*stolz auf + Akk.*, *die Angst vor + Dat.*), frases para argumentar, modismos y alemán coloquial.
+  - Otros temas: liderar un equipo, economía, política, trámites de residencia, contratos laborales, técnica del auto, medicina, bienestar, ciencia, energía, mundo digital, prensa, migración, ciudad, formación dual, relaciones, seguros, inversiones, atención al cliente, tránsito, y Múnich y Baviera.
+  - Al escribir una frase con «…» no hace falta escribir los puntos suspensivos.
+  - **Nota:** muchas palabras planeadas ya estaban en A1–B1 y se quitaron por repetidas. La meta del plan (~4.000 al terminar el B2) queda lejos: conviene una tanda extra de vocabulario B1–B2.
+- **Ottos Weg B2** (`readingsB2.ts`): 16 episodios con Otto como jefe de taller en Múnich.
+  - Temas: la primera semana y la primera reunión de equipo, una noticia en discurso indirecto, instrucciones de alto voltaje, un estudio sobre autos eléctricos, el agotamiento, la carta y la visita a la oficina de extranjería, un siniestro con el seguro, los arriendos en Múnich, el comité de empresa, un cliente molesto, un blog sobre alemán coloquial, el Stammtisch, un texto argumentativo sobre el límite de velocidad y una presentación con gráficos.
+- **Recorrido B2:** 12 unidades más el simulacro Goethe B2 (modular, 60/100 por módulo). La nivelación cubre ahora del A1 al B2.
+  - Escribir tiene un correo formal con huecos (preposiciones con genitivo, Nomen-Verb, *sein + zu*) que se corrige solo y un texto argumentativo autoevaluado con lista de control y modelo.
+  - Hablar sigue las partes del B2: presentación, preguntas y discusión.
 
 ---
 

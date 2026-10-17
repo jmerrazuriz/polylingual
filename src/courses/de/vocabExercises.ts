@@ -68,11 +68,14 @@ export function pluralExercise(w: GermanWord, random = Math.random): GrammarExer
 export function writeExercise(w: GermanWord): GrammarExercise {
   // «warten auf + Akk.» se escribe sin el caso: «warten auf».
   const plain = w.word.replace(/\s*\+\s*(Akk|Dat)\..*$/, '')
+  // «Ich bin der Ansicht, dass …» se acepta sin los puntos suspensivos; «O’zapft» también con «'».
+  const open = w.word.replace(/\s*…/g, '').replace(/,$/, '').trim()
+  const variants = [...new Set([open, open.replace(/’/g, "'")])].filter((v) => v !== w.word)
   return {
     type: 'type',
     prompt: `Escribe en alemán: «${w.meaning}»`,
     hint: w.pos === 'noun' ? 'Con el artículo (der, die, das).' : plain !== w.word ? 'El verbo con su preposición (sin el caso).' : undefined,
-    answers: plain !== w.word ? [plain, w.word] : [withArticle(w)],
+    answers: plain !== w.word ? [plain, w.word] : [withArticle(w), ...variants],
     german: true,
   }
 }

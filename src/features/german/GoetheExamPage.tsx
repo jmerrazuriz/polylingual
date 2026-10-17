@@ -133,6 +133,44 @@ const tasks: Partial<Record<CefrLevel, LevelTasks>> = {
       'Hablé con fluidez y usé conectores y subordinadas',
     ],
   },
+  B2: {
+    form: {
+      context: 'Completa el correo formal de Otto a su aseguradora (1–6). Es registro formal: preposiciones con genitivo, Nomen-Verb y Konjunktiv II.',
+      text: 'Sehr geehrte Damen und Herren, (1) ___ meines Schreibens vom 3. März möchte ich Sie um eine schnelle Bearbeitung bitten. (2) ___ eines Lieferengpasses konnte die Reparatur erst gestern abgeschlossen werden. Den Kostenvoranschlag stelle ich Ihnen gern zur (3) ___. Ich wäre Ihnen dankbar, (4) ___ Sie mir die Kosten bis Ende des Monats erstatten könnten. Die Rechnung ist innerhalb von 14 Tagen (5) ___ bezahlen. Für Rückfragen stehe ich Ihnen jederzeit zur Verfügung. Mit freundlichen (6) ___, Otto Martínez',
+      fields: [
+        { label: '(1) – respecto a (+ genitivo)', answers: ['Bezüglich', 'Hinsichtlich'] },
+        { label: '(2) – debido a (+ genitivo)', answers: ['Aufgrund', 'Wegen', 'Infolge'] },
+        { label: '(3) – zur ___ stellen (poner a disposición)', answers: ['Verfügung'] },
+        { label: '(4) – si (condición)', answers: ['wenn', 'falls'] },
+        { label: '(5) – sein + ___ + infinitivo', answers: ['zu'] },
+        { label: '(6) – fórmula de despedida', answers: ['Grüßen'] },
+      ],
+    },
+    message: {
+      prompt:
+        'En el foro de una revista se discute: «¿Debería haber un límite general de velocidad en las autopistas alemanas?». Escribe un texto argumentativo (unas 150 palabras).',
+      checks: [
+        'Introduces el tema con una frase general (… wird heute viel diskutiert)',
+        'Presentas al menos dos argumentos a favor (Befürworter meinen… / Dafür spricht…)',
+        'Presentas al menos dos argumentos en contra (Kritiker wenden ein… / Dagegen spricht…)',
+        'Das tu opinión fundamentada con un ejemplo (Meines Erachtens…)',
+        'Usas conectores B2 (zum einen … zum anderen, hinzu kommt, zwar … aber, allerdings)',
+        'Usas al menos una construcción formal (pasivo, estilo nominal, Konjunktiv I o II)',
+        'Terminas con una conclusión clara (Alles in allem… / Abschließend lässt sich sagen…)',
+      ],
+      model:
+        'Kaum ein Thema wird in Deutschland so leidenschaftlich diskutiert wie ein Tempolimit auf Autobahnen. Befürworter meinen, dass ein Limit von 130 km/h die Zahl schwerer Unfälle deutlich verringern würde. Hinzu kommt, dass weniger Kraftstoff verbraucht wird, was einen Beitrag zum Klimaschutz leistet. Kritiker wenden dagegen ein, dass die deutschen Autobahnen bereits zu den sichersten der Welt gehören. Zum einen gebe es auf vielen Strecken schon heute Begrenzungen, zum anderen sehen manche darin eine Einschränkung ihrer Freiheit. Meines Erachtens überwiegen allerdings die Vorteile: Als Mechaniker sehe ich täglich, welche Schäden durch hohe Geschwindigkeiten entstehen. Zwar würde man auf langen Strecken etwas mehr Zeit brauchen, aber dafür käme man entspannter und sicherer an. Alles in allem halte ich ein Tempolimit für eine sinnvolle Maßnahme, die Leben retten kann.',
+    },
+    speaking: [
+      'Parte 1: hice una presentación de unos 4 minutos sobre un tema (por ejemplo «Teletrabajo» o «Autos eléctricos») con introducción, estructura y conclusión',
+      'Parte 1: anuncié la estructura y pasé de un punto a otro (Zunächst… / Damit komme ich zu… / Abschließend…)',
+      'Parte 1: comparé la situación en Alemania con la de mi país y di ejemplos',
+      'Parte 2: respondí preguntas sobre mi presentación y comenté la de mi pareja',
+      'Parte 3: discutí un tema polémico: di mi opinión, la fundamenté y reaccioné a la de mi pareja (Da muss ich widersprechen… / Da gebe ich Ihnen recht…)',
+      'Parte 3: intenté llegar a una conclusión o un compromiso',
+      'Hablé con fluidez, con registro formal y corregí mis errores sin bloquearme',
+    ],
+  },
 }
 
 function pickTexts(level: CefrLevel, kind: 'reading' | 'dialogue', n: number): ReadingText[] {

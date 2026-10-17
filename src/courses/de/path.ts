@@ -82,11 +82,27 @@ const unitsB1: PathUnit[] = [
   examUnit('B1'),
 ]
 
+const unitsB2: PathUnit[] = [
+  unit('de-b2-1', 'B2 · Jefe en Múnich', '🏔️', ['de-satzstellung', 'de-modalpartikeln', 'de-negation'], ['fuehrung', 'bayern', 'kultur2'], ['lt-b2-erste-woche', 'dt-b2-team']),
+  unit('de-b2-2', 'B2 · Lo que dicen otros', '📰', ['de-konj1', 'de-indirekte-rede'], ['medien3', 'politik', 'verben4'], ['lt-b2-nachrichten']),
+  unit('de-b2-3', 'B2 · Procesos y normas', '⚙️', ['de-passiv-zeiten', 'de-passiv-ersatz', 'de-zustandspassiv', 'de-sein-haben-zu'], ['kfz-technik', 'verkehrsrecht'], ['lt-b2-arbeitsanweisung']),
+  unit('de-b2-4', 'B2 · Participios', '🧩', ['de-partizip1', 'de-partizip2', 'de-partizip-erweitert'], ['wissenschaft', 'energie', 'digital'], ['lt-b2-studie']),
+  unit('de-b2-5', 'B2 · Suposiciones', '🤔', ['de-modal-subjektiv', 'de-futur2', 'de-konj2-modal-vergangenheit', 'de-infinitiv-perfekt'], ['psyche', 'medizin', 'beziehungen2'], ['dt-b2-burnout']),
+  unit('de-b2-6', 'B2 · Estilo formal', '🏛️', ['de-nomen-verb', 'de-nominalisierung', 'de-verbalisierung'], ['nomen-verb', 'verwaltung'], ['lt-b2-behoerde', 'dt-b2-auslaenderbehoerde']),
+  unit('de-b2-7', 'B2 · Condiciones y medios', '🛡️', ['de-falls-sofern', 'de-indem', 'de-je-nachdem'], ['versicherung', 'geld2'], ['dt-b2-versicherung']),
+  unit('de-b2-8', 'B2 · Contrastes', '🏙️', ['de-adversativ', 'de-als-ob', 'de-relativ-wer'], ['stadtleben', 'migration', 'adjektive4'], ['lt-b2-stadt']),
+  unit('de-b2-9', 'B2 · Preposiciones formales', '📑', ['de-genitiv-praep-2', 'de-praep-dativ-b2', 'de-relativ-genitiv'], ['recht2', 'wirtschaft', 'abstrakt2'], ['dt-b2-betriebsrat']),
+  unit('de-b2-10', 'B2 · Rección', '🔗', ['de-es-korrelat', 'de-adjektiv-praep', 'de-nomen-praep'], ['adjektiv-praep', 'nomen-praep', 'kundenservice'], ['dt-b2-kundengespraech']),
+  unit('de-b2-11', 'B2 · Palabras y registro', '🗨️', ['de-wortbildung-2', 'de-register'], ['umgangssprache', 'redewendungen'], ['lt-b2-blog-sprache', 'dt-b2-stammtisch']),
+  unit('de-b2-12', 'B2 · Argumentar y presentar', '🎤', ['de-grafik', 'de-eroerterung'], ['redemittel', 'bildung3', 'konnektoren-b2'], ['lt-b2-eroerterung', 'dt-b2-vortrag']),
+  examUnit('B2'),
+]
+
 const unitsByLevel: Record<CefrLevel, PathUnit[]> = {
   A1: unitsA1,
   A2: unitsA2,
   B1: unitsB1,
-  B2: [],
+  B2: unitsB2,
   C1: [],
   C2: [],
 }
