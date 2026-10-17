@@ -5,7 +5,7 @@ import { grammarByCourse } from '../courses/content.ts'
 import { counterLessons } from '../courses/ja/counters.ts'
 import { kanjiLessons } from '../courses/ja/kanji.ts'
 import { lessons as kanaLessons } from '../courses/ja/lessons.ts'
-import { vocabLessons, vocabLessonsHira, vocabLessonsKata, vocabLessonsN3Batches, vocabLessonsN4 } from '../courses/ja/vocab.ts'
+import { type VocabLesson, vocabLessons, vocabLessonsHira, vocabLessonsKata, vocabLessonsN3Batches, vocabLessonsN4 } from '../courses/ja/vocab.ts'
 import { examInfo, type ExamLevel, passedKey } from './mockExam.ts'
 import { readingById, readingTexts, unlockedReadings } from './readings.ts'
 import type { ProgressData } from './progress/model.ts'
@@ -79,16 +79,17 @@ const n4Vocab = (n: number, last = false): PathUnit => ({
 })
 /**
  * Vocabulario N3 (con kanji). Primera tanda: unidades I–IV de 11 lecciones (la IV se lleva el resto).
- * Segunda tanda: unidades V–VIII, repartidas en partes parejas.
+ * Las tandas siguientes: 4 unidades cada una (V–VIII, IX–XII), repartidas en partes parejas.
  */
-const [n3VocabA, n3VocabB] = vocabLessonsN3Batches
 const n3Vocab = (n: number, last = false): PathUnit => {
+  const quarter = (list: VocabLesson[], i: number) => list.slice(Math.round((i * list.length) / 4), Math.round(((i + 1) * list.length) / 4))
   const lessons =
     n <= 4
-      ? n3VocabA.slice((n - 1) * 11, last ? undefined : n * 11)
-      : n3VocabB.slice(Math.round(((n - 5) * n3VocabB.length) / 4), Math.round(((n - 4) * n3VocabB.length) / 4))
+      ? vocabLessonsN3Batches[0].slice((n - 1) * 11, last ? undefined : n * 11)
+      : quarter(vocabLessonsN3Batches[Math.floor((n - 1) / 4)], (n - 1) % 4)
+  const roman = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII']
   return {
-    ...vocabUnit(0, `N3 · Vocabulario ${['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII'][n - 1]} (con kanji)`, lessons),
+    ...vocabUnit(0, `N3 · Vocabulario ${roman[n - 1]} (con kanji)`, lessons),
     id: `vocab-n3-${n}`,
     icon: '語',
   }
@@ -406,6 +407,10 @@ export const japanesePath: PathUnit[] = [
   kanjiUnitN4('kanji-n3-12', ['N3 · Sociedad, técnica y lugares'], 'N3 · Kanji: sociedad, técnica y lugares', '和'),
   kanjiUnitN4('kanji-n3-13', ['N3 · Casa, familia y acciones'], 'N3 · Kanji: casa, familia y acciones', '探'),
   kanjiUnitN4('kanji-n3-14', ['N3 · Estudio, trabajo y formas'], 'N3 · Kanji: estudio, trabajo y formas', '難'),
+  n3Vocab(9),
+  n3Vocab(10),
+  n3Vocab(11),
+  n3Vocab(12),
   {
     id: 'grammar-n3-7',
     title: 'N3 · Gramática VII: actitudes, comparaciones y tendencias',

@@ -457,7 +457,8 @@ Meta: que quien termine el curso entienda el japonés a nivel JLPT N3. Es la eta
   - Tercera tanda: 72 kanji en 12 lecciones (personas y comunicación; cosas y tiempo; escuela, cuerpo y acciones), entre ellos varios que antes iban en kana (議, 彼, 荷, 昔, 置, 直, 消, 守, 受, 呼, 似). Son 3 unidades más en el recorrido y un bloque más en la nivelación.
   - Cuarta tanda: 72 kanji en 12 lecciones (realidad y dinero; seguridad, salud y arte; comunicación y orden). Son 3 unidades más y un bloque más en la nivelación. Con ellos, 73 palabras N3 que iban en kana ganan forma escrita (失敗, 場面, 申し込む…); las formas salen de los ejemplos de los kanji y se revisaron los homófonos.
   - Quinta tanda: 78 kanji en 13 lecciones (sociedad, técnica y lugares; casa, familia y acciones; estudio, trabajo y formas), 3 unidades y un bloque en la nivelación. 22 palabras N3 más ganan forma escrita.
-- 🟡 **C4 · Vocabulario N3, dos tandas publicadas (978 palabras N3):**
+- 🟡 **C4 · Vocabulario N3, tres tandas publicadas (1.369 palabras N3):**
+  - Tercera tanda: 391 palabras en `vocabDataN3c.ts` (unidades IX–XII), con las mismas reglas que la segunda.
   - Segunda tanda: 559 palabras en `vocabDataN3b.ts`, con dos temas nuevos para el N3 (naturaleza y ocio). Sus lecciones siguen la numeración de cada tema (`voc3-sentimientos-6`…) y las de la primera tanda no cambian. Son 4 unidades más (V–VIII) en el recorrido, en el bloque de la tercera tanda de kanji.
   - Con los kanji nuevos, 81 palabras N3 y 18 N4 que iban en kana ahora tienen forma escrita (会議, 荷物, 時代…). A las N4 solo se les pone si sus kanji son del N5 o N4.
   - 419 palabras N3 (1.926 en total) en 50 lecciones con SRS, que se abren con la primera lección de gramática N3. Hay un tema nuevo: sentimientos.

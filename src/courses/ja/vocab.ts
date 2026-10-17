@@ -6,6 +6,7 @@ import type { WordTheme } from './types.ts'
 import { type PosCode, type RawWord, vocabData, type VocabThemeId, vocabThemes } from './vocabData.ts'
 import { vocabDataN3 } from './vocabDataN3.ts'
 import { vocabDataN3b } from './vocabDataN3b.ts'
+import { vocabDataN3c } from './vocabDataN3c.ts'
 import { vocabDataN4 } from './vocabDataN4.ts'
 import { allWords } from './words.ts'
 
@@ -174,7 +175,8 @@ const vocabN5 = build()
 export const vocabN4 = buildLevel(vocabN5, vocabDataN4, 'N4')
 const vocabN3a = buildLevel([...vocabN5, ...vocabN4], vocabDataN3, 'N3')
 const vocabN3b = buildLevel([...vocabN5, ...vocabN4, ...vocabN3a], vocabDataN3b, 'N3')
-export const vocabN3 = [...vocabN3a, ...vocabN3b]
+const vocabN3c = buildLevel([...vocabN5, ...vocabN4, ...vocabN3a, ...vocabN3b], vocabDataN3c, 'N3')
+export const vocabN3 = [...vocabN3a, ...vocabN3b, ...vocabN3c]
 export const vocab: VocabEntry[] = [...vocabN5, ...vocabN4, ...vocabN3]
 export const vocabById = new Map(vocab.map((v) => [v.id, v]))
 export const verbs = vocab.filter((v) => v.pos === 'verb')
@@ -274,7 +276,7 @@ const themeOrderN3: VocabThemeId[] = [
   'expresiones',
 ]
 
-/** Temas de la segunda tanda N3 (con naturaleza y ocio). */
+/** Temas de la segunda y tercera tanda N3 (con naturaleza y ocio). */
 const themeOrderN3b: VocabThemeId[] = [
   'sentimientos',
   'verbos-1',
@@ -331,7 +333,12 @@ export const vocabLessonsKata = katakanaLessons()
 export const vocabLessonsN4 = levelLessons(vocabN4, themeOrderN4, 'N4')
 const vocabLessonsN3a = levelLessons(vocabN3a, themeOrderN3, 'N3')
 /** Lecciones N3 por tanda (en el recorrido cada tanda tiene sus unidades). */
-export const vocabLessonsN3Batches: VocabLesson[][] = [vocabLessonsN3a, levelLessons(vocabN3b, themeOrderN3b, 'N3', vocabLessonsN3a)]
+const vocabLessonsN3b = levelLessons(vocabN3b, themeOrderN3b, 'N3', vocabLessonsN3a)
+export const vocabLessonsN3Batches: VocabLesson[][] = [
+  vocabLessonsN3a,
+  vocabLessonsN3b,
+  levelLessons(vocabN3c, themeOrderN3b, 'N3', [...vocabLessonsN3a, ...vocabLessonsN3b]),
+]
 export const vocabLessonsN3 = vocabLessonsN3Batches.flat()
 export const vocabLessons: VocabLesson[] = [...vocabLessonsHira, ...vocabLessonsKata, ...vocabLessonsN4, ...vocabLessonsN3]
 
