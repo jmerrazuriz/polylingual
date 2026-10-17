@@ -57,10 +57,11 @@ describe('test de nivelación del recorrido', () => {
     const { stops, current } = pathStatus(progressSnapshot(), false)
     expect(current?.items[0]).toMatchObject({ kind: 'exam', id: 'N5' })
     const notDone = [...stops].filter(([, s]) => s !== 'done').map(([id]) => id)
-    expect(notDone).toEqual(['exam:N5', 'exam:N4'])
+    expect(notDone).toEqual(['exam:N5', 'exam:N4', 'exam:N3'])
     // Al aprobar los simulacros el recorrido queda completo.
     useProgress.getState().submitRecord('simulacro-n5:aprobado', 1)
     useProgress.getState().submitRecord('simulacro-n4:aprobado', 1)
+    useProgress.getState().submitRecord('simulacro-n3:aprobado', 1)
     expect(pathStatus(progressSnapshot(), false).current).toBeNull()
   })
 

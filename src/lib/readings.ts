@@ -1,6 +1,7 @@
 // Lecturas y diálogos: desbloqueo, glosario de palabras y preguntas sueltas.
 
 import type { GrammarExercise } from '../courses/grammar.ts'
+import { readingsN3 } from '../courses/ja/readingsN3.ts'
 import { readingsN4 } from '../courses/ja/readingsN4.ts'
 import { readingsN5 } from '../courses/ja/readingsN5.ts'
 import { furiganaToKana } from './furigana.ts'
@@ -11,7 +12,7 @@ import type { ReadingText } from '../courses/reading.ts'
 import type { LessonResult } from './progress/model.ts'
 import { shuffle } from './random.ts'
 
-export const readingTexts: ReadingText[] = [...readingsN5, ...readingsN4]
+export const readingTexts: ReadingText[] = [...readingsN5, ...readingsN4, ...readingsN3]
 export const readingById = new Map(readingTexts.map((t) => [t.id, t]))
 
 /** Cada texto se abre al completar su lección de gramática. */

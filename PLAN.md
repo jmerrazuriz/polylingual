@@ -460,9 +460,12 @@ Meta: que quien termine el curso entienda el japonés a nivel JLPT N3. Es la eta
   - Plan original: ~2.200 palabras más (~3.700 en total), en tandas de ~400 por tema.
   - Las palabras pasan a tener forma escrita (`kanji?`) además del kana.
   - Hace falta cargar el contenido por nivel de forma asíncrona.
-- **C5 · Lecturas N3:** textos de 300–500 caracteres, avisos, correos y titulares, con preguntas al estilo del examen.
-- **C6 · Audición N3:** diálogos más naturales y largos, con los 5 tipos de pregunta del examen (tarea, punto clave, idea general, respuesta rápida y expresión). La voz del navegador alcanza para practicar; el audio pregenerado queda como mejora.
-- **C7 · Simulacro N3** y meta del recorrido, como el N4 (aprueba con 95/180 y mínimos por sección de 19).
+- ✅ **C5 · Lecturas N3 (primera tanda):** 8 textos con kanji y furigana: avisos (basura, biblioteca, lavandería), correos (reunión, invitación), ensayos (el celular, trabajar en Japón) y una noticia. Cada uno con 3 preguntas de comprensión y la idea principal.
+- ✅ **C6 · Audición N3 (primera tanda):** 8 audios con los 5 tipos de pregunta del examen (tarea, punto clave, idea general, respuesta rápida y expresión). Son 2 unidades «N3 · Lectura y audición» en el recorrido y la nivelación. El audio pregenerado queda como mejora.
+- ✅ **C7 · Simulacro N3 (`/simulacro/n3`):**
+  - 40 minutos, con kanji N3, paráfrasis y uso en gramática, y lecturas y audición N3.
+  - Se puntúa como el JLPT N3: idioma, lectura y audición de 0–60 cada una, mínimo 19 en cada sección y 95/180 para aprobar.
+  - Es la meta final del recorrido.
 - **Riesgo:** la calidad del contenido. Los tests automáticos validan formato, kanji conocidos, lecturas y conjugaciones, pero conviene una revisión nativa antes de dar el curso por terminado.
 - **Para agregar un idioma:** crear `src/courses/<id>/` con su contenido, registrar la gramática en `src/courses/content.ts`, cambiar su `status` a `available` y darle sus secciones. Las lecciones de vocabulario para idiomas sin silabario propio son lo siguiente a diseñar. Quedan como ideas para después (sección 9): tarjetas SRS de palabras, temas de palabras en los juegos, pares confusos juntos en los juegos, kanji, frases con furigana y evaluación de pronunciación.
 

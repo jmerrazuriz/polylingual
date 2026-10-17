@@ -93,11 +93,11 @@ const examUnit = (level: ExamLevel): PathUnit => ({
 })
 
 /** Unidad de lectura y audición: 10 textos (lecturas y diálogos) del nivel, de a 3 por parada. */
-function readingUnit(n: number, title: string, level: 'N5' | 'N4' = 'N5'): PathUnit {
+function readingUnit(n: number, title: string, level: 'N5' | 'N4' | 'N3' = 'N5'): PathUnit {
   const texts = readingTexts.filter((t) => t.level === level).slice((n - 1) * 10, n * 10)
   const stops: PathStop[] = []
   for (let i = 0; i < texts.length; i += 3) stops.push(stop('reading', texts.slice(i, i + 3).map((t) => t.id)))
-  return { id: level === 'N5' ? `lectura-${n}` : `lectura-n4-${n}`, title, icon: '読', stops }
+  return { id: level === 'N5' ? `lectura-${n}` : `lectura-${level.toLowerCase()}-${n}`, title, icon: '読', stops }
 }
 
 export const japanesePath: PathUnit[] = [
@@ -330,6 +330,7 @@ export const japanesePath: PathUnit[] = [
   },
   kanjiUnitN4('kanji-n3-1', ['N3 · Personas y vida diaria'], 'N3 · Kanji: personas y vida diaria', '夢'),
   n3Vocab(1),
+  readingUnit(1, 'N3 · Lectura y audición I', 'N3'),
   {
     id: 'grammar-n3-3',
     title: 'N3 · Gramática III: consejos, deber y grado',
@@ -354,11 +355,13 @@ export const japanesePath: PathUnit[] = [
   },
   kanjiUnitN4('kanji-n3-2', ['N3 · Trabajo y sociedad'], 'N3 · Kanji: trabajo y sociedad', '働'),
   n3Vocab(2),
+  readingUnit(2, 'N3 · Lectura y audición II', 'N3'),
   kanjiUnitN4('kanji-n3-3', ['N3 · Sentimientos y cuerpo'], 'N3 · Kanji: sentimientos y cuerpo', '愛'),
   kanjiUnitN4('kanji-n3-4', ['N3 · Naturaleza y sociedad'], 'N3 · Kanji: naturaleza y sociedad', '島'),
   kanjiUnitN4('kanji-n3-5', ['N3 · Movimiento y cambio'], 'N3 · Kanji: movimiento y cambio', '進'),
   n3Vocab(3),
   n3Vocab(4, true),
+  examUnit('N3'),
 ]
 
 export type ItemStatus = 'done' | 'open' | 'locked'

@@ -54,10 +54,18 @@ export function ReadingsPage() {
         <h2 className="text-sm font-extrabold text-slate-500 uppercase">🎧 Diálogos · N4 (con kanji)</h2>
         <LessonList lessons={list('dialogue', 'N4')} results={results} unlocked={unlocked} />
       </section>
-      {(['N5', 'N4'] as const).map((level) => (
+      <section className="flex flex-col gap-2">
+        <h2 className="text-sm font-extrabold text-slate-500 uppercase">📖 Lecturas · N3 (avisos, correos, ensayos y noticias)</h2>
+        <LessonList lessons={list('reading', 'N3')} results={results} unlocked={unlocked} />
+      </section>
+      <section className="flex flex-col gap-2">
+        <h2 className="text-sm font-extrabold text-slate-500 uppercase">🎧 Audición · N3 (como en el examen)</h2>
+        <LessonList lessons={list('dialogue', 'N3')} results={results} unlocked={unlocked} />
+      </section>
+      {(['N5', 'N4', 'N3'] as const).map((level) => (
         <Link
           key={level}
-          to={level === 'N5' ? '/simulacro' : '/simulacro/n4'}
+          to={level === 'N5' ? '/simulacro' : `/simulacro/${level.toLowerCase()}`}
           className="flex items-center gap-3 rounded-2xl bg-ink p-4 text-white transition hover:-translate-y-0.5 hover:shadow-lg"
         >
           <span className="text-3xl" aria-hidden>

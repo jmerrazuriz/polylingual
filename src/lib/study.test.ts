@@ -119,6 +119,7 @@ describe('recorrido', () => {
       ...readingTexts.map((t) => `reading:${t.id}`),
       'exam:N5',
       'exam:N4',
+      'exam:N3',
       ...units.map((u) => `unit:${u.id}`),
     ]
     expect(new Set(ids)).toEqual(new Set(expected))

@@ -32,7 +32,8 @@ const clock = (ms: number) => {
 /** Simulacro del JLPT (N5 en /simulacro, N4 en /simulacro/n4): 4 secciones seguidas con tiempo. */
 export function MockExamPage() {
   const { level: param } = useParams()
-  const level: ExamLevel = param?.toLowerCase() === 'n4' ? 'N4' : 'N5'
+  const lower = param?.toLowerCase()
+  const level: ExamLevel = lower === 'n4' ? 'N4' : lower === 'n3' ? 'N3' : 'N5'
   return <MockExam key={level} level={level} />
 }
 
@@ -90,8 +91,9 @@ function MockExam({ level }: { level: ExamLevel }) {
           ))}
         </ol>
         <p className="text-sm text-slate-500">
-          Se aprueba como el JLPT: {info.passTotal} de 180 puntos, con al menos {PASS_LANGUAGE} de 120 en idioma y lectura, y{' '}
-          {PASS_LISTENING} de 60 en audición.
+          {level === 'N3'
+            ? `Se aprueba como el JLPT: ${info.passTotal} de 180 puntos, con al menos ${PASS_LISTENING} de 60 en idioma, lectura y audición.`
+            : `Se aprueba como el JLPT: ${info.passTotal} de 180 puntos, con al menos ${PASS_LANGUAGE} de 120 en idioma y lectura, y ${PASS_LISTENING} de 60 en audición.`}
           {best !== undefined && ` Tu mejor puntaje: ${best}/180.`}
         </p>
         <button
@@ -242,15 +244,25 @@ function ExamResult({
       </p>
       {isRecord && <p className="font-bold text-emerald-600">¡Nuevo récord!</p>}
       {!isRecord && best !== undefined && <p className="text-sm text-slate-500">Tu mejor puntaje: {best}/180</p>}
-      <dl className="grid w-full grid-cols-2 gap-2 text-left">
-        <div className="rounded-2xl border border-slate-200 bg-white p-3 dark:border-slate-800 dark:bg-slate-900">
-          <dt className="text-xs font-bold text-slate-500 uppercase">Idioma y lectura</dt>
-          <dd className={`text-2xl font-extrabold ${score.language < PASS_LANGUAGE ? 'text-red-600' : ''}`}>{score.language}/120</dd>
-        </div>
-        <div className="rounded-2xl border border-slate-200 bg-white p-3 dark:border-slate-800 dark:bg-slate-900">
-          <dt className="text-xs font-bold text-slate-500 uppercase">Audición</dt>
-          <dd className={`text-2xl font-extrabold ${score.listening < PASS_LISTENING ? 'text-red-600' : ''}`}>{score.listening}/60</dd>
-        </div>
+      <dl className={`grid w-full gap-2 text-left ${score.reading === undefined ? 'grid-cols-2' : 'grid-cols-3'}`}>
+        {(score.reading === undefined
+          ? [
+              { label: 'Idioma y lectura', value: score.language, max: 120, min: PASS_LANGUAGE },
+              { label: 'Audición', value: score.listening, max: 60, min: PASS_LISTENING },
+            ]
+          : [
+              { label: 'Idioma', value: score.language, max: 60, min: PASS_LISTENING },
+              { label: 'Lectura', value: score.reading, max: 60, min: PASS_LISTENING },
+              { label: 'Audición', value: score.listening, max: 60, min: PASS_LISTENING },
+            ]
+        ).map((box) => (
+          <div key={box.label} className="rounded-2xl border border-slate-200 bg-white p-3 dark:border-slate-800 dark:bg-slate-900">
+            <dt className="text-xs font-bold text-slate-500 uppercase">{box.label}</dt>
+            <dd className={`text-2xl font-extrabold ${box.value < box.min ? 'text-red-600' : ''}`}>
+              {box.value}/{box.max}
+            </dd>
+          </div>
+        ))}
       </dl>
       <ul className="flex w-full flex-col gap-1 text-left text-sm">
         {(Object.keys(sectionInfo) as ExamSection[]).map((s) => (
@@ -263,7 +275,9 @@ function ExamResult({
         ))}
       </ul>
       <p className="text-sm text-slate-500">
-        Para aprobar: {info.passTotal} de 180, con al menos {PASS_LANGUAGE} en idioma y lectura y {PASS_LISTENING} en audición.
+        {level === 'N3'
+          ? `Para aprobar: ${info.passTotal} de 180, con al menos ${PASS_LISTENING} en cada sección.`
+          : `Para aprobar: ${info.passTotal} de 180, con al menos ${PASS_LANGUAGE} en idioma y lectura y ${PASS_LISTENING} en audición.`}
       </p>
       <SaveProgressPrompt />
       <div className="flex flex-wrap justify-center gap-3">

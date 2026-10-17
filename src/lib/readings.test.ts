@@ -13,6 +13,7 @@ describe('lecturas y diálogos N5', () => {
   it('20 lecturas y 20 diálogos N5, 10 y 10 N4, con ids únicos', () => {
     const count = (kind: string, level: string) => readingTexts.filter((t) => t.kind === kind && t.level === level).length
     expect([count('reading', 'N5'), count('dialogue', 'N5'), count('reading', 'N4'), count('dialogue', 'N4')]).toEqual([20, 20, 10, 10])
+    expect([count('reading', 'N3'), count('dialogue', 'N3')]).toEqual([8, 8])
     expect(new Set(readingTexts.map((t) => t.id)).size).toBe(readingTexts.length)
   })
 
@@ -31,8 +32,8 @@ describe('lecturas y diálogos N5', () => {
     }
   })
 
-  it('N4: cada kanji lleva su lectura y es un kanji que el curso enseña', () => {
-    for (const t of readingTexts.filter((r) => r.level === 'N4')) {
+  it('N4 y N3: cada kanji lleva su lectura y es un kanji que el curso enseña', () => {
+    for (const t of readingTexts.filter((r) => r.level !== 'N5')) {
       for (const l of t.lines) {
         const segments = parseFurigana(l.text)
         for (const s of segments) {
@@ -105,6 +106,18 @@ describe('simulacro N5', () => {
     for (const i of exam) if (i.text) expect(i.text.level).toBe('N4')
     expect(scoreExam(exam, exam.map(() => true), 'N4').passed).toBe(true)
     expect([examInfo.N5.passTotal, examInfo.N4.passTotal]).toEqual([80, 90])
+  })
+
+  it('el simulacro N3 tiene tres secciones de 60 y se aprueba con 95 y 19 en cada una', () => {
+    const exam = buildMockExam('N3')
+    for (const i of exam) if (i.text) expect(i.text.level).toBe('N3')
+    expect(exam.filter((i) => i.section === 'grammar').some((i) => i.exercise.type === 'choice' && i.exercise.format)).toBe(true)
+    const all = scoreExam(exam, exam.map(() => true), 'N3')
+    expect(all).toMatchObject({ language: 60, reading: 60, listening: 60, total: 180, passed: true })
+    // Todo bien menos la lectura: 120 puntos, pero sin el mínimo de lectura no aprueba.
+    const noReading = scoreExam(exam, exam.map((i) => i.section !== 'reading'), 'N3')
+    expect(noReading.total).toBe(120)
+    expect(noReading.passed).toBe(false)
   })
 
   it('puntúa como el JLPT: total y mínimos por sección', () => {
