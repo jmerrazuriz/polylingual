@@ -1,10 +1,12 @@
 import { lessons as allLessons, lessonsByScript } from '../../courses/ja/lessons.ts'
 import {
   VOCAB_KATA_UNLOCKED_BY,
+  VOCAB_N3_UNLOCKED_BY_GRAMMAR,
   VOCAB_N4_UNLOCKED_BY_GRAMMAR,
   VOCAB_UNLOCKED_BY,
   vocabLessonsHira,
   vocabLessonsKata,
+  vocabLessonsN3,
   vocabLessonsN4,
 } from '../../courses/ja/vocab.ts'
 import { useAccount } from '../account/store.ts'
@@ -92,25 +94,31 @@ export function useUnlockedSequence(ids: readonly string[], gate: string): Set<s
 const vocabHiraIds = vocabLessonsHira.map((l) => l.id)
 const vocabKataIds = vocabLessonsKata.map((l) => l.id)
 const vocabN4Ids = vocabLessonsN4.map((l) => l.id)
+const vocabN3Ids = vocabLessonsN3.map((l) => l.id)
+
+/** Lecciones en orden que se abren con una lección de gramática: la primera con ella, las demás al completar la anterior. */
+function unlockedByGrammar(ids: string[], gate: string, lessons: Record<string, LessonResult>, grammar: Record<string, LessonResult>, unlockAll: boolean) {
+  const out = new Set<string>()
+  ids.forEach((id, i) => {
+    if (unlockAll || (i === 0 && grammar[gate]) || (i > 0 && lessons[ids[i - 1]]) || lessons[id]) out.add(id)
+  })
+  return out
+}
 
 /**
  * Vocabulario: las lecciones N5 en hiragana tras el hiragana; las de katakana tras el katakana;
- * las N4 tras la primera lección de gramática N4. En cada grupo, cada lección abre la siguiente.
+ * las N4 y N3 tras la primera lección de gramática de su nivel. En cada grupo, cada lección abre la siguiente.
  */
 export function unlockedVocab(
   lessons: Record<string, LessonResult>,
   unlockAll: boolean,
   grammar: Record<string, LessonResult> = {},
 ): Set<string> {
-  const n4Open = unlockAll || !!grammar[VOCAB_N4_UNLOCKED_BY_GRAMMAR]
-  const n4 = new Set<string>()
-  vocabN4Ids.forEach((id, i) => {
-    if (unlockAll || (i === 0 && n4Open) || (i > 0 && lessons[vocabN4Ids[i - 1]]) || lessons[id]) n4.add(id)
-  })
   return new Set([
     ...unlockedSequence(vocabHiraIds, lessons, VOCAB_UNLOCKED_BY, unlockAll),
     ...unlockedSequence(vocabKataIds, lessons, VOCAB_KATA_UNLOCKED_BY, unlockAll),
-    ...n4,
+    ...unlockedByGrammar(vocabN4Ids, VOCAB_N4_UNLOCKED_BY_GRAMMAR, lessons, grammar, unlockAll),
+    ...unlockedByGrammar(vocabN3Ids, VOCAB_N3_UNLOCKED_BY_GRAMMAR, lessons, grammar, unlockAll),
   ])
 }
 

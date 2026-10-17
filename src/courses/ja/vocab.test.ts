@@ -1,7 +1,10 @@
 import { describe, expect, it } from 'vitest'
 import { conjugateAdjective, conjugateVerb } from '../../lib/conjugation'
 import { romajiReadings } from '../../lib/romaji'
-import { iAdjectives, verbs, vocab, vocabLessons, vocabLessonsHira, vocabLessonsKata, vocabLessonsN4, vocabN4 } from './vocab'
+import { furiganaToKana, KANJI_CHAR, parseFurigana } from '../../lib/furigana'
+import { wordReadingExercise } from '../../lib/vocabExercises'
+import { kanjiByChar } from './kanji'
+import { iAdjectives, verbs, vocab, vocabLessons, vocabLessonsHira, vocabLessonsKata, vocabLessonsN3, vocabLessonsN4, vocabN3, vocabN4 } from './vocab'
 import { allWords } from './words'
 
 describe('vocabulario N5', () => {
@@ -63,5 +66,39 @@ describe('vocabulario N5', () => {
       for (const w of l.words) expect(w.level, l.id).toBe('N4')
     }
     for (const l of [...vocabLessonsHira, ...vocabLessonsKata]) for (const w of l.words) expect(w.level, l.id).toBe('N5')
+  })
+
+  it('N3: unas 400 palabras, sin repetir las de niveles anteriores ni cambiar sus ids', () => {
+    expect(vocabN3.length).toBeGreaterThanOrEqual(380)
+    expect(vocab.filter((v) => v.level === 'N4')).toHaveLength(vocabN4.length)
+    expect(vocabN4.find((v) => v.kana === 'かえる')?.id).toBe('かえる·v2')
+    const earlier = new Set([...vocab.filter((v) => v.level !== 'N3')].map((v) => `${v.kana}|${v.pos}|${v.group ?? ''}`))
+    for (const v of vocabN3) expect(earlier.has(`${v.kana}|${v.pos}|${v.group ?? ''}`), v.kana).toBe(false)
+    for (const l of vocabLessonsN3) {
+      expect(l.words.length, l.id).toBeLessThanOrEqual(10)
+      for (const w of l.words) expect(w.level, l.id).toBe('N3')
+    }
+  })
+
+  it('N3: la forma escrita se lee como el kana y solo usa kanji del curso', () => {
+    const written = vocab.filter((v) => v.written)
+    expect(written.length).toBeGreaterThanOrEqual(130)
+    for (const v of written) {
+      expect(furiganaToKana(v.written!), v.kana).toBe(v.kana)
+      for (const seg of parseFurigana(v.written!)) {
+        if (seg.ruby) for (const ch of seg.text.replace('々', '')) expect(kanjiByChar.has(ch), `${ch} en ${v.written}`).toBe(true)
+        else expect(seg.text, v.written).not.toMatch(KANJI_CHAR)
+      }
+    }
+  })
+
+  it('N3: pregunta de lectura de kanji con la respuesta entre opciones distintas', () => {
+    for (const v of vocab.filter((w) => w.written).slice(0, 40)) {
+      const ex = wordReadingExercise(v)
+      if (ex.type !== 'choice') throw new Error('tipo inesperado')
+      expect(ex.prompt).not.toContain('[')
+      expect(ex.options).toContain(v.kana)
+      expect(new Set(ex.options).size).toBe(4)
+    }
   })
 })

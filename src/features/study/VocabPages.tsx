@@ -1,7 +1,9 @@
 import { useState } from 'react'
 import { useParams } from 'react-router'
 import { ComingSoon } from '../../components/ComingSoon'
-import { type VocabEntry, type VocabLesson, vocabLessons, vocabLessonsHira, vocabLessonsKata, vocabLessonsN4 } from '../../courses/ja/vocab'
+import { type VocabEntry, type VocabLesson, vocabLessons, vocabLessonsHira, vocabLessonsKata, vocabLessonsN3, vocabLessonsN4 } from '../../courses/ja/vocab'
+import { Furigana } from '../../components/Furigana'
+import { furiganaToPlain } from '../../lib/furigana'
 import { useSpeech } from '../../lib/audio/useSpeech'
 import { conjugateVerb } from '../../lib/conjugation'
 import { useProgress } from '../../lib/progress/store'
@@ -12,7 +14,11 @@ import { LearnTabs } from '../learn/LearnTabs'
 import { LessonList } from './LessonList'
 import { StudyLesson } from './StudyLesson'
 
-const summary = (l: VocabLesson) => l.words.slice(0, 4).map((w) => w.kana).join('・') + (l.words.length > 4 ? '…' : '')
+const summary = (l: VocabLesson) =>
+  l.words
+    .slice(0, 4)
+    .map((w) => (w.written ? furiganaToPlain(w.written) : w.kana))
+    .join('・') + (l.words.length > 4 ? '…' : '')
 
 export function VocabPage() {
   const results = useProgress((s) => s.lessons)
@@ -25,7 +31,7 @@ export function VocabPage() {
       <header className="flex flex-col gap-1">
         <h1 className="text-2xl font-extrabold">Aprender</h1>
         <p className="text-sm text-slate-500 dark:text-slate-400">
-          El vocabulario de los niveles N5 y N4, por temas: verbos, adjetivos, la casa, el trabajo… Llevas {done} de {total} palabras.
+          El vocabulario de los niveles N5, N4 y N3, por temas: verbos, adjetivos, la casa, el trabajo… Llevas {done} de {total} palabras.
         </p>
       </header>
       <LearnTabs current="vocabulario" />
@@ -65,6 +71,20 @@ export function VocabPage() {
           start={vocabLessonsHira.length + vocabLessonsKata.length + 1}
         />
       </section>
+      <section className="flex flex-col gap-2">
+        <h2 className="text-sm font-extrabold text-slate-500 uppercase">Nivel N3 (con kanji)</h2>
+        {!unlocked.has(vocabLessonsN3[0].id) && (
+          <p className="rounded-xl bg-slate-100 p-3 text-sm text-slate-600 dark:bg-slate-800 dark:text-slate-300">
+            🔒 Se abren con la primera lección de gramática N3 («ようとする»).
+          </p>
+        )}
+        <LessonList
+          lessons={list(vocabLessonsN3)}
+          results={results}
+          unlocked={unlocked}
+          start={vocabLessonsHira.length + vocabLessonsKata.length + vocabLessonsN4.length + 1}
+        />
+      </section>
     </div>
   )
 }
@@ -92,8 +112,8 @@ export function WordRow({ word }: { word: VocabEntry }) {
         🔊
       </button>
       <span className="flex min-w-0 flex-1 flex-col">
-        <span lang="ja" className="font-jp text-2xl font-bold">
-          {word.kana}
+        <span lang="ja" className="font-jp text-2xl leading-loose font-bold">
+          {word.written ? <Furigana text={word.written} /> : word.kana}
         </span>
         <span className="text-sm text-slate-500 dark:text-slate-400">{romaji}</span>
       </span>

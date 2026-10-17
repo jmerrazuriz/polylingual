@@ -4,7 +4,8 @@
 // Se suma a las palabras de words.ts (que se reclasifican cuando aparecen aquí).
 
 export type PosCode = 'n' | 'v1' | 'v2' | 'v3' | 'ai' | 'ana' | 'adv' | 'q' | 'exp'
-export type RawWord = [kana: string, meaning: string, pos: PosCode]
+/** El 4.º valor (opcional) es la forma escrita con kanji y su lectura: 練習[れんしゅう]. */
+export type RawWord = [kana: string, meaning: string, pos: PosCode, written?: string]
 
 export type VocabThemeId =
   | 'expresiones'
@@ -18,6 +19,7 @@ export type VocabThemeId =
   | 'escuela'
   | 'trabajo'
   | 'sociedad'
+  | 'sentimientos'
   | 'ocio'
   | 'naturaleza'
   | 'animales'
@@ -44,6 +46,7 @@ export const vocabThemes: Record<VocabThemeId, string> = {
   escuela: 'Escuela y estudios',
   trabajo: 'Trabajo y dinero',
   sociedad: 'Sociedad y vida',
+  sentimientos: 'Sentimientos',
   ocio: 'Ocio, transporte y compras',
   naturaleza: 'Naturaleza y clima',
   animales: 'Animales',

@@ -5,7 +5,7 @@ import { grammarByCourse } from '../courses/content.ts'
 import { counterLessons } from '../courses/ja/counters.ts'
 import { kanjiLessons } from '../courses/ja/kanji.ts'
 import { lessons as kanaLessons } from '../courses/ja/lessons.ts'
-import { vocabLessons, vocabLessonsHira, vocabLessonsKata, vocabLessonsN4 } from '../courses/ja/vocab.ts'
+import { vocabLessons, vocabLessonsHira, vocabLessonsKata, vocabLessonsN3, vocabLessonsN4 } from '../courses/ja/vocab.ts'
 import { examInfo, type ExamLevel, passedKey } from './mockExam.ts'
 import { readingById, readingTexts, unlockedReadings } from './readings.ts'
 import type { ProgressData } from './progress/model.ts'
@@ -76,6 +76,12 @@ function kanjiUnitN4(id: string, units: string[], title: string, icon: string): 
 const n4Vocab = (n: number, last = false): PathUnit => ({
   ...vocabUnit(0, `N4 · Vocabulario ${['I', 'II', 'III', 'IV', 'V'][n - 1]}`, vocabLessonsN4.slice((n - 1) * 12, last ? undefined : n * 12)),
   id: `vocab-n4-${n}`,
+})
+/** Vocabulario N3 (con kanji) en unidades de 11 lecciones; la última se lleva el resto. */
+const n3Vocab = (n: number, last = false): PathUnit => ({
+  ...vocabUnit(0, `N3 · Vocabulario ${['I', 'II', 'III', 'IV', 'V'][n - 1]} (con kanji)`, vocabLessonsN3.slice((n - 1) * 11, last ? undefined : n * 11)),
+  id: `vocab-n3-${n}`,
+  icon: '語',
 })
 
 /** Meta de cada nivel: el simulacro del JLPT (se completa al aprobarlo). */
@@ -323,6 +329,7 @@ export const japanesePath: PathUnit[] = [
     ],
   },
   kanjiUnitN4('kanji-n3-1', ['N3 · Personas y vida diaria'], 'N3 · Kanji: personas y vida diaria', '夢'),
+  n3Vocab(1),
   {
     id: 'grammar-n3-3',
     title: 'N3 · Gramática III: consejos, deber y grado',
@@ -346,9 +353,12 @@ export const japanesePath: PathUnit[] = [
     ],
   },
   kanjiUnitN4('kanji-n3-2', ['N3 · Trabajo y sociedad'], 'N3 · Kanji: trabajo y sociedad', '働'),
+  n3Vocab(2),
   kanjiUnitN4('kanji-n3-3', ['N3 · Sentimientos y cuerpo'], 'N3 · Kanji: sentimientos y cuerpo', '愛'),
   kanjiUnitN4('kanji-n3-4', ['N3 · Naturaleza y sociedad'], 'N3 · Kanji: naturaleza y sociedad', '島'),
   kanjiUnitN4('kanji-n3-5', ['N3 · Movimiento y cambio'], 'N3 · Kanji: movimiento y cambio', '進'),
+  n3Vocab(3),
+  n3Vocab(4, true),
 ]
 
 export type ItemStatus = 'done' | 'open' | 'locked'

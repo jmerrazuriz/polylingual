@@ -452,7 +452,12 @@ Meta: que quien termine el curso entienda el japonés a nivel JLPT N3. Es la eta
   - Hay 2 unidades de kanji N3 en el recorrido, en los bloques N3 de la nivelación. Los simulacros N5 y N4 usan los kanji de su nivel.
   - Segunda tanda: 72 kanji en 12 lecciones (sentimientos y cuerpo; naturaleza y sociedad; movimiento y cambio). Son 3 unidades más en el recorrido y un bloque más en la nivelación.
   - Faltan ~200 kanji N3, en tandas de ~70.
-- **C4 · Vocabulario N3** (~2.200 más, ~3.700 en total), en tandas de ~400 por tema, con kanji y furigana en las fichas.
+- 🟡 **C4 · Vocabulario N3, primera tanda publicada:**
+  - 419 palabras N3 (1.926 en total) en 50 lecciones con SRS, que se abren con la primera lección de gramática N3. Hay un tema nuevo: sentimientos.
+  - Las palabras tienen **forma escrita** con kanji y furigana (`練習[れんしゅう]`) cuando todos sus kanji los enseña el curso (141 de las N3). Las demás van en kana.
+  - Las fichas muestran el kanji con su lectura. Hay un ejercicio nuevo de **lectura de kanji** (¿cómo se lee «練習»?) en las lecciones y en los repasos.
+  - Son 4 unidades de vocabulario N3 en el recorrido y en los bloques N3 de la nivelación. Los ids anteriores no cambian.
+  - Plan original: ~2.200 palabras más (~3.700 en total), en tandas de ~400 por tema.
   - Las palabras pasan a tener forma escrita (`kanji?`) además del kana.
   - Hace falta cargar el contenido por nivel de forma asíncrona.
 - **C5 · Lecturas N3:** textos de 300–500 caracteres, avisos, correos y titulares, con preguntas al estilo del examen.

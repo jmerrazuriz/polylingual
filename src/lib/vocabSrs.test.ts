@@ -66,6 +66,9 @@ describe('vocabulario con repasos', () => {
     const n4 = unlockedVocab({}, false, done(['potencial']))
     expect(n4.size).toBe(1)
     expect([...n4][0]).toMatch(/^voc4-/)
+    // N3: con la primera lección de gramática N3.
+    const n3 = unlockedVocab({}, false, done(['you-to-suru']))
+    expect([...n3]).toEqual([expect.stringMatching(/^voc3-/)])
   })
 })
 
