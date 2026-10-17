@@ -39,7 +39,11 @@ export const placementBlocks: PlacementBlock[] = [
   { id: 'n3-gramatica-2', title: 'N3: gramática III y IV, kanji y vocabulario', unitIds: ['grammar-n3-3', 'grammar-n3-4', 'kanji-n3-2', 'vocab-n3-2', 'lectura-n3-2'] },
   { id: 'n3-kanji-2', title: 'N3: más kanji y vocabulario', unitIds: ['kanji-n3-3', 'kanji-n3-4', 'kanji-n3-5', 'vocab-n3-3', 'vocab-n3-4'] },
   { id: 'n3-gramatica-3', title: 'N3: gramática V y VI', unitIds: ['grammar-n3-5', 'grammar-n3-6'] },
-  { id: 'n3-kanji-3', title: 'N3: tercera tanda de kanji', unitIds: ['kanji-n3-6', 'kanji-n3-7', 'kanji-n3-8'] },
+  {
+    id: 'n3-kanji-3',
+    title: 'N3: tercera tanda de kanji y vocabulario',
+    unitIds: ['kanji-n3-6', 'kanji-n3-7', 'kanji-n3-8', 'vocab-n3-5', 'vocab-n3-6', 'vocab-n3-7', 'vocab-n3-8'],
+  },
 ]
 
 /** Preguntas por bloque y aciertos para aprobarlo (80 %). */

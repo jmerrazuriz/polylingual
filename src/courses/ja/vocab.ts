@@ -5,6 +5,7 @@ import type { VerbGroup } from '../../lib/conjugation.ts'
 import type { WordTheme } from './types.ts'
 import { type PosCode, type RawWord, vocabData, type VocabThemeId, vocabThemes } from './vocabData.ts'
 import { vocabDataN3 } from './vocabDataN3.ts'
+import { vocabDataN3b } from './vocabDataN3b.ts'
 import { vocabDataN4 } from './vocabDataN4.ts'
 import { allWords } from './words.ts'
 
@@ -171,7 +172,9 @@ function buildLevel(previous: VocabEntry[], data: Partial<Record<VocabThemeId, R
 
 const vocabN5 = build()
 export const vocabN4 = buildLevel(vocabN5, vocabDataN4, 'N4')
-export const vocabN3 = buildLevel([...vocabN5, ...vocabN4], vocabDataN3, 'N3')
+const vocabN3a = buildLevel([...vocabN5, ...vocabN4], vocabDataN3, 'N3')
+const vocabN3b = buildLevel([...vocabN5, ...vocabN4, ...vocabN3a], vocabDataN3b, 'N3')
+export const vocabN3 = [...vocabN3a, ...vocabN3b]
 export const vocab: VocabEntry[] = [...vocabN5, ...vocabN4, ...vocabN3]
 export const vocabById = new Map(vocab.map((v) => [v.id, v]))
 export const verbs = vocab.filter((v) => v.pos === 'verb')
@@ -271,8 +274,34 @@ const themeOrderN3: VocabThemeId[] = [
   'expresiones',
 ]
 
-/** Lecciones de un nivel (N4, N3): por tema, intercalando los temas en cada vuelta, como las del N5. */
-function levelLessons(entries: VocabEntry[], order: VocabThemeId[], level: 'N4' | 'N3'): VocabLesson[] {
+/** Temas de la segunda tanda N3 (con naturaleza y ocio). */
+const themeOrderN3b: VocabThemeId[] = [
+  'sentimientos',
+  'verbos-1',
+  'personas',
+  'adjetivos-na',
+  'trabajo',
+  'verbos-2',
+  'sociedad',
+  'adjetivos-i',
+  'tiempo',
+  'verbos-3',
+  'escuela',
+  'naturaleza',
+  'adverbios',
+  'lugares',
+  'cuerpo',
+  'ocio',
+  'casa',
+  'expresiones',
+]
+
+/**
+ * Lecciones de un nivel (N4, N3): por tema, intercalando los temas en cada vuelta, como las del N5.
+ * Una tanda nueva (`after`: las lecciones de las tandas anteriores) sigue la numeración de cada tema
+ * sin cambiar las lecciones que ya existen.
+ */
+function levelLessons(entries: VocabEntry[], order: VocabThemeId[], level: 'N4' | 'N3', after: VocabLesson[] = []): VocabLesson[] {
   const prefix = level === 'N4' ? 'voc4' : 'voc3'
   const track = level === 'N4' ? 'n4' : 'n3'
   const perTheme = order.map((theme) => {
@@ -280,10 +309,11 @@ function levelLessons(entries: VocabEntry[], order: VocabThemeId[], level: 'N4' 
       entries.filter((v) => v.theme === theme),
       10,
     )
+    const offset = after.filter((l) => l.theme === theme).length
     return parts.map(
       (words, i): VocabLesson => ({
-        id: `${prefix}-${theme}-${i + 1}`,
-        title: `${level} · ${vocabThemes[theme]}${parts.length > 1 ? ` · ${i + 1}` : ''}`,
+        id: `${prefix}-${theme}-${offset + i + 1}`,
+        title: `${level} · ${vocabThemes[theme]}${parts.length + offset > 1 ? ` · ${offset + i + 1}` : ''}`,
         theme,
         track,
         words,
@@ -299,7 +329,10 @@ function levelLessons(entries: VocabEntry[], order: VocabThemeId[], level: 'N4' 
 export const vocabLessonsHira = hiraganaLessons()
 export const vocabLessonsKata = katakanaLessons()
 export const vocabLessonsN4 = levelLessons(vocabN4, themeOrderN4, 'N4')
-export const vocabLessonsN3 = levelLessons(vocabN3, themeOrderN3, 'N3')
+const vocabLessonsN3a = levelLessons(vocabN3a, themeOrderN3, 'N3')
+/** Lecciones N3 por tanda (en el recorrido cada tanda tiene sus unidades). */
+export const vocabLessonsN3Batches: VocabLesson[][] = [vocabLessonsN3a, levelLessons(vocabN3b, themeOrderN3b, 'N3', vocabLessonsN3a)]
+export const vocabLessonsN3 = vocabLessonsN3Batches.flat()
 export const vocabLessons: VocabLesson[] = [...vocabLessonsHira, ...vocabLessonsKata, ...vocabLessonsN4, ...vocabLessonsN3]
 
 /** Las palabras solo en hiragana se abren al terminar el hiragana; las de katakana, al terminar el katakana. */

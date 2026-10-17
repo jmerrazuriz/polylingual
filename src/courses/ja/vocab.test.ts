@@ -4,7 +4,7 @@ import { romajiReadings } from '../../lib/romaji'
 import { furiganaToKana, KANJI_CHAR, parseFurigana } from '../../lib/furigana'
 import { wordReadingExercise } from '../../lib/vocabExercises'
 import { kanjiByChar } from './kanji'
-import { iAdjectives, verbs, vocab, vocabLessons, vocabLessonsHira, vocabLessonsKata, vocabLessonsN3, vocabLessonsN4, vocabN3, vocabN4 } from './vocab'
+import { iAdjectives, verbs, vocab, vocabLessons, vocabLessonsHira, vocabLessonsKata, vocabLessonsN3, vocabLessonsN3Batches, vocabLessonsN4, vocabN3, vocabN4 } from './vocab'
 import { allWords } from './words'
 
 describe('vocabulario N5', () => {
@@ -68,8 +68,18 @@ describe('vocabulario N5', () => {
     for (const l of [...vocabLessonsHira, ...vocabLessonsKata]) for (const w of l.words) expect(w.level, l.id).toBe('N5')
   })
 
-  it('N3: unas 400 palabras, sin repetir las de niveles anteriores ni cambiar sus ids', () => {
-    expect(vocabN3.length).toBeGreaterThanOrEqual(380)
+  it('N3: dos tandas que no cambian las lecciones de la primera', () => {
+    const [a, b] = vocabLessonsN3Batches
+    expect(a).toHaveLength(50)
+    expect(a.find((l) => l.id === 'voc3-sentimientos-1')?.words[0].kana).toBe('かんじょう')
+    expect(b.length).toBeGreaterThanOrEqual(50)
+    const ids = vocabLessonsN3.map((l) => l.id)
+    expect(new Set(ids).size).toBe(ids.length)
+    expect(b.some((l) => l.id === 'voc3-sentimientos-6')).toBe(true)
+  })
+
+  it('N3: unas 950 palabras, sin repetir las de niveles anteriores ni cambiar sus ids', () => {
+    expect(vocabN3.length).toBeGreaterThanOrEqual(950)
     expect(vocab.filter((v) => v.level === 'N4')).toHaveLength(vocabN4.length)
     expect(vocabN4.find((v) => v.kana === 'かえる')?.id).toBe('かえる·v2')
     const earlier = new Set([...vocab.filter((v) => v.level !== 'N3')].map((v) => `${v.kana}|${v.pos}|${v.group ?? ''}`))

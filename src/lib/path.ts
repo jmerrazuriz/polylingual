@@ -5,7 +5,7 @@ import { grammarByCourse } from '../courses/content.ts'
 import { counterLessons } from '../courses/ja/counters.ts'
 import { kanjiLessons } from '../courses/ja/kanji.ts'
 import { lessons as kanaLessons } from '../courses/ja/lessons.ts'
-import { vocabLessons, vocabLessonsHira, vocabLessonsKata, vocabLessonsN3, vocabLessonsN4 } from '../courses/ja/vocab.ts'
+import { vocabLessons, vocabLessonsHira, vocabLessonsKata, vocabLessonsN3Batches, vocabLessonsN4 } from '../courses/ja/vocab.ts'
 import { examInfo, type ExamLevel, passedKey } from './mockExam.ts'
 import { readingById, readingTexts, unlockedReadings } from './readings.ts'
 import type { ProgressData } from './progress/model.ts'
@@ -77,12 +77,22 @@ const n4Vocab = (n: number, last = false): PathUnit => ({
   ...vocabUnit(0, `N4 · Vocabulario ${['I', 'II', 'III', 'IV', 'V'][n - 1]}`, vocabLessonsN4.slice((n - 1) * 12, last ? undefined : n * 12)),
   id: `vocab-n4-${n}`,
 })
-/** Vocabulario N3 (con kanji) en unidades de 11 lecciones; la última se lleva el resto. */
-const n3Vocab = (n: number, last = false): PathUnit => ({
-  ...vocabUnit(0, `N3 · Vocabulario ${['I', 'II', 'III', 'IV', 'V'][n - 1]} (con kanji)`, vocabLessonsN3.slice((n - 1) * 11, last ? undefined : n * 11)),
-  id: `vocab-n3-${n}`,
-  icon: '語',
-})
+/**
+ * Vocabulario N3 (con kanji). Primera tanda: unidades I–IV de 11 lecciones (la IV se lleva el resto).
+ * Segunda tanda: unidades V–VIII, repartidas en partes parejas.
+ */
+const [n3VocabA, n3VocabB] = vocabLessonsN3Batches
+const n3Vocab = (n: number, last = false): PathUnit => {
+  const lessons =
+    n <= 4
+      ? n3VocabA.slice((n - 1) * 11, last ? undefined : n * 11)
+      : n3VocabB.slice(Math.round(((n - 5) * n3VocabB.length) / 4), Math.round(((n - 4) * n3VocabB.length) / 4))
+  return {
+    ...vocabUnit(0, `N3 · Vocabulario ${['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII'][n - 1]} (con kanji)`, lessons),
+    id: `vocab-n3-${n}`,
+    icon: '語',
+  }
+}
 
 /** Meta de cada nivel: el simulacro del JLPT (se completa al aprobarlo). */
 const examUnit = (level: ExamLevel): PathUnit => ({
@@ -386,6 +396,10 @@ export const japanesePath: PathUnit[] = [
   kanjiUnitN4('kanji-n3-6', ['N3 · Personas y comunicación'], 'N3 · Kanji: personas y comunicación', '議'),
   kanjiUnitN4('kanji-n3-7', ['N3 · Cosas y tiempo'], 'N3 · Kanji: cosas y tiempo', '昔'),
   kanjiUnitN4('kanji-n3-8', ['N3 · Escuela, cuerpo y acciones'], 'N3 · Kanji: escuela, cuerpo y acciones', '落'),
+  n3Vocab(5),
+  n3Vocab(6),
+  n3Vocab(7),
+  n3Vocab(8),
   examUnit('N3'),
 ]
 
