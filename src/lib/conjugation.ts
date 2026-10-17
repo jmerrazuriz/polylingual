@@ -26,7 +26,18 @@ export type VerbForm =
   | 'passive'
   | 'causative'
 
-export type AdjForm = 'present' | 'negative' | 'past' | 'pastNegative' | 'te' | 'adverb' | 'polite' | 'politeNegative' | 'politePast'
+export type AdjForm =
+  | 'present'
+  | 'negative'
+  | 'past'
+  | 'pastNegative'
+  | 'te'
+  | 'adverb'
+  | 'polite'
+  | 'politeNegative'
+  | 'politePast'
+  | 'ba'
+  | 'tara'
 
 export const verbFormInfo: Record<VerbForm, { label: string; level: 'N5' | 'N4'; example: string }> = {
   masu: { label: 'ます (presente educado)', level: 'N5', example: 'たべます' },
@@ -152,6 +163,7 @@ export function conjugateAdjective(adj: string, kind: 'i' | 'na', form: AdjForm)
     const forms: Record<AdjForm, string> = {
       present: 'だ', negative: 'じゃない', past: 'だった', pastNegative: 'じゃなかった', te: 'で', adverb: 'に',
       polite: 'です', politeNegative: 'じゃありません', politePast: 'でした',
+      ba: 'なら', tara: 'だったら',
     }
     return adj + forms[form]
   }
@@ -168,6 +180,8 @@ export function conjugateAdjective(adj: string, kind: 'i' | 'na', form: AdjForm)
     polite: adj + 'です',
     politeNegative: stem + 'くないです',
     politePast: stem + 'かったです',
+    ba: stem + 'ければ',
+    tara: stem + 'かったら',
   }
   return forms[form]
 }

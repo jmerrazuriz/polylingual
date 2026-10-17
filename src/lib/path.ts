@@ -222,6 +222,29 @@ export const japanesePath: PathUnit[] = [
   },
   vocabUnit(7, 'Vocabulario VII', hiraVocab(72)),
   readingUnit(4, 'Lectura y audición IV'),
+  // ── Etapa B: N4 ──
+  {
+    id: 'grammar-n4-1',
+    title: 'N4 · Gramática I: formas y condicionales',
+    icon: '文',
+    stops: [
+      stop('grammar', ['potencial', 'volitiva']),
+      stop('grammar', ['condicional-ba', 'condicional-tara']),
+      stop('grammar', ['condicional-to-nara', 'dar-recibir']),
+      stop('grammar', ['te-ageru', 'pasiva']),
+    ],
+  },
+  {
+    id: 'grammar-n4-2',
+    title: 'N4 · Gramática II: matices',
+    icon: '文',
+    stops: [
+      stop('grammar', ['causativa', 'te-shimau']),
+      stop('grammar', ['te-oku-miru', 'obligacion']),
+      stop('grammar', ['hou-ga-ii', 'sou-da']),
+      stop('grammar', ['kamoshirenai', 'node-noni']),
+    ],
+  },
 ]
 
 export type ItemStatus = 'done' | 'open' | 'locked'

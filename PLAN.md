@@ -389,6 +389,25 @@ app_idiomas/
   - Se guardan solo los documentos que cambiaron. El progreso del formato anterior se lee igual y se pasa al nuevo al entrar, en una escritura atómica.
   - Las reglas de Firestore validan los documentos nuevos.
 - ✅ **Audio:** la voz japonesa lee solo el japonés de cada texto; lo que está en español no se lee.
+### Etapa B: nivel N4 (en curso)
+Meta: que quien termine la etapa pueda aprobar el JLPT N4. Va por tandas, cada una publicada y probada:
+- 🟡 **B1 · Gramática N4, primera tanda publicada (16 lecciones):**
+  - Formas: potencial, volitiva y つもり, condicionales ば, たら, と y なら, pasiva y causativa.
+  - Dar y recibir, y sus formas て.
+  - てしまう, ておく/てみる, なければならない, たほうがいい, そうだ, かもしれない/はず, ので/のに.
+  - Las respuestas escritas se verifican contra el motor de conjugación, que ahora también conjuga los condicionales de adjetivos. La lista de gramática se agrupa por nivel.
+  - Hay 2 unidades N4 en el recorrido y un bloque N4 en la nivelación.
+  - Falta la segunda tanda: ようだ/みたい, ながら, すぎる/やすい/にくい, し, ために/ように, ことにする/ことになる, ところ, てある, かどうか y keigo básico.
+- Plan original de B1 (~30 lecciones):
+  - Formas: potencial, volitiva y つもり, condicionales ば/たら/と/なら, pasiva, causativa.
+  - Dar y recibir (あげる/くれる/もらう y sus formas て).
+  - てしまう, ておく, てみる, なければならない, たほうがいい, そうだ/ようだ/みたい, かもしれない, ながら, ので/のに, すぎる, し, ために/ように, はず, ことにする, ところ y keigo básico.
+  - El motor de conjugación ya tiene las formas N4.
+- **B2 · Vocabulario N4:** unas 600 palabras más (~1.500 en total), con lecciones y SRS como el N5.
+- **B3 · Kanji N4:** unos 200 kanji más (~300), con trazos de KanjiVG, lecciones y SRS.
+- **B4 · Furigana:** lector con kanji y lectura encima, que se puede ocultar, y opción de texto sin espacios.
+- **B5 · Lecturas y diálogos N4:** de ~200 caracteres, con audio más lento opcional.
+- **B6 · Simulacro N4,** unidades N4 en el recorrido y bloques N4 en la nivelación.
 - **Para agregar un idioma:** crear `src/courses/<id>/` con su contenido, registrar la gramática en `src/courses/content.ts`, cambiar su `status` a `available` y darle sus secciones. Las lecciones de vocabulario para idiomas sin silabario propio son lo siguiente a diseñar. Quedan como ideas para después (sección 9): tarjetas SRS de palabras, temas de palabras en los juegos, pares confusos juntos en los juegos, kanji, frases con furigana y evaluación de pronunciación.
 
 **Hiragana primero:** las fases 1 a 6 se construyen solo con hiragana. El código se escribe desde el principio para cualquier silabario (el campo `script` en los datos), así que katakana entra en la fase 7 casi solo como contenido.

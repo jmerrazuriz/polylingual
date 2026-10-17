@@ -4,6 +4,16 @@ import { conjugateAdjective, conjugateVerb, type VerbForm } from './conjugation'
 const all = (verb: string, group: Parameters<typeof conjugateVerb>[1], forms: VerbForm[]) =>
   forms.map((f) => conjugateVerb(verb, group, f))
 
+describe('condicionales de adjetivos', () => {
+  it('ければ / かったら y なら / だったら', () => {
+    expect(conjugateAdjective('やすい', 'i', 'ba')).toBe('やすければ')
+    expect(conjugateAdjective('いい', 'i', 'ba')).toBe('よければ')
+    expect(conjugateAdjective('さむい', 'i', 'tara')).toBe('さむかったら')
+    expect(conjugateAdjective('ひま', 'na', 'ba')).toBe('ひまなら')
+    expect(conjugateAdjective('ひま', 'na', 'tara')).toBe('ひまだったら')
+  })
+})
+
 describe('conjugación de verbos', () => {
   it('grupo 2 (ichidan): たべる', () => {
     expect(all('たべる', 'ichidan', ['masu', 'nai', 'ta', 'te', 'tai', 'potential', 'volitional', 'ba', 'passive', 'causative', 'imperative'])).toEqual([

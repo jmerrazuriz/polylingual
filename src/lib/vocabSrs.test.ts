@@ -83,18 +83,29 @@ describe('práctica de conjugación', () => {
 
   it('las respuestas escritas de la gramática coinciden con el motor de conjugación', () => {
     // «のむ → forma て» y similares: la respuesta debe ser la que da conjugateVerb.
-    const forms: Record<string, Parameters<typeof conjugateVerb>[2]> = { 'forma て': 'te', 'forma ない': 'nai', 'forma た': 'ta', 'forma ます': 'masu' }
+    const forms: Record<string, Parameters<typeof conjugateVerb>[2]> = {
+      'forma て': 'te',
+      'forma ない': 'nai',
+      'forma た': 'ta',
+      'forma ます': 'masu',
+      'forma potencial': 'potential',
+      'forma volitiva': 'volitional',
+      'forma ば': 'ba',
+      'forma たら': 'tara',
+      pasiva: 'passive',
+      causativa: 'causative',
+    }
     let checked = 0
     for (const l of japaneseGrammar) {
       for (const ex of l.exercises) {
         if (ex.type !== 'type') continue
-        const m = ex.prompt.match(/^(\S+) → (forma \S+)$/)
+        const m = ex.prompt.match(/^(\S+) → (.+)$/)
         const verb = m && verbs.find((v) => v.kana === m[1])
         if (!m || !verb || !forms[m[2]]) continue
         expect(ex.answers[0], ex.prompt).toBe(conjugateVerb(verb.kana, verb.group!, forms[m[2]]))
         checked++
       }
     }
-    expect(checked).toBeGreaterThanOrEqual(10)
+    expect(checked).toBeGreaterThanOrEqual(20)
   })
 })

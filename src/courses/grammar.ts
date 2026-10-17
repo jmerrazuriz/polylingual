@@ -20,6 +20,8 @@ export type GrammarExercise =
 
 export type GrammarLesson = {
   id: string
+  /** Nivel (JLPT en japonés); sin indicar es el básico. */
+  level?: 'N5' | 'N4' | 'N3'
   title: string
   /** Una línea para la lista de lecciones. */
   summary: string

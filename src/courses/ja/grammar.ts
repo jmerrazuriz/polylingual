@@ -1,4 +1,5 @@
 import type { GrammarLesson } from '../grammar.ts'
+import { grammarN4 } from './grammarN4.ts'
 import { grammarN5 } from './grammarN5.ts'
 
 // Gramática básica de japonés usando solo kana. Las palabras van separadas por
@@ -307,5 +308,5 @@ const basics: GrammarLesson[] = [
   },
 ]
 
-/** Todas las lecciones de gramática, en orden: las básicas y luego el resto del N5. */
-export const japaneseGrammar: GrammarLesson[] = [...basics, ...grammarN5]
+/** Todas las lecciones de gramática, en orden: las básicas, el resto del N5 y el N4. */
+export const japaneseGrammar: GrammarLesson[] = [...basics, ...grammarN5, ...grammarN4]
