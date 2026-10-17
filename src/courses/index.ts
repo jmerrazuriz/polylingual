@@ -44,9 +44,9 @@ export const courses: Course[] = [
     native: 'Deutsch',
     flag: '🇩🇪',
     status: 'soon',
-    tagline: 'Pronunciación, vocabulario y gramática.',
+    tagline: 'Ottos Weg: del A1 al C2, para vivir y trabajar en Alemania.',
     speechLang: 'de-DE',
-    sections: ['aprender', 'gramatica', 'practicar', 'juegos'],
+    sections: ['tabla', 'aprender'],
   },
   {
     id: 'fr',

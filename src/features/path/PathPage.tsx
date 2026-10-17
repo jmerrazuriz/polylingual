@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router'
 import { useAccount } from '../../lib/account/store'
-import type { ExamLevel } from '../../lib/mockExam'
-import { japanesePathLevels, type PathStop, type PathUnit, pathStatus, type StopStatus } from '../../lib/path'
+import { coursePath } from '../../lib/coursePath'
+import { type ItemStatus, type PathItem, type PathStop, type PathUnit, pathStatusFor, type StopStatus } from '../../lib/path'
 import { hasNotStarted } from '../../lib/pathPlacement'
 import { progressSnapshot, useProgress } from '../../lib/progress/store'
 import { LearnTabs } from '../learn/LearnTabs'
@@ -27,16 +27,20 @@ export function PathPage() {
   useProgress((s) => s.records)
   useProgress((s) => s.unlockAll)
   const guest = useAccount((s) => s.status !== 'user')
-  const { stops, current, itemStatus } = pathStatus(progressSnapshot(), guest)
+  const cp = coursePath(useProgress((s) => s.course))
+  const { stops, current, itemStatus } = pathStatusFor(cp.units, cp.itemStatus(progressSnapshot(), guest))
   const [open, setOpen] = useState<string | null>(null)
   const selected = open ?? current?.id ?? null
 
   // El nivel de la parada actual se muestra abierto; los demás, plegados (se pueden abrir).
-  const currentLevel =
-    japanesePathLevels.find((l) => l.units.some((unit) => unit.stops.some((s) => s.id === current?.id)))?.level ??
-    japanesePathLevels.at(-1)!.level
-  const [expanded, setExpanded] = useState<Set<ExamLevel>>(() => new Set([currentLevel]))
-  const toggleLevel = (level: ExamLevel) =>
+  // Sin parada actual: el primer nivel que aún no tiene lecciones (curso en preparación) o el último.
+  const currentLevel = (
+    cp.levels.find((l) => l.units.some((unit) => unit.stops.some((s) => s.id === current?.id))) ??
+    cp.levels.find((l) => l.units.length === 0) ??
+    cp.levels.at(-1)!
+  ).level
+  const [expanded, setExpanded] = useState<Set<string>>(() => new Set([currentLevel]))
+  const toggleLevel = (level: string) =>
     setExpanded((prev) => {
       const next = new Set(prev)
       if (next.has(level)) next.delete(level)
@@ -57,31 +61,32 @@ export function PathPage() {
       <header className="flex flex-col gap-1">
         <h1 className="text-2xl font-extrabold">Aprender</h1>
         <p className="text-sm text-slate-500 dark:text-slate-400">
-          Tu recorrido por el japonés, unidad por unidad. Cada parada agrupa unas pocas lecciones. {doneStops}/{stops.size} paradas
-          completadas.
+          {cp.intro} {doneStops}/{stops.size} paradas completadas.
         </p>
       </header>
 
       <LearnTabs current="recorrido" />
 
-      {hasNotStarted(progressSnapshot()) && <PlacementOffer />}
+      {cp.hasPlacement && hasNotStarted(progressSnapshot()) && <PlacementOffer firstLessonTo={cp.firstLessonTo} />}
 
-      <div className="grid grid-cols-2 gap-2">
-        <Link to="/hoy" className="flex items-center gap-2 rounded-2xl border border-slate-200 bg-white p-3 hover:border-accent dark:border-slate-800 dark:bg-slate-900">
-          <span className="text-2xl" aria-hidden>
-            ☀️
-          </span>
-          <span className="text-sm font-bold">Lección de hoy</span>
-        </Link>
-        <Link to="/extra" className="flex items-center gap-2 rounded-2xl border border-slate-200 bg-white p-3 hover:border-accent dark:border-slate-800 dark:bg-slate-900">
-          <span className="text-2xl" aria-hidden>
-            ♾️
-          </span>
-          <span className="text-sm font-bold">Lección extra (sin límite)</span>
-        </Link>
-      </div>
+      {cp.dailyLessons && (
+        <div className="grid grid-cols-2 gap-2">
+          <Link to="/hoy" className="flex items-center gap-2 rounded-2xl border border-slate-200 bg-white p-3 hover:border-accent dark:border-slate-800 dark:bg-slate-900">
+            <span className="text-2xl" aria-hidden>
+              ☀️
+            </span>
+            <span className="text-sm font-bold">Lección de hoy</span>
+          </Link>
+          <Link to="/extra" className="flex items-center gap-2 rounded-2xl border border-slate-200 bg-white p-3 hover:border-accent dark:border-slate-800 dark:bg-slate-900">
+            <span className="text-2xl" aria-hidden>
+              ♾️
+            </span>
+            <span className="text-sm font-bold">Lección extra (sin límite)</span>
+          </Link>
+        </div>
+      )}
 
-      {japanesePathLevels.map((lvl) => {
+      {cp.levels.map((lvl) => {
         const levelStops = lvl.units.flatMap((unit) => unit.stops)
         const levelDone = levelStops.filter((s) => stops.get(s.id) === 'done').length
         const isOpen = expanded.has(lvl.level)
@@ -98,7 +103,7 @@ export function PathPage() {
               <span className="flex h-12 w-14 items-center justify-center rounded-xl bg-ink text-lg font-extrabold text-white">{lvl.level}</span>
               <span className="flex-1">
                 <span className="block text-lg font-extrabold">
-                  {levelTitle[lvl.level]}
+                  {lvl.title}
                   {isCurrent && <span className="ml-2 rounded-full bg-accent px-2 py-0.5 align-middle text-xs text-white">Estás aquí</span>}
                 </span>
                 <span className="text-sm text-slate-500 dark:text-slate-400">
@@ -109,12 +114,20 @@ export function PathPage() {
                 {isOpen ? '▾' : '▸'}
               </span>
             </button>
+            {isOpen && lvl.goal && <p className="-mt-3 px-1 text-sm text-slate-600 dark:text-slate-400">Meta del nivel: {lvl.goal}</p>}
+            {isOpen && lvl.units.length === 0 && (
+              <p className="rounded-2xl border-2 border-dashed border-slate-300 p-4 text-center text-sm text-slate-500 dark:border-slate-700">
+                Este nivel está en preparación. Sus lecciones aparecerán aquí.
+              </p>
+            )}
             {isOpen && lvl.units.map((unit, j) => renderUnit(unit, lvl.firstIndex + j))}
           </section>
         )
       })}
 
-      <p className="text-center text-sm text-slate-500">¿Terminaste todo? Sigue con la lección extra: se arma sola con lo que ya sabes.</p>
+      {cp.dailyLessons && (
+        <p className="text-center text-sm text-slate-500">¿Terminaste todo? Sigue con la lección extra: se arma sola con lo que ya sabes.</p>
+      )}
     </div>
   )
 
@@ -173,12 +186,11 @@ export function PathPage() {
   }
 }
 
-const levelTitle: Record<ExamLevel, string> = { N5: 'Japonés básico', N4: 'Japonés elemental', N3: 'Japonés intermedio' }
 
 const statusLabel: Record<StopStatus, string> = { done: 'completada', current: 'actual', open: 'abierta', locked: 'bloqueada' }
 
 /** Las lecciones de una parada, con su estado y botón para empezar o repetir. */
-function StopPanel({ stop, itemStatus }: { stop: PathStop; itemStatus: ReturnType<typeof pathStatus>['itemStatus'] }) {
+function StopPanel({ stop, itemStatus }: { stop: PathStop; itemStatus: (i: PathItem) => ItemStatus }) {
   return (
     <div className="mt-3 w-full max-w-sm rounded-2xl border border-slate-200 bg-white p-3 shadow-md dark:border-slate-800 dark:bg-slate-900">
       <ul className="flex flex-col gap-2">
@@ -211,7 +223,7 @@ function StopPanel({ stop, itemStatus }: { stop: PathStop; itemStatus: ReturnTyp
 }
 
 /** Para quien no empezó el recorrido: hacer el test de nivelación o partir de cero. */
-function PlacementOffer() {
+function PlacementOffer({ firstLessonTo }: { firstLessonTo: string | null }) {
   return (
     <section className="flex flex-col gap-3 rounded-2xl border-2 border-accent/40 bg-accent/5 p-4 sm:flex-row sm:items-center">
       <span className="text-4xl" aria-hidden>
@@ -227,9 +239,11 @@ function PlacementOffer() {
         <Link to="/nivelacion" className="rounded-full bg-ink px-5 py-2.5 font-bold text-white hover:opacity-90">
           Hacer el test
         </Link>
-        <Link to="/aprender/vocales" className="rounded-full border border-slate-300 px-5 py-2.5 font-bold dark:border-slate-700">
-          Empezar de cero
-        </Link>
+        {firstLessonTo && (
+          <Link to={firstLessonTo} className="rounded-full border border-slate-300 px-5 py-2.5 font-bold dark:border-slate-700">
+            Empezar de cero
+          </Link>
+        )}
       </span>
     </section>
   )

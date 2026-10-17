@@ -20,7 +20,9 @@ export function CoursesPage() {
       <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         {courses.map((c) => {
           const active = c.id === current
-          const soon = c.status === 'soon'
+          // En desarrollo se puede abrir el curso en preparación (alemán) para probarlo.
+          const preview = c.status === 'soon' && import.meta.env.DEV && c.id === 'de'
+          const soon = c.status === 'soon' && !preview
           return (
             <li key={c.id}>
               <button
@@ -43,7 +45,11 @@ export function CoursesPage() {
                   </span>
                   <span className="text-sm text-slate-500 dark:text-slate-400">{c.tagline}</span>
                 </span>
-                {soon ? (
+                {preview ? (
+                  <span className="rounded-full bg-amber-100 px-2.5 py-1 text-xs font-bold text-amber-800 dark:bg-amber-950 dark:text-amber-200">
+                    Vista previa
+                  </span>
+                ) : soon ? (
                   <span className="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-bold text-slate-500 dark:bg-slate-800">
                     Próximamente
                   </span>

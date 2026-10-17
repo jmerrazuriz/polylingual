@@ -1,5 +1,6 @@
 import { Link } from 'react-router'
 import { courseById } from '../../courses'
+import { characters } from '../../courses/de/levels'
 import { isDailyComplete } from '../../lib/daily'
 import { lessons as allLessons } from '../../courses/ja/lessons'
 import { nextDue } from '../../lib/progress/srs'
@@ -23,6 +24,7 @@ const features = [
 
 export function HomePage() {
   const course = courseById(useProgress((s) => s.course))
+  if (course.id === 'de') return <GermanHome />
   return (
     <div className="flex flex-col gap-10">
       <section className="flex flex-col items-center gap-4 pt-6 text-center">
@@ -164,5 +166,51 @@ function DailyCard() {
       </span>
       {!done && <span className="rounded-full bg-white px-4 py-2 font-bold text-accent">{progress ? 'Seguir' : 'Empezar'}</span>}
     </Link>
+  )
+}
+
+/** Inicio del curso de alemán (en preparación): el recorrido Ottos Weg y las tablas. */
+function GermanHome() {
+  return (
+    <div className="flex flex-col gap-8">
+      <section className="flex flex-col items-center gap-4 pt-6 text-center">
+        <div lang="de" className="flex gap-3 text-6xl font-extrabold md:text-7xl">
+          <span className="text-ink dark:text-white">Ä</span>
+          <span className="text-accent">ß</span>
+        </div>
+        <h1 className="text-3xl font-extrabold md:text-4xl">🇩🇪 Alemán · Ottos Weg</h1>
+        <p className="max-w-md text-slate-600 dark:text-slate-400">
+          Del A1 al C2, con alemán para vivir y trabajar en Alemania. El curso está en preparación: el primer nivel (A1) llega pronto.
+        </p>
+      </section>
+      <section className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+        {Object.values(characters).map((c) => (
+          <div key={c.name} className="flex flex-col gap-1 rounded-2xl border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900">
+            <span className="text-lg font-extrabold">{c.name}</span>
+            <span className="text-sm text-slate-500 dark:text-slate-400">{c.description}</span>
+          </div>
+        ))}
+      </section>
+      <section className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+        {[
+          { to: '/aprender', glyph: 'A1', title: 'Recorrido', text: 'Los niveles A1 a C2 y lo que podrás hacer en cada uno.' },
+          { to: '/tabla', glyph: 'der', title: 'Tablas', text: 'Artículos, casos, terminaciones y un conjugador con práctica.' },
+        ].map((f) => (
+          <Link
+            key={f.to}
+            to={f.to}
+            className="flex items-center gap-4 rounded-2xl border border-slate-200 bg-white p-4 transition hover:-translate-y-0.5 hover:shadow-md dark:border-slate-800 dark:bg-slate-900"
+          >
+            <span lang="de" className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-ink text-xl font-extrabold text-white">
+              {f.glyph}
+            </span>
+            <span>
+              <span className="block font-extrabold">{f.title}</span>
+              <span className="text-sm text-slate-500 dark:text-slate-400">{f.text}</span>
+            </span>
+          </Link>
+        ))}
+      </section>
+    </div>
   )
 }

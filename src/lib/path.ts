@@ -450,22 +450,30 @@ export const japanesePath: PathUnit[] = [
 ]
 
 /** Un nivel del recorrido: sus unidades, desde la que sigue al simulacro anterior hasta su propio simulacro. */
-export type PathLevel = { level: ExamLevel; units: PathUnit[]; firstIndex: number }
+export type PathLevel = { level: string; title: string; units: PathUnit[]; firstIndex: number; goal?: string }
 
-export const japanesePathLevels: PathLevel[] = (() => {
+/** Agrupa un recorrido por nivel: cada nivel termina en su simulacro (unidad `examen-<nivel>`). */
+export function levelsEndingInExams(path: PathUnit[], titles: Record<string, string>): PathLevel[] {
   const levels: PathLevel[] = []
   let units: PathUnit[] = []
   let firstIndex = 0
-  japanesePath.forEach((unit, i) => {
+  path.forEach((unit, i) => {
     units.push(unit)
     if (unit.id.startsWith('examen-')) {
-      levels.push({ level: unit.id.slice('examen-'.length).toUpperCase() as ExamLevel, units, firstIndex })
+      const level = unit.id.slice('examen-'.length).toUpperCase()
+      levels.push({ level, title: titles[level] ?? level, units, firstIndex })
       units = []
       firstIndex = i + 1
     }
   })
   return levels
-})()
+}
+
+export const japanesePathLevels = levelsEndingInExams(japanesePath, {
+  N5: 'Japonés básico',
+  N4: 'Japonés elemental',
+  N3: 'Japonés intermedio',
+})
 
 export type ItemStatus = 'done' | 'open' | 'locked'
 export type StopStatus = 'done' | 'current' | 'open' | 'locked'
@@ -524,10 +532,14 @@ export function pathItemStatus(p: ProgressData, everythingOpen: boolean): (i: Pa
 
 /** Estado de cada parada; la primera parada abierta sin terminar es la actual. */
 export function pathStatus(p: ProgressData, everythingOpen: boolean) {
-  const itemStatus = pathItemStatus(p, everythingOpen)
+  return pathStatusFor(japanesePath, pathItemStatus(p, everythingOpen))
+}
+
+/** Lo mismo para cualquier recorrido, con la función que da el estado de cada elemento. */
+export function pathStatusFor(path: PathUnit[], itemStatus: (i: PathItem) => ItemStatus) {
   const stops = new Map<string, StopStatus>()
   let current: PathStop | null = null
-  for (const unit of japanesePath) {
+  for (const unit of path) {
     for (const s of unit.stops) {
       const statuses = s.items.map(itemStatus)
       let status: StopStatus = statuses.every((x) => x === 'done') ? 'done' : statuses.some((x) => x === 'open') ? 'open' : 'locked'

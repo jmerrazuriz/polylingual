@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router'
 import { SaveProgressPrompt } from '../../components/SaveProgressPrompt'
 import type { GrammarExercise } from '../../courses/grammar'
+import { coursePath } from '../../lib/coursePath'
 import { japanesePath } from '../../lib/path'
 import {
   buildBlock,
@@ -24,11 +25,31 @@ type Phase =
 const unitTitles = (blocks: PlacementBlock[]) =>
   blocks.flatMap((b) => b.unitIds).map((id) => japanesePath.find((u) => u.id === id)!.title)
 
+/** El test de nivelación del curso activo (por ahora solo el japonés tiene). */
+export function PathPlacementPage() {
+  const course = useProgress((s) => s.course)
+  if (!coursePath(course).hasPlacement) {
+    return (
+      <section className="mx-auto flex max-w-md flex-col items-center gap-4 py-8 text-center">
+        <span className="text-6xl" aria-hidden>
+          🧭
+        </span>
+        <h1 className="text-2xl font-extrabold">Test de nivelación</h1>
+        <p className="text-slate-600 dark:text-slate-400">Este curso todavía no tiene test de nivelación. Llegará junto con su primer nivel.</p>
+        <Link to="/aprender" className="rounded-full bg-ink px-5 py-2.5 font-bold text-white hover:opacity-90">
+          Volver al recorrido
+        </Link>
+      </section>
+    )
+  }
+  return <JapanesePlacement />
+}
+
 /**
  * Test de nivelación del recorrido: bloques de 8 preguntas de dificultad creciente.
  * Cada bloque aprobado (80 %) completa sus unidades; se puede parar entre bloques.
  */
-export function PathPlacementPage() {
+function JapanesePlacement() {
   const [phase, setPhase] = useState<Phase>({ kind: 'intro' })
   const apply = useProgress((s) => s.applyPlacement)
   // Quien vuelve con progreso empieza en el primer bloque que le falta.

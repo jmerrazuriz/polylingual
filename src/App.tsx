@@ -4,6 +4,7 @@ import { ComingSoon } from './components/ComingSoon'
 import { Layout } from './components/Layout'
 import { HomePage } from './features/home/HomePage'
 import { LearnPage } from './features/learn/LearnPage'
+import { useProgress } from './lib/progress/store'
 
 /**
  * Página que se carga al visitarla (su código queda en un archivo aparte). El inicio y
@@ -17,6 +18,7 @@ function page<M>(load: () => Promise<M>, pick: (m: M) => ComponentType) {
 const CoursesPage = page(() => import('./features/courses/CoursesPage'), (m) => m.CoursesPage)
 const DailyPage = page(() => import('./features/daily/DailyPage'), (m) => m.DailyPage)
 const ChartPage = page(() => import('./features/chart/ChartPage'), (m) => m.ChartPage)
+const GermanTablesPage = page(() => import('./features/chart/GermanTablesPage'), (m) => m.GermanTablesPage)
 const LessonRoute = page(() => import('./features/learn/LessonPage'), (m) => m.LessonRoute)
 const PlacementPage = page(() => import('./features/learn/PlacementPage'), (m) => m.PlacementPage)
 const PathPlacementPage = page(() => import('./features/path/PathPlacementPage'), (m) => m.PathPlacementPage)
@@ -50,7 +52,7 @@ export default function App() {
         <Route index element={<HomePage />} />
         <Route path="cursos" element={<CoursesPage />} />
         <Route path="hoy" element={<DailyPage />} />
-        <Route path="tabla" element={<ChartPage />} />
+        <Route path="tabla" element={<TableRoute />} />
         <Route path="aprender" element={<LearnPage />} />
         <Route path="aprender/:lessonId" element={<LessonRoute />} />
         <Route path="test-de-nivel" element={<PlacementPage />} />
@@ -81,4 +83,10 @@ export default function App() {
       </Route>
     </Routes>
   )
+}
+
+/** La tabla de consulta del curso activo: kana en japonés; artículos, casos y verbos en alemán. */
+function TableRoute() {
+  const course = useProgress((s) => s.course)
+  return course === 'de' ? <GermanTablesPage /> : <ChartPage />
 }

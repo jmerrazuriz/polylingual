@@ -230,7 +230,7 @@ El curso alemán ya está en `src/courses/index.ts` con `status: 'soon'` y `spee
 
 | Etapa | Contenido | Hecho cuando… |
 |---|---|---|
-| **D0 · Base multi-curso** | Generalizar recorrido, nivelación, simulacros y fichas por curso (sección 5). Motor de conjugación y declinación con sus tests. Entrada con umlauts. Tablas de artículos y conjugación. | El japonés sigue igual (todos los tests pasan) y existe un recorrido alemán vacío. |
+| ✅ **D0 · Base multi-curso** (17-10-2026) | Generalizar recorrido, nivelación, simulacros y fichas por curso (sección 5). Motor de conjugación y declinación con sus tests. Entrada con umlauts. Tablas de artículos y conjugación. | El japonés sigue igual (todos los tests pasan) y existe un recorrido alemán vacío. |
 | **D1 · A1** | Pronunciación, ~30 lecciones, ~650 palabras con artículo y plural, lecturas y audición, juegos y simulacro A1. Test de nivelación A1. | Se puede hacer el A1 entero y aprobar el simulacro. El curso pasa a «disponible». |
 | **D2 · A2** | ~30 lecciones, +650 palabras, dativo y Wechselpräpositionen con ejercicios generados, simulacro A2. | Igual que D1. |
 | **D3 · B1** | ~35 lecciones, +1.100 palabras, SRS de rección (verbo + preposición), simulacro B1 con 4 módulos. | Simulacro B1 con puntaje Goethe. |
@@ -238,6 +238,25 @@ El curso alemán ya está en `src/courses/index.ts` con `status: 'soon'` y `spee
 | **D5 · C1** | ~35 lecciones, +2.000 palabras, nominalización, estilo académico y Modalpartikeln. | Simulacro C1. |
 | **D6 · C2** | ~30 lecciones, +2.000 palabras, variedades, modismos, literatura y matices. | Simulacro C2. |
 | **D7 · Revisión** | Revisión de un hablante nativo (o profesor de alemán como lengua extranjera) de cada nivel, empezando por A1–B1. | Contenido revisado y errores corregidos. |
+
+### Qué quedó hecho en D0
+- **Recorrido por curso** (`src/lib/coursePath.ts`):
+  - Cada curso declara sus unidades, niveles, estado de cada elemento, si tiene nivelación y lección del día, y su texto de presentación.
+  - `PathPage` y la nivelación usan el curso activo. Las pestañas de Aprender ocultan las del japonés en otros cursos.
+- **Recorrido alemán** (`src/courses/de/path.ts`): niveles A1–C2 con su meta («vivir y trabajar») y la historia *Ottos Weg* con Otto y Hans Schmidt (`levels.ts`). Los niveles están vacíos hasta D1.
+- **Motor de conjugación** (`src/courses/de/engine/conjugation.ts`):
+  - Cubre el presente con sus cambios vocálicos, el Präteritum (débil, fuerte y mixto), el Perfekt y el Plusquamperfekt con *haben/sein*, el Futur I, el Konjunktiv II (propio o con *würde*) y el imperativo.
+  - Maneja los verbos separables. Cada verbo declara solo lo irregular.
+  - Hay 50 verbos base en `verbs.ts`.
+- **Motor de declinación** (`declension.ts`): artículos, *kein* y posesivos, *dieser*, pronombres, terminaciones del adjetivo (débil, mixta y fuerte), n-Deklination, dativo plural, genitivo y frases nominales completas.
+- **Simulacros Goethe** (`exams.ts`):
+  - Hay uno por nivel, con 4 módulos.
+  - A1–A2 se aprueban por el total; B1–C2 con 60/100 en cada módulo. Leer y escuchar se corrigen solos; escribir y hablar son autoevaluados.
+  - La interfaz del simulacro llega con D1.
+- **Entrada en alemán** (`src/lib/germanInput.ts` y `UmlautKeys`): acepta ae/oe/ue y ss; las mayúsculas mal puestas se marcan como «casi»; botones ä ö ü ß.
+- **Tablas** (`/tabla` en alemán): artículos por caso y género con colores, pronombres, terminaciones del adjetivo y un conjugador con práctica.
+- **Inicio del alemán** con los personajes, el recorrido y las tablas.
+- **Disponibilidad:** el curso sigue en «próximamente» para los usuarios. Solo se puede abrir en el entorno de desarrollo, como «Vista previa».
 
 ---
 
@@ -248,11 +267,11 @@ El curso alemán ya está en `src/courses/index.ts` con `status: 'soon'` y `spee
 - **Tamaño.** El curso es varias veces el japonés: carga por nivel y por tanda desde el principio.
 - **Derechos de autor.** Las listas de palabras, los modelos de examen y los libros sirven como referencia de cobertura y formato. Los textos, ejemplos y ejercicios los escribimos nosotros.
 
-## 8. Decisiones que necesitamos de ti
-1. ¿Corrección de textos y habla con IA (costo por uso) o solo autoevaluación guiada?
-2. ¿Audio pregenerado desde B2, y con qué presupuesto?
-3. ¿Un personaje o historia que acompañe el recorrido, como Nicos Weg?
-4. ¿Prioridad «alemán para vivir y trabajar» (temas de trámites y empleo, como el vhs-Lernportal) o «alemán general y académico»? Afecta los temas de B1–C1.
+## 8. Decisiones tomadas (17-10-2026)
+1. **Sin costo de IA:** Schreiben y Sprechen se trabajan con **autoevaluación guiada** (lista de control, texto modelo, criterios Goethe). No hay corrección automática de textos libres.
+2. **Sin audio grabado:** toda la audición usa la **voz del navegador** (`de-DE`). Para B2–C2 se compensa con transcripción opcional, velocidad ajustable y varias voces del sistema cuando existan. La audición de C1–C2 queda marcada como limitada.
+3. **Historia del curso: «Ottos Weg».** Otto llega a Alemania para vivir y trabajar. Su amigo **Hans Schmidt** lo ayuda con la vida diaria. Aparecen en diálogos, lecturas y ejemplos de todos los niveles.
+4. **Prioridad: alemán para vivir y trabajar en Alemania.** Del A1 al B2 los temas siguen la vida real del inmigrante: llegada, *Anmeldung*, vivienda, médico, *Jobcenter* y *Agentur für Arbeit*, postular, entrevistas, el trabajo diario y los trámites. El tono académico entra recién en C1–C2.
 
 ---
 
