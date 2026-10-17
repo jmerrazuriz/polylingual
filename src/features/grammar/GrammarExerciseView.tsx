@@ -6,6 +6,15 @@ import { useSpeech } from '../../lib/audio/useSpeech'
 import { shuffle } from '../../lib/random'
 
 const KANA = /[぀-ヿ]/
+
+/**
+ * Qué leer en voz alta al responder una pregunta de opción: la frase completa si es
+ * de completar; si no, la respuesta cuando está en japonés (¿Cómo se dice «comer»? → たべる).
+ */
+function choiceSpeech(exercise: Extract<GrammarExercise, { type: 'choice' }>): string {
+  if (exercise.prompt.includes('＿')) return exercise.prompt.replace('＿', exercise.answer)
+  return KANA.test(exercise.answer) ? exercise.answer : exercise.prompt
+}
 const jpClass = (text: string) => (KANA.test(text) ? 'font-jp' : '')
 
 type Props = {
@@ -27,7 +36,7 @@ export function GrammarExerciseView({ exercise, onDone, onSkip }: Props) {
 
   return (
     <div className="flex flex-col gap-5">
-      {exercise.type === 'choice' && <Choice exercise={exercise} result={result} onAnswer={(ok) => check(ok, exercise.prompt.replace('＿', exercise.answer))} />}
+      {exercise.type === 'choice' && <Choice exercise={exercise} result={result} onAnswer={(ok) => check(ok, choiceSpeech(exercise))} />}
       {exercise.type === 'meaning' && <Meaning exercise={exercise} result={result} onAnswer={(ok) => check(ok, exercise.text)} />}
       {exercise.type === 'order' && <Order exercise={exercise} result={result} onAnswer={(ok) => check(ok, exercise.answer.join(' '))} />}
       {exercise.type === 'type' && <Type exercise={exercise} result={result} onAnswer={(ok) => check(ok, exercise.answers[0])} />}

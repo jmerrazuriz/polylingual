@@ -21,9 +21,26 @@ service cloud.firestore {
         && data.updatedAt == request.time;
     }
 
+    // users/{uid}/srs/{curso}-{n}: { course: string, cards: map, stats: map, updatedAt: timestamp }
+    // Tarjetas de repaso y estadísticas, repartidas en varios documentos (ver src/lib/progress/storage.ts).
+    function validShardDoc(shard) {
+      let data = request.resource.data;
+      return shard.matches('^[a-z]{2,8}-[0-9]{1,2}$')
+        && data.keys().hasOnly(['course', 'cards', 'stats', 'updatedAt'])
+        && data.course is string
+        && data.cards is map
+        && data.stats is map
+        && data.updatedAt == request.time;
+    }
+
     match /users/{uid} {
       allow read, delete: if isOwner(uid);
       allow create, update: if isOwner(uid) && validProgressDoc();
+
+      match /srs/{shard} {
+        allow read, delete: if isOwner(uid);
+        allow create, update: if isOwner(uid) && validShardDoc(shard);
+      }
     }
   }
 }

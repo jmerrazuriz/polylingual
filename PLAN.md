@@ -374,7 +374,13 @@ app_idiomas/
   - También está en el **perfil**, para quien vuelve después de un tiempo: empieza en el primer bloque que le falta y solo agrega progreso.
   - Lo desbloqueado entra a los repasos como «ya sabido»: el primer repaso se reparte en los próximos días, sin juntarse todo hoy.
 - **Pendiente para cerrar la etapa A:** 20 lecturas cortas, 20 diálogos con preguntas y un simulacro N5.
-- **Riesgo:** todas las tarjetas viven en un solo documento de Firestore (máximo 1 MB). Con ~900 palabras van unas 2.600 tarjetas, lo que todavía cabe. Antes de la etapa B (~1.500 palabras) hay que pasar las tarjetas a una subcolección o compactarlas.
+- ✅ **Guardado escalable (versión 3 del progreso, `src/lib/progress/storage.ts`):**
+  - Antes, todas las tarjetas vivían en un solo documento de Firestore, que tiene un máximo de 1 MB.
+  - Ahora las tarjetas y las estadísticas van en `users/{uid}/srs/{curso}-{0..15}`, en texto compacto: ~64 bytes por tarjeta en vez de ~196. Cada carácter cae siempre en el mismo documento.
+  - Medido con 10.000 tarjetas (N3 completo): 52 KB el documento más grande y 0,3 KB el principal. Antes eran 2,3 MB en un solo documento, que no se podía guardar.
+  - Se guardan solo los documentos que cambiaron. El progreso del formato anterior se lee igual y se pasa al nuevo al entrar, en una escritura atómica.
+  - Las reglas de Firestore validan los documentos nuevos.
+- ✅ **Audio:** la voz japonesa lee solo el japonés de cada texto; lo que está en español no se lee.
 - **Para agregar un idioma:** crear `src/courses/<id>/` con su contenido, registrar la gramática en `src/courses/content.ts`, cambiar su `status` a `available` y darle sus secciones. Las lecciones de vocabulario para idiomas sin silabario propio son lo siguiente a diseñar. Quedan como ideas para después (sección 9): tarjetas SRS de palabras, temas de palabras en los juegos, pares confusos juntos en los juegos, kanji, frases con furigana y evaluación de pronunciación.
 
 **Hiragana primero:** las fases 1 a 6 se construyen solo con hiragana. El código se escribe desde el principio para cualquier silabario (el campo `script` en los datos), así que katakana entra en la fase 7 casi solo como contenido.

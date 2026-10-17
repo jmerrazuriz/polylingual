@@ -8,6 +8,23 @@ function findJapaneseVoice(): SpeechSynthesisVoice | undefined {
   return speechSynthesis.getVoices().find((v) => v.lang.replace('_', '-').toLowerCase().startsWith('ja'))
 }
 
+const JAPANESE = /[぀-ヿ㐀-鿿々]/
+/** Letras latinas (con tildes), signos del español, comillas y flechas: no se leen con la voz japonesa. */
+const NOT_JAPANESE = /[A-Za-zÀ-ÿ¿¡«»"“”'‘’()?!.,:;→+·/[\]=-]+/g
+
+/**
+ * Solo la parte en japonés de un texto («¿Cómo se lee «か»?» → «か»). Si no queda
+ * nada en japonés devuelve '' y no se lee nada (la voz japonesa leería mal el español).
+ */
+export function japaneseSpeech(text: string): string {
+  const parts = text
+    .replace(NOT_JAPANESE, '\n')
+    .split('\n')
+    .map((p) => p.trim())
+    .filter((p) => JAPANESE.test(p))
+  return parts.join('、')
+}
+
 /**
  * Voz japonesa del navegador (Web Speech API). `available` es false si el
  * dispositivo no tiene una voz ja-JP o si el audio está apagado en los ajustes;
@@ -29,8 +46,10 @@ export function useSpeech() {
   const speak = useCallback(
     (text: string) => {
       if (!voice || !enabled) return
+      const spoken = japaneseSpeech(text)
+      if (!spoken) return
       speechSynthesis.cancel()
-      const utterance = new SpeechSynthesisUtterance(text)
+      const utterance = new SpeechSynthesisUtterance(spoken)
       utterance.voice = voice
       utterance.lang = voice.lang
       utterance.rate = rate
