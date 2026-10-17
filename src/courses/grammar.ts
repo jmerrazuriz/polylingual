@@ -26,13 +26,16 @@ export type GrammarExercise =
   | { type: 'meaning'; text: string; options: string[]; answer: string }
   /** Ordenar las palabras para formar la frase. */
   | { type: 'order'; meaning: string; answer: string[] }
-  /** Escribir la respuesta. Con `kana`, el romaji se convierte en kana al escribir (japonés). */
-  | { type: 'type'; prompt: string; hint?: string; answers: string[]; kana?: boolean; explanation?: string }
+  /**
+   * Escribir la respuesta. Con `kana`, el romaji se convierte en kana al escribir (japonés).
+   * Con `german`, hay botones ä ö ü ß, se acepta ae/oe/ue/ss y se avisa si fallan las mayúsculas.
+   */
+  | { type: 'type'; prompt: string; hint?: string; answers: string[]; kana?: boolean; german?: boolean; explanation?: string }
 
 export type GrammarLesson = {
   id: string
-  /** Nivel (JLPT en japonés); sin indicar es el básico. */
-  level?: 'N5' | 'N4' | 'N3'
+  /** Nivel (JLPT en japonés, MCER en alemán); sin indicar es el básico del japonés (N5). */
+  level?: 'N5' | 'N4' | 'N3' | 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2'
   title: string
   /** Una línea para la lista de lecciones. */
   summary: string

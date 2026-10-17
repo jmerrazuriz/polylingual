@@ -1,12 +1,15 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import { courseById } from '../../courses'
 import { furiganaToKana } from '../furigana'
 import { useProgress } from '../progress/store'
 
 const supported = typeof window !== 'undefined' && 'speechSynthesis' in window
 
-function findJapaneseVoice(): SpeechSynthesisVoice | undefined {
-  if (!supported) return undefined
-  return speechSynthesis.getVoices().find((v) => v.lang.replace('_', '-').toLowerCase().startsWith('ja'))
+/** Voces del navegador para un idioma («ja-JP» → todas las «ja…»). */
+function voicesFor(lang: string): SpeechSynthesisVoice[] {
+  if (!supported) return []
+  const prefix = lang.slice(0, 2).toLowerCase()
+  return speechSynthesis.getVoices().filter((v) => v.lang.replace('_', '-').toLowerCase().startsWith(prefix))
 }
 
 const JAPANESE = /[぀-ヿ㐀-鿿々]/
@@ -27,20 +30,29 @@ export function japaneseSpeech(text: string): string {
   return parts.join('、')
 }
 
+/** Texto alemán para leer: sin huecos «＿», comillas ni signos de la interfaz. */
+export function germanSpeech(text: string): string {
+  return text.replace(/＿+/g, ' ').replace(/[«»"“”]/g, '').replace(/\s+/g, ' ').trim()
+}
+
 /**
- * Voz japonesa del navegador (Web Speech API). `available` es false si el
- * dispositivo no tiene una voz ja-JP o si el audio está apagado en los ajustes;
+ * Voz del navegador (Web Speech API) en el idioma del curso activo. `available` es false si
+ * el dispositivo no tiene una voz de ese idioma o si el audio está apagado en los ajustes;
  * en ese caso se ocultan los botones de audio.
  */
 export function useSpeech() {
-  const [voice, setVoice] = useState(findJapaneseVoice)
+  const lang = courseById(useProgress((s) => s.course)).speechLang
+  const [allVoices, setAllVoices] = useState(() => (supported ? speechSynthesis.getVoices() : []))
+  const voices = useMemo(() => (allVoices.length ? voicesFor(lang) : []), [allVoices, lang])
+  const voice = voices[0]
   const enabled = useProgress((s) => s.settings.audio)
   const rate = useProgress((s) => s.settings.speechRate)
+  const toSpeech = lang.startsWith('ja') ? japaneseSpeech : germanSpeech
 
   useEffect(() => {
     if (!supported) return
     // Algunos navegadores cargan las voces de forma asíncrona.
-    const update = () => setVoice(findJapaneseVoice())
+    const update = () => setAllVoices(speechSynthesis.getVoices())
     speechSynthesis.addEventListener('voiceschanged', update)
     return () => speechSynthesis.removeEventListener('voiceschanged', update)
   }, [])
@@ -48,7 +60,7 @@ export function useSpeech() {
   const speak = useCallback(
     (text: string) => {
       if (!voice || !enabled) return
-      const spoken = japaneseSpeech(text)
+      const spoken = toSpeech(text)
       if (!spoken) return
       speechSynthesis.cancel()
       const utterance = new SpeechSynthesisUtterance(spoken)
@@ -57,31 +69,32 @@ export function useSpeech() {
       utterance.rate = rate
       speechSynthesis.speak(utterance)
     },
-    [voice, enabled, rate],
+    [voice, enabled, rate, toSpeech],
   )
 
-  /** Lee varias frases seguidas; en los diálogos, cada persona con un tono distinto. */
+  /** Lee varias frases seguidas; en los diálogos, cada persona con otra voz (si hay) o con otro tono. */
   const speakLines = useCallback(
     (lines: readonly { text: string; speaker?: string }[], onEnd?: () => void) => {
       if (!voice || !enabled) return
       speechSynthesis.cancel()
       const speakers = [...new Set(lines.map((l) => l.speaker ?? ''))]
-      const spokenLines = lines.map((l) => japaneseSpeech(l.text))
+      const spokenLines = lines.map((l) => toSpeech(l.text))
       const last = spokenLines.findLastIndex(Boolean)
       lines.forEach((line, i) => {
         const spoken = spokenLines[i]
         if (!spoken) return
+        const who = speakers.indexOf(line.speaker ?? '')
         const utterance = new SpeechSynthesisUtterance(spoken)
-        utterance.voice = voice
-        utterance.lang = voice.lang
+        utterance.voice = voices[who % voices.length] ?? voice
+        utterance.lang = utterance.voice.lang
         utterance.rate = rate
-        // Dos voces distintas con la misma voz japonesa: una más grave y otra más aguda.
-        utterance.pitch = speakers.indexOf(line.speaker ?? '') % 2 === 0 ? 0.85 : 1.35
+        // Con una sola voz, dos tonos distintos: uno más grave y otro más agudo.
+        utterance.pitch = voices.length > 1 ? 1 : who % 2 === 0 ? 0.85 : 1.35
         if (i === last) utterance.onend = () => onEnd?.()
         speechSynthesis.speak(utterance)
       })
     },
-    [voice, enabled, rate],
+    [voice, voices, enabled, rate, toSpeech],
   )
 
   const stop = useCallback(() => {

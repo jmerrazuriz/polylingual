@@ -1,15 +1,28 @@
 import { Link } from 'react-router'
 import { useProgress } from '../../lib/progress/store'
 
-export type LearnTab = 'recorrido' | 'hiragana' | 'katakana' | 'vocabulario' | 'gramatica' | 'conjugacion' | 'lectura' | 'contadores' | 'kanji'
+export type LearnTab =
+  | 'recorrido'
+  | 'hiragana'
+  | 'katakana'
+  | 'vocabulario'
+  | 'gramatica'
+  | 'conjugacion'
+  | 'lectura'
+  | 'contadores'
+  | 'kanji'
+  | 'palabras'
+  | 'textos'
 
-/** Pestañas de cada curso: el recorrido es común; las demás son del japonés por ahora. */
+/** Pestañas de cada curso: recorrido y gramática son comunes; las demás son de cada idioma. */
 const tabs: { tab: LearnTab; label: string; to: string; course?: string }[] = [
   { tab: 'recorrido', label: 'Recorrido', to: '/aprender' },
   { tab: 'hiragana', label: 'Hiragana', to: '/aprender?silabario=hiragana', course: 'ja' },
   { tab: 'katakana', label: 'Katakana', to: '/aprender?silabario=katakana', course: 'ja' },
   { tab: 'vocabulario', label: 'Vocabulario', to: '/vocabulario', course: 'ja' },
-  { tab: 'gramatica', label: 'Gramática', to: '/gramatica', course: 'ja' },
+  { tab: 'gramatica', label: 'Gramática', to: '/gramatica' },
+  { tab: 'palabras', label: 'Palabras', to: '/palabras', course: 'de' },
+  { tab: 'textos', label: 'Lectura y audio', to: '/textos', course: 'de' },
   { tab: 'conjugacion', label: 'Conjugación', to: '/conjugacion', course: 'ja' },
   { tab: 'lectura', label: 'Lectura y audio', to: '/lectura', course: 'ja' },
   { tab: 'contadores', label: 'Contadores', to: '/contadores', course: 'ja' },

@@ -17,7 +17,7 @@ export type ReadingText = {
   title: string
   /** reading: texto para leer · dialogue: conversación para escuchar (también se puede leer). */
   kind: 'reading' | 'dialogue'
-  level: 'N5' | 'N4' | 'N3'
+  level: 'N5' | 'N4' | 'N3' | 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2'
   /** La lección de gramática que hace falta haber completado para abrirlo. */
   requires: string
   /** Situación, en español (dónde están, quiénes hablan). */

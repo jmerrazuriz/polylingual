@@ -1,4 +1,5 @@
 import { germanPath, germanPathLevels } from '../courses/de/path.ts'
+import { germanItemStatus } from '../courses/de/progress.ts'
 import { type ItemStatus, japanesePath, japanesePathLevels, type PathItem, pathItemStatus, type PathLevel, type PathUnit } from './path.ts'
 import type { ProgressData } from './progress/model.ts'
 
@@ -30,10 +31,9 @@ const japanese: CoursePath = {
 const german: CoursePath = {
   units: germanPath,
   levels: germanPathLevels,
-  // Todavía no hay lecciones de alemán: lo que aparezca queda bloqueado hasta tener su lógica.
-  itemStatus: () => () => 'locked',
-  hasPlacement: false,
-  firstLessonTo: null,
+  itemStatus: germanItemStatus,
+  hasPlacement: true,
+  firstLessonTo: '/gramatica/de-aussprache',
   intro: 'Ottos Weg: acompaña a Otto y a su amigo Hans Schmidt, del A1 al C2, con alemán para vivir y trabajar en Alemania.',
   dailyLessons: false,
 }

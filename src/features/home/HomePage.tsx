@@ -1,10 +1,13 @@
 import { Link } from 'react-router'
 import { courseById } from '../../courses'
 import { characters } from '../../courses/de/levels'
+import { germanPathItems } from '../../courses/de/path'
+import { germanItemStatus } from '../../courses/de/progress'
+import { useAccount } from '../../lib/account/store'
 import { isDailyComplete } from '../../lib/daily'
 import { lessons as allLessons } from '../../courses/ja/lessons'
 import { nextDue } from '../../lib/progress/srs'
-import { useProgress } from '../../lib/progress/store'
+import { progressSnapshot, useProgress } from '../../lib/progress/store'
 import { useUnlockedLessons } from '../../lib/progress/unlock'
 import { currentStreak, dayKey } from '../../lib/progress/model'
 import { GoalBar } from '../progress/ProgressPage'
@@ -169,8 +172,17 @@ function DailyCard() {
   )
 }
 
-/** Inicio del curso de alemán (en preparación): el recorrido Ottos Weg y las tablas. */
+/** Inicio del curso de alemán: seguir el recorrido Ottos Weg, repasar y las secciones. */
 function GermanHome() {
+  const guest = useAccount((s) => s.status !== 'user')
+  const cards = useProgress((s) => s.cards)
+  useProgress((s) => s.lessons)
+  useProgress((s) => s.grammar)
+  useProgress((s) => s.records)
+  const status = germanItemStatus(progressSnapshot(), guest)
+  const next = germanPathItems.find((i) => status(i) === 'open')
+  const done = germanPathItems.filter((i) => status(i) === 'done').length
+  const due = dueNowCount(cards, now())
   return (
     <div className="flex flex-col gap-8">
       <section className="flex flex-col items-center gap-4 pt-6 text-center">
@@ -180,9 +192,31 @@ function GermanHome() {
         </div>
         <h1 className="text-3xl font-extrabold md:text-4xl">🇩🇪 Alemán · Ottos Weg</h1>
         <p className="max-w-md text-slate-600 dark:text-slate-400">
-          Del A1 al C2, con alemán para vivir y trabajar en Alemania. El curso está en preparación: el primer nivel (A1) llega pronto.
+          Del A1 al C2, con alemán para vivir y trabajar en Alemania. {done}/{germanPathItems.length} lecciones del recorrido completadas.
         </p>
       </section>
+
+      {next && (
+        <Link to={next.to} className="flex items-center gap-4 rounded-2xl bg-accent p-5 text-white shadow-md hover:opacity-95">
+          <span className="text-4xl" aria-hidden>
+            ▶
+          </span>
+          <span className="flex-1">
+            <span className="block text-sm font-bold uppercase opacity-90">{done === 0 ? 'Empieza aquí' : 'Continuar'}</span>
+            <span className="block text-lg font-extrabold">{next.title}</span>
+          </span>
+        </Link>
+      )}
+
+      {due > 0 && (
+        <Link to="/repasar" className="flex items-center gap-3 rounded-2xl border-2 border-accent/40 bg-white p-4 font-bold dark:bg-slate-900">
+          <span className="text-2xl" aria-hidden>
+            🔁
+          </span>
+          Tienes {due} {due === 1 ? 'palabra' : 'palabras'} para repasar
+        </Link>
+      )}
+
       <section className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         {Object.values(characters).map((c) => (
           <div key={c.name} className="flex flex-col gap-1 rounded-2xl border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900">
@@ -191,10 +225,15 @@ function GermanHome() {
           </div>
         ))}
       </section>
+
       <section className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         {[
-          { to: '/aprender', glyph: 'A1', title: 'Recorrido', text: 'Los niveles A1 a C2 y lo que podrás hacer en cada uno.' },
-          { to: '/tabla', glyph: 'der', title: 'Tablas', text: 'Artículos, casos, terminaciones y un conjugador con práctica.' },
+          { to: '/aprender', glyph: 'A1', title: 'Recorrido', text: 'Unidad por unidad, del A1 al C2.' },
+          { to: '/gramatica', glyph: 'G', title: 'Gramática', text: 'Explicaciones cortas, ejemplos con audio y ejercicios.' },
+          { to: '/palabras', glyph: 'W', title: 'Palabras', text: 'Con artículo y plural, y repaso espaciado.' },
+          { to: '/textos', glyph: 'T', title: 'Lectura y audio', text: 'Las historias de Otto y Hans, como en el examen.' },
+          { to: '/tabla', glyph: 'der', title: 'Tablas', text: 'Artículos, casos, terminaciones y un conjugador.' },
+          { to: '/goethe/a1', glyph: '📝', title: 'Simulacro Goethe A1', text: 'La meta del nivel: leer, escuchar, escribir y hablar.' },
         ].map((f) => (
           <Link
             key={f.to}

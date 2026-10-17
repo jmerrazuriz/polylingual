@@ -1,9 +1,12 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { Furigana } from '../../components/Furigana'
 import { KanaInput } from '../../components/KanaInput'
+import { UmlautKeys } from '../../components/UmlautKeys'
 import type { GrammarExercise } from '../../courses/grammar'
+import { checkGerman } from '../../lib/germanInput'
 import { finishKana, matchesKana } from '../../lib/kanaInput'
 import { useSpeech } from '../../lib/audio/useSpeech'
+import { useProgress } from '../../lib/progress/store'
 import { shuffle } from '../../lib/random'
 
 const KANA = /[぀-ヿ]/
@@ -12,8 +15,10 @@ const KANA = /[぀-ヿ]/
  * Qué leer en voz alta al responder una pregunta de opción: la frase completa si es
  * de completar; si no, la respuesta cuando está en japonés (¿Cómo se dice «comer»? → たべる).
  */
-function choiceSpeech(exercise: Extract<GrammarExercise, { type: 'choice' }>): string {
+function choiceSpeech(exercise: Extract<GrammarExercise, { type: 'choice' }>, course: string): string {
   if (exercise.prompt.includes('＿')) return exercise.prompt.replace('＿', exercise.answer)
+  // En alemán las preguntas sin hueco van en español y la respuesta en alemán.
+  if (course === 'de') return exercise.answer
   return KANA.test(exercise.answer) ? exercise.answer : exercise.prompt
 }
 const jpClass = (text: string) => (KANA.test(text) ? 'font-jp' : '')
@@ -29,6 +34,7 @@ type Props = {
 export function GrammarExerciseView({ exercise, onDone, onSkip }: Props) {
   const [result, setResult] = useState<boolean | null>(null)
   const { speak } = useSpeech()
+  const course = useProgress((s) => s.course)
 
   const check = (correct: boolean, spoken: string) => {
     setResult(correct)
@@ -37,7 +43,7 @@ export function GrammarExerciseView({ exercise, onDone, onSkip }: Props) {
 
   return (
     <div className="flex flex-col gap-5">
-      {exercise.type === 'choice' && <Choice exercise={exercise} result={result} onAnswer={(ok) => check(ok, choiceSpeech(exercise))} />}
+      {exercise.type === 'choice' && <Choice exercise={exercise} result={result} onAnswer={(ok) => check(ok, choiceSpeech(exercise, course))} />}
       {exercise.type === 'meaning' && <Meaning exercise={exercise} result={result} onAnswer={(ok) => check(ok, exercise.text)} />}
       {exercise.type === 'order' && <Order exercise={exercise} result={result} onAnswer={(ok) => check(ok, exercise.answer.join(' '))} />}
       {exercise.type === 'type' && <Type exercise={exercise} result={result} onAnswer={(ok) => check(ok, exercise.answers[0])} />}
@@ -157,7 +163,7 @@ function Meaning({ exercise, result, onAnswer }: { exercise: Extract<GrammarExer
   return (
     <>
       <p className="text-sm font-bold text-slate-500 uppercase">¿Qué significa?</p>
-      <p lang="ja" className="font-jp text-2xl leading-loose font-bold">
+      <p lang={KANA.test(exercise.text) ? 'ja' : undefined} className={`text-2xl leading-loose font-bold ${jpClass(exercise.text)}`}>
         <Furigana text={exercise.text} />
       </p>
       <Options options={exercise.options} answer={exercise.answer} result={result} onAnswer={onAnswer} />
@@ -192,7 +198,7 @@ function Order({ exercise, result, onAnswer }: { exercise: Extract<GrammarExerci
             key={tileIndex}
             disabled={done}
             onClick={() => setChosen(chosen.filter((c) => c !== tileIndex))}
-            className="rounded-xl bg-ink px-3 py-2 font-jp text-lg text-white"
+            className={`rounded-xl bg-ink px-3 py-2 text-lg text-white ${jpClass(bank[tileIndex].word)}`}
           >
             <Furigana text={bank[tileIndex].word} />
           </button>
@@ -201,7 +207,7 @@ function Order({ exercise, result, onAnswer }: { exercise: Extract<GrammarExerci
       <div className="flex flex-wrap gap-2">
         {bank.map((tile, tileIndex) =>
           chosen.includes(tileIndex) ? (
-            <span key={tileIndex} className="rounded-xl border-2 border-dashed border-slate-200 px-3 py-2 font-jp text-lg text-transparent dark:border-slate-800">
+            <span key={tileIndex} className={`rounded-xl border-2 border-dashed border-slate-200 px-3 py-2 text-lg text-transparent dark:border-slate-800 ${jpClass(tile.word)}`}>
               <Furigana text={tile.word} />
             </span>
           ) : (
@@ -209,7 +215,7 @@ function Order({ exercise, result, onAnswer }: { exercise: Extract<GrammarExerci
               key={tileIndex}
               disabled={done}
               onClick={() => setChosen([...chosen, tileIndex])}
-              className="rounded-xl border-2 border-slate-200 bg-white px-3 py-2 font-jp text-lg hover:border-accent dark:border-slate-800 dark:bg-slate-900"
+              className={`rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-lg hover:border-accent dark:border-slate-800 dark:bg-slate-900 ${jpClass(tile.word)}`}
             >
               <Furigana text={tile.word} />
             </button>
@@ -234,11 +240,20 @@ const normalizeText = (text: string) => text.trim().toLowerCase().replace(/\s+/g
 /** Escribir la respuesta (en kana: el romaji se convierte al escribir). */
 function Type({ exercise, result, onAnswer }: { exercise: Extract<GrammarExercise, { type: 'type' }>; result: boolean | null; onAnswer: (ok: boolean) => void }) {
   const [value, setValue] = useState('')
+  const [caseNote, setCaseNote] = useState(false)
+  const inputRef = useRef<HTMLInputElement>(null)
   const done = result !== null
   const submit = () => {
     if (!value.trim() || done) return
     // La «n» final que quedó en romaji se muestra como ん al corregir.
     if (exercise.kana) setValue(finishKana(value))
+    if (exercise.german) {
+      // En alemán las mayúsculas importan; si solo fallan ellas, cuenta pero se avisa.
+      const check = checkGerman(value, exercise.answers)
+      setCaseNote(check === 'case')
+      onAnswer(check !== 'wrong')
+      return
+    }
     onAnswer(
       exercise.kana ? matchesKana(value, exercise.answers) : exercise.answers.some((a) => normalizeText(a) === normalizeText(value)),
     )
@@ -259,14 +274,20 @@ function Type({ exercise, result, onAnswer }: { exercise: Extract<GrammarExercis
           <KanaInput value={value} onChange={setValue} disabled={done} state={done ? (result ? 'right' : 'wrong') : 'idle'} />
         ) : (
           <input
+            ref={inputRef}
+            lang={exercise.german ? 'de' : undefined}
             value={value}
             onChange={(e) => setValue(e.target.value)}
             disabled={done}
             autoFocus
             autoComplete="off"
+            autoCapitalize="off"
+            spellCheck={false}
             className="rounded-2xl border-2 border-slate-200 bg-white px-4 py-3 text-xl dark:border-slate-800 dark:bg-slate-900"
           />
         )}
+        {exercise.german && !done && <UmlautKeys inputRef={inputRef} value={value} onChange={setValue} />}
+        {caseNote && <p className="text-sm font-bold text-amber-700 dark:text-amber-300">Ojo con las mayúsculas: en alemán los sustantivos (y «Sie» formal) van con mayúscula.</p>}
         {!done && (
           <button type="submit" disabled={!value.trim()} className="self-center rounded-full bg-ink px-8 py-3 font-bold text-white disabled:opacity-40">
             Comprobar

@@ -19,6 +19,11 @@ const CoursesPage = page(() => import('./features/courses/CoursesPage'), (m) => 
 const DailyPage = page(() => import('./features/daily/DailyPage'), (m) => m.DailyPage)
 const ChartPage = page(() => import('./features/chart/ChartPage'), (m) => m.ChartPage)
 const GermanTablesPage = page(() => import('./features/chart/GermanTablesPage'), (m) => m.GermanTablesPage)
+const GermanVocabPage = page(() => import('./features/german/GermanStudyPages'), (m) => m.GermanVocabPage)
+const GermanVocabLessonRoute = page(() => import('./features/german/GermanStudyPages'), (m) => m.GermanVocabLessonRoute)
+const GermanReadingsPage = page(() => import('./features/german/GermanStudyPages'), (m) => m.GermanReadingsPage)
+const GermanReadingRoute = page(() => import('./features/german/GermanStudyPages'), (m) => m.GermanReadingRoute)
+const GoetheExamPage = page(() => import('./features/german/GoetheExamPage'), (m) => m.GoetheExamPage)
 const LessonRoute = page(() => import('./features/learn/LessonPage'), (m) => m.LessonRoute)
 const PlacementPage = page(() => import('./features/learn/PlacementPage'), (m) => m.PlacementPage)
 const PathPlacementPage = page(() => import('./features/path/PathPlacementPage'), (m) => m.PathPlacementPage)
@@ -63,6 +68,11 @@ export default function App() {
         <Route path="lectura/:textId" element={<ReadingRoute />} />
         <Route path="simulacro" element={<MockExamPage />} />
         <Route path="simulacro/:level" element={<MockExamPage />} />
+        <Route path="palabras" element={<GermanVocabPage />} />
+        <Route path="palabras/:lessonId" element={<GermanVocabLessonRoute />} />
+        <Route path="textos" element={<GermanReadingsPage />} />
+        <Route path="textos/:textId" element={<GermanReadingRoute />} />
+        <Route path="goethe/:level" element={<GoetheExamPage />} />
         <Route path="vocabulario" element={<VocabPage />} />
         <Route path="vocabulario/:lessonId" element={<VocabLessonRoute />} />
         <Route path="contadores" element={<CountersPage />} />

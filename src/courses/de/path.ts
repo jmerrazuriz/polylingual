@@ -1,11 +1,57 @@
-import type { PathLevel, PathUnit } from '../../lib/path.ts'
+import type { PathItem, PathLevel, PathStop, PathUnit } from '../../lib/path.ts'
+import { germanGrammar } from './grammar.ts'
 import { type CefrLevel, cefrGoals, cefrLevels, cefrTitles } from './levels.ts'
+import { readingsA1 } from './readingsA1.ts'
+import { germanVocabLessons } from './vocab.ts'
 
-// Recorrido del alemán por nivel. Cada nivel terminará en su simulacro estilo Goethe
-// (unidad `examen-<nivel>`). Las unidades se agregan con cada etapa (D1: A1, D2: A2…).
+// Recorrido del alemán por nivel. Cada unidad intercala gramática, palabras y textos de
+// «Ottos Weg», en paradas de hasta 3 lecciones. Cada nivel termina en su simulacro Goethe.
+
+const grammarTitle = new Map(germanGrammar.map((g) => [g.id, g.title]))
+const textTitle = new Map(readingsA1.map((t) => [t.id, t.title]))
+
+const grammarItem = (id: string): PathItem => ({ kind: 'grammar', id, title: grammarTitle.get(id) ?? id, to: `/gramatica/${id}` })
+const vocabItems = (theme: string): PathItem[] =>
+  germanVocabLessons.filter((l) => l.theme === theme).map((l) => ({ kind: 'vocab', id: l.id, title: `Palabras: ${l.title}`, to: `/palabras/${l.id}` }))
+const textItem = (id: string): PathItem => ({ kind: 'reading', id, title: textTitle.get(id) ?? id, to: `/textos/${id}` })
+
+/** Unidad: [gramática, palabras de un tema] intercalados y los textos al final, en paradas de 3. */
+function unit(id: string, title: string, icon: string, grammar: string[], themes: string[], texts: string[]): PathUnit {
+  const items: PathItem[] = []
+  const rounds = Math.max(grammar.length, themes.length)
+  for (let i = 0; i < rounds; i++) {
+    if (grammar[i]) items.push(grammarItem(grammar[i]))
+    if (themes[i]) items.push(...vocabItems(themes[i]))
+  }
+  items.push(...texts.map(textItem))
+  const stops: PathStop[] = []
+  for (let i = 0; i < items.length; i += 3) stops.push({ id: `${id}-${stops.length + 1}`, title: items[i].title, items: items.slice(i, i + 3) })
+  return { id, title, icon, stops }
+}
+
+const examUnit = (level: CefrLevel): PathUnit => ({
+  id: `examen-${level.toLowerCase()}`,
+  title: `Meta: simulacro Goethe ${level}`,
+  icon: '📝',
+  stops: [{ id: `examen-${level.toLowerCase()}-1`, title: `Simulacro Goethe-Zertifikat ${level}`, items: [{ kind: 'exam', id: level, title: `Simulacro Goethe-Zertifikat ${level}`, to: `/goethe/${level.toLowerCase()}` }] }],
+})
+
+const unitsA1: PathUnit[] = [
+  unit('de-a1-1', 'A1 · Hallo! Ich bin Otto', '👋', ['de-aussprache', 'de-sein', 'de-w-fragen'], ['hallo', 'personen'], ['dt-a1-ankunft']),
+  unit('de-a1-2', 'A1 · Recién llegado', '🧳', ['de-praesens', 'de-satzbau', 'de-ja-nein'], ['laender', 'familie'], ['lt-a1-steckbrief', 'dt-a1-familie']),
+  unit('de-a1-3', 'A1 · Números, horas y días', '🕗', ['de-zahlen', 'de-uhrzeit', 'de-zeitpraep'], ['zahlen-zeit', 'kalender'], ['lt-a1-kurs']),
+  unit('de-a1-4', 'A1 · Buscando departamento', '🏠', ['de-genus', 'de-plural', 'de-ein-kein'], ['wohnung', 'moebel'], ['dt-a1-wohnung', 'lt-a1-anzeige']),
+  unit('de-a1-5', 'A1 · En el Bürgeramt', '🏛️', ['de-nicht', 'de-muessen-duerfen', 'de-imperativ-sie'], ['amt', 'woerter'], ['dt-a1-buergeramt', 'lt-a1-formular']),
+  unit('de-a1-6', 'A1 · De compras', '🛒', ['de-akkusativ', 'de-haben', 'de-moechten'], ['essen', 'trinken', 'einkaufen'], ['dt-a1-baeckerei', 'lt-a1-einkaufszettel']),
+  unit('de-a1-7', 'A1 · Mi día y mi tiempo libre', '⚽', ['de-trennbar', 'de-vokalwechsel', 'de-gern'], ['alltag', 'freizeit', 'wetter'], ['dt-a1-wochenende', 'lt-a1-tagesablauf']),
+  unit('de-a1-8', 'A1 · Por la ciudad', '🚌', ['de-koennen-wollen', 'de-dativ-praep', 'de-wo-wohin'], ['stadt', 'verkehr'], ['dt-a1-weg']),
+  unit('de-a1-9', 'A1 · En el médico', '🩺', ['de-imperativ-du', 'de-possessiv'], ['koerper', 'kleidung', 'farben'], ['lt-a1-arzt']),
+  unit('de-a1-10', 'A1 · Mi primer trabajo', '🔧', ['de-perfekt-haben', 'de-perfekt-sein', 'de-war-hatte', 'de-konnektoren'], ['arbeit', 'berufe'], ['dt-a1-vorstellung', 'lt-a1-erster-tag']),
+  examUnit('A1'),
+]
 
 const unitsByLevel: Record<CefrLevel, PathUnit[]> = {
-  A1: [],
+  A1: unitsA1,
   A2: [],
   B1: [],
   B2: [],
@@ -24,3 +70,6 @@ export const germanPathLevels: PathLevel[] = (() => {
     return out
   })
 })()
+
+/** Todas las lecciones del recorrido, en orden. */
+export const germanPathItems: PathItem[] = germanPath.flatMap((u) => u.stops.flatMap((s) => s.items))

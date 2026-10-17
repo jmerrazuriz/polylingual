@@ -43,7 +43,7 @@ export const courses: Course[] = [
     name: 'Alemán',
     native: 'Deutsch',
     flag: '🇩🇪',
-    status: 'soon',
+    status: 'available',
     tagline: 'Ottos Weg: del A1 al C2, para vivir y trabajar en Alemania.',
     speechLang: 'de-DE',
     sections: ['tabla', 'aprender'],

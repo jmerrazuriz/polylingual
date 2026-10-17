@@ -11,6 +11,9 @@ const levelTitles: Record<string, string> = {
   N5: "Nivel N5 · básico",
   N4: "Nivel N4 · intermedio bajo",
   N3: "Nivel N3 · intermedio",
+  A1: "Nivel A1 · principiante",
+  A2: "Nivel A2 · elemental",
+  B1: "Nivel B1 · intermedio",
 };
 
 /** Lista de lecciones de gramática del curso activo, agrupadas por nivel. */
@@ -33,7 +36,7 @@ export function GrammarPage() {
 
       <LearnTabs current="gramatica" />
 
-      {lessons.length > 0 && !unlocked.has(lessons[0].id) && (
+      {course === "ja" && lessons.length > 0 && !unlocked.has(lessons[0].id) && (
         <p className="rounded-xl bg-slate-100 p-3 text-sm text-slate-600 dark:bg-slate-800 dark:text-slate-300">
           🔒 La gramática se abre al completar los básicos del hiragana (hasta
           la lección «W y N»), porque los ejemplos están escritos en kana.

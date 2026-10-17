@@ -5,6 +5,8 @@ import { dueCards, endOfDay, parseCardId, type SrsCard } from './progress/srs.ts
 import { type Question, romajiOptions } from './quiz.ts'
 import { kanjiReviewExercise, kanjiWritingItem, type TaggedExercise } from './studyExercises.ts'
 import { wordFromCard, wordReviewExercise } from './vocabExercises.ts'
+import { germanWordFromCard } from '../courses/de/vocab.ts'
+import { germanWordReviewExercise } from '../courses/de/vocabExercises.ts'
 import type { WritingItem } from './writing.ts'
 
 export const REVIEW_LIMIT = 20
@@ -17,7 +19,7 @@ export const REVIEW_LIMIT = 20
 export type ReviewPlan = { reading: Question[]; exercises: TaggedExercise[]; writing: WritingItem[] }
 
 /** Caracteres que tienen tarjetas de repaso: kana, kanji y palabras («w-<id>»). */
-export const isReviewable = (char: string) => kanaByChar.has(char) || kanjiByChar.has(char) || !!wordFromCard(char)
+export const isReviewable = (char: string) => kanaByChar.has(char) || kanjiByChar.has(char) || !!wordFromCard(char) || !!germanWordFromCard(char)
 
 /**
  * Repasos pendientes: las tarjetas ya vencidas, las más atrasadas primero. Las que
@@ -47,11 +49,12 @@ export function buildReview(cards: Record<string, SrsCard>, now: number, random 
 
   const exercises = due.flatMap(({ char, skill }): TaggedExercise[] => {
     if (wordFromCard(char)) return [wordReviewExercise(char, skill, random)]
+    if (germanWordFromCard(char)) return [germanWordReviewExercise(char, skill, random)]
     return skill === 'read' && kanjiByChar.has(char) ? [kanjiReviewExercise(char, random)] : []
   })
 
   const writing = due
-    .filter((c) => c.skill === 'write' && !wordFromCard(c.char))
+    .filter((c) => c.skill === 'write' && !wordFromCard(c.char) && !germanWordFromCard(c.char))
     .map(({ char }): WritingItem => {
       const kana = kanaByChar.get(char)
       return kana ? { prompt: kana.romaji, kana: kana.char, parts: kana.parts } : kanjiWritingItem(char)

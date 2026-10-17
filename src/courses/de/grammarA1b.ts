@@ -1,0 +1,343 @@
+import type { GrammarLesson } from '../grammar.ts'
+
+// Gramática A1 del alemán, segunda mitad (lecciones 16–30). Ottos Weg: el día a día, los
+// trámites, el médico, el trabajo y la ciudad.
+
+export const grammarA1b: GrammarLesson[] = [
+  {
+    id: 'de-zeitpraep',
+    level: 'A1',
+    title: 'am, um, im: cuándo',
+    summary: 'am Montag, um acht Uhr, im Mai, von… bis…',
+    pattern: 'am + día · um + hora · im + mes/estación · von 9 bis 17 Uhr',
+    explanation: [
+      'Para decir **cuándo**: **am** con los días y partes del día (**am** Montag, **am** Abend, **am** Wochenende), **um** con la hora exacta (**um** acht Uhr) e **im** con meses y estaciones (**im** Mai, **im** Winter).',
+      'Para un período: **von** neun **bis** fünf Uhr (de nueve a cinco). Excepción: **in der Nacht** (en la noche).',
+    ],
+    examples: [
+      { text: 'Am Montag habe ich um neun Uhr einen Termin.', meaning: 'El lunes tengo una cita a las nueve.' },
+      { text: 'Hans arbeitet von acht bis sechzehn Uhr.', meaning: 'Hans trabaja de ocho a dieciséis horas.' },
+      { text: 'Im Sommer fährt Otto nach Hamburg.', meaning: 'En verano Otto viaja a Hamburgo.' },
+    ],
+    exercises: [
+      { type: 'choice', prompt: 'Wir treffen uns ＿ Freitag.', options: ['am', 'um', 'im', 'in'], answer: 'am' },
+      { type: 'choice', prompt: 'Der Kurs beginnt ＿ zehn Uhr.', options: ['um', 'am', 'im', 'von'], answer: 'um' },
+      { type: 'choice', prompt: '＿ Dezember ist es kalt.', options: ['Im', 'Am', 'Um', 'Bis'], answer: 'Im' },
+      { type: 'choice', prompt: 'Das Büro ist ＿ neun ＿ fünf geöffnet.', options: ['von … bis', 'am … um', 'um … im', 'bis … von'], answer: 'von … bis' },
+    ],
+  },
+  {
+    id: 'de-trennbar',
+    level: 'A1',
+    title: 'Verbos separables',
+    summary: 'aufstehen → Ich stehe um sechs auf.',
+    pattern: 'auf|stehen → Ich stehe … auf.',
+    explanation: [
+      'Muchos verbos tienen un **prefijo separable** (auf-, an-, ein-, aus-, mit-, ab-, zu-, fern-): **auf**stehen, **ein**kaufen, **an**rufen, **an**kommen. Al conjugar, el prefijo **se va al final** de la oración: Ich **stehe** um sechs Uhr **auf**.',
+      'En infinitivo (con möchte, können…) el verbo queda junto y al final: Ich möchte **einkaufen**. El acento cae en el prefijo: **AUF**stehen.',
+    ],
+    examples: [
+      { text: 'Otto steht jeden Tag um sechs Uhr auf.', meaning: 'Otto se levanta todos los días a las seis.' },
+      { text: 'Hans ruft seine Mutter an.', meaning: 'Hans llama a su madre.' },
+      { text: 'Der Zug kommt um acht Uhr an.', meaning: 'El tren llega a las ocho.' },
+      { text: 'Am Samstag kaufen wir ein.', meaning: 'El sábado hacemos las compras.' },
+    ],
+    exercises: [
+      { type: 'order', meaning: 'Me levanto a las siete.', answer: ['Ich', 'stehe', 'um', 'sieben', 'Uhr', 'auf'] },
+      { type: 'choice', prompt: 'Hans ＿ heute ＿.', hint: 'einkaufen: Hans hace las compras hoy.', options: ['kauft … ein', 'einkauft … —', 'kauft … an', 'ein … kauft'], answer: 'kauft … ein' },
+      { type: 'choice', prompt: 'Wann ＿ der Bus ＿?', hint: 'ankommen: ¿Cuándo llega el bus?', options: ['kommt … an', 'ankommt … —', 'kommt … auf', 'an … kommt'], answer: 'kommt … an' },
+      { type: 'meaning', text: 'Ich rufe dich morgen an.', options: ['Te llamo mañana.', 'Te llamé ayer.', 'Me llamas mañana.', 'Te visito mañana.'], answer: 'Te llamo mañana.' },
+    ],
+  },
+  {
+    id: 'de-vokalwechsel',
+    level: 'A1',
+    title: 'Verbos con cambio de vocal',
+    summary: 'fahren → du fährst · lesen → er liest.',
+    pattern: 'a → ä (fahren: du fährst) · e → i/ie (sprechen: er spricht, lesen: er liest)',
+    explanation: [
+      'Algunos verbos cambian la vocal **solo en du y er/sie/es**: a → **ä** (fahren: du f**ä**hrst, er f**ä**hrt; schlafen: er schl**ä**ft), e → **i** (sprechen: er spr**i**cht; essen: du **i**sst; nehmen: er n**i**mmt; helfen: er h**i**lft) y e → **ie** (lesen: er l**ie**st; sehen: er s**ie**ht).',
+      'Con ich, wir, ihr y sie/Sie la vocal no cambia: ich fahre, wir fahren, ihr fahrt.',
+    ],
+    examples: [
+      { text: 'Otto fährt mit dem Bus zur Arbeit.', meaning: 'Otto va en bus al trabajo.' },
+      { text: 'Sprichst du Englisch?', meaning: '¿Hablas inglés?' },
+      { text: 'Hans liest die Zeitung.', meaning: 'Hans lee el diario.' },
+      { text: 'Was isst du gern?', meaning: '¿Qué te gusta comer?' },
+    ],
+    exercises: [
+      { type: 'choice', prompt: 'Du ＿ sehr schnell.', hint: 'fahren', options: ['fährst', 'fahrst', 'fährt', 'fahren'], answer: 'fährst' },
+      { type: 'choice', prompt: 'Otto ＿ ein bisschen Deutsch.', hint: 'sprechen', options: ['spricht', 'sprecht', 'sprichst', 'sprechen'], answer: 'spricht' },
+      { type: 'type', prompt: 'er ＿ (lesen)', answers: ['liest'], german: true },
+      { type: 'type', prompt: 'du ＿ (nehmen)', answers: ['nimmst'], german: true },
+      { type: 'choice', prompt: 'Wir ＿ nach Berlin.', hint: 'fahren', options: ['fahren', 'fähren', 'fährt', 'fahrt'], answer: 'fahren' },
+    ],
+  },
+  {
+    id: 'de-gern',
+    level: 'A1',
+    title: 'Gustos: gern, lieber, am liebsten',
+    summary: 'Ich koche gern. Ich trinke lieber Tee.',
+    pattern: 'verbo + gern · lieber · am liebsten · nicht gern',
+    explanation: [
+      'Para decir que te gusta **hacer** algo, agrega **gern** después del verbo: Ich koche **gern** (me gusta cocinar). Si no te gusta: Ich koche **nicht gern**.',
+      'Para comparar: **lieber** (prefiero) y **am liebsten** (lo que más me gusta): Ich trinke gern Kaffee, **lieber** Tee und **am liebsten** Wasser. Para cosas también se usa **mögen**: Ich **mag** Musik.',
+    ],
+    examples: [
+      { text: 'Hans spielt gern Fußball.', meaning: 'A Hans le gusta jugar fútbol.' },
+      { text: 'Ich arbeite lieber am Vormittag.', meaning: 'Prefiero trabajar en la mañana.' },
+      { text: 'Was machst du am liebsten?', meaning: '¿Qué es lo que más te gusta hacer?' },
+    ],
+    exercises: [
+      { type: 'choice', prompt: 'Otto kocht ＿.', hint: 'A Otto le gusta cocinar.', options: ['gern', 'lieber', 'gut', 'viel'], answer: 'gern' },
+      { type: 'choice', prompt: 'Ich trinke Kaffee, aber ich trinke ＿ Tee.', hint: 'prefiero', options: ['lieber', 'gern', 'am liebsten', 'mehr'], answer: 'lieber' },
+      { type: 'order', meaning: 'No me gusta cocinar.', answer: ['Ich', 'koche', 'nicht', 'gern'] },
+      { type: 'meaning', text: 'Am liebsten lese ich Bücher.', options: ['Lo que más me gusta es leer libros.', 'Leo libros a veces.', 'No me gusta leer libros.', 'Prefiero ver películas.'], answer: 'Lo que más me gusta es leer libros.' },
+    ],
+  },
+  {
+    id: 'de-koennen-wollen',
+    level: 'A1',
+    title: 'Modales: können y wollen',
+    summary: 'Ich kann Deutsch sprechen. Wir wollen umziehen.',
+    pattern: 'ich kann · du kannst · er kann | ich will · du willst · er will  + infinitivo al final',
+    explanation: [
+      '**können** = poder / saber hacer: ich **kann**, du **kannst**, er **kann**, wir **können**, ihr **könnt**, sie **können**. **wollen** = querer: ich **will**, du **willst**, er **will**, wir **wollen**, ihr **wollt**, sie **wollen**.',
+      'El modal va en **posición 2** y el otro verbo **al final, en infinitivo**: Ich **kann** gut **kochen**. Otto **will** in Deutschland **arbeiten**. Para pedir algo con cortesía: **Können Sie** mir helfen?',
+    ],
+    examples: [
+      { text: 'Können Sie das bitte wiederholen?', meaning: '¿Puede repetirlo, por favor?' },
+      { text: 'Otto will eine Arbeit finden.', meaning: 'Otto quiere encontrar un trabajo.' },
+      { text: 'Hans kann sehr gut Auto fahren.', meaning: 'Hans maneja muy bien.' },
+    ],
+    exercises: [
+      { type: 'choice', prompt: 'Du ＿ gut Deutsch sprechen.', options: ['kannst', 'kann', 'könnt', 'können'], answer: 'kannst' },
+      { type: 'choice', prompt: 'Otto ＿ in Berlin bleiben.', hint: 'quiere', options: ['will', 'willst', 'wollt', 'wollen'], answer: 'will' },
+      { type: 'order', meaning: '¿Puede ayudarme?', answer: ['Können', 'Sie', 'mir', 'helfen'] },
+      { type: 'order', meaning: 'Quiero encontrar un trabajo.', answer: ['Ich', 'will', 'eine', 'Arbeit', 'finden'] },
+      { type: 'type', prompt: 'ihr ＿ (können)', answers: ['könnt'], german: true },
+    ],
+  },
+  {
+    id: 'de-muessen-duerfen',
+    level: 'A1',
+    title: 'Modales: müssen y dürfen',
+    summary: 'Sie müssen das Formular ausfüllen. Hier darf man nicht rauchen.',
+    pattern: 'ich muss · du musst · er muss | ich darf · du darfst · er darf',
+    explanation: [
+      '**müssen** = tener que (obligación): ich **muss**, du **musst**, er **muss**, wir **müssen**, ihr **müsst**, sie **müssen**. **dürfen** = poder, tener permiso: ich **darf**, du **darfst**, er **darf**, wir **dürfen**, ihr **dürft**, sie **dürfen**.',
+      'Con **man** (uno, se) se dan reglas: Hier **darf man nicht** parken (aquí no se puede estacionar). En las oficinas oirás: Sie **müssen** das Formular **ausfüllen** (tiene que llenar el formulario).',
+    ],
+    examples: [
+      { text: 'Otto muss sich beim Bürgeramt anmelden.', meaning: 'Otto tiene que inscribirse en la oficina municipal.' },
+      { text: 'Hier darf man nicht rauchen.', meaning: 'Aquí no se puede fumar.' },
+      { text: 'Muss ich einen Termin machen?', meaning: '¿Tengo que pedir una cita?' },
+    ],
+    exercises: [
+      { type: 'choice', prompt: 'Sie ＿ das Formular ausfüllen.', hint: 'Tiene que…', options: ['müssen', 'muss', 'musst', 'müsst'], answer: 'müssen' },
+      { type: 'choice', prompt: 'Hier ＿ man nicht parken.', options: ['darf', 'darfst', 'dürfen', 'muss'], answer: 'darf' },
+      { type: 'choice', prompt: '＿ ich hier warten?', hint: '¿Tengo que esperar aquí?', options: ['Muss', 'Musst', 'Darfst', 'Müssen'], answer: 'Muss' },
+      { type: 'meaning', text: 'Du darfst hier nicht telefonieren.', options: ['No puedes hablar por teléfono aquí.', 'Tienes que llamar desde aquí.', 'Aquí no hay teléfono.', 'Puedes llamar aquí.'], answer: 'No puedes hablar por teléfono aquí.' },
+    ],
+  },
+  {
+    id: 'de-imperativ-sie',
+    level: 'A1',
+    title: 'Imperativo formal (Sie)',
+    summary: 'Nehmen Sie Platz! Füllen Sie das Formular aus!',
+    pattern: 'Infinitivo + Sie … !  → Kommen Sie bitte!',
+    explanation: [
+      'Para dar instrucciones con **Sie**, el verbo va **primero** y luego **Sie**: **Kommen Sie** bitte herein! **Nehmen Sie** Platz! Con verbos separables, el prefijo va al final: **Füllen Sie** das Formular **aus**!',
+      'Es lo que oirás en oficinas, médicos y en el trabajo. Con **bitte** suena amable. El de **sein** es especial: **Seien Sie** bitte pünktlich!',
+    ],
+    examples: [
+      { text: 'Nehmen Sie bitte Platz.', meaning: 'Tome asiento, por favor.' },
+      { text: 'Unterschreiben Sie hier, bitte.', meaning: 'Firme aquí, por favor.' },
+      { text: 'Rufen Sie morgen noch einmal an.', meaning: 'Llame de nuevo mañana.' },
+    ],
+    exercises: [
+      { type: 'order', meaning: 'Tome asiento, por favor.', answer: ['Nehmen', 'Sie', 'bitte', 'Platz'] },
+      { type: 'choice', prompt: '＿ Sie das Formular aus!', options: ['Füllen', 'Füllt', 'Füll', 'Ausfüllen'], answer: 'Füllen' },
+      { type: 'choice', prompt: '＿ Sie bitte pünktlich!', hint: 'sein', options: ['Seien', 'Sind', 'Sein', 'Seid'], answer: 'Seien' },
+      { type: 'meaning', text: 'Warten Sie bitte hier.', options: ['Espere aquí, por favor.', '¿Está esperando aquí?', 'Esperamos aquí.', 'No espere aquí.'], answer: 'Espere aquí, por favor.' },
+    ],
+  },
+  {
+    id: 'de-imperativ-du',
+    level: 'A1',
+    title: 'Imperativo con du e ihr',
+    summary: 'Komm! Lies das! Kommt mit!',
+    pattern: 'du: raíz (+e) → Komm! · ihr: forma de ihr → Kommt!',
+    explanation: [
+      'Con **du** se usa la raíz del verbo sin pronombre: komm**en** → **Komm!**, warten → **Warte!** Los verbos con e → i/ie mantienen el cambio: lesen → **Lies!**, nehmen → **Nimm!**, helfen → **Hilf!** Pero a → ä no: fahren → **Fahr!**',
+      'Con **ihr** es la forma normal sin pronombre: **Kommt** mit! **Wartet** hier! Entre amigos, como Otto y Hans, se usan estas formas.',
+    ],
+    examples: [
+      { text: 'Hans, komm bitte mit!', meaning: '¡Hans, ven conmigo, por favor!' },
+      { text: 'Lies den Vertrag genau!', meaning: '¡Lee el contrato con atención!' },
+      { text: 'Kinder, wartet hier!', meaning: '¡Niños, esperen aquí!' },
+    ],
+    exercises: [
+      { type: 'choice', prompt: 'Otto, ＿ das Buch!', hint: 'lesen', options: ['lies', 'les', 'lest', 'liest'], answer: 'lies' },
+      { type: 'choice', prompt: 'Hans, ＿ mir bitte!', hint: 'helfen', options: ['hilf', 'helf', 'hilfst', 'helft'], answer: 'hilf' },
+      { type: 'choice', prompt: 'Kinder, ＿ leise!', hint: 'sein (ihr)', options: ['seid', 'sei', 'seien', 'sind'], answer: 'seid' },
+      { type: 'type', prompt: 'Imperativo de «nehmen» (du): ＿ den Bus!', answers: ['Nimm', 'nimm'], german: true },
+    ],
+  },
+  {
+    id: 'de-possessiv',
+    level: 'A1',
+    title: 'Posesivos: mein, dein, sein, ihr…',
+    summary: 'mein Bruder, meine Schwester, unser Chef.',
+    pattern: 'mein · dein · sein (él) · ihr (ella) · unser · euer · ihr (ellos) · Ihr (usted)',
+    explanation: [
+      'Los posesivos funcionan como **ein**: mein Vater, mein**e** Mutter, mein Kind, mein**e** Eltern. En acusativo masculino: Ich besuche mein**en** Bruder.',
+      'Ojo con la tercera persona: **sein** = de él, **ihr** = de ella o de ellos, **Ihr** (mayúscula) = de usted. Hans und **seine** Frau · Anna und **ihr** Mann.',
+    ],
+    examples: [
+      { text: 'Das ist mein Freund Hans und seine Frau Lena.', meaning: 'Este es mi amigo Hans y su esposa Lena.' },
+      { text: 'Wie ist Ihre Adresse?', meaning: '¿Cuál es su dirección (de usted)?' },
+      { text: 'Unsere Wohnung hat zwei Zimmer.', meaning: 'Nuestro departamento tiene dos habitaciones.' },
+    ],
+    exercises: [
+      { type: 'choice', prompt: 'Das ist ＿ Schwester.', hint: 'mi', options: ['meine', 'mein', 'meinen', 'meiner'], answer: 'meine' },
+      { type: 'choice', prompt: 'Hans besucht ＿ Vater.', hint: 'su (de Hans) · Akkusativ', options: ['seinen', 'sein', 'ihren', 'seine'], answer: 'seinen' },
+      { type: 'choice', prompt: 'Lena und ＿ Mann wohnen in Köln.', hint: 'su (de ella)', options: ['ihr', 'sein', 'ihre', 'seine'], answer: 'ihr' },
+      { type: 'choice', prompt: 'Wie ist ＿ Telefonnummer, Herr Weber?', hint: 'de usted', options: ['Ihre', 'ihre', 'deine', 'seine'], answer: 'Ihre' },
+    ],
+  },
+  {
+    id: 'de-dativ-praep',
+    level: 'A1',
+    title: 'mit, bei, nach, zu + dativo',
+    summary: 'mit dem Bus, bei der Arbeit, zum Arzt.',
+    pattern: 'mit · bei · nach · zu · aus · von + DATIVO: dem / der / dem / den (pl.)',
+    explanation: [
+      'Estas preposiciones siempre piden **dativo**: **mit** (con), **bei** (en casa de, en), **nach** (después de; a ciudades/países), **zu** (a, hacia), **aus** (de, desde), **von** (de). Artículos en dativo: **dem** (m/n), **der** (f), **den** (plural).',
+      'Contracciones muy usadas: zu dem → **zum**, zu der → **zur**, bei dem → **beim**, von dem → **vom**. Otto fährt **mit dem** Bus **zur** Arbeit. Er geht **zum** Arzt.',
+    ],
+    examples: [
+      { text: 'Otto fährt mit dem Fahrrad zur Arbeit.', meaning: 'Otto va en bicicleta al trabajo.' },
+      { text: 'Hans ist beim Arzt.', meaning: 'Hans está en el médico.' },
+      { text: 'Nach der Arbeit gehen wir zum Supermarkt.', meaning: 'Después del trabajo vamos al supermercado.' },
+    ],
+    exercises: [
+      { type: 'choice', prompt: 'Ich fahre mit ＿ Bus.', hint: 'der Bus', options: ['dem', 'den', 'der', 'das'], answer: 'dem' },
+      { type: 'choice', prompt: 'Otto geht ＿ Ärztin.', hint: 'zu + der', options: ['zur', 'zum', 'zu die', 'zu den'], answer: 'zur' },
+      { type: 'choice', prompt: 'Hans arbeitet ＿ einer Bank.', options: ['bei', 'mit', 'zu', 'nach'], answer: 'bei' },
+      { type: 'choice', prompt: 'Wir fahren morgen ＿ Hamburg.', hint: 'a una ciudad', options: ['nach', 'zu', 'bei', 'in'], answer: 'nach' },
+      { type: 'type', prompt: 'Ich gehe ＿ Arzt. (zu + dem)', answers: ['zum'], german: true },
+    ],
+  },
+  {
+    id: 'de-wo-wohin',
+    level: 'A1',
+    title: '¿Dónde? y ¿adónde?',
+    summary: 'Ich bin im Büro. Ich gehe ins Büro.',
+    pattern: 'Wo? → im / in der (dativo) · Wohin? → ins / in die (acusativo), nach Hause',
+    explanation: [
+      '**Wo?** (¿dónde?, sin movimiento) pide **dativo**: Ich bin **im** Büro, **in der** Küche, **am** Bahnhof. **Wohin?** (¿adónde?, con movimiento) pide **acusativo**: Ich gehe **ins** Büro, **in die** Küche.',
+      'Fórmulas fijas: **zu Hause** (en casa) y **nach Hause** (a casa). Contracciones: in dem → **im**, in das → **ins**, an dem → **am**.',
+    ],
+    examples: [
+      { text: 'Wo ist Otto? – Er ist im Supermarkt.', meaning: '¿Dónde está Otto? – Está en el supermercado.' },
+      { text: 'Wohin gehst du? – Ich gehe ins Kino.', meaning: '¿Adónde vas? – Voy al cine.' },
+      { text: 'Nach der Arbeit fährt Hans nach Hause.', meaning: 'Después del trabajo Hans se va a casa.' },
+    ],
+    exercises: [
+      { type: 'choice', prompt: 'Ich bin ＿ Büro.', hint: '¿Dónde? · das Büro', options: ['im', 'ins', 'in die', 'nach'], answer: 'im' },
+      { type: 'choice', prompt: 'Wir gehen ＿ Kino.', hint: '¿Adónde? · das Kino', options: ['ins', 'im', 'in der', 'zu'], answer: 'ins' },
+      { type: 'choice', prompt: 'Otto ist heute ＿ Hause.', options: ['zu', 'nach', 'in', 'bei'], answer: 'zu' },
+      { type: 'choice', prompt: 'Um fünf gehe ich ＿ Hause.', options: ['nach', 'zu', 'im', 'in'], answer: 'nach' },
+    ],
+  },
+  {
+    id: 'de-perfekt-haben',
+    level: 'A1',
+    title: 'El pasado (Perfekt) con haben',
+    summary: 'Ich habe gearbeitet. Hast du gegessen?',
+    pattern: 'haben (posición 2) + … + participio (al final): Ich habe Deutsch gelernt.',
+    explanation: [
+      'Para hablar del pasado en la conversación se usa el **Perfekt**: **haben** conjugado en posición 2 y el **participio al final**. Ich **habe** gestern lange **gearbeitet**.',
+      'Participio regular: **ge-** + raíz + **-t** (machen → **gemacht**, kaufen → **gekauft**, arbeiten → **gearbeitet**). Irregulares: essen → **gegessen**, trinken → **getrunken**, sehen → **gesehen**, schreiben → **geschrieben**. Los verbos en **-ieren** no llevan ge-: studiert, telefoniert.',
+    ],
+    examples: [
+      { text: 'Gestern habe ich eine Wohnung gesehen.', meaning: 'Ayer vi un departamento.' },
+      { text: 'Hans hat mir sehr geholfen.', meaning: 'Hans me ayudó mucho.' },
+      { text: 'Hast du schon gegessen?', meaning: '¿Ya comiste?' },
+    ],
+    exercises: [
+      { type: 'order', meaning: 'Ayer trabajé mucho.', answer: ['Gestern', 'habe', 'ich', 'viel', 'gearbeitet'] },
+      { type: 'choice', prompt: 'Otto hat einen Stuhl ＿.', hint: 'kaufen', options: ['gekauft', 'gekaufen', 'kaufte', 'kauft'], answer: 'gekauft' },
+      { type: 'choice', prompt: 'Wir ＿ Pizza gegessen.', options: ['haben', 'sind', 'hat', 'habt'], answer: 'haben' },
+      { type: 'type', prompt: 'Participio de «machen»', answers: ['gemacht'], german: true },
+      { type: 'meaning', text: 'Ich habe den Brief geschrieben.', options: ['Escribí la carta.', 'Escribo la carta.', 'Voy a escribir la carta.', 'Leí la carta.'], answer: 'Escribí la carta.' },
+    ],
+  },
+  {
+    id: 'de-perfekt-sein',
+    level: 'A1',
+    title: 'El Perfekt con sein',
+    summary: 'Ich bin nach Berlin gefahren.',
+    pattern: 'sein + participio: verbos de movimiento y cambio',
+    explanation: [
+      'Los verbos de **movimiento** (gehen, fahren, kommen, fliegen) o **cambio de estado** (aufstehen, einschlafen) forman el Perfekt con **sein**: Ich **bin** nach Deutschland **gekommen**. También **bleiben** y **sein**: Ich **bin** zu Hause **geblieben**.',
+      'Participios frecuentes: gehen → **gegangen**, fahren → **gefahren**, kommen → **gekommen**, fliegen → **geflogen**, aufstehen → **aufgestanden**, bleiben → **geblieben**.',
+    ],
+    examples: [
+      { text: 'Otto ist im März nach Deutschland gekommen.', meaning: 'Otto llegó a Alemania en marzo.' },
+      { text: 'Heute bin ich früh aufgestanden.', meaning: 'Hoy me levanté temprano.' },
+      { text: 'Seid ihr mit dem Zug gefahren?', meaning: '¿Viajaron en tren?' },
+    ],
+    exercises: [
+      { type: 'choice', prompt: 'Hans ＿ nach Hause gegangen.', options: ['ist', 'hat', 'sind', 'haben'], answer: 'ist' },
+      { type: 'choice', prompt: 'Wir ＿ gestern lange gearbeitet.', options: ['haben', 'sind', 'ist', 'hat'], answer: 'haben' },
+      { type: 'choice', prompt: 'Ich bin mit dem Bus ＿.', hint: 'fahren', options: ['gefahren', 'gefahrt', 'fuhr', 'gefährt'], answer: 'gefahren' },
+      { type: 'order', meaning: 'Me levanté a las seis.', answer: ['Ich', 'bin', 'um', 'sechs', 'aufgestanden'] },
+    ],
+  },
+  {
+    id: 'de-war-hatte',
+    level: 'A1',
+    title: 'war y hatte: el pasado de sein y haben',
+    summary: 'Ich war krank. Wir hatten keine Zeit.',
+    pattern: 'ich war · du warst · er war | ich hatte · du hattest · er hatte',
+    explanation: [
+      'Con **sein** y **haben** casi nunca se usa el Perfekt: se dice el **Präteritum**. **sein**: ich **war**, du **warst**, er **war**, wir **waren**, ihr **wart**, sie **waren**. **haben**: ich **hatte**, du **hattest**, er **hatte**, wir **hatten**, ihr **hattet**, sie **hatten**.',
+      'Ich **war** gestern beim Arzt (ayer estuve en el médico). Wir **hatten** viel Arbeit (tuvimos mucho trabajo).',
+    ],
+    examples: [
+      { text: 'Gestern war ich krank.', meaning: 'Ayer estuve enfermo.' },
+      { text: 'Otto hatte am Montag ein Vorstellungsgespräch.', meaning: 'Otto tuvo una entrevista de trabajo el lunes.' },
+      { text: 'Wo warst du? – Ich war im Supermarkt.', meaning: '¿Dónde estabas? – Estaba en el supermercado.' },
+    ],
+    exercises: [
+      { type: 'choice', prompt: 'Wir ＿ letzte Woche in Hamburg.', options: ['waren', 'war', 'wart', 'warst'], answer: 'waren' },
+      { type: 'choice', prompt: 'Hans ＿ keine Zeit.', hint: 'pasado de haben', options: ['hatte', 'hattest', 'hatten', 'hat'], answer: 'hatte' },
+      { type: 'type', prompt: 'du ＿ (sein, pasado)', answers: ['warst'], german: true },
+      { type: 'meaning', text: 'Ich hatte Fieber.', options: ['Tenía fiebre.', 'Tengo fiebre.', 'Tendré fiebre.', 'No tengo fiebre.'], answer: 'Tenía fiebre.' },
+    ],
+  },
+  {
+    id: 'de-konnektoren',
+    level: 'A1',
+    title: 'und, aber, oder, denn',
+    summary: 'Unir oraciones sin cambiar el orden.',
+    pattern: 'Oración 1, aber/denn + oración normal: … denn ich bin müde.',
+    explanation: [
+      '**und** (y), **aber** (pero), **oder** (o), **denn** (porque) y **sondern** (sino) unen oraciones **sin cambiar el orden**: el verbo sigue en posición 2. Ich bleibe zu Hause, **denn** ich **bin** krank.',
+      'Antes de **aber**, **denn** y **sondern** va coma. **sondern** se usa después de una negación: Otto kommt nicht aus Spanien, **sondern** aus Chile.',
+    ],
+    examples: [
+      { text: 'Otto lernt Deutsch, denn er möchte hier arbeiten.', meaning: 'Otto aprende alemán porque quiere trabajar aquí.' },
+      { text: 'Die Wohnung ist schön, aber sie ist teuer.', meaning: 'El departamento es bonito, pero es caro.' },
+      { text: 'Trinkst du Kaffee oder Tee?', meaning: '¿Tomas café o té?' },
+    ],
+    exercises: [
+      { type: 'choice', prompt: 'Ich komme nicht, ＿ ich habe keine Zeit.', hint: 'porque', options: ['denn', 'aber', 'oder', 'und'], answer: 'denn' },
+      { type: 'choice', prompt: 'Das Zimmer ist klein, ＿ es ist hell.', hint: 'pero', options: ['aber', 'denn', 'oder', 'sondern'], answer: 'aber' },
+      { type: 'choice', prompt: 'Hans wohnt nicht in Berlin, ＿ in Köln.', options: ['sondern', 'aber', 'denn', 'oder'], answer: 'sondern' },
+      { type: 'order', meaning: 'Me quedo en casa porque estoy enfermo.', answer: ['Ich', 'bleibe', 'zu', 'Hause', 'denn', 'ich', 'bin', 'krank'] },
+    ],
+  },
+]

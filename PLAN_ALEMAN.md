@@ -231,7 +231,7 @@ El curso alemán ya está en `src/courses/index.ts` con `status: 'soon'` y `spee
 | Etapa | Contenido | Hecho cuando… |
 |---|---|---|
 | ✅ **D0 · Base multi-curso** (17-10-2026) | Generalizar recorrido, nivelación, simulacros y fichas por curso (sección 5). Motor de conjugación y declinación con sus tests. Entrada con umlauts. Tablas de artículos y conjugación. | El japonés sigue igual (todos los tests pasan) y existe un recorrido alemán vacío. |
-| **D1 · A1** | Pronunciación, ~30 lecciones, ~650 palabras con artículo y plural, lecturas y audición, juegos y simulacro A1. Test de nivelación A1. | Se puede hacer el A1 entero y aprobar el simulacro. El curso pasa a «disponible». |
+| ✅ **D1 · A1** (17-10-2026) | Pronunciación, ~30 lecciones, ~650 palabras con artículo y plural, lecturas y audición, juegos y simulacro A1. Test de nivelación A1. | Se puede hacer el A1 entero y aprobar el simulacro. El curso pasa a «disponible». |
 | **D2 · A2** | ~30 lecciones, +650 palabras, dativo y Wechselpräpositionen con ejercicios generados, simulacro A2. | Igual que D1. |
 | **D3 · B1** | ~35 lecciones, +1.100 palabras, SRS de rección (verbo + preposición), simulacro B1 con 4 módulos. | Simulacro B1 con puntaje Goethe. |
 | **D4 · B2** | ~35 lecciones, +1.600 palabras, Konjunktiv I y participios, audio pregenerado, Schreiben con lista de control. | Simulacro B2. |
@@ -256,7 +256,25 @@ El curso alemán ya está en `src/courses/index.ts` con `status: 'soon'` y `spee
 - **Entrada en alemán** (`src/lib/germanInput.ts` y `UmlautKeys`): acepta ae/oe/ue y ss; las mayúsculas mal puestas se marcan como «casi»; botones ä ö ü ß.
 - **Tablas** (`/tabla` en alemán): artículos por caso y género con colores, pronombres, terminaciones del adjetivo y un conjugador con práctica.
 - **Inicio del alemán** con los personajes, el recorrido y las tablas.
-- **Disponibilidad:** el curso sigue en «próximamente» para los usuarios. Solo se puede abrir en el entorno de desarrollo, como «Vista previa».
+- **Disponibilidad:** en D0 el curso solo se abría en desarrollo; desde D1 está disponible para todos.
+
+### Qué quedó hecho en D1 (A1)
+- **Gramática A1** (`grammarA1a.ts`, `grammarA1b.ts`): 30 lecciones con ejemplos de Otto y Hans.
+  - Temas: pronunciación, *sein*, preguntas W, presente, verbo en posición 2, números y hora, género, plural, *ein/kein*, *nicht*, acusativo, *möchte*, separables, cambio vocálico, *gern*, modales, imperativo, posesivos, dativo con preposiciones, *wo/wohin*, Perfekt, *war/hatte* y conectores.
+  - Los ejercicios de escribir usan la entrada alemana (umlauts y mayúsculas).
+- **Vocabulario A1** (`vocabA1.ts`): unas 620 palabras en 23 temas de la vida en Alemania (saludos, *Amt*, vivienda, compras, transporte, trabajo, médico…), todos los sustantivos con artículo y plural, en unas 64 lecciones.
+  - Ejercicios: significado, cómo se dice, artículo, plural y escribir.
+  - Las palabras entran al repaso espaciado («dw-<id>»).
+- **Lecturas y audición A1** (`readingsA1.ts`): 16 episodios de *Ottos Weg* (8 lecturas y 8 diálogos) con preguntas tipo Goethe. Se leen con la voz alemana del navegador y tienen un glosario al tocar las palabras (`glossary.ts`, reconoce plurales y verbos conjugados).
+- **Recorrido A1** (`path.ts`): 10 unidades y el simulacro como meta, con desbloqueo lineal (`progress.ts`).
+- **Simulacro Goethe A1** (`/goethe/a1`):
+  - Lesen y Hören se corrigen solos; en Hören el audio se puede oír dos veces.
+  - Schreiben combina un formulario corregido con un mensaje autoevaluado (lista de control y modelo).
+  - Sprechen es autoevaluación guiada.
+  - Se aprueba con el 60 % entre Lesen y Hören.
+- **Test de nivelación** (`/nivelacion` en alemán): bloques de dos unidades y 80 % para aprobar.
+- **Inicio del alemán**: botón «Continuar», cantidad de repasos y las secciones. Las pestañas de Aprender son Recorrido, Gramática, Palabras, y Lectura y audio.
+- **Pendiente para más adelante:** lección del día y lección extra en alemán, juegos y la sección Practicar.
 
 ---
 

@@ -18,6 +18,8 @@ const stopStyle: Record<StopStatus, string> = {
 }
 
 const kindIcon = { kana: 'あ', grammar: '文', counters: '数', kanji: '字', vocab: '語', reading: '読', exam: '📝', unit: '🧩' } as const
+/** En alemán: G de gramática, W de Wörter (palabras), T de textos. */
+const germanIcon = { ...kindIcon, grammar: 'G', vocab: 'W', reading: 'T' } as const
 
 export function PathPage() {
   // Se vuelve a calcular cuando cambia cualquier progreso relevante.
@@ -27,7 +29,9 @@ export function PathPage() {
   useProgress((s) => s.records)
   useProgress((s) => s.unlockAll)
   const guest = useAccount((s) => s.status !== 'user')
-  const cp = coursePath(useProgress((s) => s.course))
+  const course = useProgress((s) => s.course)
+  const cp = coursePath(course)
+  const icons = course === 'de' ? germanIcon : kindIcon
   const { stops, current, itemStatus } = pathStatusFor(cp.units, cp.itemStatus(progressSnapshot(), guest))
   const [open, setOpen] = useState<string | null>(null)
   const selected = open ?? current?.id ?? null
@@ -170,13 +174,13 @@ export function PathPage() {
                   <span
                     className={`flex h-16 w-16 items-center justify-center rounded-full border-b-4 font-jp text-2xl font-bold shadow-sm transition ${stopStyle[status]}`}
                   >
-                    {status === 'done' ? '✓' : status === 'locked' ? '🔒' : isReview ? '🧩' : kindIcon[s.items[0].kind]}
+                    {status === 'done' ? '✓' : status === 'locked' ? '🔒' : isReview ? '🧩' : icons[s.items[0].kind]}
                   </span>
                   {status === 'current' && (
                     <span className="rounded-full bg-accent px-2 py-0.5 text-xs font-extrabold text-white">¡Sigue aquí!</span>
                   )}
                 </button>
-                {selected === s.id && <StopPanel stop={s} itemStatus={itemStatus} />}
+                {selected === s.id && <StopPanel stop={s} itemStatus={itemStatus} icons={icons} />}
               </li>
             )
           })}
@@ -190,7 +194,7 @@ export function PathPage() {
 const statusLabel: Record<StopStatus, string> = { done: 'completada', current: 'actual', open: 'abierta', locked: 'bloqueada' }
 
 /** Las lecciones de una parada, con su estado y botón para empezar o repetir. */
-function StopPanel({ stop, itemStatus }: { stop: PathStop; itemStatus: (i: PathItem) => ItemStatus }) {
+function StopPanel({ stop, itemStatus, icons }: { stop: PathStop; itemStatus: (i: PathItem) => ItemStatus; icons: Record<PathItem['kind'], string> }) {
   return (
     <div className="mt-3 w-full max-w-sm rounded-2xl border border-slate-200 bg-white p-3 shadow-md dark:border-slate-800 dark:bg-slate-900">
       <ul className="flex flex-col gap-2">
@@ -199,7 +203,7 @@ function StopPanel({ stop, itemStatus }: { stop: PathStop; itemStatus: (i: PathI
           return (
             <li key={i.id} className="flex items-center gap-3">
               <span lang="ja" className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-slate-100 font-jp dark:bg-slate-800" aria-hidden>
-                {status === 'done' ? '✓' : kindIcon[i.kind]}
+                {status === 'done' ? '✓' : icons[i.kind]}
               </span>
               <span className="flex-1 text-sm font-bold">{i.title}</span>
               {status === 'locked' ? (

@@ -1,3 +1,4 @@
+import { germanUnlockedIds } from '../../courses/de/progress.ts'
 import { lessons as allLessons, lessonsByScript } from '../../courses/ja/lessons.ts'
 import {
   VOCAB_KATA_UNLOCKED_BY,
@@ -60,7 +61,11 @@ export function useUnlockedGrammar(ids: readonly string[]): Set<string> {
   const guest = useAccount((s) => s.status !== 'user')
   const grammar = useProgress((s) => s.grammar)
   const lessons = useProgress((s) => s.lessons)
+  const records = useProgress((s) => s.records)
   const unlockAll = useProgress((s) => s.unlockAll)
+  const course = useProgress((s) => s.course)
+  // En alemán la gramática sigue el recorrido (cada lección abre la siguiente).
+  if (course === 'de') return germanUnlockedIds({ lessons, grammar, records, unlockAll }, guest, 'grammar')
   return unlockedGrammar(ids, grammar, lessons, guest || unlockAll)
 }
 

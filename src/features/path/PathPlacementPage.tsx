@@ -3,6 +3,7 @@ import { Link } from 'react-router'
 import { SaveProgressPrompt } from '../../components/SaveProgressPrompt'
 import type { GrammarExercise } from '../../courses/grammar'
 import { coursePath } from '../../lib/coursePath'
+import { GermanPlacement } from '../german/GermanPlacement'
 import { japanesePath } from '../../lib/path'
 import {
   buildBlock,
@@ -28,6 +29,7 @@ const unitTitles = (blocks: PlacementBlock[]) =>
 /** El test de nivelación del curso activo (por ahora solo el japonés tiene). */
 export function PathPlacementPage() {
   const course = useProgress((s) => s.course)
+  if (course === 'de') return <GermanPlacement />
   if (!coursePath(course).hasPlacement) {
     return (
       <section className="mx-auto flex max-w-md flex-col items-center gap-4 py-8 text-center">

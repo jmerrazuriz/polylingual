@@ -14,6 +14,7 @@ export function ReviewPage() {
   const [plan] = useState(() => buildReview(useProgress.getState().cards, now()))
   const [result, setResult] = useState<MixedResult | null>(null)
   const cards = useProgress((s) => s.cards)
+  const course = useProgress((s) => s.course)
 
   if (plan.reading.length + plan.exercises.length + plan.writing.length === 0) {
     const next = nextDue(cards, now())
@@ -41,7 +42,7 @@ export function ReviewPage() {
         reading={plan.reading}
         exercises={plan.exercises}
         writing={plan.writing}
-        labels={{ reading: 'Repaso de lectura', exercises: 'Repaso de kanji', writing: 'Repaso de escritura' }}
+        labels={{ reading: 'Repaso de lectura', exercises: course === 'de' ? 'Repaso de palabras' : 'Repaso de kanji y palabras', writing: 'Repaso de escritura' }}
         onFinish={setResult}
       />
     )

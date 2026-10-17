@@ -20,8 +20,8 @@ const JP = /[぀-ヿ]/
 const kanaOnly = (text: string) => furiganaToKana(text).replace(/[\s、。？＿→「」]/g, '')
 
 describe('cursos', () => {
-  it('el japonés está disponible y el resto llega pronto', () => {
-    expect(courses.map((c) => `${c.id}:${c.status}`)).toEqual(['ja:available', 'it:soon', 'de:soon', 'fr:soon'])
+  it('el japonés y el alemán están disponibles; el resto llega pronto', () => {
+    expect(courses.map((c) => `${c.id}:${c.status}`)).toEqual(['ja:available', 'it:soon', 'de:available', 'fr:soon'])
     expect(courseById('xx').id).toBe('ja')
   })
 

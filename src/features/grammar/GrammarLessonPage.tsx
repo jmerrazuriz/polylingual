@@ -31,7 +31,8 @@ export function GrammarLessonRoute() {
       </section>
     )
   }
-  const next = lessons[lessons.indexOf(lesson) + 1]
+  // En alemán la siguiente lección del recorrido puede ser de palabras: se vuelve al recorrido.
+  const next = course === 'de' ? undefined : lessons[lessons.indexOf(lesson) + 1]
   return <GrammarLessonView key={lesson.id} lesson={lesson} number={lessons.indexOf(lesson) + 1} next={next} />
 }
 
@@ -50,6 +51,9 @@ export function GrammarLessonView({ lesson, number, next, onFinish }: Props) {
   const [showReading, setShowReading] = useState(true)
   const complete = useProgress((s) => s.completeGrammar)
   const { available: audio, speak } = useSpeech()
+  const lang = useProgress((s) => s.course) === 'de' ? 'de' : 'ja'
+  const font = lang === 'ja' ? 'font-jp' : ''
+  const hasReadings = lesson.examples.some((ex) => ex.reading)
 
   const total = lesson.exercises.length
   const steps = 2 + total // explicación, ejemplos y un paso por ejercicio
@@ -82,7 +86,7 @@ export function GrammarLessonView({ lesson, number, next, onFinish }: Props) {
         <section className="flex flex-col gap-4">
           <p className="text-sm font-bold text-slate-500 uppercase">Gramática · Lección {number}</p>
           <h1 className="text-2xl font-extrabold">{lesson.title}</h1>
-          <p className="rounded-2xl bg-ink p-4 text-center font-jp text-xl leading-loose text-white">
+          <p lang={lang} className={`rounded-2xl bg-ink p-4 text-center text-xl leading-loose text-white ${font}`}>
             <Furigana text={lesson.pattern} />
           </p>
           {lesson.explanation.map((p, i) => (
@@ -100,10 +104,12 @@ export function GrammarLessonView({ lesson, number, next, onFinish }: Props) {
         <section className="flex flex-col gap-3">
           <div className="flex items-center justify-between">
             <h2 className="text-xl font-extrabold">Ejemplos</h2>
-            <label className="flex items-center gap-2 text-sm font-semibold">
-              <input type="checkbox" checked={showReading} onChange={(e) => setShowReading(e.target.checked)} className="h-4 w-4 accent-accent" />
-              Romaji
-            </label>
+            {hasReadings && (
+              <label className="flex items-center gap-2 text-sm font-semibold">
+                <input type="checkbox" checked={showReading} onChange={(e) => setShowReading(e.target.checked)} className="h-4 w-4 accent-accent" />
+                Romaji
+              </label>
+            )}
           </div>
           <ul className="flex flex-col gap-2">
             {lesson.examples.map((ex) => (
@@ -113,7 +119,7 @@ export function GrammarLessonView({ lesson, number, next, onFinish }: Props) {
                   disabled={!audio}
                   className="flex w-full flex-col gap-0.5 rounded-2xl border border-slate-200 bg-white p-3 text-left enabled:hover:border-accent dark:border-slate-800 dark:bg-slate-900"
                 >
-                  <span lang="ja" className="font-jp text-xl">
+                  <span lang={lang} className={`text-xl ${font}`}>
                     {audio && <span aria-hidden>🔊 </span>}
                     <Furigana text={ex.text} />
                   </span>
@@ -152,9 +158,13 @@ export function GrammarLessonView({ lesson, number, next, onFinish }: Props) {
             <Link to="/gramatica" className="rounded-full border border-slate-300 px-6 py-3 font-bold dark:border-slate-700">
               Gramática
             </Link>
-            {next && (
+            {next ? (
               <Link to={`/gramatica/${next.id}`} className="rounded-full bg-ink px-6 py-3 font-bold text-white hover:opacity-90">
                 Siguiente: {next.title}
+              </Link>
+            ) : (
+              <Link to="/aprender" className="rounded-full bg-ink px-6 py-3 font-bold text-white hover:opacity-90">
+                Seguir el recorrido
               </Link>
             )}
           </div>
