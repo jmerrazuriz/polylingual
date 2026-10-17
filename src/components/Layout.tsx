@@ -1,6 +1,7 @@
 import { Suspense, useState } from 'react'
 import { Link, NavLink, Outlet, useLocation } from 'react-router'
 import { type CourseSection, courseById } from '../courses'
+import { ErrorBoundary } from './ErrorBoundary'
 import { useAccount } from '../lib/account/store'
 import { useProgress } from '../lib/progress/store'
 import { useApplySettings } from '../lib/settings/useApplySettings'
@@ -31,6 +32,7 @@ export function Layout() {
   useApplySettings()
   const sections = useSections()
   const course = courseById(useProgress((s) => s.course))
+  const { pathname } = useLocation()
   return (
     <div className="flex min-h-dvh flex-col">
       <a
@@ -71,9 +73,11 @@ export function Layout() {
       <GuestBanner />
 
       <main id="contenido" className="mx-auto w-full max-w-5xl flex-1 px-4 pt-6 pb-24 md:pb-10 print:p-0">
-        <Suspense fallback={<p className="py-10 text-center text-slate-500">Cargando…</p>}>
-          <Outlet />
-        </Suspense>
+        <ErrorBoundary key={pathname}>
+          <Suspense fallback={<p className="py-10 text-center text-slate-500">Cargando…</p>}>
+            <Outlet />
+          </Suspense>
+        </ErrorBoundary>
       </main>
 
       <Toaster />
