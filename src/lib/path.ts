@@ -61,6 +61,14 @@ function vocabUnit(n: number, title: string, lessons: { id: string }[]): PathUni
   return { id: `vocab-${n}`, title, icon: '語', stops }
 }
 const hiraVocab = (from: number, to?: number) => vocabLessonsHira.slice(from, to)
+/** Kanji N4: una unidad por grupo de lecciones (kanjiLessons agrupa por `unit`), de a 2 por parada. */
+function kanjiUnitN4(id: string, units: string[], title: string, icon: string): PathUnit {
+  const ids = kanjiLessons.filter((l) => units.includes(l.unit)).map((l) => l.id)
+  const stops: PathStop[] = []
+  for (let i = 0; i < ids.length; i += 2) stops.push(stop('kanji', ids.slice(i, i + 2)))
+  return { id, title, icon, stops }
+}
+
 /** Vocabulario N4 en unidades de 12 lecciones (la última se lleva el resto). */
 const n4Vocab = (n: number, last = false): PathUnit => ({
   ...vocabUnit(0, `N4 · Vocabulario ${['I', 'II', 'III', 'IV', 'V'][n - 1]}`, vocabLessonsN4.slice((n - 1) * 12, last ? undefined : n * 12)),
@@ -240,6 +248,7 @@ export const japanesePath: PathUnit[] = [
     ],
   },
   n4Vocab(1),
+  kanjiUnitN4('kanji-n4-1', ['N4 · Personas', 'N4 · Tiempo'], 'N4 · Kanji: personas y tiempo', '家'),
   {
     id: 'grammar-n4-2',
     title: 'N4 · Gramática II: matices',
@@ -252,6 +261,7 @@ export const japanesePath: PathUnit[] = [
     ],
   },
   n4Vocab(2),
+  kanjiUnitN4('kanji-n4-2', ['N4 · Adjetivos'], 'N4 · Kanji: colores y adjetivos', '赤'),
   {
     id: 'grammar-n4-3',
     title: 'N4 · Gramática III: opinar, comparar y propósito',
@@ -259,6 +269,7 @@ export const japanesePath: PathUnit[] = [
     stops: [stop('grammar', ['to-omou', 'you-da']), stop('grammar', ['nagara', 'sugiru']), stop('grammar', ['shi-tari', 'tame-ni'])],
   },
   n4Vocab(3),
+  kanjiUnitN4('kanji-n4-3', ['N4 · Lugares y naturaleza', 'N4 · Comida y compras'], 'N4 · Kanji: lugares, comida y compras', '海'),
   {
     id: 'grammar-n4-4',
     title: 'N4 · Gramática IV: decisiones y keigo',
@@ -270,7 +281,9 @@ export const japanesePath: PathUnit[] = [
     ],
   },
   n4Vocab(4),
+  kanjiUnitN4('kanji-n4-4', ['N4 · Escuela', 'N4 · Verbos'], 'N4 · Kanji: escuela y verbos', '教'),
   n4Vocab(5, true),
+  kanjiUnitN4('kanji-n4-5', ['N4 · Trabajo y sociedad'], 'N4 · Kanji: trabajo y sociedad', '仕'),
 ]
 
 export type ItemStatus = 'done' | 'open' | 'locked'

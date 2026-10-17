@@ -1,6 +1,8 @@
-// Kanji del nivel N5 (el primero del examen JLPT), agrupados en lecciones.
+// Kanji de los niveles N5 y N4 del examen JLPT, agrupados en lecciones (el N4 está en kanjiN4.ts).
 // on: lectura china (en katakana) · kun: lectura japonesa (en hiragana; entre
 // paréntesis va el okurigana, la parte que se escribe en kana: た(べる) → 食べる).
+
+import { kanjiLessonsN4, kanjiN4 } from './kanjiN4.ts'
 
 export type KanjiExample = { word: string; reading: string; meaning: string }
 
@@ -22,7 +24,7 @@ const k = (char: string, meaning: string, on: string[], kun: string[], examples:
   examples: examples.map(([word, reading, m]) => ({ word, reading, meaning: m })),
 })
 
-export const kanjiList: Kanji[] = [
+const kanjiN5: Kanji[] = [
   // Números
   k('一', 'uno', ['イチ', 'イツ'], ['ひと(つ)'], [['一つ', 'ひとつ', 'uno (cosa)'], ['一月', 'いちがつ', 'enero']]),
   k('二', 'dos', ['ニ'], ['ふた(つ)'], [['二つ', 'ふたつ', 'dos (cosas)'], ['二人', 'ふたり', 'dos personas']]),
@@ -154,11 +156,14 @@ export const kanjiList: Kanji[] = [
   k('立', 'ponerse de pie', ['リツ'], ['た(つ)'], [['立つ', 'たつ', 'pararse'], ['国立', 'こくりつ', 'nacional']]),
 ]
 
+/** Todos los kanji del curso: N5 y luego N4. */
+export const kanjiList: Kanji[] = [...kanjiN5, ...kanjiN4]
+
 export const kanjiByChar = new Map(kanjiList.map((kj) => [kj.char, kj]))
 
 const lesson = (id: string, title: string, unit: string, chars: string): KanjiLesson => ({ id: `kanji-${id}`, title, unit, chars: [...chars] })
 
-export const kanjiLessons: KanjiLesson[] = [
+const kanjiLessonsN5: KanjiLesson[] = [
   lesson('num-1', 'Números del 1 al 5', 'Números', '一二三四五'),
   lesson('num-2', 'Números del 6 al 10', 'Números', '六七八九十'),
   lesson('num-3', 'Cien, mil, diez mil y yen', 'Números', '百千万円'),
@@ -180,3 +185,6 @@ export const kanjiLessons: KanjiLesson[] = [
   lesson('ciudad', 'Transporte y ciudad', 'Ciudad y trabajo', '電車駅道店'),
   lesson('trabajo', 'Empresa, decir, comprar…', 'Ciudad y trabajo', '会社言買立'),
 ]
+
+/** Lecciones en orden: las del N4 siguen a las del N5 (cada una abre la siguiente). */
+export const kanjiLessons: KanjiLesson[] = [...kanjiLessonsN5, ...kanjiLessonsN4]

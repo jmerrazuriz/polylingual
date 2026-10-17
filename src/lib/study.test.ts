@@ -54,8 +54,20 @@ describe('contadores', () => {
 })
 
 describe('kanji', () => {
-  it('106 kanji, cada uno en una sola lección y con sus trazos', () => {
-    expect(kanjiList).toHaveLength(106)
+  it('lecturas bien escritas: on en katakana, kun y ejemplos en hiragana', () => {
+    for (const k of kanjiList) {
+      for (const on of k.on) expect(on, k.char).toMatch(/^[ァ-ヶー]+$/)
+      for (const kun of k.kun) expect(kun, k.char).toMatch(/^[ぁ-ゖ]+(\([ぁ-ゖ]+\))?$/)
+      expect(k.examples.length, k.char).toBeGreaterThanOrEqual(2)
+      for (const ex of k.examples) {
+        expect(ex.word, k.char).toContain(k.char)
+        expect(ex.reading, `${k.char}: ${ex.word}`).toMatch(/^[ぁ-ゖー]+$/)
+      }
+    }
+  })
+
+  it('302 kanji (106 N5 + 196 N4), cada uno en una sola lección y con sus trazos', () => {
+    expect(kanjiList).toHaveLength(302)
     const taught = kanjiLessons.flatMap((l) => l.chars)
     expect(new Set(taught).size).toBe(taught.length)
     expect(new Set(taught)).toEqual(new Set(kanjiList.map((k) => k.char)))

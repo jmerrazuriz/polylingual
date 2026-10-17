@@ -21,7 +21,7 @@ export function KanjiPage() {
       <header className="flex flex-col gap-1">
         <h1 className="text-2xl font-extrabold">Aprender</h1>
         <p className="text-sm text-slate-500 dark:text-slate-400">
-          Kanji del nivel N5: significado, lecturas, orden de trazos, palabras de ejemplo y práctica de escritura.
+          Kanji de los niveles N5 y N4: significado, lecturas, orden de trazos, palabras de ejemplo y práctica de escritura.
         </p>
       </header>
       <LearnTabs current="kanji" />
