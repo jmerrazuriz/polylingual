@@ -26,6 +26,7 @@ export const grammarN3: GrammarLesson[] = [
       { type: 'choice', prompt: '家[いえ]を 出[で]ようと した ＿、 電話[でんわ]が ありました。', hint: 'Justo cuando iba a salir, sonó el teléfono.', options: ['とき', 'ので', 'のに', 'まで'], answer: 'とき' },
       { type: 'type', prompt: '書[か]く → volitiva + と した', hint: 'intenté escribir', answers: ['かこうとした'], kana: true },
       { type: 'meaning', text: 'ねこが 薬[くすり]を 飲[の]もうと しません。', options: ['El gato no quiere tomarse la medicina.', 'El gato se tomó la medicina.', 'El gato no puede tomar medicina.', 'Hay que darle la medicina al gato.'], answer: 'El gato no quiere tomarse la medicina.' },
+      { type: 'choice', format: 'paraphrase', prompt: '出[で]かけようと した とき、 雨[あめ]が 降[ふ]って きた。', options: ['ちょうど 出[で]かける ときに、 雨[あめ]が 降[ふ]って きた。', '出[で]かけた あとで、 雨[あめ]が 降[ふ]って きた。', '雨[あめ]が 降[ふ]ったので、 出[で]かけなかった。', '出[で]かけたい ときは、 いつも 雨[あめ]が 降[ふ]る。'], answer: 'ちょうど 出[で]かける ときに、 雨[あめ]が 降[ふ]って きた。' },
     ],
   },
   {
@@ -77,6 +78,7 @@ export const grammarN3: GrammarLesson[] = [
       { type: 'choice', prompt: '昼[ひる]ご飯[はん]は いま 食[た]べた ＿ です。', hint: 'Acabo de almorzar.', options: ['ばかり', 'ところ', 'うち', 'ほど'], answer: 'ばかり', explanation: 'た + ばかり: hace muy poco. (たところ también sería posible.)' },
       { type: 'meaning', text: '兄[あに]は 文[もん]くばかり 言[い]って います。', options: ['Mi hermano no hace más que quejarse.', 'Mi hermano dijo una queja.', 'Mi hermano nunca se queja.', 'Mi hermano solo habla con amigos.'], answer: 'Mi hermano no hace más que quejarse.' },
       { type: 'order', meaning: 'Acabo de llegar a Japón.', answer: ['日本[にほん]に', '来[き]た', 'ばかり', 'です'] },
+      { type: 'choice', format: 'usage', prompt: '«ばかり» — ¿en qué frase se usa bien?', options: ['弟[おとうと]は あそんで ばかり いる。', 'あした ばかり 行[い]きます。', 'ばかり 本[ほん]を 読[よ]みました。', '雨[あめ]は ばかり 降[ふ]った。'], answer: '弟[おとうと]は あそんで ばかり いる。' },
     ],
   },
   {
@@ -100,6 +102,7 @@ export const grammarN3: GrammarLesson[] = [
       { type: 'choice', prompt: '天気[てんき] ＿ よければ、 山[やま]に 行[い]きます。', hint: 'Con tal de que haga buen tiempo, voy a la montaña.', options: ['さえ', 'こそ', 'まで', 'しか'], answer: 'さえ' },
       { type: 'meaning', text: '名前[なまえ]さえ 書[か]けば、 だれでも 入[はい]れます。', options: ['Basta con escribir tu nombre para que cualquiera pueda entrar.', 'Nadie puede entrar aunque escriba su nombre.', 'Solo pueden entrar los que tienen nombre.', 'Escribe tu nombre al entrar.'], answer: 'Basta con escribir tu nombre para que cualquiera pueda entrar.' },
       { type: 'order', meaning: 'Ni siquiera sé leer hiragana.', answer: ['ひらがな', 'さえ', '読[よ]めません'] },
+      { type: 'choice', format: 'paraphrase', prompt: '水[みず]さえ あれば、 だいじょうぶです。', options: ['水[みず]が あれば、 ほかに 何[なに]も いりません。', '水[みず]が なくても、 だいじょうぶです。', '水[みず]が たくさん ひつようです。', '水[みず]だけは いりません。'], answer: '水[みず]が あれば、 ほかに 何[なに]も いりません。' },
     ],
   },
   {
@@ -170,6 +173,7 @@ export const grammarN3: GrammarLesson[] = [
         answer: '私[わたし]にとって、 この 本[ほん]は 大切[たいせつ]です。',
       },
       { type: 'meaning', text: 'お年[とし]よりにとって、 この 道[みち]は 少[すこ]し 楽[らく]では ありません。', options: ['Para los ancianos, este camino no es muy fácil.', 'Los ancianos caminan por este camino.', 'Este camino es fácil para todos.', 'Los ancianos no usan este camino.'], answer: 'Para los ancianos, este camino no es muy fácil.' },
+      { type: 'choice', format: 'usage', prompt: '«にとって» — ¿en qué frase se usa bien?', options: ['私[わたし]にとって、 この 時計[とけい]は 大切[たいせつ]だ。', '私[わたし]にとって、 この 時計[とけい]を 買[か]った。', '先生[せんせい]にとって 話[はな]しました。', '雨[あめ]にとって しあいが 中止[ちゅうし]に なった。'], answer: '私[わたし]にとって、 この 時計[とけい]は 大切[たいせつ]だ。', explanation: 'にとって va con un juicio o una evaluación (importante, difícil…).' },
     ],
   },
   {
@@ -235,6 +239,7 @@ export const grammarN3: GrammarLesson[] = [
       { type: 'choice', prompt: 'お金[かね]が ある ＿ では ないが、 よく 旅行[りょこう]する。', hint: 'No es que tenga dinero, pero viajo seguido.', options: ['わけ', 'はず', 'こと', 'ため'], answer: 'わけ' },
       { type: 'choice', prompt: '社長[しゃちょう]の たのみだ から、 ことわる わけには ＿。', hint: 'Como es un pedido del presidente, no puedo rechazarlo.', options: ['いかない', 'ならない', 'しない', 'ない'], answer: 'いかない' },
       { type: 'meaning', text: '雪[ゆき]が 降[ふ]って いる。 寒[さむ]い わけだ。', options: ['Está nevando. Con razón hace frío.', 'Está nevando, pero no hace frío.', 'No es que haga frío.', 'Va a nevar porque hace frío.'], answer: 'Está nevando. Con razón hace frío.' },
+      { type: 'choice', format: 'paraphrase', prompt: 'あした は 休[やす]む わけには いかない。', options: ['あした は 休[やす]む ことは できない。', 'あした は 休[やす]む ひつようは ない。', 'あした は 休[やす]みたく ない わけでは ない。', 'あした は 休[やす]むかも しれない。'], answer: 'あした は 休[やす]む ことは できない。' },
     ],
   },
   {
@@ -257,6 +262,7 @@ export const grammarN3: GrammarLesson[] = [
       { type: 'choice', prompt: 'かぎを かけた から、 ドアが 開[あ]いて いる ＿ が ない。', hint: 'Cerré con llave, es imposible que la puerta esté abierta.', options: ['はず', 'わけ', 'こと', 'もの'], answer: 'はず' },
       { type: 'choice', prompt: 'あの 店[みせ]は いつも 人[ひと]が 多[おお]い。 おいしいに ＿。', hint: 'Esa tienda siempre está llena. Seguro que es rica.', options: ['ちがいない', 'はずがない', 'わけだ', 'ことだ'], answer: 'ちがいない' },
       { type: 'meaning', text: 'ケンさんが そんな ことを 言[い]う はずが ない。', options: ['Es imposible que Ken diga algo así.', 'Seguro que Ken dijo eso.', 'Ken debería decir eso.', 'Ken nunca dice nada.'], answer: 'Es imposible que Ken diga algo así.' },
+      { type: 'choice', format: 'paraphrase', prompt: 'かれが 来[こ]ない はずが ない。', options: ['かれは きっと 来[く]る。', 'かれは たぶん 来[こ]ないだろう。', 'かれが 来[く]るか どうか わからない。', 'かれは 来[き]たく ない。'], answer: 'かれは きっと 来[く]る。' },
     ],
   },
   {
@@ -301,6 +307,7 @@ export const grammarN3: GrammarLesson[] = [
       { type: 'choice', prompt: '学生[がくせい]の ＿ に、 たくさん 旅行[りょこう]したいです。', hint: 'Quiero viajar mucho mientras sea estudiante.', options: ['うち', 'あいだ', 'まえ', 'ため'], answer: 'うち' },
       { type: 'choice', prompt: 'わすれない ＿ に、 メモして おきます。', hint: 'Lo anoto antes de olvidarlo.', options: ['うち', 'ばかり', 'ほど', 'さえ'], answer: 'うち' },
       { type: 'meaning', text: '日本[にほん]に 住[す]んで いる うちに、 さしみが すきに なりました。', options: ['Viviendo en Japón, me empezó a gustar el sashimi.', 'Antes de vivir en Japón, me gustaba el sashimi.', 'Quiero comer sashimi mientras viva en Japón.', 'En Japón no me gustó el sashimi.'], answer: 'Viviendo en Japón, me empezó a gustar el sashimi.' },
+      { type: 'choice', format: 'paraphrase', prompt: '明[あか]るい うちに 帰[かえ]りましょう。', options: ['暗[くら]く なる 前[まえ]に 帰[かえ]りましょう。', '明[あか]るく なったら 帰[かえ]りましょう。', '暗[くら]く なってから 帰[かえ]りましょう。', '明[あか]るい 家[いえ]に 帰[かえ]りましょう。'], answer: '暗[くら]く なる 前[まえ]に 帰[かえ]りましょう。' },
     ],
   },
   {
@@ -344,6 +351,7 @@ export const grammarN3: GrammarLesson[] = [
       { type: 'choice', prompt: 'みなさんの ＿ で、 いい 会[かい]に なりました。', hint: 'Gracias a todos, fue una buena reunión.', options: ['おかげ', 'せい', 'ため', 'わけ'], answer: 'おかげ' },
       { type: 'choice', prompt: '夜[よる] おそく まで ゲームを した ＿ で、 朝[あさ] 起[お]きられなかった。', hint: 'Por culpa de jugar hasta tarde, no me pude levantar.', options: ['せい', 'おかげ', 'うち', 'たび'], answer: 'せい' },
       { type: 'meaning', text: '先生[せんせい]の 説明[せつめい]の おかげで、 よく わかりました。', options: ['Gracias a la explicación del profesor, entendí bien.', 'Por culpa del profesor, no entendí.', 'El profesor me pidió una explicación.', 'Expliqué bien al profesor.'], answer: 'Gracias a la explicación del profesor, entendí bien.' },
+      { type: 'choice', format: 'usage', prompt: '«おかげで» — ¿en qué frase se usa bien?', options: ['先生[せんせい]の おかげで、 ごうかくできました。', 'じこの おかげで、 電車[でんしゃ]が 止[と]まった。', '雨[あめ]の おかげで、 かぜを ひいた。', 'あなたの おかげで、 しっぱいした。'], answer: '先生[せんせい]の おかげで、 ごうかくできました。', explanation: 'おかげで se usa para resultados buenos; para los malos, せいで.' },
     ],
   },
   {

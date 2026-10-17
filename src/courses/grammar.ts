@@ -9,8 +9,19 @@ export type GrammarExample = {
 }
 
 export type GrammarExercise =
-  /** Completar el hueco «＿» eligiendo una opción. */
-  | { type: 'choice'; prompt: string; hint?: string; options: string[]; answer: string; explanation?: string }
+  /**
+   * Completar el hueco «＿» eligiendo una opción. Con `format` toma el formato del JLPT:
+   * paraphrase = elegir la frase que significa lo mismo; usage = elegir la frase que usa bien la expresión.
+   */
+  | {
+      type: 'choice'
+      prompt: string
+      hint?: string
+      options: string[]
+      answer: string
+      explanation?: string
+      format?: 'paraphrase' | 'usage'
+    }
   /** Elegir qué significa la frase. */
   | { type: 'meaning'; text: string; options: string[]; answer: string }
   /** Ordenar las palabras para formar la frase. */

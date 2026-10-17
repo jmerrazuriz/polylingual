@@ -125,7 +125,15 @@ function Choice({ exercise, result, onAnswer }: { exercise: Extract<GrammarExerc
   const isBlank = after !== undefined
   return (
     <>
-      <p className="text-sm font-bold text-slate-500 uppercase">{isBlank ? 'Completa la frase' : 'Elige la respuesta'}</p>
+      <p className="text-sm font-bold text-slate-500 uppercase">
+        {exercise.format === 'paraphrase'
+          ? 'Elige la frase que significa lo mismo'
+          : exercise.format === 'usage'
+            ? 'Elige la frase que lo usa bien'
+            : isBlank
+              ? 'Completa la frase'
+              : 'Elige la respuesta'}
+      </p>
       <p className={`text-2xl font-bold ${jpClass(exercise.prompt)}`}>
         {isBlank ? (
           <>

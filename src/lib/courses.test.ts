@@ -111,11 +111,11 @@ describe('gramática de japonés', () => {
     for (const t of texts.filter((t) => !/[a-zA-Z¿«]/.test(t))) expect(() => romajiReadings(kanaOnly(t)), t).not.toThrow()
   })
 
-  it('tiene el N5 completo, 28 lecciones N4 y 16 N3, en orden de nivel', () => {
+  it('tiene el N5 completo, 28 lecciones N4 y 32 N3, en orden de nivel', () => {
     const levels = japaneseGrammar.map((l) => l.level ?? 'N5')
     expect(levels.filter((l) => l === 'N4')).toHaveLength(28)
     expect(levels.lastIndexOf('N5')).toBeLessThan(levels.indexOf('N4'))
-    expect(levels.filter((l) => l === 'N3')).toHaveLength(16)
+    expect(levels.filter((l) => l === 'N3')).toHaveLength(32)
     expect(levels.lastIndexOf('N4')).toBeLessThan(levels.indexOf('N3'))
   })
 
@@ -133,6 +133,16 @@ describe('gramática de japonés', () => {
         else expect(seg.text, `kanji sin furigana en «${t}»`).not.toMatch(KANJI_CHAR)
       }
     }
+  })
+
+  it('N3: ejercicios con formato JLPT (paráfrasis y uso) en cada lección de la segunda tanda', () => {
+    const n3 = japaneseGrammar.filter((l) => l.level === 'N3')
+    const withFormat = n3.filter((l) => l.exercises.some((e) => e.type === 'choice' && e.format))
+    expect(withFormat.length).toBeGreaterThanOrEqual(24)
+    for (const l of n3.slice(16)) expect(withFormat, l.id).toContain(l)
+    for (const l of n3)
+      for (const e of l.exercises)
+        if (e.type === 'choice' && e.format) expect(new Set(e.options.map((o) => furiganaToKana(o))).size, l.id).toBe(e.options.length)
   })
 
   it('se abre tras los básicos del hiragana y en orden', () => {

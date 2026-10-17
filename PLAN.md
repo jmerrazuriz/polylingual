@@ -439,9 +439,13 @@ Meta: que quien termine el curso entienda el japonés a nivel JLPT N3. Es la eta
   - Las explicaciones, los patrones, los ejemplos y las fichas de ordenar muestran furigana.
   - Un test exige que todo kanji de la gramática tenga lectura y sea uno que el curso enseña.
   - Son 2 unidades N3 en el recorrido (después del simulacro N4) y un bloque N3 en la nivelación.
-- **C2 · Gramática N3, segunda y tercera tanda** (~40 lecciones más):
-  - ものだ, ことだ, べき, しかない, だけでなく, ば〜ほど, ほど, としたら, くせに, ついでに, てほしい, って, ことにする/ことになる (matices), はずだった, わりに, ように言う, させてもらう, 敬語 avanzado y conectores (それなのに, そのうえ, つまり…).
-  - Cada tanda trae ejercicios de **paráfrasis** y **uso** como el examen.
+- ✅ **C2 · Gramática N3, segunda tanda publicada (16 lecciones, 32 N3 y 98 en total):**
+  - Temas: ものだ, ことだ/ことはない, べき, しかない, だけでなく, ば〜ほど, ほど, としたら, くせに, ついでに, てほしい, って, わりに, ように言う, させてもらう y conectores (それなのに, そのうえ, つまり, ところが, それとも).
+  - Ejercicios con **formato JLPT**: paráfrasis (elegir la frase que significa lo mismo) y uso (elegir la frase que usa bien la expresión), con su propio encabezado. Están en cada lección de esta tanda y en 8 de la primera.
+  - Son 2 unidades más en el recorrido y un bloque más en la nivelación.
+- **C2b · Gramática N3, tercera tanda** (pendiente, ~25 lecciones):
+  - はずだった, ことになっている, ようとしない, ものの, にしては, からには, おかげ/せい (matices), ばかりか, とおり, にかわって, ことから, 敬語 avanzado, あげく, ところで, ても/たって, なんて, ほど〜ない, ながら (aunque), つもりで, ようがない, 〜ずに, 〜っけ, 〜まま y 〜きる/〜かける.
+  - Con ejercicios de paráfrasis y uso como la segunda tanda.
 - **C3 · Kanji N3** (~350 más, ~650 en total), en tandas de ~70 con trazos, lecciones y SRS. Antes conviene separar los trazos por nivel (`strokes/kanji-n3.json`) para que la carga siga liviana.
 - **C4 · Vocabulario N3** (~2.200 más, ~3.700 en total), en tandas de ~400 por tema, con kanji y furigana en las fichas.
   - Las palabras pasan a tener forma escrita (`kanji?`) además del kana.

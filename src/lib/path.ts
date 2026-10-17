@@ -322,6 +322,28 @@ export const japanesePath: PathUnit[] = [
       stop('grammar', ['okage-sei', 'kawari-ni']),
     ],
   },
+  {
+    id: 'grammar-n3-3',
+    title: 'N3 · Gramática III: consejos, deber y grado',
+    icon: '文',
+    stops: [
+      stop('grammar', ['mono-da', 'koto-da']),
+      stop('grammar', ['beki', 'shika-nai']),
+      stop('grammar', ['dake-de-naku', 'ba-hodo']),
+      stop('grammar', ['hodo', 'to-shitara']),
+    ],
+  },
+  {
+    id: 'grammar-n3-4',
+    title: 'N3 · Gramática IV: matices de la conversación',
+    icon: '文',
+    stops: [
+      stop('grammar', ['kuse-ni', 'tsuide-ni']),
+      stop('grammar', ['te-hoshii', 'tte']),
+      stop('grammar', ['wari-ni', 'you-ni-iu']),
+      stop('grammar', ['sasete-morau', 'conectores']),
+    ],
+  },
 ]
 
 export type ItemStatus = 'done' | 'open' | 'locked'
