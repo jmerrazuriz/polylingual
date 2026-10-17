@@ -186,7 +186,7 @@ function Order({ exercise, result, onAnswer }: { exercise: Extract<GrammarExerci
             onClick={() => setChosen(chosen.filter((c) => c !== tileIndex))}
             className="rounded-xl bg-ink px-3 py-2 font-jp text-lg text-white"
           >
-            {bank[tileIndex].word}
+            <Furigana text={bank[tileIndex].word} />
           </button>
         ))}
       </div>
@@ -194,7 +194,7 @@ function Order({ exercise, result, onAnswer }: { exercise: Extract<GrammarExerci
         {bank.map((tile, tileIndex) =>
           chosen.includes(tileIndex) ? (
             <span key={tileIndex} className="rounded-xl border-2 border-dashed border-slate-200 px-3 py-2 font-jp text-lg text-transparent dark:border-slate-800">
-              {tile.word}
+              <Furigana text={tile.word} />
             </span>
           ) : (
             <button
@@ -203,7 +203,7 @@ function Order({ exercise, result, onAnswer }: { exercise: Extract<GrammarExerci
               onClick={() => setChosen([...chosen, tileIndex])}
               className="rounded-xl border-2 border-slate-200 bg-white px-3 py-2 font-jp text-lg hover:border-accent dark:border-slate-800 dark:bg-slate-900"
             >
-              {tile.word}
+              <Furigana text={tile.word} />
             </button>
           ),
         )}

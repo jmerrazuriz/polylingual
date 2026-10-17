@@ -299,6 +299,29 @@ export const japanesePath: PathUnit[] = [
   kanjiUnitN4('kanji-n4-5', ['N4 · Trabajo y sociedad'], 'N4 · Kanji: trabajo y sociedad', '仕'),
   readingUnit(2, 'N4 · Lectura y audición II (con kanji)', 'N4'),
   examUnit('N4'),
+  // ── Etapa C: N3 ──
+  {
+    id: 'grammar-n3-1',
+    title: 'N3 · Gramática I: intención, énfasis y puntos de vista',
+    icon: '文',
+    stops: [
+      stop('grammar', ['you-to-suru', 'you-ni-suru']),
+      stop('grammar', ['bakari', 'sae']),
+      stop('grammar', ['koso', 'toshite']),
+      stop('grammar', ['ni-totte', 'ni-tsuite']),
+    ],
+  },
+  {
+    id: 'grammar-n3-2',
+    title: 'N3 · Gramática II: causas, deducciones y tiempo',
+    icon: '文',
+    stops: [
+      stop('grammar', ['ni-yotte', 'wake']),
+      stop('grammar', ['hazu-ga-nai', 'rashii']),
+      stop('grammar', ['uchi-ni', 'tabi-ni']),
+      stop('grammar', ['okage-sei', 'kawari-ni']),
+    ],
+  },
 ]
 
 export type ItemStatus = 'done' | 'open' | 'locked'

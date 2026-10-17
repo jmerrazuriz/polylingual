@@ -1,3 +1,5 @@
+import { kanjiByChar } from '../courses/ja/kanji'
+import { furiganaToKana, KANJI_CHAR, parseFurigana } from './furigana'
 import { beforeEach, describe, expect, it } from 'vitest'
 import { courseById, courses } from '../courses'
 import { grammarByCourse } from '../courses/content'
@@ -15,7 +17,7 @@ const t0 = new Date(2026, 9, 16, 10, 0).getTime()
 const JP = /[぀-ヿ]/
 
 /** Quita espacios y puntuación para comprobar que el texto solo usa kana conocidos. */
-const kanaOnly = (text: string) => text.replace(/[\s、。？＿→]/g, '')
+const kanaOnly = (text: string) => furiganaToKana(text).replace(/[\s、。？＿→「」]/g, '')
 
 describe('cursos', () => {
   it('el japonés está disponible y el resto llega pronto', () => {
@@ -109,10 +111,28 @@ describe('gramática de japonés', () => {
     for (const t of texts.filter((t) => !/[a-zA-Z¿«]/.test(t))) expect(() => romajiReadings(kanaOnly(t)), t).not.toThrow()
   })
 
-  it('tiene el N5 completo y 28 lecciones N4 después, en orden de nivel', () => {
+  it('tiene el N5 completo, 28 lecciones N4 y 16 N3, en orden de nivel', () => {
     const levels = japaneseGrammar.map((l) => l.level ?? 'N5')
     expect(levels.filter((l) => l === 'N4')).toHaveLength(28)
     expect(levels.lastIndexOf('N5')).toBeLessThan(levels.indexOf('N4'))
+    expect(levels.filter((l) => l === 'N3')).toHaveLength(16)
+    expect(levels.lastIndexOf('N4')).toBeLessThan(levels.indexOf('N3'))
+  })
+
+  it('los kanji de la gramática llevan furigana y son kanji del curso', () => {
+    const texts = japaneseGrammar.flatMap((l) => [
+      l.pattern,
+      ...l.examples.map((e) => e.text),
+      ...l.exercises.flatMap((ex) =>
+        ex.type === 'order' ? ex.answer : ex.type === 'meaning' ? [ex.text] : ex.type === 'type' ? [ex.prompt, ...ex.answers] : [ex.prompt, ...ex.options],
+      ),
+    ])
+    for (const t of texts) {
+      for (const seg of parseFurigana(t)) {
+        if (seg.ruby) for (const ch of seg.text) expect(kanjiByChar.has(ch), `${ch} en «${t}»`).toBe(true)
+        else expect(seg.text, `kanji sin furigana en «${t}»`).not.toMatch(KANJI_CHAR)
+      }
+    }
   })
 
   it('se abre tras los básicos del hiragana y en orden', () => {

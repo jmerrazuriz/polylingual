@@ -431,6 +431,25 @@ Meta: que quien termine la etapa pueda aprobar el JLPT N4. Va por tandas, cada u
   - Igual que el N5 pero solo con contenido N4, 35 minutos y aprobación con 90/180 (más los mínimos oficiales por sección). La sección de vocabulario ahora incluye lectura de kanji (漢字読み), también en el N5.
   - Cada nivel cierra el recorrido con su simulacro como meta. La parada se completa al aprobarlo (no se puede saltar con la nivelación).
 - ✅ **Etapa B terminada:** el contenido cubre el N4 (66 lecciones de gramática, 1.507 palabras, 303 kanji, 60 textos y 2 simulacros).
+### Etapa C: nivel N3 (en curso)
+Meta: que quien termine el curso entienda el japonés a nivel JLPT N3. Es la etapa más grande: el contenido crece unas 3 veces. Va por tandas, cada una publicada y probada:
+- ✅ **C1 · Gramática N3, primera tanda publicada (16 lecciones, 82 en total):**
+  - Desde ahora la gramática usa kanji con furigana, solo de los kanji que el curso ya enseña; el resto va en kana.
+  - Temas: ようとする, ようにする, ばかり, さえ, こそ, として, にとって, について, によって/によると, わけ, はずがない/にちがいない, らしい/っぽい, うちに, たびに, おかげで/せいで y かわりに.
+  - Las explicaciones, los patrones, los ejemplos y las fichas de ordenar muestran furigana.
+  - Un test exige que todo kanji de la gramática tenga lectura y sea uno que el curso enseña.
+  - Son 2 unidades N3 en el recorrido (después del simulacro N4) y un bloque N3 en la nivelación.
+- **C2 · Gramática N3, segunda y tercera tanda** (~40 lecciones más):
+  - ものだ, ことだ, べき, しかない, だけでなく, ば〜ほど, ほど, としたら, くせに, ついでに, てほしい, って, ことにする/ことになる (matices), はずだった, わりに, ように言う, させてもらう, 敬語 avanzado y conectores (それなのに, そのうえ, つまり…).
+  - Cada tanda trae ejercicios de **paráfrasis** y **uso** como el examen.
+- **C3 · Kanji N3** (~350 más, ~650 en total), en tandas de ~70 con trazos, lecciones y SRS. Antes conviene separar los trazos por nivel (`strokes/kanji-n3.json`) para que la carga siga liviana.
+- **C4 · Vocabulario N3** (~2.200 más, ~3.700 en total), en tandas de ~400 por tema, con kanji y furigana en las fichas.
+  - Las palabras pasan a tener forma escrita (`kanji?`) además del kana.
+  - Hace falta cargar el contenido por nivel de forma asíncrona.
+- **C5 · Lecturas N3:** textos de 300–500 caracteres, avisos, correos y titulares, con preguntas al estilo del examen.
+- **C6 · Audición N3:** diálogos más naturales y largos, con los 5 tipos de pregunta del examen (tarea, punto clave, idea general, respuesta rápida y expresión). La voz del navegador alcanza para practicar; el audio pregenerado queda como mejora.
+- **C7 · Simulacro N3** y meta del recorrido, como el N4 (aprueba con 95/180 y mínimos por sección de 19).
+- **Riesgo:** la calidad del contenido. Los tests automáticos validan formato, kanji conocidos, lecturas y conjugaciones, pero conviene una revisión nativa antes de dar el curso por terminado.
 - **Para agregar un idioma:** crear `src/courses/<id>/` con su contenido, registrar la gramática en `src/courses/content.ts`, cambiar su `status` a `available` y darle sus secciones. Las lecciones de vocabulario para idiomas sin silabario propio son lo siguiente a diseñar. Quedan como ideas para después (sección 9): tarjetas SRS de palabras, temas de palabras en los juegos, pares confusos juntos en los juegos, kanji, frases con furigana y evaluación de pronunciación.
 
 **Hiragana primero:** las fases 1 a 6 se construyen solo con hiragana. El código se escribe desde el principio para cualquier silabario (el campo `script` en los datos), así que katakana entra en la fase 7 casi solo como contenido.

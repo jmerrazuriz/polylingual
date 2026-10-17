@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, useParams } from 'react-router'
 import { ComingSoon } from '../../components/ComingSoon'
+import { Furigana } from '../../components/Furigana'
 import { SaveProgressPrompt } from '../../components/SaveProgressPrompt'
 import { grammarByCourse } from '../../courses/content'
 import type { GrammarLesson } from '../../courses/grammar'
@@ -81,9 +82,11 @@ export function GrammarLessonView({ lesson, number, next, onFinish }: Props) {
         <section className="flex flex-col gap-4">
           <p className="text-sm font-bold text-slate-500 uppercase">Gramática · Lección {number}</p>
           <h1 className="text-2xl font-extrabold">{lesson.title}</h1>
-          <p className="rounded-2xl bg-ink p-4 text-center font-jp text-xl text-white">{lesson.pattern}</p>
+          <p className="rounded-2xl bg-ink p-4 text-center font-jp text-xl leading-loose text-white">
+            <Furigana text={lesson.pattern} />
+          </p>
           {lesson.explanation.map((p, i) => (
-            <p key={i} className="leading-relaxed text-slate-700 dark:text-slate-300">
+            <p key={i} className="leading-loose text-slate-700 dark:text-slate-300">
               <RichText text={p} />
             </p>
           ))}
@@ -112,7 +115,7 @@ export function GrammarLessonView({ lesson, number, next, onFinish }: Props) {
                 >
                   <span lang="ja" className="font-jp text-xl">
                     {audio && <span aria-hidden>🔊 </span>}
-                    {ex.text}
+                    <Furigana text={ex.text} />
                   </span>
                   {showReading && ex.reading && <span className="text-sm font-bold text-accent">{ex.reading}</span>}
                   <span className="text-sm text-slate-600 dark:text-slate-300">{ex.meaning}</span>

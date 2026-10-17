@@ -1,0 +1,371 @@
+import type { GrammarLesson } from '../grammar.ts'
+
+// Gramática N3, primera tanda (etapa C). Desde el N3 los textos usan kanji con su
+// lectura entre corchetes (furigana, ver src/lib/furigana.ts), solo de los kanji que el
+// curso ya enseña; el resto va en kana.
+
+export const grammarN3: GrammarLesson[] = [
+  {
+    id: 'you-to-suru',
+    level: 'N3',
+    title: 'ようとする: intentar, estar a punto de',
+    summary: 'Intenté dormir · justo cuando iba a salir…',
+    pattern: '[volitiva] と する · [volitiva] と したら / した とき',
+    explanation: [
+      '**Volitiva + と する** expresa un **intento**, muchas veces sin éxito: 起[お]きようと しましたが、 起[お]きられませんでした (intenté levantarme, pero no pude).',
+      'Con **とき** o **たら** marca el momento justo antes de algo: 家[いえ]を 出[で]ようと した とき、 雨[あめ]が 降[ふ]り出[だ]しました (justo cuando iba a salir de casa, empezó a llover).',
+      'En negativo, **ようと しない** describe a alguien que no tiene intención de hacer algo: 子[こ]どもが 野[や]さいを 食[た]べようと しない (el niño no quiere comer verduras).',
+    ],
+    examples: [
+      { text: '何[なん]ども 電話[でんわ]しようと しましたが、 つながりませんでした。', reading: 'nando mo denwa shiyou to shimashita ga, tsunagarimasen deshita.', meaning: 'Intenté llamar muchas veces, pero no hubo conexión.' },
+      { text: '電車[でんしゃ]に 乗[の]ろうと した とき、 ドアが 閉[し]まりました。', reading: 'densha ni norou to shita toki, doa ga shimarimashita.', meaning: 'Justo cuando iba a subir al tren, se cerró la puerta.' },
+      { text: '弟[おとうと]は ぜんぜん 勉強[べんきょう]しようと しません。', reading: 'otouto wa zenzen benkyou shiyou to shimasen.', meaning: 'Mi hermano menor no tiene ninguna intención de estudiar.' },
+    ],
+    exercises: [
+      { type: 'choice', prompt: '早[はや]く ＿ と しましたが、 ねむれませんでした。', hint: 'Intenté dormirme temprano, pero no pude.', options: ['ねよう', 'ねる', 'ねて', 'ねた'], answer: 'ねよう' },
+      { type: 'choice', prompt: '家[いえ]を 出[で]ようと した ＿、 電話[でんわ]が ありました。', hint: 'Justo cuando iba a salir, sonó el teléfono.', options: ['とき', 'ので', 'のに', 'まで'], answer: 'とき' },
+      { type: 'type', prompt: '書[か]く → volitiva + と した', hint: 'intenté escribir', answers: ['かこうとした'], kana: true },
+      { type: 'meaning', text: 'ねこが 薬[くすり]を 飲[の]もうと しません。', options: ['El gato no quiere tomarse la medicina.', 'El gato se tomó la medicina.', 'El gato no puede tomar medicina.', 'Hay que darle la medicina al gato.'], answer: 'El gato no quiere tomarse la medicina.' },
+    ],
+  },
+  {
+    id: 'you-ni-suru',
+    level: 'N3',
+    title: 'ようにする: procurar, tratar de',
+    summary: 'Trato de caminar todos los días.',
+    pattern: '[dicc./ない] ように する · ように して いる',
+    explanation: [
+      '**Diccionario o ない + ように する** expresa un **esfuerzo consciente** por hacer (o no hacer) algo: 毎日[まいにち] 歩[ある]く ように して います (procuro caminar todos los días).',
+      'Se diferencia de **ようになる** (N4), que habla de un cambio que ocurre: 歩[ある]ける ように なりました (ya puedo caminar).',
+      'Con **ように して ください** se pide a alguien que tenga cuidado de hacer algo: おくれない ように して ください (procure no llegar tarde).',
+    ],
+    examples: [
+      { text: 'あまい 物[もの]を 食[た]べすぎない ように して います。', reading: 'amai mono o tabesuginai you ni shite imasu.', meaning: 'Trato de no comer demasiados dulces.' },
+      { text: '毎晩[まいばん] 十一時[じゅういちじ]までに ねる ように して います。', reading: 'maiban juuichiji made ni neru you ni shite imasu.', meaning: 'Procuro acostarme antes de las once todas las noches.' },
+      { text: 'かいぎには おくれない ように して ください。', reading: 'kaigi ni wa okurenai you ni shite kudasai.', meaning: 'Procure no llegar tarde a la reunión.' },
+    ],
+    exercises: [
+      { type: 'choice', prompt: 'けんこうの ために、 毎日[まいにち] 野[や]さいを 食[た]べる ＿ して います。', hint: 'Por mi salud, procuro comer verduras todos los días.', options: ['ように', 'ために', 'ことに', 'そうに'], answer: 'ように' },
+      { type: 'choice', prompt: 'かぜを ひかない ように ＿ ください。', hint: 'Cuide de no resfriarse.', options: ['して', 'なって', 'あって', 'いって'], answer: 'して' },
+      { type: 'meaning', text: '夜[よる]は コーヒーを 飲[の]まない ように して います。', options: ['Trato de no tomar café en la noche.', 'En la noche ya no puedo tomar café.', 'Me prohibieron tomar café.', 'Tomo café todas las noches.'], answer: 'Trato de no tomar café en la noche.' },
+      {
+        type: 'choice',
+        prompt: '¿Cuál expresa un esfuerzo consciente?',
+        options: ['毎日[まいにち] 運動[うんどう]する ように して いる。', '泳[およ]げる ように なった。', '雨[あめ]が 降[ふ]りそうだ。', '運動[うんどう]した ことが ある。'],
+        answer: '毎日[まいにち] 運動[うんどう]する ように して いる。',
+      },
+    ],
+  },
+  {
+    id: 'bakari',
+    level: 'N3',
+    title: 'ばかり: solo, siempre, recién',
+    summary: 'Solo come carne · acabo de llegar.',
+    pattern: '[sust.] ばかり · [て] ばかり いる · [た] ばかり',
+    explanation: [
+      '**Sustantivo + ばかり**: «solo, nada más que» (con tono de queja): 肉[にく]ばかり 食[た]べないで (no comas solo carne).',
+      '**Forma て + ばかり いる**: alguien **siempre** hace lo mismo: 弟[おとうと]は ゲームを して ばかり います (mi hermano no hace más que jugar).',
+      '**Forma た + ばかり**: algo pasó **hace muy poco** (según quien habla): 日本[にほん]に 来[き]た ばかりです (acabo de llegar a Japón). Es más subjetivo que たところ.',
+    ],
+    examples: [
+      { text: 'この 町[まち]は 新[あたら]しい 建物[たてもの]ばかりです。', reading: 'kono machi wa atarashii tatemono bakari desu.', meaning: 'En este barrio no hay más que edificios nuevos.' },
+      { text: 'あの 学生[がくせい]は いつも ねて ばかり いる。', reading: 'ano gakusei wa itsumo nete bakari iru.', meaning: 'Ese estudiante no hace más que dormir.' },
+      { text: '先月[せんげつ] 買[か]った ばかりの 時計[とけい]が こわれました。', reading: 'sengetsu katta bakari no tokei ga kowaremashita.', meaning: 'Se rompió el reloj que había comprado hacía poco, el mes pasado.' },
+    ],
+    exercises: [
+      { type: 'choice', prompt: 'テレビを 見[み]て ＿ いないで、 勉強[べんきょう]しなさい。', hint: 'No te quedes solo viendo tele, ponte a estudiar.', options: ['ばかり', 'だけ', 'しか', 'まで'], answer: 'ばかり' },
+      { type: 'choice', prompt: '昼[ひる]ご飯[はん]は いま 食[た]べた ＿ です。', hint: 'Acabo de almorzar.', options: ['ばかり', 'ところ', 'うち', 'ほど'], answer: 'ばかり', explanation: 'た + ばかり: hace muy poco. (たところ también sería posible.)' },
+      { type: 'meaning', text: '兄[あに]は 文[もん]くばかり 言[い]って います。', options: ['Mi hermano no hace más que quejarse.', 'Mi hermano dijo una queja.', 'Mi hermano nunca se queja.', 'Mi hermano solo habla con amigos.'], answer: 'Mi hermano no hace más que quejarse.' },
+      { type: 'order', meaning: 'Acabo de llegar a Japón.', answer: ['日本[にほん]に', '来[き]た', 'ばかり', 'です'] },
+    ],
+  },
+  {
+    id: 'sae',
+    level: 'N3',
+    title: 'さえ: incluso, con solo',
+    summary: 'Ni siquiera sé escribir mi nombre · con solo tener tiempo…',
+    pattern: '[sust.] さえ · [sust.] さえ 〜ば',
+    explanation: [
+      '**Sustantivo + さえ** = «**incluso, hasta**», para un caso extremo: 子[こ]どもで さえ 知[し]って います (hasta un niño lo sabe). En negativo: «**ni siquiera**»: ひらがな さえ 書[か]けません (ni siquiera sé escribir hiragana).',
+      '**さえ 〜ば** = «**con solo…, basta con que…**»: 時間[じかん]さえ あれば、 できます (con solo tener tiempo, puedo hacerlo).',
+      'Con verbos: raíz de ます + **さえ すれば**: 薬[くすり]を 飲[の]み さえ すれば、 なおります (basta con tomar la medicina para sanar).',
+    ],
+    examples: [
+      { text: 'いそがしくて、 ご飯[はん]を 食[た]べる 時間[じかん]さえ ありません。', reading: 'isogashikute, gohan o taberu jikan sae arimasen.', meaning: 'Estoy tan ocupado que ni siquiera tengo tiempo para comer.' },
+      { text: 'この 問題[もんだい]は 先生[せんせい]で さえ わかりませんでした。', reading: 'kono mondai wa sensei de sae wakarimasen deshita.', meaning: 'Este problema ni siquiera lo entendió el profesor.' },
+      { text: 'お金[かね]さえ あれば、 世界[せかい]中[じゅう]を 旅行[りょこう]したいです。', reading: 'okane sae areba, sekaijuu o ryokou shitai desu.', meaning: 'Con solo tener dinero, me gustaría viajar por todo el mundo.' },
+    ],
+    exercises: [
+      { type: 'choice', prompt: 'つかれて いて、 歩[ある]く こと ＿ できません。', hint: 'Estoy tan cansado que ni siquiera puedo caminar.', options: ['さえ', 'こそ', 'ばかり', 'だけ'], answer: 'さえ' },
+      { type: 'choice', prompt: '天気[てんき] ＿ よければ、 山[やま]に 行[い]きます。', hint: 'Con tal de que haga buen tiempo, voy a la montaña.', options: ['さえ', 'こそ', 'まで', 'しか'], answer: 'さえ' },
+      { type: 'meaning', text: '名前[なまえ]さえ 書[か]けば、 だれでも 入[はい]れます。', options: ['Basta con escribir tu nombre para que cualquiera pueda entrar.', 'Nadie puede entrar aunque escriba su nombre.', 'Solo pueden entrar los que tienen nombre.', 'Escribe tu nombre al entrar.'], answer: 'Basta con escribir tu nombre para que cualquiera pueda entrar.' },
+      { type: 'order', meaning: 'Ni siquiera sé leer hiragana.', answer: ['ひらがな', 'さえ', '読[よ]めません'] },
+    ],
+  },
+  {
+    id: 'koso',
+    level: 'N3',
+    title: 'こそ: precisamente, justamente',
+    summary: 'Este año sí que… · soy yo quien debe agradecer.',
+    pattern: '[sust.] こそ · [て/から] こそ',
+    explanation: [
+      '**こそ** destaca algo con fuerza: «**precisamente esto, justamente este**». 今年[ことし]こそ ごうかくしたい (este año sí que quiero aprobar).',
+      'Es muy común en respuestas de cortesía: こちら**こそ** よろしく おねがいします (el gusto es mío; soy yo quien te pide…).',
+      'Con **から こそ** se subraya una razón: «precisamente porque…»: すきだ から こそ、 きびしく 言[い]う (precisamente porque te quiero, te lo digo con dureza).',
+    ],
+    examples: [
+      { text: '来年[らいねん]こそ 日本[にほん]へ 行[い]きたいです。', reading: 'rainen koso nihon e ikitai desu.', meaning: 'El próximo año sí que quiero ir a Japón.' },
+      { text: '「ありがとうございました。」 「いいえ、 こちらこそ。」', reading: '"arigatou gozaimashita." "iie, kochira koso."', meaning: '«Muchas gracias». «No, gracias a ti».' },
+      { text: '大切[たいせつ]な 友[とも]だちだ から こそ、 本当[ほんとう]の ことを 話[はな]しました。', reading: 'taisetsu na tomodachi da kara koso, hontou no koto o hanashimashita.', meaning: 'Precisamente porque es un amigo importante, le dije la verdad.' },
+    ],
+    exercises: [
+      { type: 'choice', prompt: '「よろしく おねがいします。」 「こちら ＿ よろしく おねがいします。」', hint: '«Encantado». «El gusto es mío».', options: ['こそ', 'さえ', 'ばかり', 'まで'], answer: 'こそ' },
+      { type: 'choice', prompt: 'こんどの 試験[しけん] ＿ がんばります。', hint: 'En este examen sí que me voy a esforzar.', options: ['こそ', 'さえ', 'しか', 'ほど'], answer: 'こそ' },
+      { type: 'meaning', text: 'いそがしい から こそ、 休[やす]みが 大切[たいせつ]です。', options: ['Precisamente porque estás ocupado, el descanso es importante.', 'Como estás ocupado, no puedes descansar.', 'Aunque estés ocupado, descansa.', 'El descanso te hace estar ocupado.'], answer: 'Precisamente porque estás ocupado, el descanso es importante.' },
+    ],
+  },
+  {
+    id: 'toshite',
+    level: 'N3',
+    title: 'として: como, en calidad de',
+    summary: 'Trabajo como profesor · como regalo…',
+    pattern: '[sust.] として',
+    explanation: [
+      '**Sustantivo + として** indica el **papel o la calidad** en que alguien o algo actúa: 先生[せんせい]として はたらいて います (trabajo como profesor).',
+      'Delante de un sustantivo se usa **としての**: 親[おや]としての 気持[きも]ち (el sentimiento como padre).',
+      'Con **としては** se da un punto de vista: 私[わたし]としては、 さんせいです (en lo que a mí respecta, estoy de acuerdo).',
+    ],
+    examples: [
+      { text: '姉[あね]は 医者[いしゃ]として 病院[びょういん]で はたらいて います。', reading: 'ane wa isha toshite byouin de hataraite imasu.', meaning: 'Mi hermana mayor trabaja como médica en un hospital.' },
+      { text: 'この 町[まち]は 古[ふる]い おてらで 有名[ゆうめい]な 場所[ばしょ]として 知[し]られて います。', reading: 'kono machi wa furui otera de yuumei na basho toshite shirarete imasu.', meaning: 'Este pueblo es conocido como un lugar famoso por sus templos antiguos.' },
+      { text: '私[わたし]としては、 この 計画[けいかく]に はんたいです。', reading: 'watashi toshite wa, kono keikaku ni hantai desu.', meaning: 'Por mi parte, estoy en contra de este plan.' },
+    ],
+    exercises: [
+      { type: 'choice', prompt: '父[ちち]は 社長[しゃちょう] ＿ 会社[かいしゃ]を 作[つく]りました。', hint: 'Mi padre fundó la empresa como presidente.', options: ['として', 'にとって', 'について', 'によって'], answer: 'として' },
+      { type: 'choice', prompt: 'りゅう学生[がくせい] ＿ 日本[にほん]に 来[き]ました。', hint: 'Vine a Japón como estudiante extranjero.', options: ['として', 'にとって', 'ばかり', 'さえ'], answer: 'として' },
+      { type: 'meaning', text: '私[わたし]としては、 早[はや]く 始[はじ]めたいです。', options: ['Por mi parte, quiero empezar pronto.', 'Quiero empezar antes que yo.', 'Para mí empezar es difícil.', 'Empecé temprano como siempre.'], answer: 'Por mi parte, quiero empezar pronto.' },
+    ],
+  },
+  {
+    id: 'ni-totte',
+    level: 'N3',
+    title: 'にとって: para (alguien)',
+    summary: 'Para mí, la familia es lo más importante.',
+    pattern: '[persona/grupo] にとって',
+    explanation: [
+      '**Sustantivo + にとって** = «**para, desde el punto de vista de**» alguien, cuando se evalúa algo: 私[わたし]にとって、 家族[かぞく]は いちばん 大切[たいせつ]です (para mí, la familia es lo más importante).',
+      'No confundir con **として** (en calidad de). Después de にとって suelen venir adjetivos o juicios: むずかしい, 大切[たいせつ], うれしい, 問題[もんだい]だ…',
+    ],
+    examples: [
+      { text: '外国人[がいこくじん]にとって、 漢字[かんじ]は むずかしいです。', reading: 'gaikokujin ni totte, kanji wa muzukashii desu.', meaning: 'Para los extranjeros, los kanji son difíciles.' },
+      { text: 'この 写真[しゃしん]は 私[わたし]にとって 大切[たいせつ]な 思[おも]い出[で]です。', reading: 'kono shashin wa watashi ni totte taisetsu na omoide desu.', meaning: 'Esta foto es un recuerdo importante para mí.' },
+      { text: '子[こ]どもにとって、 あそびは 勉強[べんきょう]と 同[おな]じぐらい 大切[たいせつ]です。', reading: 'kodomo ni totte, asobi wa benkyou to onaji gurai taisetsu desu.', meaning: 'Para los niños, el juego es tan importante como el estudio.' },
+    ],
+    exercises: [
+      { type: 'choice', prompt: '学生[がくせい] ＿、 試験[しけん]は 大[おお]きな 問題[もんだい]です。', hint: 'Para los estudiantes, los exámenes son un gran problema.', options: ['にとって', 'として', 'について', 'によって'], answer: 'にとって' },
+      {
+        type: 'choice',
+        prompt: '¿Cuál está bien?',
+        options: ['私[わたし]にとって、 この 本[ほん]は 大切[たいせつ]です。', '私[わたし]として、 この 本[ほん]は 大切[たいせつ]です。', '私[わたし]について、 この 本[ほん]は 大切[たいせつ]です。', '私[わたし]によって、 この 本[ほん]は 大切[たいせつ]です。'],
+        answer: '私[わたし]にとって、 この 本[ほん]は 大切[たいせつ]です。',
+      },
+      { type: 'meaning', text: 'お年[とし]よりにとって、 この 道[みち]は 少[すこ]し 楽[らく]では ありません。', options: ['Para los ancianos, este camino no es muy fácil.', 'Los ancianos caminan por este camino.', 'Este camino es fácil para todos.', 'Los ancianos no usan este camino.'], answer: 'Para los ancianos, este camino no es muy fácil.' },
+    ],
+  },
+  {
+    id: 'ni-tsuite',
+    level: 'N3',
+    title: 'について: sobre, acerca de',
+    summary: 'Investigar sobre la historia de Japón.',
+    pattern: '[sust.] について · [sust.] についての [sust.]',
+    explanation: [
+      '**Sustantivo + について** = «**sobre, acerca de**» (el tema de lo que se dice, piensa, estudia o escribe): 日本[にほん]の 文[ぶん]かについて 話[はな]します.',
+      'Delante de un sustantivo: **についての**: かんきょうについての 本[ほん] (un libro sobre el medio ambiente).',
+    ],
+    examples: [
+      { text: '大学[だいがく]で 日本[にほん]の れきしについて 研究[けんきゅう]して います。', reading: 'daigaku de nihon no rekishi ni tsuite kenkyuu shite imasu.', meaning: 'En la universidad investigo sobre la historia de Japón.' },
+      { text: 'その ことについて、 何[なに]か 知[し]って いますか。', reading: 'sono koto ni tsuite, nanika shitte imasu ka.', meaning: '¿Sabes algo sobre eso?' },
+      { text: '旅行[りょこう]についての 質問[しつもん]は、 うけつけで 聞[き]いて ください。', reading: 'ryokou ni tsuite no shitsumon wa, uketsuke de kiite kudasai.', meaning: 'Las preguntas sobre el viaje, háganlas en la recepción.' },
+    ],
+    exercises: [
+      { type: 'choice', prompt: 'しょうらいの 仕事[しごと] ＿ 先生[せんせい]に そうだんしました。', hint: 'Consulté al profesor sobre mi futuro trabajo.', options: ['について', 'にとって', 'として', 'ばかり'], answer: 'について' },
+      { type: 'choice', prompt: '日本[にほん]の 料理[りょうり] ＿ 本[ほん]を 読[よ]みました。', hint: 'Leí un libro sobre la comida japonesa.', options: ['についての', 'について', 'にとっての', 'としての'], answer: 'についての', explanation: 'Delante de un sustantivo: についての.' },
+      { type: 'order', meaning: 'Hablemos sobre el plan.', answer: ['計画[けいかく]', 'について', '話[はな]しましょう'] },
+    ],
+  },
+  {
+    id: 'ni-yotte',
+    level: 'N3',
+    title: 'によって y によると: según, por',
+    summary: 'Depende de la persona · según las noticias…',
+    pattern: '〜に よって (ちがう) · 〜に よると · [pasiva] 〜に よって',
+    explanation: [
+      '**によって** tiene varios usos. **Depende de**: 人[ひと]によって 考[かんが]え方[かた]が ちがいます (la forma de pensar depende de la persona).',
+      '**Por medio de / causa**: じこによって 電車[でんしゃ]が 止[と]まりました (el tren se detuvo por un accidente). Y en la **pasiva**, para el autor de obras: この 家[いえ]は 有名[ゆうめい]な 人[ひと]によって 建[た]てられました.',
+      '**によると** indica la **fuente** de una información, y suele terminar en そうだ o らしい: ニュースによると、 あした は 雪[ゆき]だ そうです.',
+    ],
+    examples: [
+      { text: '国[くに]によって 文[ぶん]かが ちがいます。', reading: 'kuni ni yotte bunka ga chigaimasu.', meaning: 'La cultura cambia según el país.' },
+      { text: '天気[てんき]よほうに よると、 あしたは 晴[は]れる そうです。', reading: 'tenki yohou ni yoru to, ashita wa hareru sou desu.', meaning: 'Según el pronóstico, mañana va a estar despejado.' },
+      { text: 'この 歌[うた]は 世界[せかい]中[じゅう]の 人[ひと]によって 歌[うた]われて います。', reading: 'kono uta wa sekaijuu no hito ni yotte utawarete imasu.', meaning: 'Esta canción la canta gente de todo el mundo.' },
+    ],
+    exercises: [
+      { type: 'choice', prompt: '先生[せんせい]の 話[はなし]に ＿、 試験[しけん]は 来週[らいしゅう]だ そうです。', hint: 'Según lo que dijo el profesor, el examen es la próxima semana.', options: ['よると', 'よって', 'とって', 'ついて'], answer: 'よると' },
+      { type: 'choice', prompt: '日[ひ]に ＿、 店[みせ]が 開[ひら]く 時間[じかん]が ちがいます。', hint: 'La hora en que abre la tienda depende del día.', options: ['よって', 'よると', 'ついて', 'とって'], answer: 'よって' },
+      { type: 'meaning', text: '大雪[おおゆき]に よって、 学校[がっこう]が 休[やす]みに なりました。', options: ['Por la gran nevazón, se suspendieron las clases.', 'Según la nieve, habrá clases.', 'Nevó mucho en la escuela.', 'Los alumnos jugaron con la nieve.'], answer: 'Por la gran nevazón, se suspendieron las clases.' },
+    ],
+  },
+  {
+    id: 'wake',
+    level: 'N3',
+    title: 'わけ: con razón, no es que, no puedo',
+    summary: 'Con razón · no es que no me guste · no puedo faltar.',
+    pattern: '〜 わけだ · 〜 わけでは ない · 〜 わけには いかない',
+    explanation: [
+      '**わけだ** saca una **conclusión lógica**: «con razón, o sea que»: 十年[じゅうねん] 住[す]んで いたなら、 日本語[にほんご]が 上手[じょうず]な わけだ (si vivió diez años allá, con razón habla bien japonés).',
+      '**わけでは ない** niega en parte: «**no es que…**»: きらいな わけでは ありません (no es que no me guste).',
+      '**わけには いかない** = «**no puedo (por obligación social o moral)**»: 大切[たいせつ]な かいぎだ から、 休[やす]む わけには いきません (es una reunión importante, no puedo faltar).',
+    ],
+    examples: [
+      { text: '毎日[まいにち] 練習[れんしゅう]して いる から、 上手[じょうず]な わけです。', reading: 'mainichi renshuu shite iru kara, jouzu na wake desu.', meaning: 'Practica todos los días, con razón es tan bueno.' },
+      { text: '肉[にく]が 食[た]べられない わけでは ありませんが、 あまり 食[た]べません。', reading: 'niku ga taberarenai wake de wa arimasen ga, amari tabemasen.', meaning: 'No es que no pueda comer carne, pero no como mucha.' },
+      { text: 'やくそくした から、 行[い]かない わけには いきません。', reading: 'yakusoku shita kara, ikanai wake ni wa ikimasen.', meaning: 'Como lo prometí, no puedo dejar de ir.' },
+    ],
+    exercises: [
+      { type: 'choice', prompt: 'お金[かね]が ある ＿ では ないが、 よく 旅行[りょこう]する。', hint: 'No es que tenga dinero, pero viajo seguido.', options: ['わけ', 'はず', 'こと', 'ため'], answer: 'わけ' },
+      { type: 'choice', prompt: '社長[しゃちょう]の たのみだ から、 ことわる わけには ＿。', hint: 'Como es un pedido del presidente, no puedo rechazarlo.', options: ['いかない', 'ならない', 'しない', 'ない'], answer: 'いかない' },
+      { type: 'meaning', text: '雪[ゆき]が 降[ふ]って いる。 寒[さむ]い わけだ。', options: ['Está nevando. Con razón hace frío.', 'Está nevando, pero no hace frío.', 'No es que haga frío.', 'Va a nevar porque hace frío.'], answer: 'Está nevando. Con razón hace frío.' },
+    ],
+  },
+  {
+    id: 'hazu-ga-nai',
+    level: 'N3',
+    title: 'はずがない y にちがいない: imposible, seguro',
+    summary: 'No puede ser que… · seguro que…',
+    pattern: '〜 はずが ない · 〜 に ちがいない',
+    explanation: [
+      '**はずが ない** expresa que algo es **imposible** según lo que uno sabe: «no puede ser que»: あの まじめな 人[ひと]が うそを つく はずが ありません.',
+      '**に ちがいない** expresa una **certeza fuerte** basada en pruebas: «seguro que, sin duda»: 電気[でんき]が ついて いる から、 家[いえ]に いるに ちがいない.',
+      'Ambas van después de la forma informal; con sustantivos y adjetivos な: 学生[がくせい]の はずが ない / 学生[がくせい]に ちがいない (sin だ).',
+    ],
+    examples: [
+      { text: 'こんな むずかしい 問題[もんだい]が 子[こ]どもに わかる はずが ない。', reading: 'konna muzukashii mondai ga kodomo ni wakaru hazu ga nai.', meaning: 'Es imposible que un niño entienda un problema tan difícil.' },
+      { text: 'かれは きっと つかれて いるに ちがいない。', reading: 'kare wa kitto tsukarete iru ni chigainai.', meaning: 'Sin duda él está cansado.' },
+      { text: 'この 時計[とけい]が そんなに 安[やす]い はずが ありません。', reading: 'kono tokei ga sonna ni yasui hazu ga arimasen.', meaning: 'No puede ser que este reloj sea tan barato.' },
+    ],
+    exercises: [
+      { type: 'choice', prompt: 'かぎを かけた から、 ドアが 開[あ]いて いる ＿ が ない。', hint: 'Cerré con llave, es imposible que la puerta esté abierta.', options: ['はず', 'わけ', 'こと', 'もの'], answer: 'はず' },
+      { type: 'choice', prompt: 'あの 店[みせ]は いつも 人[ひと]が 多[おお]い。 おいしいに ＿。', hint: 'Esa tienda siempre está llena. Seguro que es rica.', options: ['ちがいない', 'はずがない', 'わけだ', 'ことだ'], answer: 'ちがいない' },
+      { type: 'meaning', text: 'ケンさんが そんな ことを 言[い]う はずが ない。', options: ['Es imposible que Ken diga algo así.', 'Seguro que Ken dijo eso.', 'Ken debería decir eso.', 'Ken nunca dice nada.'], answer: 'Es imposible que Ken diga algo así.' },
+    ],
+  },
+  {
+    id: 'rashii',
+    level: 'N3',
+    title: 'らしい y っぽい: parece, típico de',
+    summary: 'Parece que se casa · muy de niño · un poco infantil.',
+    pattern: '〜 らしい · [sust.] らしい · 〜 っぽい',
+    explanation: [
+      '**らしい** después de la forma informal = «**parece que, al parecer**», por algo que se oyó o se dedujo: 来月[らいげつ] 結婚[けっこん]する らしいです (al parecer se casa el próximo mes).',
+      '**Sustantivo + らしい** = «**típico de, como corresponde a**»: 男[おとこ]らしい (varonil), 春[はる]らしい 天気[てんき] (un tiempo muy de primavera), あなたらしくない (no es propio de ti).',
+      '**っぽい** (informal) = «**que parece, con aire de**», a menudo con un matiz negativo: 子[こ]どもっぽい (infantil), わすれっぽい (olvidadizo), 黒[くろ]っぽい 服[ふく] (ropa negruzca).',
+    ],
+    examples: [
+      { text: 'あの 店[みせ]は 来月[らいげつ] 閉[し]まる らしいです。', reading: 'ano mise wa raigetsu shimaru rashii desu.', meaning: 'Al parecer esa tienda cierra el próximo mes.' },
+      { text: 'きょうは 春[はる]らしい あたたかい 日[ひ]ですね。', reading: 'kyou wa haru rashii atatakai hi desu ne.', meaning: 'Hoy es un día templado, muy de primavera, ¿no?' },
+      { text: '父[ちち]は 年[とし]を とって、 わすれっぽく なりました。', reading: 'chichi wa toshi o totte, wasureppoku narimashita.', meaning: 'Mi papá se puso olvidadizo con los años.' },
+    ],
+    exercises: [
+      { type: 'choice', prompt: 'ニュースに よると、 あした は 雨[あめ] ＿。', hint: 'Según las noticias, al parecer mañana llueve.', options: ['らしい', 'っぽい', 'ばかり', 'さえ'], answer: 'らしい' },
+      { type: 'choice', prompt: 'そんな ことで なくなんて、 子[こ]ども ＿ ね。', hint: 'Llorar por algo así es infantil, ¿no?', options: ['っぽい', 'らしい', 'そう', 'こそ'], answer: 'っぽい' },
+      { type: 'meaning', text: 'おこるなんて、 あなたらしく ないですね。', options: ['Enojarte no es propio de ti.', 'Pareces enojado.', 'Al parecer estás enojado.', 'Te enojas como siempre.'], answer: 'Enojarte no es propio de ti.' },
+    ],
+  },
+  {
+    id: 'uchi-ni',
+    level: 'N3',
+    title: 'うちに: mientras, antes de que',
+    summary: 'Mientras sea joven · antes de que llueva.',
+    pattern: '[dicc./ている/adj.] うちに · [ない] うちに',
+    explanation: [
+      '**うちに** = «**mientras (dura esta situación), aprovechar antes de que cambie**»: わかい うちに いろいろ けいけんしたい (quiero vivir muchas cosas mientras soy joven). Con adjetivos な y sustantivos: 元気[げんき]な うちに, 学生[がくせい]の うちに.',
+      '**ない + うちに** = «**antes de que**» algo pase: 雨[あめ]が 降[ふ]らない うちに 帰[かえ]りましょう (volvamos antes de que llueva).',
+      'También expresa que algo cambió **sin darse cuenta mientras** se hacía otra cosa: 本[ほん]を 読[よ]んで いる うちに、 ねて しまった (mientras leía me quedé dormido).',
+    ],
+    examples: [
+      { text: 'あたたかい うちに 食[た]べて ください。', reading: 'atatakai uchi ni tabete kudasai.', meaning: 'Cómanlo mientras está caliente.' },
+      { text: '暗[くら]く ならない うちに、 家[いえ]に 帰[かえ]りましょう。', reading: 'kuraku naranai uchi ni, ie ni kaerimashou.', meaning: 'Volvamos a casa antes de que oscurezca.' },
+      { text: '話[はな]して いる うちに、 気持[きも]ちが 楽[らく]に なりました。', reading: 'hanashite iru uchi ni, kimochi ga raku ni narimashita.', meaning: 'Mientras hablaba, me fui sintiendo más tranquilo.' },
+    ],
+    exercises: [
+      { type: 'choice', prompt: '学生[がくせい]の ＿ に、 たくさん 旅行[りょこう]したいです。', hint: 'Quiero viajar mucho mientras sea estudiante.', options: ['うち', 'あいだ', 'まえ', 'ため'], answer: 'うち' },
+      { type: 'choice', prompt: 'わすれない ＿ に、 メモして おきます。', hint: 'Lo anoto antes de olvidarlo.', options: ['うち', 'ばかり', 'ほど', 'さえ'], answer: 'うち' },
+      { type: 'meaning', text: '日本[にほん]に 住[す]んで いる うちに、 さしみが すきに なりました。', options: ['Viviendo en Japón, me empezó a gustar el sashimi.', 'Antes de vivir en Japón, me gustaba el sashimi.', 'Quiero comer sashimi mientras viva en Japón.', 'En Japón no me gustó el sashimi.'], answer: 'Viviendo en Japón, me empezó a gustar el sashimi.' },
+    ],
+  },
+  {
+    id: 'tabi-ni',
+    level: 'N3',
+    title: 'たびに: cada vez que',
+    summary: 'Cada vez que veo esta foto…',
+    pattern: '[dicc.] たびに · [sust.] の たびに',
+    explanation: [
+      '**Diccionario + たびに** = «**cada vez que**», con algo que se repite siempre igual: この 歌[うた]を 聞[き]く たびに、 子[こ]どもの ころを 思[おも]い出[だ]します.',
+      'Con sustantivos: **の たびに**: 旅行[りょこう]の たびに、 写真[しゃしん]を たくさん とります. Es más enfático que とき.',
+    ],
+    examples: [
+      { text: 'この 写真[しゃしん]を 見[み]る たびに、 家族[かぞく]を 思[おも]い出[だ]します。', reading: 'kono shashin o miru tabi ni, kazoku o omoidashimasu.', meaning: 'Cada vez que veo esta foto, me acuerdo de mi familia.' },
+      { text: '兄[あに]は 会[あ]う たびに 新[あたら]しい 話[はなし]を して くれます。', reading: 'ani wa au tabi ni atarashii hanashi o shite kuremasu.', meaning: 'Cada vez que nos vemos, mi hermano me cuenta algo nuevo.' },
+      { text: '試験[しけん]の たびに、 おなかが いたく なります。', reading: 'shiken no tabi ni, onaka ga itaku narimasu.', meaning: 'Cada vez que hay examen, me duele el estómago.' },
+    ],
+    exercises: [
+      { type: 'choice', prompt: '日本[にほん]に 行[い]く ＿、 その 店[みせ]に 行[い]きます。', hint: 'Cada vez que voy a Japón, voy a esa tienda.', options: ['たびに', 'うちに', 'ために', 'までに'], answer: 'たびに' },
+      { type: 'choice', prompt: 'しゅっちょうの ＿ たびに、 おみやげを 買[か]います。', hint: 'En cada viaje de negocios compro recuerdos.', options: ['の', 'に', 'を', 'で'], answer: 'の' },
+      { type: 'order', meaning: 'Cada vez que llueve, el tren se atrasa.', answer: ['雨[あめ]が', '降[ふ]る', 'たびに', '電車[でんしゃ]が', 'おくれる'] },
+    ],
+  },
+  {
+    id: 'okage-sei',
+    level: 'N3',
+    title: 'おかげで y せいで: gracias a, por culpa de',
+    summary: 'Gracias a ti aprobé · por culpa de la lluvia…',
+    pattern: '〜 おかげで (bueno) · 〜 せいで (malo)',
+    explanation: [
+      '**おかげで** da la causa de un **resultado bueno**: «gracias a»: 先生[せんせい]の おかげで、 ごうかくできました.',
+      '**せいで** da la causa de un **resultado malo**: «por culpa de»: 雨[あめ]の せいで、 しあいが 中止[ちゅうし]に なりました.',
+      'Van después de la forma informal; con sustantivos se usa **の** (先生[せんせい]の おかげで) y con adjetivos な, **な** (しずかな おかげで).',
+    ],
+    examples: [
+      { text: '友[とも]だちが 手[て]つだって くれた おかげで、 早[はや]く 終[お]わりました。', reading: 'tomodachi ga tetsudatte kureta okage de, hayaku owarimashita.', meaning: 'Gracias a que mis amigos me ayudaron, terminé temprano.' },
+      { text: '電車[でんしゃ]が おくれた せいで、 かいぎに まにあいませんでした。', reading: 'densha ga okureta sei de, kaigi ni maniaimasen deshita.', meaning: 'Por culpa del atraso del tren, no llegué a tiempo a la reunión.' },
+      { text: '薬[くすり]の おかげで、 よく なりました。', reading: 'kusuri no okage de, yoku narimashita.', meaning: 'Gracias a la medicina, me mejoré.' },
+    ],
+    exercises: [
+      { type: 'choice', prompt: 'みなさんの ＿ で、 いい 会[かい]に なりました。', hint: 'Gracias a todos, fue una buena reunión.', options: ['おかげ', 'せい', 'ため', 'わけ'], answer: 'おかげ' },
+      { type: 'choice', prompt: '夜[よる] おそく まで ゲームを した ＿ で、 朝[あさ] 起[お]きられなかった。', hint: 'Por culpa de jugar hasta tarde, no me pude levantar.', options: ['せい', 'おかげ', 'うち', 'たび'], answer: 'せい' },
+      { type: 'meaning', text: '先生[せんせい]の 説明[せつめい]の おかげで、 よく わかりました。', options: ['Gracias a la explicación del profesor, entendí bien.', 'Por culpa del profesor, no entendí.', 'El profesor me pidió una explicación.', 'Expliqué bien al profesor.'], answer: 'Gracias a la explicación del profesor, entendí bien.' },
+    ],
+  },
+  {
+    id: 'kawari-ni',
+    level: 'N3',
+    title: 'かわりに: en vez de, a cambio',
+    summary: 'Voy yo en lugar de él · te enseño a cambio.',
+    pattern: '[sust.] の かわりに · [dicc.] かわりに',
+    explanation: [
+      '**Sustantivo + の かわりに** = «**en vez de, en lugar de**» (alguien o algo): 社長[しゃちょう]の かわりに、 部長[ぶちょう]が 来[き]ました (en lugar del presidente vino el jefe).',
+      '**Verbo + かわりに** = «**en vez de hacer**» o «**a cambio de**»: 日本語[にほんご]を 教[おし]えて もらう かわりに、 スペイン語[ご]を 教[おし]えて います (a cambio de que me enseñe japonés, le enseño español).',
+      'También compara algo bueno y algo malo: この 町[まち]は 便利[べんり]な かわりに、 にぎやかすぎる (este barrio es práctico, pero a cambio es demasiado ruidoso).',
+    ],
+    examples: [
+      { text: '母[はは]の かわりに、 私[わたし]が 晩[ばん]ご飯[はん]を 作[つく]りました。', reading: 'haha no kawari ni, watashi ga bangohan o tsukurimashita.', meaning: 'En lugar de mi mamá, preparé yo la cena.' },
+      { text: 'パンの かわりに、 ご飯[はん]を 食[た]べました。', reading: 'pan no kawari ni, gohan o tabemashita.', meaning: 'En vez de pan, comí arroz.' },
+      { text: '手[て]つだって もらう かわりに、 昼[ひる]ご飯[はん]を ごちそうします。', reading: 'tetsudatte morau kawari ni, hirugohan o gochisou shimasu.', meaning: 'A cambio de tu ayuda, te invito el almuerzo.' },
+    ],
+    exercises: [
+      { type: 'choice', prompt: 'ペンの ＿ に、 えんぴつで 書[か]いて ください。', hint: 'Escriba con lápiz en vez de lapicera.', options: ['かわり', 'ため', 'うち', 'たび'], answer: 'かわり' },
+      { type: 'choice', prompt: 'びょうきの 先生[せんせい]の かわりに、 ほかの 先生[せんせい]が ＿。', hint: 'En lugar del profesor enfermo, vino otro profesor.', options: ['来[き]ました', '来[き]る', '来[く]れば', '来[こ]ない'], answer: '来[き]ました' },
+      { type: 'meaning', text: 'この 部屋[へや]は 広[ひろ]い かわりに、 駅[えき]から 遠[とお]いです。', options: ['Esta pieza es amplia, pero a cambio está lejos de la estación.', 'Esta pieza es amplia y cerca de la estación.', 'En vez de esta pieza, busco otra.', 'La pieza está en la estación.'], answer: 'Esta pieza es amplia, pero a cambio está lejos de la estación.' },
+    ],
+  },
+]
