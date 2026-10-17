@@ -50,6 +50,11 @@ export const placementBlocks: PlacementBlock[] = [
     title: 'N3: quinta tanda de kanji y vocabulario',
     unitIds: ['kanji-n3-12', 'kanji-n3-13', 'kanji-n3-14', 'vocab-n3-9', 'vocab-n3-10', 'vocab-n3-11', 'vocab-n3-12'],
   },
+  {
+    id: 'n3-vocabulario-final',
+    title: 'N3: últimas tandas de vocabulario',
+    unitIds: ['vocab-n3-13', 'vocab-n3-14', 'vocab-n3-15', 'vocab-n3-16', 'vocab-n3-17', 'vocab-n3-18', 'vocab-n3-19', 'vocab-n3-20'],
+  },
   { id: 'n3-gramatica-4', title: 'N3: gramática VII y VIII', unitIds: ['grammar-n3-7', 'grammar-n3-8', 'lectura-n3-4'] },
 ]
 

@@ -431,7 +431,7 @@ Meta: que quien termine la etapa pueda aprobar el JLPT N4. Va por tandas, cada u
   - Igual que el N5 pero solo con contenido N4, 35 minutos y aprobación con 90/180 (más los mínimos oficiales por sección). La sección de vocabulario ahora incluye lectura de kanji (漢字読み), también en el N5.
   - Cada nivel cierra el recorrido con su simulacro como meta. La parada se completa al aprobarlo (no se puede saltar con la nivelación).
 - ✅ **Etapa B terminada:** el contenido cubre el N4 (66 lecciones de gramática, 1.507 palabras, 303 kanji, 60 textos y 2 simulacros).
-### Etapa C: nivel N3 (en curso)
+### Etapa C: nivel N3 (terminada)
 Meta: que quien termine el curso entienda el japonés a nivel JLPT N3. Es la etapa más grande: el contenido crece unas 3 veces. Va por tandas, cada una publicada y probada:
 - ✅ **C1 · Gramática N3, primera tanda publicada (16 lecciones, 82 en total):**
   - Desde ahora la gramática usa kanji con furigana, solo de los kanji que el curso ya enseña; el resto va en kana.
@@ -457,7 +457,8 @@ Meta: que quien termine el curso entienda el japonés a nivel JLPT N3. Es la eta
   - Tercera tanda: 72 kanji en 12 lecciones (personas y comunicación; cosas y tiempo; escuela, cuerpo y acciones), entre ellos varios que antes iban en kana (議, 彼, 荷, 昔, 置, 直, 消, 守, 受, 呼, 似). Son 3 unidades más en el recorrido y un bloque más en la nivelación.
   - Cuarta tanda: 72 kanji en 12 lecciones (realidad y dinero; seguridad, salud y arte; comunicación y orden). Son 3 unidades más y un bloque más en la nivelación. Con ellos, 73 palabras N3 que iban en kana ganan forma escrita (失敗, 場面, 申し込む…); las formas salen de los ejemplos de los kanji y se revisaron los homófonos.
   - Quinta tanda: 78 kanji en 13 lecciones (sociedad, técnica y lugares; casa, familia y acciones; estudio, trabajo y formas), 3 unidades y un bloque en la nivelación. 22 palabras N3 más ganan forma escrita.
-- 🟡 **C4 · Vocabulario N3, tres tandas publicadas (1.369 palabras N3):**
+- ✅ **C4 · Vocabulario N3 completo: cinco tandas (1.987 palabras N3, unas 3.500 en total):**
+  - Cuarta y quinta tanda: 305 y 313 palabras en `vocabDataN3d.ts` y `vocabDataN3e.ts` (unidades XIII–XX). La cuarta trae sustantivos abstractos, trabajo y dinero, verbos, adjetivos y expresiones con partes del cuerpo; la quinta, vida diaria (casa, ropa, comida, animales, naturaleza, cuerpo), adverbios, colores e idiomas. Las palabras de N5 que ya existían se filtraron solas.
   - Tercera tanda: 391 palabras en `vocabDataN3c.ts` (unidades IX–XII), con las mismas reglas que la segunda.
   - Segunda tanda: 559 palabras en `vocabDataN3b.ts`, con dos temas nuevos para el N3 (naturaleza y ocio). Sus lecciones siguen la numeración de cada tema (`voc3-sentimientos-6`…) y las de la primera tanda no cambian. Son 4 unidades más (V–VIII) en el recorrido, en el bloque de la tercera tanda de kanji.
   - Con los kanji nuevos, 81 palabras N3 y 18 N4 que iban en kana ahora tienen forma escrita (会議, 荷物, 時代…). A las N4 solo se les pone si sus kanji son del N5 o N4.
@@ -465,9 +466,7 @@ Meta: que quien termine el curso entienda el japonés a nivel JLPT N3. Es la eta
   - Las palabras tienen **forma escrita** con kanji y furigana (`練習[れんしゅう]`) cuando todos sus kanji los enseña el curso (141 de las N3). Las demás van en kana.
   - Las fichas muestran el kanji con su lectura. Hay un ejercicio nuevo de **lectura de kanji** (¿cómo se lee «練習»?) en las lecciones y en los repasos.
   - Son 4 unidades de vocabulario N3 en el recorrido y en los bloques N3 de la nivelación. Los ids anteriores no cambian.
-  - Plan original: ~2.200 palabras más (~3.700 en total), en tandas de ~400 por tema.
-  - Las palabras pasan a tener forma escrita (`kanji?`) además del kana.
-  - Hace falta cargar el contenido por nivel de forma asíncrona.
+  - Plan original: ~3.700 palabras en total; quedaron unas 3.500, sin repetir palabras de N5 y N4.
 - ✅ **C5 · Lecturas N3 (primera tanda):** 8 textos con kanji y furigana: avisos (basura, biblioteca, lavandería), correos (reunión, invitación), ensayos (el celular, trabajar en Japón) y una noticia. Cada uno con 3 preguntas de comprensión y la idea principal.
 - ✅ **C6 · Audición N3 (primera tanda):** 8 audios con los 5 tipos de pregunta del examen (tarea, punto clave, idea general, respuesta rápida y expresión). Son 2 unidades «N3 · Lectura y audición» en el recorrido y la nivelación. El audio pregenerado queda como mejora.
 - ✅ **C5/C6 · Lecturas y audición N3, segunda tanda:** 8 lecturas (reglas de una residencia, ensayos, noticias, un correo, un aviso de tienda y un informe) y 8 diálogos con los tipos de pregunta del examen. Usan la gramática de las tandas tercera y cuarta. Son 2 unidades más (III y IV), una tras la gramática VI y otra tras la VIII. En total hay 32 textos N3.
@@ -475,7 +474,8 @@ Meta: que quien termine el curso entienda el japonés a nivel JLPT N3. Es la eta
   - 40 minutos, con kanji N3, paráfrasis y uso en gramática, y lecturas y audición N3.
   - Se puntúa como el JLPT N3: idioma, lectura y audición de 0–60 cada una, mínimo 19 en cada sección y 95/180 para aprobar.
   - Es la meta final del recorrido.
-- **Riesgo:** la calidad del contenido. Los tests automáticos validan formato, kanji conocidos, lecturas y conjugaciones, pero conviene una revisión nativa antes de dar el curso por terminado.
+- **Estado final del curso de japonés (N5 → N3):** 130 lecciones de gramática, 673 kanji con trazos, unas 3.500 palabras con SRS, 32 textos N3 de lectura y audición (más los de N5 y N4), simulacros N5, N4 y N3, y test de nivelación que cubre todo el recorrido.
+- **Pendiente recomendado:** revisión de un hablante nativo. Los tests automáticos validan formato, kanji conocidos, lecturas y conjugaciones, pero no si las frases suenan naturales. Mejoras posibles: audio pregenerado para la audición.
 - **Para agregar un idioma:** crear `src/courses/<id>/` con su contenido, registrar la gramática en `src/courses/content.ts`, cambiar su `status` a `available` y darle sus secciones. Las lecciones de vocabulario para idiomas sin silabario propio son lo siguiente a diseñar. Quedan como ideas para después (sección 9): tarjetas SRS de palabras, temas de palabras en los juegos, pares confusos juntos en los juegos, kanji, frases con furigana y evaluación de pronunciación.
 
 **Hiragana primero:** las fases 1 a 6 se construyen solo con hiragana. El código se escribe desde el principio para cualquier silabario (el campo `script` en los datos), así que katakana entra en la fase 7 casi solo como contenido.

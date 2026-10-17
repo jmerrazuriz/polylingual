@@ -79,7 +79,7 @@ const n4Vocab = (n: number, last = false): PathUnit => ({
 })
 /**
  * Vocabulario N3 (con kanji). Primera tanda: unidades I–IV de 11 lecciones (la IV se lleva el resto).
- * Las tandas siguientes: 4 unidades cada una (V–VIII, IX–XII), repartidas en partes parejas.
+ * Las tandas siguientes: 4 unidades cada una (V–VIII, IX–XII, XIII–XVI, XVII–XX), repartidas en partes parejas.
  */
 const n3Vocab = (n: number, last = false): PathUnit => {
   const quarter = (list: VocabLesson[], i: number) => list.slice(Math.round((i * list.length) / 4), Math.round(((i + 1) * list.length) / 4))
@@ -87,7 +87,7 @@ const n3Vocab = (n: number, last = false): PathUnit => {
     n <= 4
       ? vocabLessonsN3Batches[0].slice((n - 1) * 11, last ? undefined : n * 11)
       : quarter(vocabLessonsN3Batches[Math.floor((n - 1) / 4)], (n - 1) % 4)
-  const roman = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII']
+  const roman = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII', 'XIII', 'XIV', 'XV', 'XVI', 'XVII', 'XVIII', 'XIX', 'XX']
   return {
     ...vocabUnit(0, `N3 · Vocabulario ${roman[n - 1]} (con kanji)`, lessons),
     id: `vocab-n3-${n}`,
@@ -415,6 +415,14 @@ export const japanesePath: PathUnit[] = [
   n3Vocab(10),
   n3Vocab(11),
   n3Vocab(12),
+  n3Vocab(13),
+  n3Vocab(14),
+  n3Vocab(15),
+  n3Vocab(16),
+  n3Vocab(17),
+  n3Vocab(18),
+  n3Vocab(19),
+  n3Vocab(20),
   {
     id: 'grammar-n3-7',
     title: 'N3 · Gramática VII: actitudes, comparaciones y tendencias',

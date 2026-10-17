@@ -68,8 +68,10 @@ describe('vocabulario N5', () => {
     for (const l of [...vocabLessonsHira, ...vocabLessonsKata]) for (const w of l.words) expect(w.level, l.id).toBe('N5')
   })
 
-  it('N3: tres tandas que no cambian las lecciones de las anteriores', () => {
-    const [a, b, c] = vocabLessonsN3Batches
+  it('N3: cinco tandas que no cambian las lecciones de las anteriores', () => {
+    const [a, b, c, d, e] = vocabLessonsN3Batches
+    expect(vocabLessonsN3Batches).toHaveLength(5)
+    expect(d.length + e.length).toBeGreaterThanOrEqual(55)
     expect(c.length).toBeGreaterThanOrEqual(35)
     expect(c.find((l) => l.theme === 'sentimientos')?.id).toBe(`voc3-sentimientos-${[...a, ...b].filter((l) => l.theme === 'sentimientos').length + 1}`)
     expect(a).toHaveLength(50)
@@ -80,8 +82,8 @@ describe('vocabulario N5', () => {
     expect(b.some((l) => l.id === 'voc3-sentimientos-6')).toBe(true)
   })
 
-  it('N3: unas 1.350 palabras, sin repetir las de niveles anteriores ni cambiar sus ids', () => {
-    expect(vocabN3.length).toBeGreaterThanOrEqual(1350)
+  it('N3: unas 1.950 palabras, sin repetir las de niveles anteriores ni cambiar sus ids', () => {
+    expect(vocabN3.length).toBeGreaterThanOrEqual(1950)
     expect(vocab.filter((v) => v.level === 'N4')).toHaveLength(vocabN4.length)
     expect(vocabN4.find((v) => v.kana === 'かえる')?.id).toBe('かえる·v2')
     const earlier = new Set([...vocab.filter((v) => v.level !== 'N3')].map((v) => `${v.kana}|${v.pos}|${v.group ?? ''}`))
