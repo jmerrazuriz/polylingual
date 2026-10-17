@@ -383,6 +383,9 @@ export const japanesePath: PathUnit[] = [
       stop('grammar', ['kiru-kakeru', 'tsumori-de']),
     ],
   },
+  kanjiUnitN4('kanji-n3-6', ['N3 · Personas y comunicación'], 'N3 · Kanji: personas y comunicación', '議'),
+  kanjiUnitN4('kanji-n3-7', ['N3 · Cosas y tiempo'], 'N3 · Kanji: cosas y tiempo', '昔'),
+  kanjiUnitN4('kanji-n3-8', ['N3 · Escuela, cuerpo y acciones'], 'N3 · Kanji: escuela, cuerpo y acciones', '落'),
   examUnit('N3'),
 ]
 
