@@ -65,13 +65,17 @@ export function pluralExercise(w: GermanWord, random = Math.random): GrammarExer
 }
 
 /** Escribir en alemán: «mesa» → der Tisch. Se acepta ae/oe/ue y ss. */
-export const writeExercise = (w: GermanWord): GrammarExercise => ({
-  type: 'type',
-  prompt: `Escribe en alemán: «${w.meaning}»`,
-  hint: w.pos === 'noun' ? 'Con el artículo (der, die, das).' : undefined,
-  answers: [withArticle(w)],
-  german: true,
-})
+export function writeExercise(w: GermanWord): GrammarExercise {
+  // «warten auf + Akk.» se escribe sin el caso: «warten auf».
+  const plain = w.word.replace(/\s*\+\s*(Akk|Dat)\..*$/, '')
+  return {
+    type: 'type',
+    prompt: `Escribe en alemán: «${w.meaning}»`,
+    hint: w.pos === 'noun' ? 'Con el artículo (der, die, das).' : plain !== w.word ? 'El verbo con su preposición (sin el caso).' : undefined,
+    answers: plain !== w.word ? [plain, w.word] : [withArticle(w)],
+    german: true,
+  }
+}
 
 const hasArticleQuestion = (w: GermanWord) => w.pos === 'noun' && w.gender !== 'pl'
 

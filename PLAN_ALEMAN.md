@@ -233,7 +233,7 @@ El curso alemán ya está en `src/courses/index.ts` con `status: 'soon'` y `spee
 | ✅ **D0 · Base multi-curso** (17-10-2026) | Generalizar recorrido, nivelación, simulacros y fichas por curso (sección 5). Motor de conjugación y declinación con sus tests. Entrada con umlauts. Tablas de artículos y conjugación. | El japonés sigue igual (todos los tests pasan) y existe un recorrido alemán vacío. |
 | ✅ **D1 · A1** (17-10-2026) | Pronunciación, ~30 lecciones, ~650 palabras con artículo y plural, lecturas y audición, juegos y simulacro A1. Test de nivelación A1. | Se puede hacer el A1 entero y aprobar el simulacro. El curso pasa a «disponible». |
 | ✅ **D2 · A2** (17-10-2026) | ~30 lecciones, +650 palabras, dativo y Wechselpräpositionen con ejercicios generados, simulacro A2. | Igual que D1. |
-| **D3 · B1** | ~35 lecciones, +1.100 palabras, SRS de rección (verbo + preposición), simulacro B1 con 4 módulos. | Simulacro B1 con puntaje Goethe. |
+| ✅ **D3 · B1** (17-10-2026) | ~35 lecciones, +1.100 palabras, SRS de rección (verbo + preposición), simulacro B1 con 4 módulos. | Simulacro B1 con puntaje Goethe. |
 | **D4 · B2** | ~35 lecciones, +1.600 palabras, Konjunktiv I y participios, audio pregenerado, Schreiben con lista de control. | Simulacro B2. |
 | **D5 · C1** | ~35 lecciones, +2.000 palabras, nominalización, estilo académico y Modalpartikeln. | Simulacro C1. |
 | **D6 · C2** | ~30 lecciones, +2.000 palabras, variedades, modismos, literatura y matices. | Simulacro C2. |
@@ -287,6 +287,22 @@ El curso alemán ya está en `src/courses/index.ts` con `status: 'soon'` y `spee
 - **Recorrido A2:** 12 unidades más el simulacro Goethe A2. Escribir tiene un mensaje con huecos que se corrige solo y un correo autoevaluado; hablar sigue las tres partes del A2.
 - **Cambio en el desbloqueo:** el simulacro de un nivel es la meta, pero ya no bloquea el nivel siguiente.
 - **Test de nivelación:** ahora cubre del A1 al A2.
+
+### Qué quedó hecho en D3 (B1)
+- **Gramática B1** (`grammarB1a/b/c.ts`): 35 lecciones.
+  - El pasado: Präteritum, Plusquamperfekt, *nachdem/bevor/während*, *als/wenn*.
+  - Pasiva en presente, pasado y con modales, y relativos (todos los casos, con preposición, *wo/was*).
+  - Konjunktiv II irreal y del pasado, *um…zu/damit*, *ohne/statt…zu*, *obwohl*, *sodass*, el genitivo y sus preposiciones.
+  - También: adjetivos sin artículo, n-Deklination, verbos con preposición y *wo(r)-/da(r)-*, conectores dobles, *je…desto*, *lassen*, *nicht brauchen zu*, formación de palabras, suposiciones con *werden*, reflexivos en dativo, *sobald/solange*, *einer/keiner/welche*, causas, preposiciones con acusativo, correos formales y cómo dar opiniones.
+- **Vocabulario B1** (`vocabB1.ts`): unas 560 palabras (unas 1.730 en total) en 26 temas.
+  - Incluye un tema de **40 verbos con su preposición y su caso** (*warten auf + Akk.*), que entran al repaso como unidades. Al escribirlos no hace falta el caso.
+  - Temas: carrera, dinero y seguros, derechos, salud, vivienda, sociedad y política, medio ambiente, tecnología, taller, solicitudes, emergencias, restaurante, transporte y opiniones.
+  - **Nota:** la meta del plan era ~2.400 palabras al terminar el B1; quedaron unas 1.730. Conviene una tanda extra de vocabulario B1 antes del examen real.
+- **Ottos Weg B1** (`readingsB1.ts`): 16 episodios más largos (currículum, preparación del examen, foro, pasiva en el taller, noticia sobre falta de trabajadores, conflicto con un colega, correo de reclamo, curso de orientación, nostalgia, chequeo, voluntariado, oferta en Múnich, encuesta, entrevista de radio, postulación y la decisión).
+- **Simulacro Goethe B1:**
+  - Cuatro módulos; leer y escuchar necesitan 60/100 cada uno.
+  - Escribir tiene un correo formal con huecos (conectores, Konjunktiv II, terminaciones) que se corrige solo y una opinión para un foro autoevaluada.
+  - Hablar sigue las tres partes del B1: planificar, presentación y preguntas.
 
 ---
 

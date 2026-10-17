@@ -97,6 +97,42 @@ const tasks: Partial<Record<CefrLevel, LevelTasks>> = {
       'Hablé con fluidez, sin pasar al español',
     ],
   },
+  B1: {
+    form: {
+      context: 'Completa el correo formal de Otto a una academia (1–6). Ojo con los conectores y la posición del verbo.',
+      text: 'Sehr geehrte Damen und Herren, ich interessiere mich (1) ___ Ihren Kurs «Elektromobilität». (2) ___ ich seit zehn Jahren als Mechaniker arbeite, habe ich schon viel Erfahrung. Könnten Sie mir bitte mitteilen, (3) ___ der Kurs auch am Abend stattfindet? Ich möchte den Kurs machen, (4) ___ mich beruflich weiterzubilden. Ich (5) ___ Ihnen dankbar, wenn Sie mir die Kosten nennen könnten. Mit (6) ___ Grüßen, Otto Martínez',
+      fields: [
+        { label: '(1) – preposición de «sich interessieren»', answers: ['für'] },
+        { label: '(2) – como (causa, verbo al final)', answers: ['Da', 'Weil'] },
+        { label: '(3) – si (pregunta indirecta)', answers: ['ob'] },
+        { label: '(4) – para (mismo sujeto)', answers: ['um'] },
+        { label: '(5) – Konjunktiv II de sein', answers: ['wäre'] },
+        { label: '(6) – freundlich + terminación', answers: ['freundlichen'] },
+      ],
+    },
+    message: {
+      prompt:
+        'En un foro se discute: «¿Deberían las empresas permitir el teletrabajo (Homeoffice)?». Escribe tu opinión (unas 80 palabras).',
+      checks: [
+        'Introduces el tema y das tu opinión clara (Meiner Meinung nach… / Ich bin der Meinung, dass…)',
+        'Das al menos una ventaja y una desventaja',
+        'Usas conectores (einerseits/andererseits, deshalb, obwohl, außerdem)',
+        'Das un ejemplo de tu experiencia',
+        'Usas al menos dos subordinadas con el verbo al final',
+        'Terminas con una conclusión (Zusammenfassend… / Zum Schluss…)',
+      ],
+      model:
+        'Ich bin der Meinung, dass Firmen Homeoffice erlauben sollten. Einerseits spart man viel Zeit, weil man nicht zur Arbeit fahren muss. Außerdem kann man sich zu Hause oft besser konzentrieren. Andererseits fehlt der Kontakt zu den Kollegen, und nicht jeder hat zu Hause einen ruhigen Arbeitsplatz. In meinem Beruf als Mechaniker ist Homeoffice natürlich nicht möglich. Zusammenfassend finde ich, dass man flexibel sein sollte: zwei Tage zu Hause und drei Tage im Büro wären ideal.',
+    },
+    speaking: [
+      'Parte 1: planifiqué con mi pareja una actividad (por ejemplo una fiesta de despedida): propuse ideas y reaccioné a las suyas',
+      'Parte 1: usé fórmulas para proponer y aceptar o rechazar (Wie wäre es, wenn…? Gute Idee! Ich habe einen anderen Vorschlag…)',
+      'Parte 2: presenté un tema en unos 3 minutos con estructura: introducción, experiencia personal, situación en mi país, ventajas y desventajas, conclusión',
+      'Parte 2: di mi opinión y la fundamenté',
+      'Parte 3: respondí preguntas sobre mi presentación y comenté la de mi pareja',
+      'Hablé con fluidez y usé conectores y subordinadas',
+    ],
+  },
 }
 
 function pickTexts(level: CefrLevel, kind: 'reading' | 'dialogue', n: number): ReadingText[] {

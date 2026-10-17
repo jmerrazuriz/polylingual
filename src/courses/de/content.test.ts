@@ -7,6 +7,7 @@ import { germanPath, germanPathItems } from './path'
 import { germanItemStatus } from './progress'
 import { readingsA1 } from './readingsA1'
 import { readingsA2 } from './readingsA2'
+import { readingsB1 } from './readingsB1'
 import { germanVocab, germanVocabLessons, germanWordCard, germanWordFromCard } from './vocab'
 import { germanLessonExercises, germanWordReviewExercise, pluralExercise } from './vocabExercises'
 
@@ -14,6 +15,7 @@ describe('gramática', () => {
   it('30 lecciones por nivel (A1 y A2) con ejercicios bien armados', () => {
     expect(germanGrammar.filter((g) => g.level === 'A1')).toHaveLength(30)
     expect(germanGrammar.filter((g) => g.level === 'A2')).toHaveLength(30)
+    expect(germanGrammar.filter((g) => g.level === 'B1')).toHaveLength(35)
     expect(new Set(germanGrammar.map((g) => g.id)).size).toBe(germanGrammar.length)
     for (const g of germanGrammar) {
       expect(g.examples.length, g.id).toBeGreaterThanOrEqual(3)
@@ -33,7 +35,7 @@ describe('gramática', () => {
 describe('vocabulario', () => {
   it('unas 1.100 palabras (A1 + A2); los sustantivos con género y plural, sin ids repetidos', () => {
     expect(germanVocab.filter((w) => w.level === 'A1').length).toBeGreaterThanOrEqual(600)
-    expect(germanVocab.length).toBeGreaterThanOrEqual(1100)
+    expect(germanVocab.length).toBeGreaterThanOrEqual(1650)
     expect(new Set(germanVocab.map((w) => w.id)).size).toBe(germanVocab.length)
     for (const w of germanVocab) {
       if (w.pos === 'noun') {
@@ -83,11 +85,11 @@ describe('vocabulario', () => {
 
 describe('lecturas', () => {
   it('16 textos por nivel (8 lecturas y 8 diálogos) con preguntas bien armadas', () => {
-    for (const texts of [readingsA1, readingsA2]) {
+    for (const texts of [readingsA1, readingsA2, readingsB1]) {
       expect(texts.filter((t) => t.kind === 'reading')).toHaveLength(8)
       expect(texts.filter((t) => t.kind === 'dialogue')).toHaveLength(8)
     }
-    for (const t of [...readingsA1, ...readingsA2]) for (const q of t.questions) if (q.type === 'choice') expect(q.options).toContain(q.answer)
+    for (const t of [...readingsA1, ...readingsA2, ...readingsB1]) for (const q of t.questions) if (q.type === 'choice') expect(q.options).toContain(q.answer)
   })
 })
 
@@ -98,12 +100,13 @@ describe('recorrido', () => {
     const expected = [
       ...germanGrammar.map((g) => `grammar:${g.id}`),
       ...germanVocabLessons.map((l) => `vocab:${l.id}`),
-      ...[...readingsA1, ...readingsA2].map((t) => `reading:${t.id}`),
+      ...[...readingsA1, ...readingsA2, ...readingsB1].map((t) => `reading:${t.id}`),
       'exam:A1',
       'exam:A2',
+      'exam:B1',
     ]
     expect(new Set(keys)).toEqual(new Set(expected))
-    expect(germanPath.at(-1)!.id).toBe('examen-a2')
+    expect(germanPath.at(-1)!.id).toBe('examen-b1')
     expect(germanPath.map((u) => u.id)).toContain('examen-a1')
     for (const u of germanPath) for (const s of u.stops) expect(s.items.length).toBeLessThanOrEqual(3)
   })

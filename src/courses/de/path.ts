@@ -66,10 +66,26 @@ const unitsA2: PathUnit[] = [
   examUnit('A2'),
 ]
 
+const unitsB1: PathUnit[] = [
+  unit('de-b1-1', 'B1 · Contar el pasado', '📜', ['de-praeteritum', 'de-plusquamperfekt', 'de-nachdem-bevor'], ['werkstatt', 'karriere'], ['lt-b1-lebenslauf', 'dt-b1-pruefung']),
+  unit('de-b1-2', 'B1 · Cuando y mientras', '⏳', ['de-als-wenn', 'de-sobald-solange'], ['wohnen3', 'haushalt'], ['lt-b1-forum-miete']),
+  unit('de-b1-3', 'B1 · Lo que se hace', '⚙️', ['de-passiv-praesens', 'de-passiv-vergangenheit', 'de-passiv-modal'], ['technik', 'wetter2'], ['dt-b1-werkstatt-passiv', 'lt-b1-zeitung']),
+  unit('de-b1-4', 'B1 · Personas y cosas', '👥', ['de-relativ-1', 'de-relativ-2', 'de-relativ-wo-was'], ['charakter', 'gefuehle2'], ['dt-b1-kollegen']),
+  unit('de-b1-5', 'B1 · Correos formales', '✉️', ['de-brief-formal', 'de-n-deklination'], ['anfragen', 'finanzen'], ['lt-b1-beschwerde']),
+  unit('de-b1-6', 'B1 · Para qué', '🎯', ['de-um-zu-damit', 'de-ohne-statt', 'de-lassen'], ['gesellschaft', 'recht'], ['dt-b1-integration']),
+  unit('de-b1-7', 'B1 · Si yo fuera…', '💭', ['de-konj2-irreal', 'de-konj2-wunsch'], ['gesundheit2', 'notfall'], ['lt-b1-blog-heimweh', 'dt-b1-arzt-praevention']),
+  unit('de-b1-8', 'B1 · A pesar de todo', '🌧️', ['de-obwohl', 'de-sodass', 'de-kausal'], ['kultur', 'gastro'], ['lt-b1-ehrenamt']),
+  unit('de-b1-9', 'B1 · De quién y por qué', '🔎', ['de-genitiv', 'de-genitiv-praep', 'de-praep-akk'], ['umwelt2', 'unterwegs'], []),
+  unit('de-b1-10', 'B1 · Decisiones', '⚖️', ['de-doppelkonnektoren', 'de-je-desto', 'de-brauchen-zu'], ['bildung2', 'medien2'], ['dt-b1-umzug-entscheidung', 'lt-b1-umfrage']),
+  unit('de-b1-11', 'B1 · Verbos con preposición', '🔗', ['de-verben-praep-2', 'de-wo-da', 'de-reflexiv-dativ'], ['rektion'], ['dt-b1-radio']),
+  unit('de-b1-12', 'B1 · Mi opinión', '🗣️', ['de-meinung', 'de-wortbildung', 'de-futur-vermutung', 'de-adjektiv-stark', 'de-indefinitpronomen'], ['diskussion', 'abstrakt', 'verben3', 'adjektive3', 'konnektoren-b1'], ['lt-b1-bewerbung', 'dt-b1-entscheidung']),
+  examUnit('B1'),
+]
+
 const unitsByLevel: Record<CefrLevel, PathUnit[]> = {
   A1: unitsA1,
   A2: unitsA2,
-  B1: [],
+  B1: unitsB1,
   B2: [],
   C1: [],
   C2: [],
