@@ -400,6 +400,9 @@ export const japanesePath: PathUnit[] = [
   n3Vocab(6),
   n3Vocab(7),
   n3Vocab(8),
+  kanjiUnitN4('kanji-n3-9', ['N3 · Realidad y dinero'], 'N3 · Kanji: realidad y dinero', '実'),
+  kanjiUnitN4('kanji-n3-10', ['N3 · Seguridad, salud y arte'], 'N3 · Kanji: seguridad, salud y arte', '救'),
+  kanjiUnitN4('kanji-n3-11', ['N3 · Comunicación y orden'], 'N3 · Kanji: comunicación y orden', '続'),
   examUnit('N3'),
 ]
 

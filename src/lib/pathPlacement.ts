@@ -44,6 +44,7 @@ export const placementBlocks: PlacementBlock[] = [
     title: 'N3: tercera tanda de kanji y vocabulario',
     unitIds: ['kanji-n3-6', 'kanji-n3-7', 'kanji-n3-8', 'vocab-n3-5', 'vocab-n3-6', 'vocab-n3-7', 'vocab-n3-8'],
   },
+  { id: 'n3-kanji-4', title: 'N3: cuarta tanda de kanji', unitIds: ['kanji-n3-9', 'kanji-n3-10', 'kanji-n3-11'] },
 ]
 
 /** Preguntas por bloque y aciertos para aprobarlo (80 %). */
