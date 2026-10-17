@@ -470,6 +470,7 @@ Meta: que quien termine el curso entienda el japonés a nivel JLPT N3. Es la eta
   - Hace falta cargar el contenido por nivel de forma asíncrona.
 - ✅ **C5 · Lecturas N3 (primera tanda):** 8 textos con kanji y furigana: avisos (basura, biblioteca, lavandería), correos (reunión, invitación), ensayos (el celular, trabajar en Japón) y una noticia. Cada uno con 3 preguntas de comprensión y la idea principal.
 - ✅ **C6 · Audición N3 (primera tanda):** 8 audios con los 5 tipos de pregunta del examen (tarea, punto clave, idea general, respuesta rápida y expresión). Son 2 unidades «N3 · Lectura y audición» en el recorrido y la nivelación. El audio pregenerado queda como mejora.
+- ✅ **C5/C6 · Lecturas y audición N3, segunda tanda:** 8 lecturas (reglas de una residencia, ensayos, noticias, un correo, un aviso de tienda y un informe) y 8 diálogos con los tipos de pregunta del examen. Usan la gramática de las tandas tercera y cuarta. Son 2 unidades más (III y IV), una tras la gramática VI y otra tras la VIII. En total hay 32 textos N3.
 - ✅ **C7 · Simulacro N3 (`/simulacro/n3`):**
   - 40 minutos, con kanji N3, paráfrasis y uso en gramática, y lecturas y audición N3.
   - Se puntúa como el JLPT N3: idioma, lectura y audición de 0–60 cada una, mínimo 19 en cada sección y 95/180 para aprobar.

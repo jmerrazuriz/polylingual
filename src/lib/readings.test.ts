@@ -13,7 +13,7 @@ describe('lecturas y diálogos N5', () => {
   it('20 lecturas y 20 diálogos N5, 10 y 10 N4, con ids únicos', () => {
     const count = (kind: string, level: string) => readingTexts.filter((t) => t.kind === kind && t.level === level).length
     expect([count('reading', 'N5'), count('dialogue', 'N5'), count('reading', 'N4'), count('dialogue', 'N4')]).toEqual([20, 20, 10, 10])
-    expect([count('reading', 'N3'), count('dialogue', 'N3')]).toEqual([8, 8])
+    expect([count('reading', 'N3'), count('dialogue', 'N3')]).toEqual([16, 16])
     expect(new Set(readingTexts.map((t) => t.id)).size).toBe(readingTexts.length)
   })
 

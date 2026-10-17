@@ -103,9 +103,12 @@ const examUnit = (level: ExamLevel): PathUnit => ({
   stops: [stop('exam', [level], `Simulacro del JLPT ${level}`)],
 })
 
-/** Unidad de lectura y audición: 10 textos (lecturas y diálogos) del nivel, de a 3 por parada. */
-function readingUnit(n: number, title: string, level: 'N5' | 'N4' | 'N3' = 'N5'): PathUnit {
-  const texts = readingTexts.filter((t) => t.level === level).slice((n - 1) * 10, n * 10)
+/**
+ * Unidad de lectura y audición: 10 textos (lecturas y diálogos) del nivel, de a 3 por parada.
+ * `range` elige otros textos del nivel (las tandas nuevas no cambian las unidades anteriores).
+ */
+function readingUnit(n: number, title: string, level: 'N5' | 'N4' | 'N3' = 'N5', range: [number, number] = [(n - 1) * 10, n * 10]): PathUnit {
+  const texts = readingTexts.filter((t) => t.level === level).slice(...range)
   const stops: PathStop[] = []
   for (let i = 0; i < texts.length; i += 3) stops.push(stop('reading', texts.slice(i, i + 3).map((t) => t.id)))
   return { id: level === 'N5' ? `lectura-${n}` : `lectura-${level.toLowerCase()}-${n}`, title, icon: '読', stops }
@@ -366,7 +369,7 @@ export const japanesePath: PathUnit[] = [
   },
   kanjiUnitN4('kanji-n3-2', ['N3 · Trabajo y sociedad'], 'N3 · Kanji: trabajo y sociedad', '働'),
   n3Vocab(2),
-  readingUnit(2, 'N3 · Lectura y audición II', 'N3'),
+  readingUnit(2, 'N3 · Lectura y audición II', 'N3', [10, 16]),
   kanjiUnitN4('kanji-n3-3', ['N3 · Sentimientos y cuerpo'], 'N3 · Kanji: sentimientos y cuerpo', '愛'),
   kanjiUnitN4('kanji-n3-4', ['N3 · Naturaleza y sociedad'], 'N3 · Kanji: naturaleza y sociedad', '島'),
   kanjiUnitN4('kanji-n3-5', ['N3 · Movimiento y cambio'], 'N3 · Kanji: movimiento y cambio', '進'),
@@ -394,6 +397,7 @@ export const japanesePath: PathUnit[] = [
       stop('grammar', ['kiru-kakeru', 'tsumori-de']),
     ],
   },
+  readingUnit(3, 'N3 · Lectura y audición III', 'N3', [16, 24]),
   kanjiUnitN4('kanji-n3-6', ['N3 · Personas y comunicación'], 'N3 · Kanji: personas y comunicación', '議'),
   kanjiUnitN4('kanji-n3-7', ['N3 · Cosas y tiempo'], 'N3 · Kanji: cosas y tiempo', '昔'),
   kanjiUnitN4('kanji-n3-8', ['N3 · Escuela, cuerpo y acciones'], 'N3 · Kanji: escuela, cuerpo y acciones', '落'),
@@ -433,6 +437,7 @@ export const japanesePath: PathUnit[] = [
       stop('grammar', ['keigo-itadaku', 'keigo-rareru']),
     ],
   },
+  readingUnit(4, 'N3 · Lectura y audición IV', 'N3', [24, 32]),
   examUnit('N3'),
 ]
 
