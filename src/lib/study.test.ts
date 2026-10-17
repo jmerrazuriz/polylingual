@@ -69,8 +69,8 @@ describe('kanji', () => {
     }
   })
 
-  it('595 kanji (106 N5 + 197 N4 + 292 N3), cada uno en una sola lección y con sus trazos', () => {
-    expect(kanjiList).toHaveLength(595)
+  it('673 kanji (106 N5 + 197 N4 + 370 N3), cada uno en una sola lección y con sus trazos', () => {
+    expect(kanjiList).toHaveLength(673)
     const taught = kanjiLessons.flatMap((l) => l.chars)
     expect(new Set(taught).size).toBe(taught.length)
     expect(new Set(taught)).toEqual(new Set(kanjiList.map((k) => k.char)))

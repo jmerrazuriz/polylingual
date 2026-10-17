@@ -449,14 +449,14 @@ Meta: que quien termine el curso entienda el japonés a nivel JLPT N3. Es la eta
 - ✅ **C2c · Gramática N3, cuarta tanda publicada (16 lecciones, 64 N3 y 130 en total):**
   - ようとしない, にかわって, あげく, たところで, ながら(も), がち, 気味, に対して, に比べて, をはじめ, ばよかった, てからでないと, ということだ, につれて y keigo avanzado (お〜いただく, ご〜ください; respeto con れる・られる).
   - Son 2 unidades más (VII y VIII) antes del simulacro N3, que ahora se abre al terminar el keigo con られる, y un bloque más en la nivelación.
-- 🟡 **C3 · Kanji N3, cuatro tandas publicadas (292 kanji N3, 595 en total):**
+- ✅ **C3 · Kanji N3 completo: cinco tandas (370 kanji N3, 673 en total):**
   - 76 kanji N3 (379 en total), cada uno con significado, lecturas on/kun, 2 ejemplos y trazos de KanjiVG. Son 13 lecciones en 2 grupos (personas y vida diaria; trabajo y sociedad), con SRS.
   - Los trazos de kanji ahora van **separados por nivel** (`kanji-n5/n4/n3.json`) y se carga solo el nivel que hace falta: una lección N3 baja 74 KB en vez de 244 KB.
   - Hay 2 unidades de kanji N3 en el recorrido, en los bloques N3 de la nivelación. Los simulacros N5 y N4 usan los kanji de su nivel.
   - Segunda tanda: 72 kanji en 12 lecciones (sentimientos y cuerpo; naturaleza y sociedad; movimiento y cambio). Son 3 unidades más en el recorrido y un bloque más en la nivelación.
   - Tercera tanda: 72 kanji en 12 lecciones (personas y comunicación; cosas y tiempo; escuela, cuerpo y acciones), entre ellos varios que antes iban en kana (議, 彼, 荷, 昔, 置, 直, 消, 守, 受, 呼, 似). Son 3 unidades más en el recorrido y un bloque más en la nivelación.
   - Cuarta tanda: 72 kanji en 12 lecciones (realidad y dinero; seguridad, salud y arte; comunicación y orden). Son 3 unidades más y un bloque más en la nivelación. Con ellos, 73 palabras N3 que iban en kana ganan forma escrita (失敗, 場面, 申し込む…); las formas salen de los ejemplos de los kanji y se revisaron los homófonos.
-  - Faltan ~75 kanji N3 para llegar a los ~370 del nivel.
+  - Quinta tanda: 78 kanji en 13 lecciones (sociedad, técnica y lugares; casa, familia y acciones; estudio, trabajo y formas), 3 unidades y un bloque en la nivelación. 22 palabras N3 más ganan forma escrita.
 - 🟡 **C4 · Vocabulario N3, dos tandas publicadas (978 palabras N3):**
   - Segunda tanda: 559 palabras en `vocabDataN3b.ts`, con dos temas nuevos para el N3 (naturaleza y ocio). Sus lecciones siguen la numeración de cada tema (`voc3-sentimientos-6`…) y las de la primera tanda no cambian. Son 4 unidades más (V–VIII) en el recorrido, en el bloque de la tercera tanda de kanji.
   - Con los kanji nuevos, 81 palabras N3 y 18 N4 que iban en kana ahora tienen forma escrita (会議, 荷物, 時代…). A las N4 solo se les pone si sus kanji son del N5 o N4.

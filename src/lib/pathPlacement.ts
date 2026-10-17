@@ -45,6 +45,7 @@ export const placementBlocks: PlacementBlock[] = [
     unitIds: ['kanji-n3-6', 'kanji-n3-7', 'kanji-n3-8', 'vocab-n3-5', 'vocab-n3-6', 'vocab-n3-7', 'vocab-n3-8'],
   },
   { id: 'n3-kanji-4', title: 'N3: cuarta tanda de kanji', unitIds: ['kanji-n3-9', 'kanji-n3-10', 'kanji-n3-11'] },
+  { id: 'n3-kanji-5', title: 'N3: quinta tanda de kanji', unitIds: ['kanji-n3-12', 'kanji-n3-13', 'kanji-n3-14'] },
   { id: 'n3-gramatica-4', title: 'N3: gramática VII y VIII', unitIds: ['grammar-n3-7', 'grammar-n3-8'] },
 ]
 

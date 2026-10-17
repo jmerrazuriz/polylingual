@@ -403,6 +403,9 @@ export const japanesePath: PathUnit[] = [
   kanjiUnitN4('kanji-n3-9', ['N3 · Realidad y dinero'], 'N3 · Kanji: realidad y dinero', '実'),
   kanjiUnitN4('kanji-n3-10', ['N3 · Seguridad, salud y arte'], 'N3 · Kanji: seguridad, salud y arte', '救'),
   kanjiUnitN4('kanji-n3-11', ['N3 · Comunicación y orden'], 'N3 · Kanji: comunicación y orden', '続'),
+  kanjiUnitN4('kanji-n3-12', ['N3 · Sociedad, técnica y lugares'], 'N3 · Kanji: sociedad, técnica y lugares', '和'),
+  kanjiUnitN4('kanji-n3-13', ['N3 · Casa, familia y acciones'], 'N3 · Kanji: casa, familia y acciones', '探'),
+  kanjiUnitN4('kanji-n3-14', ['N3 · Estudio, trabajo y formas'], 'N3 · Kanji: estudio, trabajo y formas', '難'),
   {
     id: 'grammar-n3-7',
     title: 'N3 · Gramática VII: actitudes, comparaciones y tendencias',
