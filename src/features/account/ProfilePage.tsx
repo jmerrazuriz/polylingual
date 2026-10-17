@@ -13,6 +13,7 @@ export function ProfilePage() {
   const { status, user } = useAccount()
   const lessons = useProgress((s) => s.lessons)
   const kana = useProgress((s) => s.kana)
+  const course = useProgress((s) => s.course)
   const [message, setMessage] = useState<string | null>(null)
   const [busy, setBusy] = useState(false)
 
@@ -53,10 +54,13 @@ export function ProfilePage() {
     }
   }
 
-  const scripts = [
-    { title: 'Hiragana', list: hiragana, lessonList: lessonsByScript.hiragana },
-    { title: 'Katakana', list: katakana, lessonList: lessonsByScript.katakana },
-  ]
+  const scripts =
+    course === 'ja'
+      ? [
+          { title: 'Hiragana', list: hiragana, lessonList: lessonsByScript.hiragana },
+          { title: 'Katakana', list: katakana, lessonList: lessonsByScript.katakana },
+        ]
+      : []
 
   return (
     <div className="mx-auto flex max-w-md flex-col gap-5">

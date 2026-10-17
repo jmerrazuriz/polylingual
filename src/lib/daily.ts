@@ -3,7 +3,7 @@ import { lessons } from '../courses/ja/lessons.ts'
 import type { DailyRecord, ProgressData } from './progress/model.ts'
 import { nextPathLesson } from './path.ts'
 import { unlockedGrammar } from './progress/unlock.ts'
-import { dueNowCount } from './review.ts'
+import { cardsOfCourse, dueNowCount } from './review.ts'
 import { weakItems } from './units.ts'
 
 /**
@@ -30,7 +30,7 @@ export const DAILY_REVIEW_LIMIT = 8
  */
 export function planDaily(p: ProgressData, now: number, everythingOpen: boolean): DailyRecord {
   const steps: DailyStep[] = []
-  if (dueNowCount(p.cards, now) > 0) steps.push('repasos')
+  if (dueNowCount(cardsOfCourse(p.cards, 'ja'), now) > 0) steps.push('repasos')
   else if (weakItems(p).read.length > 0) steps.push('debiles')
 
   // La siguiente lección del recorrido: kana, contadores o kanji.

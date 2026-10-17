@@ -3,7 +3,8 @@ import { allKana, hiragana, katakana } from '../../courses/ja/kana'
 import { kanjiLessons, kanjiList } from '../../courses/ja/kanji'
 import { lessonsByScript } from '../../courses/ja/lessons'
 import type { Kana } from '../../courses/ja/types'
-import { achievements } from '../../lib/progress/achievements'
+import { achievementsOf } from '../../lib/progress/achievements'
+import { GermanProgress } from './GermanProgress'
 import { currentStreak, dayKey, daysBefore, longestStreak, readingMastery } from '../../lib/progress/model'
 import { useProgress } from '../../lib/progress/store'
 import { now } from '../../lib/time'
@@ -17,6 +18,8 @@ export function ProgressPage() {
   const today = progress.activity[dayKey(t)] ?? 0
   const goal = progress.settings.dailyGoal
   const streak = currentStreak(progress.activity, t)
+  const achievements = achievementsOf(progress.course)
+  const japanese = progress.course === 'ja'
 
   const scripts: { title: string; list: Kana[]; script: 'hiragana' | 'katakana' }[] = [
     { title: 'Hiragana', list: hiragana, script: 'hiragana' },
@@ -59,7 +62,9 @@ export function ProgressPage() {
         <Calendar activity={progress.activity} goal={goal} now={t} />
       </section>
 
-      {scripts.map(({ title, list, script }) => {
+      {!japanese && <GermanProgress />}
+
+      {japanese && scripts.map(({ title, list, script }) => {
         const lessons = lessonsByScript[script]
         const mastered = list.filter((k) => readingMastery(progress.kana[k.char]) === 'mastered').length
         const writing = list.reduce(
@@ -81,6 +86,7 @@ export function ProgressPage() {
         )
       })}
 
+      {japanese && (
       <section className="flex flex-col gap-2">
         <h2 className="text-sm font-extrabold text-slate-500 uppercase">Kanji</h2>
         <dl className="grid grid-cols-3 gap-2">
@@ -92,7 +98,9 @@ export function ProgressPage() {
           />
         </dl>
       </section>
+      )}
 
+      {japanese && (
       <section className="flex flex-col gap-2">
         <h2 className="text-sm font-extrabold text-slate-500 uppercase">Los que más te cuestan</h2>
         {hardest.length === 0 ? (
@@ -119,6 +127,7 @@ export function ProgressPage() {
           </Link>
         )}
       </section>
+      )}
 
       <section className="flex flex-col gap-2">
         <h2 className="text-sm font-extrabold text-slate-500 uppercase">
@@ -136,7 +145,7 @@ export function ProgressPage() {
                     : 'border-slate-200 bg-white opacity-60 grayscale dark:border-slate-800 dark:bg-slate-900'
                 }`}
               >
-                <span className="font-jp text-3xl" aria-hidden>
+                <span className={`text-3xl ${a.course === 'ja' ? 'font-jp' : ''}`} aria-hidden>
                   {a.icon}
                 </span>
                 <span>

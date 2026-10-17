@@ -21,6 +21,17 @@ export type ReviewPlan = { reading: Question[]; exercises: TaggedExercise[]; wri
 /** Caracteres que tienen tarjetas de repaso: kana, kanji y palabras («w-<id>»). */
 export const isReviewable = (char: string) => kanaByChar.has(char) || kanjiByChar.has(char) || !!wordFromCard(char) || !!germanWordFromCard(char)
 
+/** Curso de una tarjeta: las palabras alemanas son «dw-<id>»; kana, kanji y «w-<id>» son del japonés. */
+export const cardCourse = (char: string): string => (germanWordFromCard(char) ? 'de' : 'ja')
+
+/** Solo las tarjetas de un curso: cada idioma repasa lo suyo, sin mezclarse con los otros. */
+export function cardsOfCourse(cards: Record<string, SrsCard>, course: string): Record<string, SrsCard> {
+  return Object.fromEntries(Object.entries(cards).filter(([id]) => {
+    const parsed = parseCardId(id)
+    return parsed ? cardCourse(parsed.char) === course : false
+  }))
+}
+
 /**
  * Repasos pendientes: las tarjetas ya vencidas, las más atrasadas primero. Las que
  * vencen más tarde (p. ej. «en 10 minutos» tras un error) esperan a su hora.

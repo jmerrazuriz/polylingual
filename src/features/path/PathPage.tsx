@@ -1,3 +1,4 @@
+import { courseById } from '../../courses'
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router'
 import { useAccount } from '../../lib/account/store'
@@ -21,6 +22,9 @@ const kindIcon = { kana: 'あ', grammar: '文', counters: '数', kanji: '字', v
 /** En alemán: G de gramática, W de Wörter (palabras), T de textos. */
 const germanIcon = { ...kindIcon, grammar: 'G', vocab: 'W', reading: 'T' } as const
 
+/** Los íconos del japonés son kanji y kana (fuente japonesa); los de otros cursos, letras latinas. */
+const iconStyle = (course: string) => (course === 'ja' ? { iconLang: 'ja', iconFont: 'font-jp' } : { iconLang: undefined, iconFont: '' })
+
 export function PathPage() {
   // Se vuelve a calcular cuando cambia cualquier progreso relevante.
   useProgress((s) => s.lessons)
@@ -30,6 +34,7 @@ export function PathPage() {
   useProgress((s) => s.unlockAll)
   const guest = useAccount((s) => s.status !== 'user')
   const course = useProgress((s) => s.course)
+  const { iconLang, iconFont } = iconStyle(course)
   const cp = coursePath(course)
   const icons = course === 'de' ? germanIcon : kindIcon
   const { stops, current, itemStatus } = pathStatusFor(cp.units, cp.itemStatus(progressSnapshot(), guest))
@@ -71,7 +76,7 @@ export function PathPage() {
 
       <LearnTabs current="recorrido" />
 
-      {cp.hasPlacement && hasNotStarted(progressSnapshot()) && <PlacementOffer firstLessonTo={cp.firstLessonTo} />}
+      {cp.hasPlacement && hasNotStarted(progressSnapshot()) && <PlacementOffer firstLessonTo={cp.firstLessonTo} language={courseById(course).name.toLowerCase()} />}
 
       {cp.dailyLessons && (
         <div className="grid grid-cols-2 gap-2">
@@ -145,7 +150,7 @@ export function PathPage() {
             unitDone ? 'bg-emerald-500 text-white' : 'bg-ink text-white'
           }`}
         >
-          <span lang="ja" className="flex h-12 min-w-12 items-center justify-center rounded-xl bg-white/15 px-1 font-jp text-xl">
+          <span lang={iconLang} className={`flex h-12 min-w-12 items-center justify-center rounded-xl bg-white/15 px-1 text-xl ${iconFont}`}>
             {unit.icon}
           </span>
           <span className="flex-1">
@@ -172,7 +177,7 @@ export function PathPage() {
                   className="flex flex-col items-center gap-1"
                 >
                   <span
-                    className={`flex h-16 w-16 items-center justify-center rounded-full border-b-4 font-jp text-2xl font-bold shadow-sm transition ${stopStyle[status]}`}
+                    className={`flex h-16 w-16 items-center justify-center rounded-full border-b-4 ${iconFont} text-2xl font-bold shadow-sm transition ${stopStyle[status]}`}
                   >
                     {status === 'done' ? '✓' : status === 'locked' ? '🔒' : isReview ? '🧩' : icons[s.items[0].kind]}
                   </span>
@@ -195,6 +200,7 @@ const statusLabel: Record<StopStatus, string> = { done: 'completada', current: '
 
 /** Las lecciones de una parada, con su estado y botón para empezar o repetir. */
 function StopPanel({ stop, itemStatus, icons }: { stop: PathStop; itemStatus: (i: PathItem) => ItemStatus; icons: Record<PathItem['kind'], string> }) {
+  const { iconLang, iconFont } = iconStyle(useProgress((s) => s.course))
   return (
     <div className="mt-3 w-full max-w-sm rounded-2xl border border-slate-200 bg-white p-3 shadow-md dark:border-slate-800 dark:bg-slate-900">
       <ul className="flex flex-col gap-2">
@@ -202,7 +208,7 @@ function StopPanel({ stop, itemStatus, icons }: { stop: PathStop; itemStatus: (i
           const status = itemStatus(i)
           return (
             <li key={i.id} className="flex items-center gap-3">
-              <span lang="ja" className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-slate-100 font-jp dark:bg-slate-800" aria-hidden>
+              <span lang={iconLang} className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-slate-100 dark:bg-slate-800 ${iconFont}`} aria-hidden>
                 {status === 'done' ? '✓' : icons[i.kind]}
               </span>
               <span className="flex-1 text-sm font-bold">{i.title}</span>
@@ -227,14 +233,14 @@ function StopPanel({ stop, itemStatus, icons }: { stop: PathStop; itemStatus: (i
 }
 
 /** Para quien no empezó el recorrido: hacer el test de nivelación o partir de cero. */
-function PlacementOffer({ firstLessonTo }: { firstLessonTo: string | null }) {
+function PlacementOffer({ firstLessonTo, language }: { firstLessonTo: string | null; language: string }) {
   return (
     <section className="flex flex-col gap-3 rounded-2xl border-2 border-accent/40 bg-accent/5 p-4 sm:flex-row sm:items-center">
       <span className="text-4xl" aria-hidden>
         🧭
       </span>
       <span className="flex-1">
-        <span className="block text-lg font-extrabold">¿Ya sabes algo de japonés?</span>
+        <span className="block text-lg font-extrabold">¿Ya sabes algo de {language}?</span>
         <span className="text-sm text-slate-600 dark:text-slate-400">
           Haz el test de nivelación y desbloquea la parte del recorrido que ya dominas. O empieza desde la primera lección.
         </span>

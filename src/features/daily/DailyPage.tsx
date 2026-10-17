@@ -15,7 +15,7 @@ import { kanaPairItems } from '../../lib/pairs'
 import { dayKey, recordKey } from '../../lib/progress/model'
 import { progressSnapshot, useProgress } from '../../lib/progress/store'
 import { shuffle } from '../../lib/random'
-import { buildReview } from '../../lib/review'
+import { buildReview, cardsOfCourse } from '../../lib/review'
 import { now } from '../../lib/time'
 import { useToasts } from '../../lib/toasts'
 import { buildWeakReview } from '../../lib/units'
@@ -146,7 +146,7 @@ function DailyStepRunner({ step, lessonId, grammarId, onDone, onExit }: RunnerPr
   const [plan] = useState(() => {
     const p = progressSnapshot()
     if (step === 'repasos') {
-      const review = buildReview(p.cards, now())
+      const review = buildReview(cardsOfCourse(p.cards, 'ja'), now())
       // Hasta 8 en total: primero kana, luego kanji y al final escritura.
       let left = DAILY_REVIEW_LIMIT
       const take = <T,>(list: T[]) => {

@@ -3,7 +3,7 @@ import { Link } from 'react-router'
 import { SaveProgressPrompt } from '../../components/SaveProgressPrompt'
 import { nextDue } from '../../lib/progress/srs'
 import { useProgress } from '../../lib/progress/store'
-import { buildReview, describeDue } from '../../lib/review'
+import { buildReview, cardsOfCourse, describeDue } from '../../lib/review'
 import { now } from '../../lib/time'
 import { summarize } from '../../lib/sessionSummary'
 import { type MixedResult, MixedSession } from '../practice/MixedSession'
@@ -11,10 +11,10 @@ import { ResultStats } from './ResultStats'
 
 export function ReviewPage() {
   // El plan se arma una vez al entrar: las respuestas reprograman las tarjetas mientras se repasa.
-  const [plan] = useState(() => buildReview(useProgress.getState().cards, now()))
-  const [result, setResult] = useState<MixedResult | null>(null)
-  const cards = useProgress((s) => s.cards)
   const course = useProgress((s) => s.course)
+  const [plan] = useState(() => buildReview(cardsOfCourse(useProgress.getState().cards, course), now()))
+  const [result, setResult] = useState<MixedResult | null>(null)
+  const cards = cardsOfCourse(useProgress((s) => s.cards), course)
 
   if (plan.reading.length + plan.exercises.length + plan.writing.length === 0) {
     const next = nextDue(cards, now())
@@ -27,7 +27,9 @@ export function ReviewPage() {
         <p className="text-slate-600 dark:text-slate-400">
           {next
             ? `No tienes repasos pendientes. El próximo es ${describeDue(next, now())}.`
-            : 'Todavía no tienes repasos. Completa una lección y sus caracteres aparecerán aquí.'}
+            : course === 'de'
+              ? 'Todavía no tienes repasos. Completa una lección de palabras y aparecerán aquí.'
+              : 'Todavía no tienes repasos. Completa una lección y sus caracteres aparecerán aquí.'}
         </p>
         <Link to="/aprender" className="rounded-full bg-ink px-6 py-3 font-bold text-white hover:opacity-90">
           Ir a las lecciones

@@ -14,6 +14,10 @@ export type Course = {
   tagline: string
   /** Código de idioma para la voz del navegador. */
   speechLang: string
+  /** «una voz japonesa», para avisar si el navegador no la tiene. */
+  voiceName: string
+  /** Saludo corto para probar la voz al cambiar la velocidad. */
+  voiceSample: string
   sections: CourseSection[]
 }
 
@@ -26,6 +30,8 @@ export const courses: Course[] = [
     status: 'available',
     tagline: 'Hiragana, katakana, palabras y gramática básica.',
     speechLang: 'ja-JP',
+    voiceName: 'una voz japonesa',
+    voiceSample: 'こんにちは',
     sections: ['tabla', 'aprender', 'gramatica', 'practicar', 'juegos'],
   },
   {
@@ -36,6 +42,8 @@ export const courses: Course[] = [
     status: 'soon',
     tagline: 'Pronunciación, vocabulario y gramática.',
     speechLang: 'it-IT',
+    voiceName: 'una voz italiana',
+    voiceSample: 'Buongiorno',
     sections: ['aprender', 'gramatica', 'practicar', 'juegos'],
   },
   {
@@ -46,6 +54,8 @@ export const courses: Course[] = [
     status: 'available',
     tagline: 'Ottos Weg: del A1 al C2, para vivir y trabajar en Alemania.',
     speechLang: 'de-DE',
+    voiceName: 'una voz alemana',
+    voiceSample: 'Guten Tag',
     sections: ['tabla', 'aprender'],
   },
   {
@@ -56,6 +66,8 @@ export const courses: Course[] = [
     status: 'soon',
     tagline: 'Pronunciación, vocabulario y gramática.',
     speechLang: 'fr-FR',
+    voiceName: 'una voz francesa',
+    voiceSample: 'Bonjour',
     sections: ['aprender', 'gramatica', 'practicar', 'juegos'],
   },
 ]

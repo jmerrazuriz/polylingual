@@ -1,3 +1,4 @@
+import { courseById } from '../../courses'
 import { useSpeech } from '../../lib/audio/useSpeech'
 import { DAILY_GOALS, type Settings } from '../../lib/progress/model'
 import { useProgress } from '../../lib/progress/store'
@@ -39,6 +40,7 @@ export function SettingsSection() {
   const settings = useProgress((s) => s.settings)
   const setSettings = useProgress((s) => s.setSettings)
   const { voiceFound, speak } = useSpeech()
+  const course = courseById(useProgress((s) => s.course))
   const set = <K extends keyof Settings>(key: K) => (value: Settings[K]) => setSettings({ [key]: value })
 
   return (
@@ -90,7 +92,7 @@ export function SettingsSection() {
               value={settings.speechRate}
               onChange={(rate) => {
                 setSettings({ speechRate: rate })
-                speak('こんにちは')
+                speak(course.voiceSample)
               }}
               options={[
                 { value: 0.6, label: 'Lenta' },
@@ -102,7 +104,7 @@ export function SettingsSection() {
         </>
       ) : (
         <p className="text-sm text-slate-500">
-          Tu navegador no tiene una voz japonesa, así que no hay audio. En Android e iPhone suele venir instalada; en
+          Tu navegador no tiene {course.voiceName}, así que no hay audio. En Android e iPhone suele venir instalada; en
           Windows se agrega desde Configuración → Hora e idioma → Voz.
         </p>
       )}

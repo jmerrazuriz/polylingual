@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { emptyProgress } from '../../lib/progress/model'
-import { buildReview, isReviewable } from '../../lib/review'
+import { buildReview, cardsOfCourse, isReviewable } from '../../lib/review'
 import { lookupGerman } from './glossary'
 import { germanGrammar } from './grammar'
 import { germanPath, germanPathItems } from './path'
@@ -75,6 +75,18 @@ describe('vocabulario', () => {
     expect(isReviewable(card)).toBe(true)
     expect(germanWordReviewExercise(card, 'write').exercise.type).toBe('type')
     const plan = buildReview({ [`${card}:read`]: { due: 0, stability: 1, difficulty: 5, reps: 1, lapses: 0, state: 2, last: 0 } as never }, 1)
+    expect(plan.exercises).toHaveLength(1)
+  })
+
+  it('cada curso repasa solo sus tarjetas (sin kana ni kanji en alemán)', () => {
+    const card = { due: 0, stability: 1, difficulty: 5, reps: 1, lapses: 0, state: 2, last: 0 } as never
+    const word = germanWordCard(germanVocab[0])
+    const cards = { [`${word}:read`]: card, 'あ:read': card, '日:read': card }
+    expect(Object.keys(cardsOfCourse(cards, 'de'))).toEqual([`${word}:read`])
+    expect(Object.keys(cardsOfCourse(cards, 'ja'))).toEqual(['あ:read', '日:read'])
+    const plan = buildReview(cardsOfCourse(cards, 'de'), 1)
+    expect(plan.reading).toHaveLength(0)
+    expect(plan.writing).toHaveLength(0)
     expect(plan.exercises).toHaveLength(1)
   })
 

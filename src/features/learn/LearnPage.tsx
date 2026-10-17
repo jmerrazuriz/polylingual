@@ -27,7 +27,8 @@ export function LearnPage() {
   const unlocked = useUnlockedLessons()
   const [params] = useSearchParams()
   const script: Script = params.get('silabario') === 'katakana' ? 'katakana' : 'hiragana'
-  const showPath = !params.get('silabario')
+  const course = useProgress((s) => s.course)
+  const showPath = !params.get('silabario') || course !== 'ja'
   const list = lessonsByScript[script]
   const katakanaLocked = !lessonsByScript.katakana.some((l) => unlocked.has(l.id))
 

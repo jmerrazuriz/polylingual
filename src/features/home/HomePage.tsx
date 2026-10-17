@@ -11,7 +11,7 @@ import { progressSnapshot, useProgress } from '../../lib/progress/store'
 import { useUnlockedLessons } from '../../lib/progress/unlock'
 import { currentStreak, dayKey } from '../../lib/progress/model'
 import { GoalBar } from '../progress/ProgressPage'
-import { describeDue, dueNowCount } from '../../lib/review'
+import { cardsOfCourse, describeDue, dueNowCount } from '../../lib/review'
 import { now } from '../../lib/time'
 
 const features = [
@@ -70,7 +70,7 @@ export function HomePage() {
 
 /** Repasos de hoy, o qué hacer si no hay. */
 function TodayCard() {
-  const cards = useProgress((s) => s.cards)
+  const cards = cardsOfCourse(useProgress((s) => s.cards), 'ja')
   const lessons = useProgress((s) => s.lessons)
   const t = now()
   const due = dueNowCount(cards, t)
@@ -183,7 +183,7 @@ function GermanHome() {
   const next = germanPathItems.find((i) => status(i) === 'open' && i.kind !== 'exam') ?? germanPathItems.find((i) => status(i) === 'open')
   const exam = germanPathItems.find((i) => i.kind === 'exam' && status(i) !== 'done') ?? germanPathItems.filter((i) => i.kind === 'exam').at(-1)!
   const done = germanPathItems.filter((i) => status(i) === 'done').length
-  const due = dueNowCount(cards, now())
+  const due = dueNowCount(cardsOfCourse(cards, 'de'), now())
   return (
     <div className="flex flex-col gap-8">
       <section className="flex flex-col items-center gap-4 pt-6 text-center">
