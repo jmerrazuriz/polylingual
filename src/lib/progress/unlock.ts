@@ -1,6 +1,7 @@
 import { lessons as allLessons, lessonsByScript } from '../../courses/ja/lessons.ts'
 import { VOCAB_KATA_UNLOCKED_BY, VOCAB_UNLOCKED_BY, vocabLessonsHira, vocabLessonsKata } from '../../courses/ja/vocab.ts'
 import { useAccount } from '../account/store.ts'
+import { unlockedReadings } from '../readings.ts'
 import type { LessonResult } from './model.ts'
 import { useProgress } from './store.ts'
 
@@ -97,4 +98,11 @@ export function useUnlockedVocab(): Set<string> {
   const lessons = useProgress((s) => s.lessons)
   const unlockAll = useProgress((s) => s.unlockAll)
   return unlockedVocab(lessons, guest || unlockAll)
+}
+
+export function useUnlockedReadings(): Set<string> {
+  const guest = useAccount((s) => s.status !== 'user')
+  const grammar = useProgress((s) => s.grammar)
+  const unlockAll = useProgress((s) => s.unlockAll)
+  return unlockedReadings(grammar, guest || unlockAll)
 }

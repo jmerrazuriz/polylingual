@@ -1,4 +1,5 @@
 import { vocabLessons } from '../courses/ja/vocab'
+import { readingTexts } from './readings'
 import { describe, expect, it } from 'vitest'
 import { grammarByCourse } from '../courses/content'
 import { counterLessons, counters, numbers } from '../courses/ja/counters'
@@ -100,6 +101,7 @@ describe('recorrido', () => {
       ...counterLessons.map((l) => `counters:${l.id}`),
       ...kanjiLessons.map((l) => `kanji:${l.id}`),
       ...vocabLessons.map((l) => `vocab:${l.id}`),
+      ...readingTexts.map((t) => `reading:${t.id}`),
       ...units.map((u) => `unit:${u.id}`),
     ]
     expect(new Set(ids)).toEqual(new Set(expected))

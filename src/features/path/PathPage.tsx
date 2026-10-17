@@ -16,7 +16,7 @@ const stopStyle: Record<StopStatus, string> = {
   locked: 'bg-slate-200 text-slate-400 border-slate-300 dark:bg-slate-800 dark:border-slate-700',
 }
 
-const kindIcon = { kana: 'あ', grammar: '文', counters: '数', kanji: '字', vocab: '語', unit: '🧩' } as const
+const kindIcon = { kana: 'あ', grammar: '文', counters: '数', kanji: '字', vocab: '語', reading: '読', unit: '🧩' } as const
 
 export function PathPage() {
   // Se vuelve a calcular cuando cambia cualquier progreso relevante.
@@ -114,6 +114,21 @@ export function PathPage() {
         )
       })}
 
+      <Link
+        to="/simulacro"
+        className="flex items-center gap-3 rounded-2xl border-2 border-ink p-4 transition hover:-translate-y-0.5 hover:shadow-md dark:border-white"
+      >
+        <span className="text-3xl" aria-hidden>
+          📝
+        </span>
+        <span className="flex-1">
+          <span className="block font-extrabold">Meta: el simulacro del JLPT N5</span>
+          <span className="text-sm text-slate-500 dark:text-slate-400">
+            Vocabulario, gramática, lectura y audición con tiempo, puntuado como el examen real.
+          </span>
+        </span>
+        <span aria-hidden>→</span>
+      </Link>
       <p className="text-center text-sm text-slate-500">¿Terminaste todo? Sigue con la lección extra: se arma sola con lo que ya sabes.</p>
     </div>
   )

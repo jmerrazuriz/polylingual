@@ -6,6 +6,7 @@ import { counterLessons } from '../courses/ja/counters.ts'
 import { kanjiLessons } from '../courses/ja/kanji.ts'
 import { lessons as kanaLessons } from '../courses/ja/lessons.ts'
 import { vocabLessons, vocabLessonsHira, vocabLessonsKata } from '../courses/ja/vocab.ts'
+import { readingById, readingTexts, unlockedReadings } from './readings.ts'
 import type { ProgressData } from './progress/model.ts'
 import {
   COUNTERS_UNLOCKED_BY,
@@ -17,7 +18,7 @@ import {
 } from './progress/unlock.ts'
 import { units } from './units.ts'
 
-export type PathItemKind = 'kana' | 'grammar' | 'counters' | 'kanji' | 'vocab' | 'unit'
+export type PathItemKind = 'kana' | 'grammar' | 'counters' | 'kanji' | 'vocab' | 'reading' | 'unit'
 export type PathItem = { kind: PathItemKind; id: string; title: string; to: string }
 export type PathStop = { id: string; title: string; items: PathItem[] }
 export type PathUnit = { id: string; title: string; icon: string; stops: PathStop[] }
@@ -36,6 +37,8 @@ const item = (kind: PathItemKind, id: string): PathItem => {
       return { kind, id, title: kanjiLessons.find((l) => l.id === id)!.title, to: `/kanji/${id}` }
     case 'vocab':
       return { kind, id, title: vocabLessons.find((l) => l.id === id)!.title, to: `/vocabulario/${id}` }
+    case 'reading':
+      return { kind, id, title: readingById.get(id)!.title, to: `/lectura/${id}` }
     case 'unit':
       return { kind, id, title: `Repaso: ${units.find((u) => u.id === id)!.title}`, to: `/repaso/unidad/${id}` }
   }
@@ -58,6 +61,14 @@ function vocabUnit(n: number, title: string, lessons: { id: string }[]): PathUni
   return { id: `vocab-${n}`, title, icon: '語', stops }
 }
 const hiraVocab = (from: number, to?: number) => vocabLessonsHira.slice(from, to)
+
+/** Unidad de lectura y audición: 10 textos (lecturas y diálogos), de a 3 por parada. */
+function readingUnit(n: number, title: string): PathUnit {
+  const texts = readingTexts.slice((n - 1) * 10, n * 10)
+  const stops: PathStop[] = []
+  for (let i = 0; i < texts.length; i += 3) stops.push(stop('reading', texts.slice(i, i + 3).map((t) => t.id)))
+  return { id: `lectura-${n}`, title, icon: '読', stops }
+}
 
 export const japanesePath: PathUnit[] = [
   {
@@ -157,6 +168,7 @@ export const japanesePath: PathUnit[] = [
       stop('grammar', ['kara-made', 'mashou']),
     ],
   },
+  readingUnit(1, 'Lectura y audición I'),
   {
     id: 'katakana-extended',
     title: 'Katakana · Extendidos',
@@ -182,6 +194,7 @@ export const japanesePath: PathUnit[] = [
       stop('grammar', ['forma-ta', 'informal']),
     ],
   },
+  readingUnit(2, 'Lectura y audición II'),
   vocabUnit(5, 'Vocabulario V', hiraVocab(48, 60)),
   {
     id: 'kanji-4',
@@ -199,6 +212,7 @@ export const japanesePath: PathUnit[] = [
       stop('grammar', ['kara-porque', 'preguntas-ka-mo']),
     ],
   },
+  readingUnit(3, 'Lectura y audición III'),
   vocabUnit(6, 'Vocabulario VI', hiraVocab(60, 72)),
   {
     id: 'grammar-7',
@@ -207,6 +221,7 @@ export const japanesePath: PathUnit[] = [
     stops: [stop('grammar', ['ni-iku', 'antes-despues']), stop('grammar', ['mou-mada', 'deshou']), stop('grammar', ['no-ga-suki'])],
   },
   vocabUnit(7, 'Vocabulario VII', hiraVocab(72)),
+  readingUnit(4, 'Lectura y audición IV'),
 ]
 
 export type ItemStatus = 'done' | 'open' | 'locked'
@@ -229,6 +244,7 @@ export function pathItemStatus(p: ProgressData, everythingOpen: boolean): (i: Pa
     all,
   )
   const voc = unlockedVocab(p.lessons, all)
+  const read = unlockedReadings(p.grammar, all)
   const kanj = unlockedSequence(
     kanjiLessons.map((l) => l.id),
     p.lessons,
@@ -247,6 +263,8 @@ export function pathItemStatus(p: ProgressData, everythingOpen: boolean): (i: Pa
         return p.lessons[i.id] ? 'done' : kanj.has(i.id) ? 'open' : 'locked'
       case 'vocab':
         return p.lessons[i.id] ? 'done' : voc.has(i.id) ? 'open' : 'locked'
+      case 'reading':
+        return p.lessons[i.id] ? 'done' : read.has(i.id) ? 'open' : 'locked'
       case 'unit': {
         if (p.units[i.id]) return 'done'
         const unit = units.find((u) => u.id === i.id)!

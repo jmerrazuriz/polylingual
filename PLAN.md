@@ -373,7 +373,15 @@ app_idiomas/
   - Cada bloque aprobado con 80 % completa sus unidades del recorrido. El test termina en el primer bloque no aprobado, o cuando la persona decide parar entre bloques.
   - También está en el **perfil**, para quien vuelve después de un tiempo: empieza en el primer bloque que le falta y solo agrega progreso.
   - Lo desbloqueado entra a los repasos como «ya sabido»: el primer repaso se reparte en los próximos días, sin juntarse todo hoy.
-- **Pendiente para cerrar la etapa A:** 20 lecturas cortas, 20 diálogos con preguntas y un simulacro N5.
+- ✅ **Lectura y audición (`/lectura`):**
+  - 20 lecturas y 20 diálogos N5 en kana, cada uno con 3 preguntas de comprensión. Cada texto se abre con la lección de gramática que usa.
+  - Al tocar una palabra se ve su significado, también si está conjugada (たべました → たべる).
+  - Audio por frase y del texto completo. En los diálogos, cada persona habla con un tono distinto y primero se escuchan sin leer.
+  - Hay 4 unidades «Lectura y audición» en el recorrido. También están en la nivelación, la lección del día y la lección extra.
+- ✅ **Simulacro del JLPT N5 (`/simulacro`):**
+  - 30 minutos y cuatro secciones como el examen real: vocabulario (10), gramática (10), 2 lecturas y 2 diálogos solo con audio (como máximo 2 escuchas).
+  - Se puntúa en la escala del JLPT: 0–120 en idioma y lectura, 0–60 en audición, y se aprueba con 80/180 y los mínimos por sección. Guarda el mejor puntaje.
+- ✅ **Etapa A terminada:** el contenido cubre el N5 completo.
 - ✅ **Guardado escalable (versión 3 del progreso, `src/lib/progress/storage.ts`):**
   - Antes, todas las tarjetas vivían en un solo documento de Firestore, que tiene un máximo de 1 MB.
   - Ahora las tarjetas y las estadísticas van en `users/{uid}/srs/{curso}-{0..15}`, en texto compacto: ~64 bytes por tarjeta en vez de ~196. Cada carácter cae siempre en el mismo documento.

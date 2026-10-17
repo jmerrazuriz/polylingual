@@ -1,6 +1,6 @@
 import { Link } from 'react-router'
 
-export type LearnTab = 'recorrido' | 'hiragana' | 'katakana' | 'vocabulario' | 'gramatica' | 'conjugacion' | 'contadores' | 'kanji'
+export type LearnTab = 'recorrido' | 'hiragana' | 'katakana' | 'vocabulario' | 'gramatica' | 'conjugacion' | 'lectura' | 'contadores' | 'kanji'
 
 const tabs: { tab: LearnTab; label: string; to: string }[] = [
   { tab: 'recorrido', label: 'Recorrido', to: '/aprender' },
@@ -9,6 +9,7 @@ const tabs: { tab: LearnTab; label: string; to: string }[] = [
   { tab: 'vocabulario', label: 'Vocabulario', to: '/vocabulario' },
   { tab: 'gramatica', label: 'Gramática', to: '/gramatica' },
   { tab: 'conjugacion', label: 'Conjugación', to: '/conjugacion' },
+  { tab: 'lectura', label: 'Lectura y audio', to: '/lectura' },
   { tab: 'contadores', label: 'Contadores', to: '/contadores' },
   { tab: 'kanji', label: 'Kanji', to: '/kanji' },
 ]

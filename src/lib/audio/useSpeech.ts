@@ -58,5 +58,33 @@ export function useSpeech() {
     [voice, enabled, rate],
   )
 
-  return { available: voice !== undefined && enabled, voiceFound: voice !== undefined, speak }
+  /** Lee varias frases seguidas; en los diálogos, cada persona con un tono distinto. */
+  const speakLines = useCallback(
+    (lines: readonly { text: string; speaker?: string }[], onEnd?: () => void) => {
+      if (!voice || !enabled) return
+      speechSynthesis.cancel()
+      const speakers = [...new Set(lines.map((l) => l.speaker ?? ''))]
+      const spokenLines = lines.map((l) => japaneseSpeech(l.text))
+      const last = spokenLines.findLastIndex(Boolean)
+      lines.forEach((line, i) => {
+        const spoken = spokenLines[i]
+        if (!spoken) return
+        const utterance = new SpeechSynthesisUtterance(spoken)
+        utterance.voice = voice
+        utterance.lang = voice.lang
+        utterance.rate = rate
+        // Dos voces distintas con la misma voz japonesa: una más grave y otra más aguda.
+        utterance.pitch = speakers.indexOf(line.speaker ?? '') % 2 === 0 ? 0.85 : 1.35
+        if (i === last) utterance.onend = () => onEnd?.()
+        speechSynthesis.speak(utterance)
+      })
+    },
+    [voice, enabled, rate],
+  )
+
+  const stop = useCallback(() => {
+    if (supported) speechSynthesis.cancel()
+  }, [])
+
+  return { available: voice !== undefined && enabled, voiceFound: voice !== undefined, speak, speakLines, stop }
 }

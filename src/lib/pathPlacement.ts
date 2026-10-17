@@ -12,6 +12,7 @@ import { vocabLessons } from '../courses/ja/vocab.ts'
 import { japanesePath, type PathItem } from './path.ts'
 import { romajiOptions } from './quiz.ts'
 import { shuffle } from './random.ts'
+import { lineMeaningExercise, readingById } from './readings.ts'
 import { counterLessonExercises, kanjiLessonExercises } from './studyExercises.ts'
 import { wordCardChar, wordMeaningExercise } from './vocabExercises.ts'
 
@@ -29,9 +30,9 @@ export const placementBlocks: PlacementBlock[] = [
   { id: 'vocab-1', title: 'Primeras palabras y números', unitIds: ['vocab-1', 'counters-1'] },
   { id: 'katakana', title: 'Katakana y partículas', unitIds: ['katakana-basic', 'grammar-2', 'vocab-2'] },
   { id: 'kanji-1', title: 'Primeros kanji y contadores', unitIds: ['kanji-1', 'katakana-more', 'counters-2', 'grammar-3', 'vocab-3'] },
-  { id: 'verbos', title: 'Kanji, verbos y katakana extendido', unitIds: ['kanji-2', 'grammar-4', 'katakana-extended', 'vocab-kata', 'vocab-4'] },
-  { id: 'forma-te', title: 'Formas て, ない y た', unitIds: ['kanji-3', 'grammar-5', 'vocab-5'] },
-  { id: 'n5', title: 'Cierre del N5', unitIds: ['kanji-4', 'grammar-6', 'vocab-6', 'grammar-7', 'vocab-7'] },
+  { id: 'verbos', title: 'Kanji, verbos y katakana extendido', unitIds: ['kanji-2', 'grammar-4', 'lectura-1', 'katakana-extended', 'vocab-kata', 'vocab-4'] },
+  { id: 'forma-te', title: 'Formas て, ない y た', unitIds: ['kanji-3', 'grammar-5', 'lectura-2', 'vocab-5'] },
+  { id: 'n5', title: 'Cierre del N5', unitIds: ['kanji-4', 'grammar-6', 'lectura-3', 'vocab-6', 'grammar-7', 'vocab-7', 'lectura-4'] },
 ]
 
 /** Preguntas por bloque y aciertos para aprobarlo (80 %). */
@@ -61,6 +62,8 @@ export function itemQuestion(item: PathItem, random = Math.random): GrammarExerc
       return kanjiLessonExercises(kanjiLessons.find((l) => l.id === item.id)!, random)[0]
     case 'vocab':
       return wordMeaningExercise(pick(vocabLessons.find((l) => l.id === item.id)!.words), random)
+    case 'reading':
+      return lineMeaningExercise(readingById.get(item.id)!, random)
     case 'unit':
       return null
   }
@@ -104,6 +107,7 @@ export function placementResult(blocks: PlacementBlock[]): PlacementResult {
         result.lessons.push({ id: item.id, chars: vocabLessons.find((l) => l.id === item.id)!.words.map(wordCardChar) })
         break
       case 'counters':
+      case 'reading':
         result.lessons.push({ id: item.id, chars: [] })
         break
       case 'grammar':

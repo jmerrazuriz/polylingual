@@ -11,6 +11,8 @@ import { KanjiLessonRoute, KanjiPage } from './features/study/KanjiPages'
 import { VocabLessonRoute, VocabPage } from './features/study/VocabPages'
 import { ConjugationPage } from './features/grammar/ConjugationPage'
 import { PathPlacementPage } from './features/path/PathPlacementPage'
+import { ReadingRoute, ReadingsPage } from './features/study/ReadingPages'
+import { MockExamPage } from './features/study/MockExamPage'
 import { GamesPage } from './features/games/GamesPage'
 import { GrammarLessonRoute } from './features/grammar/GrammarLessonPage'
 import { GrammarPage } from './features/grammar/GrammarPage'
@@ -43,6 +45,9 @@ export default function App() {
         <Route path="nivelacion" element={<PathPlacementPage />} />
         <Route path="gramatica" element={<GrammarPage />} />
         <Route path="conjugacion" element={<ConjugationPage />} />
+        <Route path="lectura" element={<ReadingsPage />} />
+        <Route path="lectura/:textId" element={<ReadingRoute />} />
+        <Route path="simulacro" element={<MockExamPage />} />
         <Route path="vocabulario" element={<VocabPage />} />
         <Route path="vocabulario/:lessonId" element={<VocabLessonRoute />} />
         <Route path="contadores" element={<CountersPage />} />

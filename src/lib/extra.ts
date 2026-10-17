@@ -12,6 +12,7 @@ import { buildReadingSession, type Question, wordsForPool } from './quiz.ts'
 import { shuffle } from './random.ts'
 import { counterLessonExercises, kanjiLessonExercises } from './studyExercises.ts'
 import { wordCardChar, wordReviewExercise } from './vocabExercises.ts'
+import { lineMeaningExercise, readingTexts } from './readings.ts'
 import type { WritingItem } from './writing.ts'
 
 export type ExtraLesson = { reading: Question[]; exercises: GrammarExercise[]; writing: WritingItem[] }
@@ -67,9 +68,17 @@ export function buildExtraLesson(p: ProgressData, random = Math.random): ExtraLe
     ? buildDrill({ verbForms, adjForms: [], known: new Set(learnedWords.map((w) => w.id)), count: 1 }, random)
     : []
 
+  // Comprensión: una frase de un texto ya leído.
+  const read = shuffle(
+    readingTexts.filter((t) => p.lessons[t.id]),
+    random,
+  )
+    .slice(0, 1)
+    .map((t) => lineMeaningExercise(t, random))
+
   const writing = shuffle(pool, random)
     .slice(0, 2)
     .map((k): WritingItem => ({ prompt: k.romaji, kana: k.char, parts: k.parts }))
 
-  return { reading, exercises: shuffle([...vocab, ...conjugation, ...grammar, ...counters, ...kanji], random), writing }
+  return { reading, exercises: shuffle([...vocab, ...conjugation, ...read, ...grammar, ...counters, ...kanji], random), writing }
 }
