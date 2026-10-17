@@ -7,7 +7,7 @@ import { getStrokes, loadKanjiStrokes } from '../courses/ja/kana'
 import { kanjiByChar, kanjiLessons, kanjiList } from '../courses/ja/kanji'
 import { lessons as kanaLessons } from '../courses/ja/lessons'
 import { buildExtraLesson } from './extra'
-import { japanesePath, nextPathLesson, pathStatus } from './path'
+import { japanesePath, japanesePathLevels, nextPathLesson, pathStatus } from './path'
 import { emptyProgress } from './progress/model'
 import { romajiReadings } from './romaji'
 import { counterLessonExercises, kanjiLessonExercises, kanjiWritingItems } from './studyExercises'
@@ -123,6 +123,15 @@ describe('recorrido', () => {
       ...units.map((u) => `unit:${u.id}`),
     ]
     expect(new Set(ids)).toEqual(new Set(expected))
+  })
+
+  it('se agrupa en N5, N4 y N3, cada nivel termina en su simulacro y no se pierde ninguna unidad', () => {
+    expect(japanesePathLevels.map((l) => l.level)).toEqual(['N5', 'N4', 'N3'])
+    for (const l of japanesePathLevels) {
+      expect(l.units.at(-1)!.id).toBe(`examen-${l.level.toLowerCase()}`)
+      expect(japanesePath[l.firstIndex]).toBe(l.units[0])
+    }
+    expect(japanesePathLevels.flatMap((l) => l.units)).toEqual(japanesePath)
   })
 
   it('las paradas tienen de 1 a 3 lecciones', () => {

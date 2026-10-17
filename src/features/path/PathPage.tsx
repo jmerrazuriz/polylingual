@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router'
 import { useAccount } from '../../lib/account/store'
-import { japanesePath, type PathStop, pathStatus, type StopStatus } from '../../lib/path'
+import type { ExamLevel } from '../../lib/mockExam'
+import { japanesePathLevels, type PathStop, type PathUnit, pathStatus, type StopStatus } from '../../lib/path'
 import { hasNotStarted } from '../../lib/pathPlacement'
 import { progressSnapshot, useProgress } from '../../lib/progress/store'
 import { LearnTabs } from '../learn/LearnTabs'
@@ -29,6 +30,25 @@ export function PathPage() {
   const { stops, current, itemStatus } = pathStatus(progressSnapshot(), guest)
   const [open, setOpen] = useState<string | null>(null)
   const selected = open ?? current?.id ?? null
+
+  // El nivel de la parada actual se muestra abierto; los demás, plegados (se pueden abrir).
+  const currentLevel =
+    japanesePathLevels.find((l) => l.units.some((unit) => unit.stops.some((s) => s.id === current?.id)))?.level ??
+    japanesePathLevels.at(-1)!.level
+  const [expanded, setExpanded] = useState<Set<ExamLevel>>(() => new Set([currentLevel]))
+  const toggleLevel = (level: ExamLevel) =>
+    setExpanded((prev) => {
+      const next = new Set(prev)
+      if (next.has(level)) next.delete(level)
+      else next.add(level)
+      return next
+    })
+
+  // Al abrir el recorrido, ir directo a la parada actual.
+  const currentRef = useRef<HTMLLIElement>(null)
+  useEffect(() => {
+    currentRef.current?.scrollIntoView({ block: 'center' })
+  }, [])
 
   const doneStops = [...stops.values()].filter((s) => s === 'done').length
 
@@ -61,56 +81,35 @@ export function PathPage() {
         </Link>
       </div>
 
-      {japanesePath.map((unit, u) => {
-        const unitDone = unit.stops.every((s) => stops.get(s.id) === 'done')
-        let offsetIndex = u * 3
+      {japanesePathLevels.map((lvl) => {
+        const levelStops = lvl.units.flatMap((unit) => unit.stops)
+        const levelDone = levelStops.filter((s) => stops.get(s.id) === 'done').length
+        const isOpen = expanded.has(lvl.level)
+        const isCurrent = lvl.level === currentLevel
         return (
-          <section key={unit.id} className="flex flex-col items-center gap-4">
-            <div
-              className={`flex w-full items-center gap-3 rounded-2xl p-4 ${
-                unitDone ? 'bg-emerald-500 text-white' : 'bg-ink text-white'
+          <section key={lvl.level} className="flex flex-col gap-6">
+            <button
+              onClick={() => toggleLevel(lvl.level)}
+              aria-expanded={isOpen}
+              className={`flex items-center gap-3 rounded-2xl border-2 p-4 text-left ${
+                isCurrent ? 'border-accent bg-accent/5' : 'border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900'
               }`}
             >
-              <span lang="ja" className="flex h-12 min-w-12 items-center justify-center rounded-xl bg-white/15 px-1 font-jp text-xl">
-                {unit.icon}
-              </span>
+              <span className="flex h-12 w-14 items-center justify-center rounded-xl bg-ink text-lg font-extrabold text-white">{lvl.level}</span>
               <span className="flex-1">
-                <span className="block text-xs font-bold uppercase opacity-80">Unidad {u + 1}</span>
-                <span className="block text-lg font-extrabold">{unit.title}</span>
+                <span className="block text-lg font-extrabold">
+                  {levelTitle[lvl.level]}
+                  {isCurrent && <span className="ml-2 rounded-full bg-accent px-2 py-0.5 align-middle text-xs text-white">Estás aquí</span>}
+                </span>
+                <span className="text-sm text-slate-500 dark:text-slate-400">
+                  {lvl.units.length} unidades · {levelDone}/{levelStops.length} paradas completadas
+                </span>
               </span>
-              <span className="text-sm font-bold">
-                {unit.stops.filter((s) => stops.get(s.id) === 'done').length}/{unit.stops.length}
+              <span className="text-xl text-slate-400" aria-hidden>
+                {isOpen ? '▾' : '▸'}
               </span>
-            </div>
-
-            <ol className="flex w-full flex-col items-center gap-5 py-2">
-              {unit.stops.map((s) => {
-                const status = stops.get(s.id)!
-                const offset = OFFSETS[offsetIndex++ % OFFSETS.length]
-                const isReview = s.items[0].kind === 'unit'
-                return (
-                  <li key={s.id} className="flex w-full flex-col items-center">
-                    <button
-                      onClick={() => setOpen(selected === s.id ? '' : s.id)}
-                      aria-expanded={selected === s.id}
-                      aria-label={`${s.title} (${statusLabel[status]})`}
-                      style={{ transform: `translateX(${offset * 2.75}rem)` }}
-                      className="flex flex-col items-center gap-1"
-                    >
-                      <span
-                        className={`flex h-16 w-16 items-center justify-center rounded-full border-b-4 font-jp text-2xl font-bold shadow-sm transition ${stopStyle[status]}`}
-                      >
-                        {status === 'done' ? '✓' : status === 'locked' ? '🔒' : isReview ? '🧩' : kindIcon[s.items[0].kind]}
-                      </span>
-                      {status === 'current' && (
-                        <span className="rounded-full bg-accent px-2 py-0.5 text-xs font-extrabold text-white">¡Sigue aquí!</span>
-                      )}
-                    </button>
-                    {selected === s.id && <StopPanel stop={s} itemStatus={itemStatus} />}
-                  </li>
-                )
-              })}
-            </ol>
+            </button>
+            {isOpen && lvl.units.map((unit, j) => renderUnit(unit, lvl.firstIndex + j))}
           </section>
         )
       })}
@@ -118,7 +117,63 @@ export function PathPage() {
       <p className="text-center text-sm text-slate-500">¿Terminaste todo? Sigue con la lección extra: se arma sola con lo que ya sabes.</p>
     </div>
   )
+
+  function renderUnit(unit: PathUnit, u: number) {
+    const unitDone = unit.stops.every((s) => stops.get(s.id) === 'done')
+    let offsetIndex = u * 3
+    return (
+      <section key={unit.id} className="flex flex-col items-center gap-4">
+        <div
+          className={`flex w-full items-center gap-3 rounded-2xl p-4 ${
+            unitDone ? 'bg-emerald-500 text-white' : 'bg-ink text-white'
+          }`}
+        >
+          <span lang="ja" className="flex h-12 min-w-12 items-center justify-center rounded-xl bg-white/15 px-1 font-jp text-xl">
+            {unit.icon}
+          </span>
+          <span className="flex-1">
+            <span className="block text-xs font-bold uppercase opacity-80">Unidad {u + 1}</span>
+            <span className="block text-lg font-extrabold">{unit.title}</span>
+          </span>
+          <span className="text-sm font-bold">
+            {unit.stops.filter((s) => stops.get(s.id) === 'done').length}/{unit.stops.length}
+          </span>
+        </div>
+
+        <ol className="flex w-full flex-col items-center gap-5 py-2">
+          {unit.stops.map((s) => {
+            const status = stops.get(s.id)!
+            const offset = OFFSETS[offsetIndex++ % OFFSETS.length]
+            const isReview = s.items[0].kind === 'unit'
+            return (
+              <li key={s.id} ref={status === 'current' ? currentRef : undefined} className="flex w-full scroll-mt-24 flex-col items-center">
+                <button
+                  onClick={() => setOpen(selected === s.id ? '' : s.id)}
+                  aria-expanded={selected === s.id}
+                  aria-label={`${s.title} (${statusLabel[status]})`}
+                  style={{ transform: `translateX(${offset * 2.75}rem)` }}
+                  className="flex flex-col items-center gap-1"
+                >
+                  <span
+                    className={`flex h-16 w-16 items-center justify-center rounded-full border-b-4 font-jp text-2xl font-bold shadow-sm transition ${stopStyle[status]}`}
+                  >
+                    {status === 'done' ? '✓' : status === 'locked' ? '🔒' : isReview ? '🧩' : kindIcon[s.items[0].kind]}
+                  </span>
+                  {status === 'current' && (
+                    <span className="rounded-full bg-accent px-2 py-0.5 text-xs font-extrabold text-white">¡Sigue aquí!</span>
+                  )}
+                </button>
+                {selected === s.id && <StopPanel stop={s} itemStatus={itemStatus} />}
+              </li>
+            )
+          })}
+        </ol>
+      </section>
+    )
+  }
 }
+
+const levelTitle: Record<ExamLevel, string> = { N5: 'Japonés básico', N4: 'Japonés elemental', N3: 'Japonés intermedio' }
 
 const statusLabel: Record<StopStatus, string> = { done: 'completada', current: 'actual', open: 'abierta', locked: 'bloqueada' }
 

@@ -449,6 +449,24 @@ export const japanesePath: PathUnit[] = [
   examUnit('N3'),
 ]
 
+/** Un nivel del recorrido: sus unidades, desde la que sigue al simulacro anterior hasta su propio simulacro. */
+export type PathLevel = { level: ExamLevel; units: PathUnit[]; firstIndex: number }
+
+export const japanesePathLevels: PathLevel[] = (() => {
+  const levels: PathLevel[] = []
+  let units: PathUnit[] = []
+  let firstIndex = 0
+  japanesePath.forEach((unit, i) => {
+    units.push(unit)
+    if (unit.id.startsWith('examen-')) {
+      levels.push({ level: unit.id.slice('examen-'.length).toUpperCase() as ExamLevel, units, firstIndex })
+      units = []
+      firstIndex = i + 1
+    }
+  })
+  return levels
+})()
+
 export type ItemStatus = 'done' | 'open' | 'locked'
 export type StopStatus = 'done' | 'current' | 'open' | 'locked'
 
