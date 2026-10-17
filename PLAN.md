@@ -443,9 +443,10 @@ Meta: que quien termine el curso entienda el japonés a nivel JLPT N3. Es la eta
   - Temas: ものだ, ことだ/ことはない, べき, しかない, だけでなく, ば〜ほど, ほど, としたら, くせに, ついでに, てほしい, って, わりに, ように言う, させてもらう y conectores (それなのに, そのうえ, つまり, ところが, それとも).
   - Ejercicios con **formato JLPT**: paráfrasis (elegir la frase que significa lo mismo) y uso (elegir la frase que usa bien la expresión), con su propio encabezado. Están en cada lección de esta tanda y en 8 de la primera.
   - Son 2 unidades más en el recorrido y un bloque más en la nivelación.
-- **C2b · Gramática N3, tercera tanda** (pendiente, ~25 lecciones):
-  - はずだった, ことになっている, ようとしない, ものの, にしては, からには, おかげ/せい (matices), ばかりか, とおり, にかわって, ことから, 敬語 avanzado, あげく, ところで, ても/たって, なんて, ほど〜ない, ながら (aunque), つもりで, ようがない, 〜ずに, 〜っけ, 〜まま y 〜きる/〜かける.
-  - Con ejercicios de paráfrasis y uso como la segunda tanda.
+- 🟡 **C2b · Gramática N3, tercera tanda publicada (16 lecciones, 48 N3 y 114 en total):**
+  - はずだった, ことになっている, ものの, にしては, からには, ばかりか, とおり/どおり, ことから, たって/ても, なんて, ようがない, ずに, っけ, まま, 〜きる/〜かける y つもりで. Todas con paráfrasis o uso.
+  - Son 2 unidades más (V y VI) antes del simulacro N3, que ahora se abre al terminar つもりで, y un bloque más en la nivelación.
+  - Quedan para una cuarta tanda: ようとしない, にかわって, 敬語 avanzado, あげく, ところで, ほど〜ない y ながら (aunque).
 - 🟡 **C3 · Kanji N3, dos tandas publicadas (148 kanji N3, 451 en total):**
   - 76 kanji N3 (379 en total), cada uno con significado, lecturas on/kun, 2 ejemplos y trazos de KanjiVG. Son 13 lecciones en 2 grupos (personas y vida diaria; trabajo y sociedad), con SRS.
   - Los trazos de kanji ahora van **separados por nivel** (`kanji-n5/n4/n3.json`) y se carga solo el nivel que hace falta: una lección N3 baja 74 KB en vez de 244 KB.

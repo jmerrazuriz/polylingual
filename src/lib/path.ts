@@ -361,6 +361,28 @@ export const japanesePath: PathUnit[] = [
   kanjiUnitN4('kanji-n3-5', ['N3 · Movimiento y cambio'], 'N3 · Kanji: movimiento y cambio', '進'),
   n3Vocab(3),
   n3Vocab(4, true),
+  {
+    id: 'grammar-n3-5',
+    title: 'N3 · Gramática V: expectativas, concesiones y causas',
+    icon: '文',
+    stops: [
+      stop('grammar', ['hazu-datta', 'koto-ni-natte-iru']),
+      stop('grammar', ['mono-no', 'ni-shite-wa']),
+      stop('grammar', ['kara-ni-wa', 'bakari-ka']),
+      stop('grammar', ['toori', 'koto-kara']),
+    ],
+  },
+  {
+    id: 'grammar-n3-6',
+    title: 'N3 · Gramática VI: estados y matices del habla',
+    icon: '文',
+    stops: [
+      stop('grammar', ['tatte', 'nante']),
+      stop('grammar', ['you-ga-nai', 'zu-ni']),
+      stop('grammar', ['kke', 'mama']),
+      stop('grammar', ['kiru-kakeru', 'tsumori-de']),
+    ],
+  },
   examUnit('N3'),
 ]
 

@@ -115,7 +115,7 @@ describe('gramática de japonés', () => {
     const levels = japaneseGrammar.map((l) => l.level ?? 'N5')
     expect(levels.filter((l) => l === 'N4')).toHaveLength(28)
     expect(levels.lastIndexOf('N5')).toBeLessThan(levels.indexOf('N4'))
-    expect(levels.filter((l) => l === 'N3')).toHaveLength(32)
+    expect(levels.filter((l) => l === 'N3')).toHaveLength(48)
     expect(levels.lastIndexOf('N4')).toBeLessThan(levels.indexOf('N3'))
   })
 
