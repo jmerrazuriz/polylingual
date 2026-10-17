@@ -1,14 +1,14 @@
 import type { PathItem, PathLevel, PathStop, PathUnit } from '../../lib/path.ts'
 import { germanGrammar } from './grammar.ts'
 import { type CefrLevel, cefrGoals, cefrLevels, cefrTitles } from './levels.ts'
-import { readingsA1 } from './readingsA1.ts'
+import { germanTexts } from './texts.ts'
 import { germanVocabLessons } from './vocab.ts'
 
 // Recorrido del alemán por nivel. Cada unidad intercala gramática, palabras y textos de
 // «Ottos Weg», en paradas de hasta 3 lecciones. Cada nivel termina en su simulacro Goethe.
 
 const grammarTitle = new Map(germanGrammar.map((g) => [g.id, g.title]))
-const textTitle = new Map(readingsA1.map((t) => [t.id, t.title]))
+const textTitle = new Map(germanTexts.map((t) => [t.id, t.title]))
 
 const grammarItem = (id: string): PathItem => ({ kind: 'grammar', id, title: grammarTitle.get(id) ?? id, to: `/gramatica/${id}` })
 const vocabItems = (theme: string): PathItem[] =>
@@ -50,9 +50,25 @@ const unitsA1: PathUnit[] = [
   examUnit('A1'),
 ]
 
+const unitsA2: PathUnit[] = [
+  unit('de-a2-1', 'A2 · De vuelta al taller', '🔧', ['de-dativ-artikel', 'de-dativ-verben', 'de-dativ-pronomen'], ['arbeitsalltag'], ['dt-a2-werkstatt']),
+  unit('de-a2-2', 'A2 · La casa nueva', '📦', ['de-wechselpraep', 'de-stellen-stehen'], ['umzug'], ['lt-a2-hausordnung', 'dt-a2-umzug']),
+  unit('de-a2-3', 'A2 · Lo que pasó', '📨', ['de-perfekt-plus', 'de-praeteritum-modal'], ['kommunikation'], ['lt-a2-mail-vermieter']),
+  unit('de-a2-4', 'A2 · La salud', '🩹', ['de-weil', 'de-dass'], ['gesundheit'], ['dt-a2-arzt', 'lt-a2-krankmeldung']),
+  unit('de-a2-5', 'A2 · Banco y trámites', '🏦', ['de-wenn', 'de-ob-indirekt'], ['bank', 'behoerde'], ['dt-a2-bank']),
+  unit('de-a2-6', 'A2 · Un trabajo mejor', '📄', ['de-komparativ', 'de-superlativ'], ['bewerbung'], ['lt-a2-stellenanzeige']),
+  unit('de-a2-7', 'A2 · Compras y cocina', '🛍️', ['de-adjektiv-der', 'de-adjektiv-ein'], ['kaufen2', 'kochen'], ['dt-a2-reklamation', 'lt-a2-rezept']),
+  unit('de-a2-8', 'A2 · Amigos y fiestas', '🎉', ['de-reflexiv', 'de-verben-praep', 'de-konjunktiv-hoeflich'], ['feste', 'gefuehle', 'beziehungen'], ['dt-a2-geburtstag']),
+  unit('de-a2-9', 'A2 · Viajes y tiempo libre', '🚆', ['de-sollte', 'de-deshalb-trotzdem', 'de-futur'], ['reisen', 'hobbys', 'natur'], ['lt-a2-hamburg', 'dt-a2-weiterbildung']),
+  unit('de-a2-10', 'A2 · Papeles y planes', '🗂️', ['de-indefinit', 'de-genitiv-von', 'de-zu-infinitiv'], ['medien', 'autoverkehr'], ['lt-a2-brief-behoerde']),
+  unit('de-a2-11', 'A2 · Fechas y lugares', '📅', ['de-ordinal', 'de-temporal', 'de-zum-beim-vom'], ['bildung', 'verben2'], ['dt-a2-weihnachten']),
+  unit('de-a2-12', 'A2 · Un año en Alemania', '🌱', ['de-welcher-dieser', 'de-praeteritum-text', 'de-noch-schon'], ['adjektive2', 'woerter2'], ['lt-a2-ein-jahr']),
+  examUnit('A2'),
+]
+
 const unitsByLevel: Record<CefrLevel, PathUnit[]> = {
   A1: unitsA1,
-  A2: [],
+  A2: unitsA2,
   B1: [],
   B2: [],
   C1: [],

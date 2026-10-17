@@ -232,7 +232,7 @@ El curso alemán ya está en `src/courses/index.ts` con `status: 'soon'` y `spee
 |---|---|---|
 | ✅ **D0 · Base multi-curso** (17-10-2026) | Generalizar recorrido, nivelación, simulacros y fichas por curso (sección 5). Motor de conjugación y declinación con sus tests. Entrada con umlauts. Tablas de artículos y conjugación. | El japonés sigue igual (todos los tests pasan) y existe un recorrido alemán vacío. |
 | ✅ **D1 · A1** (17-10-2026) | Pronunciación, ~30 lecciones, ~650 palabras con artículo y plural, lecturas y audición, juegos y simulacro A1. Test de nivelación A1. | Se puede hacer el A1 entero y aprobar el simulacro. El curso pasa a «disponible». |
-| **D2 · A2** | ~30 lecciones, +650 palabras, dativo y Wechselpräpositionen con ejercicios generados, simulacro A2. | Igual que D1. |
+| ✅ **D2 · A2** (17-10-2026) | ~30 lecciones, +650 palabras, dativo y Wechselpräpositionen con ejercicios generados, simulacro A2. | Igual que D1. |
 | **D3 · B1** | ~35 lecciones, +1.100 palabras, SRS de rección (verbo + preposición), simulacro B1 con 4 módulos. | Simulacro B1 con puntaje Goethe. |
 | **D4 · B2** | ~35 lecciones, +1.600 palabras, Konjunktiv I y participios, audio pregenerado, Schreiben con lista de control. | Simulacro B2. |
 | **D5 · C1** | ~35 lecciones, +2.000 palabras, nominalización, estilo académico y Modalpartikeln. | Simulacro C1. |
@@ -275,6 +275,18 @@ El curso alemán ya está en `src/courses/index.ts` con `status: 'soon'` y `spee
 - **Test de nivelación** (`/nivelacion` en alemán): bloques de dos unidades y 80 % para aprobar.
 - **Inicio del alemán**: botón «Continuar», cantidad de repasos y las secciones. Las pestañas de Aprender son Recorrido, Gramática, Palabras, y Lectura y audio.
 - **Pendiente para más adelante:** lección del día y lección extra en alemán, juegos y la sección Practicar.
+
+### Qué quedó hecho en D2 (A2)
+- **Gramática A2** (`grammarA2a.ts`, `grammarA2b.ts`): 30 lecciones.
+  - Temas: dativo (artículos, verbos y pronombres), preposiciones de dos casos, *stellen/stehen*, Perfekt de separables e inseparables, pasado de los modales, *weil*, *dass*, *wenn*, preguntas indirectas y *ob*, comparativo y superlativo, declinación del adjetivo tras *der* y *ein*.
+  - También: reflexivos, verbos con preposición, cortesía con Konjunktiv II, *sollte*, *deshalb/trotzdem*, futuro, *man/jemand/niemand*, *von* y genitivo de nombres, *zu* + infinitivo, ordinales, *vor/seit/in/für*, *zum/beim/vom*, *welcher/dieser*, Präteritum en textos y *schon/noch/nicht mehr*.
+- **Vocabulario A2** (`vocabA2.ts`): unas 550 palabras nuevas (unas 1.170 en total) en 21 temas.
+  - Temas: salud y emergencias, mudanza y edificio, trabajo diario, postular, banco y correo, autoridades, teléfono e internet, compras y reclamos, cocina, viajes, naturaleza, fiestas, educación, sentimientos, relaciones, pasatiempos, medios y tránsito.
+- **Ottos Weg A2** (`readingsA2.ts`): 16 episodios (8 lecturas y 8 diálogos).
+  - Temas: horas extra, reglamento del edificio, mudanza, calefacción, accidente laboral, licencia médica, tarjeta bloqueada, aviso de empleo, reclamo, receta, cumpleaños, viaje a Hamburgo, curso de perfeccionamiento, carta de extranjería, Navidad y «un año en Alemania».
+- **Recorrido A2:** 12 unidades más el simulacro Goethe A2. Escribir tiene un mensaje con huecos que se corrige solo y un correo autoevaluado; hablar sigue las tres partes del A2.
+- **Cambio en el desbloqueo:** el simulacro de un nivel es la meta, pero ya no bloquea el nivel siguiente.
+- **Test de nivelación:** ahora cubre del A1 al A2.
 
 ---
 

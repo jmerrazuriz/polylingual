@@ -21,45 +21,83 @@ import { GrammarExerciseView } from '../grammar/GrammarExerciseView'
 
 type Result = { correct: number; total: number }
 
-/** Formulario de Schreiben Teil 1: datos de una persona que hay que pasar al formulario. */
-const formTask = {
-  context:
-    'Hans quiere inscribirse en un club de fútbol (Fußballverein). Lee la información y completa el formulario por él.',
-  text: 'Hans Schmidt wohnt in der Bergstraße 7 in 50667 Köln. Er ist 31 Jahre alt, verheiratet und arbeitet als Elektriker. Er möchte am Mittwoch trainieren.',
-  fields: [
-    { label: 'Familienname', answers: ['Schmidt'] },
-    { label: 'Straße und Hausnummer', answers: ['Bergstraße 7', 'Bergstrasse 7'] },
-    { label: 'Alter', answers: ['31', 'einunddreißig'] },
-    { label: 'Beruf', answers: ['Elektriker'] },
-    { label: 'Trainingstag', answers: ['Mittwoch', 'am Mittwoch'] },
-  ],
-}
+type FormTask = { context: string; text: string; fields: { label: string; answers: string[] }[] }
+type MessageTask = { prompt: string; checks: string[]; model: string }
+type LevelTasks = { form: FormTask; message: MessageTask; speaking: string[] }
 
-/** Schreiben Teil 2 (autoevaluado): mensaje corto con tres puntos. */
-const messageTask = {
-  prompt:
-    'Escribe un correo corto (unas 30 palabras) a tu profesora, la señora Klein: no puedes ir al curso mañana. Di por qué y pregunta por las tareas.',
-  checks: [
-    'Saludo adecuado (Liebe Frau Klein, / Sehr geehrte Frau Klein,)',
-    'Dices que mañana no puedes ir al curso',
-    'Das una razón (con «denn» o «weil»)',
-    'Preguntas por las tareas (Hausaufgaben)',
-    'Despedida (Viele Grüße / Mit freundlichen Grüßen) y tu nombre',
-    'Verbo en 2.ª posición y sustantivos con mayúscula',
-  ],
-  model:
-    'Liebe Frau Klein, ich kann morgen leider nicht zum Kurs kommen, denn ich habe einen Termin beim Arzt. Was sind die Hausaufgaben? Viele Grüße, Otto',
+/** Tareas de escribir y hablar de cada nivel (lo de leer y escuchar sale de los textos del nivel). */
+const tasks: Partial<Record<CefrLevel, LevelTasks>> = {
+  A1: {
+    form: {
+      context: 'Hans quiere inscribirse en un club de fútbol (Fußballverein). Lee la información y completa el formulario por él.',
+      text: 'Hans Schmidt wohnt in der Bergstraße 7 in 50667 Köln. Er ist 31 Jahre alt, verheiratet und arbeitet als Elektriker. Er möchte am Mittwoch trainieren.',
+      fields: [
+        { label: 'Familienname', answers: ['Schmidt'] },
+        { label: 'Straße und Hausnummer', answers: ['Bergstraße 7', 'Bergstrasse 7'] },
+        { label: 'Alter', answers: ['31', 'einunddreißig'] },
+        { label: 'Beruf', answers: ['Elektriker'] },
+        { label: 'Trainingstag', answers: ['Mittwoch', 'am Mittwoch'] },
+      ],
+    },
+    message: {
+      prompt:
+        'Escribe un correo corto (unas 30 palabras) a tu profesora, la señora Klein: no puedes ir al curso mañana. Di por qué y pregunta por las tareas.',
+      checks: [
+        'Saludo adecuado (Liebe Frau Klein, / Sehr geehrte Frau Klein,)',
+        'Dices que mañana no puedes ir al curso',
+        'Das una razón (con «denn» o «weil»)',
+        'Preguntas por las tareas (Hausaufgaben)',
+        'Despedida (Viele Grüße / Mit freundlichen Grüßen) y tu nombre',
+        'Verbo en 2.ª posición y sustantivos con mayúscula',
+      ],
+      model:
+        'Liebe Frau Klein, ich kann morgen leider nicht zum Kurs kommen, denn ich habe einen Termin beim Arzt. Was sind die Hausaufgaben? Viele Grüße, Otto',
+    },
+    speaking: [
+      'Parte 1: me presenté (Name, Alter, Land, Wohnort, Sprachen, Beruf, Hobby) en frases completas',
+      'Parte 1: deletreé mi nombre (buchstabieren) y dije un número de teléfono',
+      'Parte 2: hice dos preguntas sobre un tema (por ejemplo «Essen»: Was isst du gern? …)',
+      'Parte 2: respondí las preguntas de mi pareja',
+      'Parte 3: hice dos peticiones con «Können Sie…?» / «Ich möchte…»',
+      'Hablé sin pasar al español y con la pronunciación clara',
+    ],
+  },
+  A2: {
+    form: {
+      context: 'Otto le escribe un mensaje a Hans. Completa las palabras que faltan (1–5).',
+      text: 'Hallo Hans, ich (1) ___ heute leider nicht kommen, (2) ___ ich muss länger arbeiten. (3) ___ du morgen Zeit? Wir (4) ___ ins Kino gehen. Ich rufe (5) ___ später an. Otto',
+      fields: [
+        { label: '(1) – no puedo venir', answers: ['kann'] },
+        { label: '(2) – porque (sin cambiar el orden)', answers: ['denn'] },
+        { label: '(3) – ¿tienes…?', answers: ['Hast'] },
+        { label: '(4) – podemos', answers: ['können'] },
+        { label: '(5) – te (acusativo)', answers: ['dich'] },
+      ],
+    },
+    message: {
+      prompt:
+        'Escribe un correo (unas 40 palabras) a tu colega Murat: el sábado haces una fiesta en tu casa. Invítalo, di a qué hora empieza, qué puede traer y cómo se llega.',
+      checks: [
+        'Saludo adecuado (Lieber Murat, / Hallo Murat,)',
+        'Lo invitas y dices el día y la hora',
+        'Dices qué puede traer (mitbringen)',
+        'Explicas cómo llegar (Adresse, Bus, U-Bahn…)',
+        'Usas una subordinada (weil, dass, wenn) o «deshalb»',
+        'Despedida y tu nombre; sustantivos con mayúscula',
+      ],
+      model:
+        'Lieber Murat, am Samstag mache ich eine Party und ich lade dich ein! Sie beginnt um 19 Uhr. Kannst du vielleicht einen Salat mitbringen? Du kannst mit der U-Bahn bis Schillerstraße fahren, dann sind es nur fünf Minuten zu Fuß. Ich freue mich, wenn du kommst! Viele Grüße, Otto',
+    },
+    speaking: [
+      'Parte 1: hice y respondí preguntas sobre mí con tarjetas (Geburtstag, Wohnort, Beruf, Hobby, Familie)',
+      'Parte 2: hablé un minuto sobre mi vida (por ejemplo «Wohnen»: dónde, con quién, qué me gusta y qué no)',
+      'Parte 2: usé el pasado (Perfekt) para contar algo que pasó',
+      'Parte 3: planifiqué una actividad con mi pareja y propuse una hora (Hast du am … Zeit?)',
+      'Parte 3: acepté o rechacé con una razón (Da kann ich leider nicht, weil…)',
+      'Hablé con fluidez, sin pasar al español',
+    ],
+  },
 }
-
-/** Sprechen (autoevaluado): las tres partes del examen A1. */
-const speakingChecks = [
-  'Parte 1: me presenté (Name, Alter, Land, Wohnort, Sprachen, Beruf, Hobby) en frases completas',
-  'Parte 1: deletreé mi nombre (buchstabieren) y dije un número de teléfono',
-  'Parte 2: hice dos preguntas sobre un tema (por ejemplo «Essen»: Was isst du gern? …)',
-  'Parte 2: respondí las preguntas de mi pareja',
-  'Parte 3: hice dos peticiones con «Können Sie…?» / «Ich möchte…»',
-  'Hablé sin pasar al español y con la pronunciación clara',
-]
 
 function pickTexts(level: CefrLevel, kind: 'reading' | 'dialogue', n: number): ReadingText[] {
   return shuffle(germanTexts.filter((t) => t.level === level && t.kind === kind)).slice(0, n)
@@ -70,7 +108,7 @@ export function GoetheExamPage() {
   const level = param?.toUpperCase() as CefrLevel
   const exam = goetheExams[level]
   const hasTexts = germanTexts.some((t) => t.level === level)
-  if (!exam || !hasTexts) return <ComingSoon title="Este simulacro llegará con su nivel" />
+  if (!exam || !hasTexts || !tasks[level]) return <ComingSoon title="Este simulacro llegará con su nivel" />
   return <GoetheExam key={level} level={level} />
 }
 
@@ -106,7 +144,7 @@ function GoetheExam({ level }: { level: CefrLevel }) {
         <h1 className="text-2xl font-extrabold">Simulacro Goethe-Zertifikat {level}</h1>
         <p className="text-slate-600 dark:text-slate-400">
           Cuatro módulos, como el examen real. <strong>Leer</strong> y <strong>escuchar</strong> se corrigen solos y deciden si apruebas
-          (necesitas {PASS} %). <strong>Escribir</strong> combina un formulario corregido con una autoevaluación, y <strong>hablar</strong> es
+          (necesitas {PASS} %). <strong>Escribir</strong> combina una parte que se corrige sola con una autoevaluación, y <strong>hablar</strong> es
           una autoevaluación guiada: practícalo en voz alta, idealmente con alguien.
         </p>
         <ul className="flex flex-col gap-1 text-sm">
@@ -125,8 +163,8 @@ function GoetheExam({ level }: { level: CefrLevel }) {
 
   if (phase === 'lesen') return <QuestionsModule key="lesen" title={moduleNames.lesen} texts={lesen} listen={false} onDone={(r) => finishModule('lesen', r)} />
   if (phase === 'hoeren') return <QuestionsModule key="hoeren" title={moduleNames.hoeren} texts={hoeren} listen onDone={(r) => finishModule('hoeren', r)} />
-  if (phase === 'schreiben') return <WritingModule onDone={(r) => finishModule('schreiben', r)} />
-  if (phase === 'sprechen') return <ChecklistModule title={moduleNames.sprechen} checks={speakingChecks} onDone={(r) => finishModule('sprechen', r)} />
+  if (phase === 'schreiben') return <WritingModule formTask={tasks[level]!.form} messageTask={tasks[level]!.message} onDone={(r) => finishModule('schreiben', r)} />
+  if (phase === 'sprechen') return <ChecklistModule title={moduleNames.sprechen} checks={tasks[level]!.speaking} onDone={(r) => finishModule('sprechen', r)} />
 
   const score = scoreGoethe(level, results)
   return (
@@ -220,7 +258,7 @@ function QuestionsModule({ title, texts, listen, onDone }: { title: string; text
 }
 
 /** Escribir: formulario corregido solo + mensaje autoevaluado con lista de control. */
-function WritingModule({ onDone }: { onDone: (r: Result) => void }) {
+function WritingModule({ formTask, messageTask, onDone }: { formTask: FormTask; messageTask: MessageTask; onDone: (r: Result) => void }) {
   const [values, setValues] = useState<string[]>(formTask.fields.map(() => ''))
   const [checked, setChecked] = useState<boolean[] | null>(null)
   const [message, setMessage] = useState('')
@@ -232,7 +270,7 @@ function WritingModule({ onDone }: { onDone: (r: Result) => void }) {
   if (formScore === null) {
     return (
       <section className="mx-auto flex max-w-md flex-col gap-4">
-        <p className="text-sm font-bold text-slate-500 uppercase">{moduleNames.schreiben} · Parte 1: formulario</p>
+        <p className="text-sm font-bold text-slate-500 uppercase">{moduleNames.schreiben} · Parte 1 (se corrige sola)</p>
         <p className="text-slate-600 dark:text-slate-400">{formTask.context}</p>
         <p lang="de" className="rounded-2xl border border-slate-200 bg-white p-4 text-lg dark:border-slate-800 dark:bg-slate-900">
           {formTask.text}
@@ -263,7 +301,7 @@ function WritingModule({ onDone }: { onDone: (r: Result) => void }) {
           onClick={() => setFormScore(formTask.fields.filter((f, i) => checkGerman(values[i], f.answers) !== 'wrong').length)}
           className="self-end rounded-full bg-ink px-6 py-3 font-bold text-white hover:opacity-90"
         >
-          Corregir formulario →
+          Corregir →
         </button>
       </section>
     )
@@ -273,7 +311,7 @@ function WritingModule({ onDone }: { onDone: (r: Result) => void }) {
     return (
       <section className="mx-auto flex max-w-md flex-col gap-4">
         <p className="rounded-xl bg-emerald-50 p-3 text-sm text-emerald-900 dark:bg-emerald-950/40 dark:text-emerald-200">
-          Formulario: {formScore} de {formTask.fields.length} campos correctos.
+          Parte 1: {formScore} de {formTask.fields.length} correctas.
         </p>
         <p className="text-sm font-bold text-slate-500 uppercase">{moduleNames.schreiben} · Parte 2: mensaje (autoevaluado)</p>
         <p>{messageTask.prompt}</p>

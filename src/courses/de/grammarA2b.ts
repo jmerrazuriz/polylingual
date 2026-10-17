@@ -1,0 +1,342 @@
+import type { GrammarLesson } from '../grammar.ts'
+
+// Gramática A2 del alemán, segunda mitad (lecciones 46–60). Ottos Weg: planes, consejos,
+// opiniones, fiestas, viajes y el día a día en el trabajo.
+
+export const grammarA2b: GrammarLesson[] = [
+  {
+    id: 'de-reflexiv',
+    level: 'A2',
+    title: 'Verbos reflexivos',
+    summary: 'sich waschen, sich anziehen, sich beeilen.',
+    pattern: 'ich … mich · du … dich · er/sie/es … sich · wir … uns · ihr … euch · sie/Sie … sich',
+    explanation: [
+      'Los verbos reflexivos llevan un pronombre: **mich, dich, sich, uns, euch, sich**. Ich wasche **mich**. Wir beeilen **uns** (nos apuramos). Muchos son reflexivos en alemán pero no en español, y al revés.',
+      'Frecuentes: **sich anmelden** (inscribirse), **sich ausruhen** (descansar), **sich beeilen** (apurarse), **sich fühlen** (sentirse), **sich treffen** (juntarse), **sich vorstellen** (presentarse). En el Perfekt usan **haben**: Ich **habe mich** angemeldet.',
+    ],
+    examples: [
+      { text: 'Otto zieht sich schnell an und geht zur Arbeit.', meaning: 'Otto se viste rápido y se va al trabajo.' },
+      { text: 'Wie fühlst du dich heute?', meaning: '¿Cómo te sientes hoy?' },
+      { text: 'Wir treffen uns um sieben vor dem Kino.', meaning: 'Nos juntamos a las siete frente al cine.' },
+    ],
+    exercises: [
+      { type: 'choice', prompt: 'Ich muss ＿ beeilen.', options: ['mich', 'mir', 'sich', 'dich'], answer: 'mich' },
+      { type: 'choice', prompt: 'Hans fühlt ＿ nicht gut.', options: ['sich', 'ihn', 'ihm', 'mich'], answer: 'sich' },
+      { type: 'choice', prompt: 'Wann trefft ihr ＿?', options: ['euch', 'uns', 'sich', 'dich'], answer: 'euch' },
+      { type: 'order', meaning: 'Me inscribí en el curso.', answer: ['Ich', 'habe', 'mich', 'für', 'den', 'Kurs', 'angemeldet'] },
+    ],
+  },
+  {
+    id: 'de-verben-praep',
+    level: 'A2',
+    title: 'Verbos con preposición',
+    summary: 'sich freuen auf, warten auf, sich interessieren für.',
+    pattern: 'warten auf + Akk. · sich freuen über/auf + Akk. · sprechen mit + Dat.',
+    explanation: [
+      'Muchos verbos van con una **preposición fija** que hay que aprender junto al verbo: **warten auf** (esperar a), **sich freuen auf** (alegrarse por algo futuro), **sich freuen über** (por algo que ya pasó), **sich interessieren für** (interesarse por), **denken an** (pensar en), **sprechen mit** (hablar con), **Angst haben vor** (tener miedo de).',
+      'La preposición decide el caso: auf/für/über/an + **acusativo** en estos verbos; mit/von + **dativo**. Ich warte **auf den** Bus. Ich spreche **mit dem** Chef.',
+    ],
+    examples: [
+      { text: 'Otto freut sich auf den Urlaub.', meaning: 'Otto espera con ganas las vacaciones.' },
+      { text: 'Ich warte schon zwanzig Minuten auf den Bus.', meaning: 'Ya llevo veinte minutos esperando el bus.' },
+      { text: 'Hans interessiert sich für Fußball.', meaning: 'A Hans le interesa el fútbol.' },
+    ],
+    exercises: [
+      { type: 'choice', prompt: 'Ich warte ＿ meine Freundin.', options: ['auf', 'für', 'an', 'mit'], answer: 'auf' },
+      { type: 'choice', prompt: 'Interessierst du dich ＿ Musik?', options: ['für', 'auf', 'über', 'an'], answer: 'für' },
+      { type: 'choice', prompt: 'Otto freut sich ＿ das Geschenk.', hint: 'ya lo recibió', options: ['über', 'auf', 'für', 'mit'], answer: 'über' },
+      { type: 'choice', prompt: 'Ich denke oft ＿ meine Familie.', options: ['an', 'auf', 'über', 'für'], answer: 'an' },
+    ],
+  },
+  {
+    id: 'de-konjunktiv-hoeflich',
+    level: 'A2',
+    title: 'Pedir con cortesía: würde, hätte, könnte',
+    summary: 'Ich hätte gern… Könnten Sie…? Würden Sie…?',
+    pattern: 'Ich hätte gern … · Könnten Sie …? · Würden Sie bitte …?',
+    explanation: [
+      'Para pedir algo con más cortesía se usa el **Konjunktiv II**: **Ich hätte gern** einen Kaffee (quisiera un café). **Könnten Sie** mir helfen? **Würden Sie** bitte das Fenster schließen?',
+      'Formas: ich **hätte**, du **hättest**, er **hätte**; ich **könnte**, du **könntest**; ich **würde**, du **würdest**. También para deseos: Ich **würde** gern in Hamburg **wohnen**.',
+    ],
+    examples: [
+      { text: 'Ich hätte gern zwei Fahrkarten nach München.', meaning: 'Quisiera dos boletos a Múnich.' },
+      { text: 'Könnten Sie das bitte langsamer sagen?', meaning: '¿Podría decirlo más despacio, por favor?' },
+      { text: 'Otto würde gern eine Weiterbildung machen.', meaning: 'A Otto le gustaría hacer un curso de perfeccionamiento.' },
+    ],
+    exercises: [
+      { type: 'choice', prompt: 'Ich ＿ gern ein Glas Wasser.', options: ['hätte', 'habe', 'hatte', 'würde'], answer: 'hätte' },
+      { type: 'choice', prompt: '＿ Sie mir bitte helfen?', options: ['Könnten', 'Können', 'Konnten', 'Kannst'], answer: 'Könnten' },
+      { type: 'order', meaning: 'Me gustaría viajar a Italia.', answer: ['Ich', 'würde', 'gern', 'nach', 'Italien', 'reisen'] },
+      { type: 'type', prompt: 'du ＿ (Konjunktiv II de haben)', answers: ['hättest'], german: true },
+    ],
+  },
+  {
+    id: 'de-sollte',
+    level: 'A2',
+    title: 'Dar consejos: sollte',
+    summary: 'Du solltest mehr schlafen.',
+    pattern: 'du solltest · Sie sollten + infinitivo al final',
+    explanation: [
+      'Para **aconsejar** se usa **sollte** (Konjunktiv II de sollen): Du **solltest** zum Arzt **gehen** (deberías ir al médico). Formas: ich sollte, du solltest, er sollte, wir sollten, ihr solltet, sie sollten.',
+      'Otras formas de aconsejar: **An deiner Stelle würde ich…** (en tu lugar yo…) y el imperativo con **doch**: Geh **doch** zum Arzt!',
+    ],
+    examples: [
+      { text: 'Du hast Fieber. Du solltest im Bett bleiben.', meaning: 'Tienes fiebre. Deberías quedarte en cama.' },
+      { text: 'Sie sollten den Vertrag genau lesen.', meaning: 'Usted debería leer el contrato con atención.' },
+      { text: 'An deiner Stelle würde ich die Wohnung nehmen.', meaning: 'En tu lugar, yo tomaría el departamento.' },
+    ],
+    exercises: [
+      { type: 'choice', prompt: 'Du ＿ mehr Wasser trinken.', options: ['solltest', 'sollst', 'sollte', 'solltet'], answer: 'solltest' },
+      { type: 'choice', prompt: 'An deiner Stelle ＿ ich das nicht machen.', options: ['würde', 'werde', 'wurde', 'wäre'], answer: 'würde' },
+      { type: 'meaning', text: 'Ihr solltet früher losfahren.', options: ['Deberían salir más temprano.', 'Tenían que salir más temprano.', 'Salieron más temprano.', 'Quieren salir más temprano.'], answer: 'Deberían salir más temprano.' },
+      { type: 'order', meaning: 'Deberías ir al médico.', answer: ['Du', 'solltest', 'zum', 'Arzt', 'gehen'] },
+    ],
+  },
+  {
+    id: 'de-deshalb-trotzdem',
+    level: 'A2',
+    title: 'deshalb, trotzdem, dann, danach',
+    summary: 'Ich bin krank, deshalb bleibe ich zu Hause.',
+    pattern: '…, deshalb + VERBO + sujeto … (el conector ocupa la posición 1)',
+    explanation: [
+      '**deshalb** (por eso), **trotzdem** (aun así), **dann** (entonces, luego), **danach** (después), **außerdem** (además) son adverbios: ocupan la **posición 1** y el verbo va justo después: Es regnet, **deshalb nehme** ich den Bus.',
+      'Compara: **weil** (verbo al final) y **denn** (orden normal) dan la causa; **deshalb** da la consecuencia. Ich bin müde, **trotzdem gehe** ich zur Party.',
+    ],
+    examples: [
+      { text: 'Der Bus hatte Verspätung, deshalb kam Otto zu spät.', meaning: 'El bus venía atrasado; por eso Otto llegó tarde.' },
+      { text: 'Es regnet, trotzdem gehen wir spazieren.', meaning: 'Llueve; aun así salimos a caminar.' },
+      { text: 'Zuerst frühstücke ich, danach fahre ich zur Arbeit.', meaning: 'Primero tomo desayuno, después me voy al trabajo.' },
+    ],
+    exercises: [
+      { type: 'choice', prompt: 'Ich habe keine Zeit, ＿ komme ich nicht.', hint: 'por eso', options: ['deshalb', 'trotzdem', 'weil', 'denn'], answer: 'deshalb' },
+      { type: 'choice', prompt: 'Das Wetter ist schlecht, ＿ fahren wir ans Meer.', hint: 'aun así', options: ['trotzdem', 'deshalb', 'denn', 'weil'], answer: 'trotzdem' },
+      { type: 'order', meaning: 'Estoy enfermo, por eso me quedo en casa.', answer: ['Ich', 'bin', 'krank', 'deshalb', 'bleibe', 'ich', 'zu', 'Hause'] },
+      {
+        type: 'choice',
+        prompt: '¿Qué frase es correcta?',
+        options: ['Es ist spät, deshalb nehmen wir ein Taxi.', 'Es ist spät, deshalb wir nehmen ein Taxi.', 'Es ist spät, deshalb wir ein Taxi nehmen.', 'Es ist spät deshalb, nehmen wir ein Taxi.'],
+        answer: 'Es ist spät, deshalb nehmen wir ein Taxi.',
+      },
+    ],
+  },
+  {
+    id: 'de-futur',
+    level: 'A2',
+    title: 'Hablar del futuro',
+    summary: 'Morgen fahre ich… · Ich werde… arbeiten.',
+    pattern: 'presente + expresión de tiempo · werden + infinitivo al final',
+    explanation: [
+      'En alemán el futuro se dice casi siempre con el **presente** y una expresión de tiempo: **Morgen fahre** ich nach Hamburg. **Nächste Woche** beginnt der Kurs.',
+      'El **Futur I** (**werden** + infinitivo al final) se usa para planes firmes, promesas y suposiciones: Ich **werde** dich **anrufen**. Es **wird** bald **regnen**. werden: ich werde, du wirst, er wird, wir werden, ihr werdet, sie werden.',
+    ],
+    examples: [
+      { text: 'Nächstes Jahr werde ich die B1-Prüfung machen.', meaning: 'El próximo año voy a dar el examen B1.' },
+      { text: 'Am Wochenende besuchen wir Hans in Köln.', meaning: 'El fin de semana visitamos a Hans en Colonia.' },
+      { text: 'Keine Sorge, alles wird gut.', meaning: 'No te preocupes, todo saldrá bien.' },
+    ],
+    exercises: [
+      { type: 'choice', prompt: 'Ich ＿ dich morgen anrufen.', options: ['werde', 'wird', 'wirst', 'wurde'], answer: 'werde' },
+      { type: 'choice', prompt: 'Du ＿ das schaffen!', hint: 'lo lograrás', options: ['wirst', 'werdest', 'wird', 'würdest'], answer: 'wirst' },
+      { type: 'order', meaning: 'Mañana voy a trabajar mucho.', answer: ['Morgen', 'werde', 'ich', 'viel', 'arbeiten'] },
+      { type: 'meaning', text: 'Nächste Woche beginnt mein neuer Job.', options: ['La próxima semana empieza mi trabajo nuevo.', 'La semana pasada empezó mi trabajo nuevo.', 'Esta semana busco trabajo.', 'Mi trabajo empieza hoy.'], answer: 'La próxima semana empieza mi trabajo nuevo.' },
+    ],
+  },
+  {
+    id: 'de-indefinit',
+    level: 'A2',
+    title: 'man, jemand, niemand, etwas, nichts',
+    summary: 'Hier darf man nicht parken. Hat jemand angerufen?',
+    pattern: 'man (se, uno) · jemand ↔ niemand · etwas ↔ nichts · alle · viele',
+    explanation: [
+      '**man** (uno, se) va con el verbo en 3.ª persona: In Deutschland **trennt man** den Müll (en Alemania se separa la basura). **jemand** (alguien) ↔ **niemand** (nadie); **etwas** (algo) ↔ **nichts** (nada).',
+      'En plural: **alle** (todos), **viele** (muchos), **einige** (algunos). Con dativo y acusativo: jemand**em**, jemand**en**: Ich habe **jemanden** gefragt.',
+    ],
+    examples: [
+      { text: 'Am Sonntag kann man in Deutschland nicht einkaufen.', meaning: 'En Alemania no se puede comprar los domingos.' },
+      { text: 'Ist jemand da? – Nein, niemand.', meaning: '¿Hay alguien? – No, nadie.' },
+      { text: 'Möchtest du etwas trinken? – Nein, danke, nichts.', meaning: '¿Quieres tomar algo? – No, gracias, nada.' },
+    ],
+    exercises: [
+      { type: 'choice', prompt: 'Hier ＿ man leise sein.', options: ['muss', 'müssen', 'musst', 'müsst'], answer: 'muss' },
+      { type: 'choice', prompt: 'Hat ＿ meine Brille gesehen?', hint: 'alguien', options: ['jemand', 'niemand', 'man', 'etwas'], answer: 'jemand' },
+      { type: 'choice', prompt: 'Ich habe heute noch ＿ gegessen.', hint: 'nada', options: ['nichts', 'niemand', 'kein', 'nicht'], answer: 'nichts' },
+      { type: 'meaning', text: 'Alle sind schon da.', options: ['Ya están todos.', 'No hay nadie.', 'Algunos ya llegaron.', 'Todos se fueron.'], answer: 'Ya están todos.' },
+    ],
+  },
+  {
+    id: 'de-genitiv-von',
+    level: 'A2',
+    title: 'De quién: Ottos Auto, das Auto von Otto',
+    summary: 'Genitivo con nombres y «von» + dativo.',
+    pattern: 'Ottos Wohnung · die Wohnung von Otto · die Tochter von meinem Chef',
+    explanation: [
+      'Con **nombres propios** se agrega **-s** sin apóstrofo: **Ottos** Wohnung, **Lenas** Kinder. Si el nombre termina en -s, -z o -x se usa apóstrofo: Hans**’** Auto.',
+      'En la conversación lo más común es **von + dativo**: die Wohnung **von** Otto, das Auto **von meinem** Bruder. El genitivo con artículo (des/der) es más escrito: das Auto **des** Chefs.',
+    ],
+    examples: [
+      { text: 'Das ist Ottos neue Werkstatt.', meaning: 'Este es el nuevo taller de Otto.' },
+      { text: 'Die Frau von Hans heißt Anna.', meaning: 'La esposa de Hans se llama Anna.' },
+      { text: 'Der Schlüssel von der Wohnung liegt auf dem Tisch.', meaning: 'La llave del departamento está sobre la mesa.' },
+    ],
+    exercises: [
+      { type: 'choice', prompt: '＿ Bruder wohnt in Chile.', hint: 'el hermano de Otto', options: ['Ottos', "Otto's", 'Von Otto', 'Otto'], answer: 'Ottos' },
+      { type: 'choice', prompt: 'Das ist das Auto ＿ meinem Vater.', options: ['von', 'mit', 'bei', 'aus'], answer: 'von' },
+      { type: 'meaning', text: 'Lenas Kinder gehen in die Schule.', options: ['Los hijos de Lena van al colegio.', 'Lena lleva a los niños al colegio.', 'Lena es profesora de niños.', 'Los niños van a la casa de Lena.'], answer: 'Los hijos de Lena van al colegio.' },
+      { type: 'type', prompt: 'la bicicleta de Anna: ＿ Fahrrad', answers: ['Annas'], german: true },
+    ],
+  },
+  {
+    id: 'de-zu-infinitiv',
+    level: 'A2',
+    title: 'zu + infinitivo',
+    summary: 'Ich habe keine Zeit, Deutsch zu lernen.',
+    pattern: '…, + … + zu + infinitivo · separables: anzurufen',
+    explanation: [
+      'Después de ciertas expresiones el verbo va al final con **zu**: Ich habe keine **Lust**, heute **zu kochen**. Es ist **wichtig**, pünktlich **zu sein**. **Vergiss nicht**, die Tür **zu schließen**.',
+      'Con verbos separables, **zu** va en medio: anrufen → an**zu**rufen, einkaufen → ein**zu**kaufen. Con modales y con werden **no** se usa zu: Ich muss arbeiten.',
+    ],
+    examples: [
+      { text: 'Otto hat versucht, den Motor zu reparieren.', meaning: 'Otto intentó reparar el motor.' },
+      { text: 'Es ist nicht leicht, eine Wohnung zu finden.', meaning: 'No es fácil encontrar un departamento.' },
+      { text: 'Vergiss nicht, Hans anzurufen!', meaning: '¡No te olvides de llamar a Hans!' },
+    ],
+    exercises: [
+      { type: 'choice', prompt: 'Ich habe keine Lust, ins Kino ＿.', options: ['zu gehen', 'gehen', 'zu gehe', 'gehe zu'], answer: 'zu gehen' },
+      { type: 'choice', prompt: 'Vergiss nicht, Milch ＿.', hint: 'einkaufen', options: ['einzukaufen', 'zu einkaufen', 'einkaufen zu', 'eingekauft'], answer: 'einzukaufen' },
+      { type: 'choice', prompt: '¿Qué frase es correcta?', options: ['Ich muss heute arbeiten.', 'Ich muss heute zu arbeiten.', 'Ich muss zu heute arbeiten.', 'Ich muss arbeiten zu heute.'], answer: 'Ich muss heute arbeiten.' },
+      { type: 'order', meaning: 'Es importante llegar puntual.', answer: ['Es', 'ist', 'wichtig', 'pünktlich', 'zu', 'sein'] },
+    ],
+  },
+  {
+    id: 'de-ordinal',
+    level: 'A2',
+    title: 'Números ordinales y fechas',
+    summary: 'der erste Mai, am dritten Juni, im zweiten Stock.',
+    pattern: '1.–19.: -te (zweite) · desde 20.: -ste (zwanzigste) · am + ordinal + -en',
+    explanation: [
+      'Los ordinales: 1.–19. con **-te** (der zwei**te**, der vier**te**), irregulares **erste**, **dritte**, **siebte**, **achte**; desde 20. con **-ste** (der zwanzig**ste**). Se escriben con punto: **der 3. Mai**.',
+      'Fechas: Heute ist **der dritte** Mai. Pero «el día…» con **am**: **am dritten** Mai (terminación -en). También: **im zweiten** Stock (en el segundo piso). El cumpleaños: Ich habe **am 14. Mai** Geburtstag.',
+    ],
+    examples: [
+      { text: 'Der Kurs beginnt am ersten September.', meaning: 'El curso empieza el primero de septiembre.' },
+      { text: 'Otto wohnt im vierten Stock.', meaning: 'Otto vive en el cuarto piso.' },
+      { text: 'Heute ist der zwanzigste Juni.', meaning: 'Hoy es veinte de junio.' },
+    ],
+    exercises: [
+      { type: 'choice', prompt: 'Heute ist der ＿ März. (3.)', options: ['dritte', 'dreite', 'dritten', 'dreißigste'], answer: 'dritte' },
+      { type: 'choice', prompt: 'Ich habe am ＿ Juli Geburtstag. (7.)', options: ['siebten', 'siebte', 'siebenten', 'sieben'], answer: 'siebten' },
+      { type: 'choice', prompt: 'Das Büro ist im ＿ Stock. (1.)', options: ['ersten', 'erste', 'einsten', 'eins'], answer: 'ersten' },
+      { type: 'meaning', text: 'Am zweiten Mai fahren wir nach Hamburg.', options: ['El dos de mayo vamos a Hamburgo.', 'Dentro de dos meses vamos a Hamburgo.', 'En mayo vamos dos veces a Hamburgo.', 'El doce de mayo vamos a Hamburgo.'], answer: 'El dos de mayo vamos a Hamburgo.' },
+    ],
+  },
+  {
+    id: 'de-temporal',
+    level: 'A2',
+    title: 'vor, seit, in, für: tiempo',
+    summary: 'vor einem Jahr · seit zwei Monaten · in einer Woche.',
+    pattern: 'vor / seit / in + DATIVO · für + ACUSATIVO',
+    explanation: [
+      '**vor** + dativo = «hace» (pasado): **vor** einem Jahr. **seit** + dativo = «desde hace» (algo que sigue): Ich wohne **seit** zwei Monaten hier (vivo aquí desde hace dos meses, con **presente**). **in** + dativo = «dentro de» (futuro): **in** einer Woche.',
+      '**für** + acusativo = duración planificada: Ich fahre **für** zwei Wochen nach Chile. Con plural dativo el sustantivo lleva -n: seit drei Jahre**n**.',
+    ],
+    examples: [
+      { text: 'Otto ist vor einem Jahr nach Deutschland gekommen.', meaning: 'Otto llegó a Alemania hace un año.' },
+      { text: 'Er arbeitet seit sechs Monaten in der Werkstatt.', meaning: 'Trabaja en el taller desde hace seis meses.' },
+      { text: 'In zwei Wochen beginnt sein Urlaub.', meaning: 'Dentro de dos semanas empiezan sus vacaciones.' },
+    ],
+    exercises: [
+      { type: 'choice', prompt: 'Ich lerne ＿ einem Jahr Deutsch.', hint: 'desde hace (y sigo)', options: ['seit', 'vor', 'in', 'für'], answer: 'seit' },
+      { type: 'choice', prompt: '＿ drei Tagen war ich beim Arzt.', hint: 'hace', options: ['Vor', 'Seit', 'In', 'Für'], answer: 'Vor' },
+      { type: 'choice', prompt: 'Der Zug kommt ＿ zehn Minuten.', hint: 'dentro de', options: ['in', 'vor', 'seit', 'für'], answer: 'in' },
+      { type: 'choice', prompt: 'Hans fährt ＿ eine Woche nach Spanien.', hint: 'por una semana', options: ['für', 'seit', 'vor', 'in'], answer: 'für' },
+    ],
+  },
+  {
+    id: 'de-zum-beim-vom',
+    level: 'A2',
+    title: 'Ir a, estar en, venir de: zu, bei, von',
+    summary: 'zum Arzt → beim Arzt → vom Arzt.',
+    pattern: 'Wohin? zu · Wo? bei · Woher? von (personas y negocios) · nach / in / aus (lugares)',
+    explanation: [
+      'Con **personas** y **negocios** se usa **zu** (adónde), **bei** (dónde) y **von** (de dónde), todos con dativo: Ich gehe **zum** Arzt. Ich bin **beim** Arzt. Ich komme **vom** Arzt.',
+      'Con **lugares**: **in/nach** (adónde), **in** (dónde), **aus** (de dónde): Ich fahre **nach** Berlin / gehe **ins** Büro. Ich bin **im** Büro. Ich komme **aus** dem Büro. Y con casa: **nach Hause** / **zu Hause** / **von zu Hause**.',
+    ],
+    examples: [
+      { text: 'Otto muss heute zum Zahnarzt.', meaning: 'Otto tiene que ir hoy al dentista.' },
+      { text: 'Hans ist gerade bei seiner Mutter.', meaning: 'Hans está ahora en casa de su mamá.' },
+      { text: 'Ich komme gerade vom Supermarkt.', meaning: 'Vengo recién llegando del supermercado.' },
+    ],
+    exercises: [
+      { type: 'choice', prompt: 'Wo ist Otto? – Er ist ＿ Friseur.', options: ['beim', 'zum', 'vom', 'im'], answer: 'beim' },
+      { type: 'choice', prompt: 'Woher kommst du? – ＿ Bäcker.', options: ['Vom', 'Zum', 'Beim', 'Aus'], answer: 'Vom' },
+      { type: 'choice', prompt: 'Wohin gehst du? – ＿ meiner Freundin.', options: ['Zu', 'Bei', 'Von', 'Nach'], answer: 'Zu' },
+      { type: 'choice', prompt: 'Ich komme ＿ dem Büro.', hint: 'de un lugar', options: ['aus', 'von', 'zu', 'bei'], answer: 'aus' },
+    ],
+  },
+  {
+    id: 'de-welcher-dieser',
+    level: 'A2',
+    title: 'welcher? – dieser',
+    summary: 'Welches Kleid? – Dieses hier.',
+    pattern: 'welch- / dies- / jed- + terminación como der/die/das',
+    explanation: [
+      '**welcher** (¿cuál?) y **dieser** (este) se declinan como el artículo definido: welch**er** Rock (der), welch**e** Bluse (die), welch**es** Kleid (das), welch**e** Schuhe (pl.). En acusativo masculino: welch**en** Rock?',
+      '**jeder** (cada) funciona igual, solo en singular: **jeden** Tag, **jede** Woche, **jedes** Jahr.',
+    ],
+    examples: [
+      { text: 'Welche Jacke gefällt dir? – Diese hier.', meaning: '¿Qué chaqueta te gusta? – Esta.' },
+      { text: 'Welchen Bus muss ich nehmen?', meaning: '¿Qué bus tengo que tomar?' },
+      { text: 'Otto geht jeden Tag zur Arbeit.', meaning: 'Otto va todos los días al trabajo.' },
+    ],
+    exercises: [
+      { type: 'choice', prompt: '＿ Kleid kaufst du?', hint: 'das Kleid', options: ['Welches', 'Welcher', 'Welche', 'Welchen'], answer: 'Welches' },
+      { type: 'choice', prompt: 'Ich nehme ＿ Pullover.', hint: 'este · der Pullover · Akk.', options: ['diesen', 'dieser', 'dieses', 'diese'], answer: 'diesen' },
+      { type: 'choice', prompt: 'Hans spielt ＿ Woche Fußball.', options: ['jede', 'jeden', 'jedes', 'jeder'], answer: 'jede' },
+      { type: 'type', prompt: '¿Qué bus? → ＿ Bus? (nominativo)', answers: ['Welcher', 'welcher'], german: true },
+    ],
+  },
+  {
+    id: 'de-praeteritum-text',
+    level: 'A2',
+    title: 'El Präteritum en los textos',
+    summary: 'kam, ging, gab, sagte… para entender historias.',
+    pattern: 'débil: machte, sagte · fuerte: kam, ging, gab, fand, sah',
+    explanation: [
+      'En los textos escritos (noticias, cuentos, correos sobre el pasado) se usa mucho el **Präteritum**. Verbos débiles: raíz + **-te**: sagen → sag**te**, arbeiten → arbeit**ete**. Fuertes cambian la vocal: kommen → **kam**, gehen → **ging**, geben → **gab**, finden → **fand**, sehen → **sah**, fahren → **fuhr**.',
+      'En el A2 basta con **reconocerlos**. Al hablar se sigue usando el Perfekt. Ich und er/sie/es tienen la misma forma: ich kam, er kam.',
+    ],
+    examples: [
+      { text: 'Gestern kam Otto spät nach Hause, denn es gab viel Arbeit.', meaning: 'Ayer Otto llegó tarde a casa, porque había mucho trabajo.' },
+      { text: 'Hans fand die Idee super.', meaning: 'A Hans la idea le pareció genial.' },
+      { text: 'Wir fuhren mit dem Zug und sahen viele Dörfer.', meaning: 'Viajamos en tren y vimos muchos pueblos.' },
+    ],
+    exercises: [
+      { type: 'choice', prompt: '¿Qué verbo es «ging»?', options: ['gehen', 'geben', 'gewinnen', 'gießen'], answer: 'gehen' },
+      { type: 'choice', prompt: '¿Qué verbo es «kam»?', options: ['kommen', 'kaufen', 'kennen', 'können'], answer: 'kommen' },
+      { type: 'choice', prompt: '¿Qué verbo es «gab»?', options: ['geben', 'gehen', 'graben', 'gelten'], answer: 'geben' },
+      { type: 'meaning', text: 'Otto sah einen Unfall.', options: ['Otto vio un accidente.', 'Otto tuvo un accidente.', 'Otto ve un accidente.', 'Otto evitó un accidente.'], answer: 'Otto vio un accidente.' },
+    ],
+  },
+  {
+    id: 'de-noch-schon',
+    level: 'A2',
+    title: 'schon, noch, noch nicht, nicht mehr',
+    summary: 'Hast du schon gegessen? – Nein, noch nicht.',
+    pattern: 'schon ↔ noch nicht · noch ↔ nicht mehr · noch kein ↔ kein … mehr',
+    explanation: [
+      '**schon** (ya) ↔ **noch nicht** (todavía no): Bist du **schon** fertig? – Nein, **noch nicht**. **noch** (todavía) ↔ **nicht mehr** (ya no): Wohnst du **noch** in Berlin? – Nein, **nicht mehr**.',
+      'Con sustantivos: **noch kein** (todavía ningún) y **kein … mehr** (ya no… ningún): Ich habe **noch keine** Arbeit. Wir haben **keine** Milch **mehr**.',
+    ],
+    examples: [
+      { text: 'Hast du schon die Miete bezahlt? – Nein, noch nicht.', meaning: '¿Ya pagaste el arriendo? – No, todavía no.' },
+      { text: 'Otto raucht nicht mehr.', meaning: 'Otto ya no fuma.' },
+      { text: 'Wir haben noch keinen Termin.', meaning: 'Todavía no tenemos hora.' },
+    ],
+    exercises: [
+      { type: 'choice', prompt: 'Arbeitest du noch bei der Bank? – Nein, ＿.', options: ['nicht mehr', 'noch nicht', 'schon', 'noch'], answer: 'nicht mehr' },
+      { type: 'choice', prompt: 'Ist der Bus ＿ da? – Nein, noch nicht.', options: ['schon', 'noch', 'mehr', 'nicht'], answer: 'schon' },
+      { type: 'choice', prompt: 'Wir haben keine Zeit ＿.', hint: 'ya no', options: ['mehr', 'noch', 'schon', 'nicht'], answer: 'mehr' },
+      { type: 'meaning', text: 'Ich habe noch keine Wohnung.', options: ['Todavía no tengo departamento.', 'Ya no tengo departamento.', 'Tengo otro departamento.', 'Ya tengo departamento.'], answer: 'Todavía no tengo departamento.' },
+    ],
+  },
+]

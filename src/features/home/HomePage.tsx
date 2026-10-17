@@ -180,7 +180,8 @@ function GermanHome() {
   useProgress((s) => s.grammar)
   useProgress((s) => s.records)
   const status = germanItemStatus(progressSnapshot(), guest)
-  const next = germanPathItems.find((i) => status(i) === 'open')
+  const next = germanPathItems.find((i) => status(i) === 'open' && i.kind !== 'exam') ?? germanPathItems.find((i) => status(i) === 'open')
+  const exam = germanPathItems.find((i) => i.kind === 'exam' && status(i) !== 'done') ?? germanPathItems.filter((i) => i.kind === 'exam').at(-1)!
   const done = germanPathItems.filter((i) => status(i) === 'done').length
   const due = dueNowCount(cards, now())
   return (
@@ -233,7 +234,7 @@ function GermanHome() {
           { to: '/palabras', glyph: 'W', title: 'Palabras', text: 'Con artículo y plural, y repaso espaciado.' },
           { to: '/textos', glyph: 'T', title: 'Lectura y audio', text: 'Las historias de Otto y Hans, como en el examen.' },
           { to: '/tabla', glyph: 'der', title: 'Tablas', text: 'Artículos, casos, terminaciones y un conjugador.' },
-          { to: '/goethe/a1', glyph: '📝', title: 'Simulacro Goethe A1', text: 'La meta del nivel: leer, escuchar, escribir y hablar.' },
+          { to: exam.to, glyph: '📝', title: `Simulacro Goethe ${exam.id}`, text: 'La meta del nivel: leer, escuchar, escribir y hablar.' },
         ].map((f) => (
           <Link
             key={f.to}

@@ -25,7 +25,7 @@ const blocks: Block[] = (() => {
   const out: Block[] = []
   for (let i = 0; i < units.length; i += 2) {
     const pair = units.slice(i, i + 2)
-    out.push({ title: pair.map((u) => u.title.replace(/^A1 · /, '')).join(' y '), units: pair })
+    out.push({ title: pair.map((u) => u.title.replace(/^[ABC][12] · /, '')).join(' y '), units: pair })
   }
   return out
 })()
@@ -82,7 +82,7 @@ export function GermanPlacement() {
         </span>
         <h1 className="text-2xl font-extrabold">Test de nivelación de alemán</h1>
         <p className="text-slate-600 dark:text-slate-400">
-          ¿Ya sabes algo de alemán? Responde bloques de {QUESTIONS} preguntas, de lo más fácil a lo más difícil del A1. Cada bloque que apruebes con
+          ¿Ya sabes algo de alemán? Responde bloques de {QUESTIONS} preguntas, de lo más fácil (A1) a lo más difícil (A2). Cada bloque que apruebes con
           80 % completa esa parte del recorrido, y sus palabras entran a tus repasos. Puedes parar cuando quieras.
         </p>
         {start >= blocks.length ? (

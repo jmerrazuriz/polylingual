@@ -6,12 +6,14 @@ import { germanGrammar } from './grammar'
 import { germanPath, germanPathItems } from './path'
 import { germanItemStatus } from './progress'
 import { readingsA1 } from './readingsA1'
+import { readingsA2 } from './readingsA2'
 import { germanVocab, germanVocabLessons, germanWordCard, germanWordFromCard } from './vocab'
 import { germanLessonExercises, germanWordReviewExercise, pluralExercise } from './vocabExercises'
 
-describe('gramática A1', () => {
-  it('30 lecciones con ejercicios bien armados', () => {
+describe('gramática', () => {
+  it('30 lecciones por nivel (A1 y A2) con ejercicios bien armados', () => {
     expect(germanGrammar.filter((g) => g.level === 'A1')).toHaveLength(30)
+    expect(germanGrammar.filter((g) => g.level === 'A2')).toHaveLength(30)
     expect(new Set(germanGrammar.map((g) => g.id)).size).toBe(germanGrammar.length)
     for (const g of germanGrammar) {
       expect(g.examples.length, g.id).toBeGreaterThanOrEqual(3)
@@ -28,9 +30,10 @@ describe('gramática A1', () => {
   })
 })
 
-describe('vocabulario A1', () => {
-  it('unas 600 palabras; los sustantivos con género y plural, sin ids repetidos', () => {
-    expect(germanVocab.length).toBeGreaterThanOrEqual(600)
+describe('vocabulario', () => {
+  it('unas 1.100 palabras (A1 + A2); los sustantivos con género y plural, sin ids repetidos', () => {
+    expect(germanVocab.filter((w) => w.level === 'A1').length).toBeGreaterThanOrEqual(600)
+    expect(germanVocab.length).toBeGreaterThanOrEqual(1100)
     expect(new Set(germanVocab.map((w) => w.id)).size).toBe(germanVocab.length)
     for (const w of germanVocab) {
       if (w.pos === 'noun') {
@@ -78,26 +81,30 @@ describe('vocabulario A1', () => {
   })
 })
 
-describe('lecturas A1', () => {
-  it('16 textos (8 lecturas y 8 diálogos) con preguntas bien armadas', () => {
-    expect(readingsA1.filter((t) => t.kind === 'reading')).toHaveLength(8)
-    expect(readingsA1.filter((t) => t.kind === 'dialogue')).toHaveLength(8)
-    for (const t of readingsA1) for (const q of t.questions) if (q.type === 'choice') expect(q.options).toContain(q.answer)
+describe('lecturas', () => {
+  it('16 textos por nivel (8 lecturas y 8 diálogos) con preguntas bien armadas', () => {
+    for (const texts of [readingsA1, readingsA2]) {
+      expect(texts.filter((t) => t.kind === 'reading')).toHaveLength(8)
+      expect(texts.filter((t) => t.kind === 'dialogue')).toHaveLength(8)
+    }
+    for (const t of [...readingsA1, ...readingsA2]) for (const q of t.questions) if (q.type === 'choice') expect(q.options).toContain(q.answer)
   })
 })
 
-describe('recorrido A1', () => {
-  it('incluye cada lección una sola vez y termina en el simulacro', () => {
+describe('recorrido', () => {
+  it('incluye cada lección una sola vez y cada nivel termina en su simulacro', () => {
     const keys = germanPathItems.map((i) => `${i.kind}:${i.id}`)
     expect(new Set(keys).size).toBe(keys.length)
     const expected = [
       ...germanGrammar.map((g) => `grammar:${g.id}`),
       ...germanVocabLessons.map((l) => `vocab:${l.id}`),
-      ...readingsA1.map((t) => `reading:${t.id}`),
+      ...[...readingsA1, ...readingsA2].map((t) => `reading:${t.id}`),
       'exam:A1',
+      'exam:A2',
     ]
     expect(new Set(keys)).toEqual(new Set(expected))
-    expect(germanPath.at(-1)!.id).toBe('examen-a1')
+    expect(germanPath.at(-1)!.id).toBe('examen-a2')
+    expect(germanPath.map((u) => u.id)).toContain('examen-a1')
     for (const u of germanPath) for (const s of u.stops) expect(s.items.length).toBeLessThanOrEqual(3)
   })
 
@@ -110,5 +117,20 @@ describe('recorrido A1', () => {
     expect(germanItemStatus(p, false)(first)).toBe('done')
     expect(germanItemStatus(p, false)(second)).toBe('open')
     expect(germanItemStatus(p, true)(germanPathItems.at(-1)!)).toBe('open')
+  })
+
+  it('el simulacro no bloquea el nivel siguiente', () => {
+    const p = emptyProgress()
+    const examIdx = germanPathItems.findIndex((i) => i.kind === 'exam' && i.id === 'A1')
+    const before = germanPathItems[examIdx - 1]
+    const after = germanPathItems[examIdx + 1]
+    for (const i of germanPathItems.slice(0, examIdx)) {
+      if (i.kind === 'grammar') p.grammar[i.id] = { correct: 1, total: 1 }
+      else p.lessons[i.id] = { correct: 1, total: 1 }
+    }
+    const status = germanItemStatus(p, false)
+    expect(status(before)).toBe('done')
+    expect(status(germanPathItems[examIdx])).toBe('open')
+    expect(status(after)).toBe('open')
   })
 })

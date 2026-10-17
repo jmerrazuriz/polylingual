@@ -3,7 +3,8 @@ import type { ProgressData } from '../../lib/progress/model.ts'
 import { germanPathItems } from './path.ts'
 
 // Desbloqueo del alemán: lineal por el recorrido. Cada lección se abre al completar la
-// anterior (gramática, palabras, textos y, al final de cada nivel, el simulacro).
+// anterior. El simulacro de cada nivel es la meta, pero no bloquea el nivel siguiente:
+// lo que viene después de un simulacro se abre al terminar la lección anterior a él.
 
 export const goethePassedKey = (level: string) => `goethe-${level.toLowerCase()}:aprobado`
 
@@ -18,10 +19,11 @@ export function germanItemDone(p: Done, i: PathItem): boolean {
 /** Estado de cada elemento: hecho, abierto (el anterior está hecho) o bloqueado. */
 export function germanItemStatus(p: Done & { unlockAll?: boolean }, everythingOpen: boolean): (i: PathItem) => ItemStatus {
   const open = new Set<string>()
-  germanPathItems.forEach((item, idx) => {
-    const prev = germanPathItems[idx - 1]
-    if (everythingOpen || p.unlockAll || idx === 0 || germanItemDone(p, prev)) open.add(`${item.kind}:${item.id}`)
-  })
+  let prev: PathItem | undefined
+  for (const item of germanPathItems) {
+    if (everythingOpen || p.unlockAll || !prev || germanItemDone(p, prev)) open.add(`${item.kind}:${item.id}`)
+    if (item.kind !== 'exam') prev = item
+  }
   return (i) => (germanItemDone(p, i) ? 'done' : open.has(`${i.kind}:${i.id}`) ? 'open' : 'locked')
 }
 
