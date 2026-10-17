@@ -370,6 +370,16 @@ El curso alemán ya está en `src/courses/index.ts` con `status: 'soon'` y `spee
 - **Rendimiento:** con ~3.200 palabras, la elección de distractores se volvió lenta. Ahora se muestrea por clase de palabra.
 - **Lo que queda:** D7 (revisión por un hablante nativo o profesor de alemán) y las tandas extra de vocabulario.
 
+### Tanda extra de vocabulario B1–C2 (17-10-2026)
+- Unas 980 palabras nuevas, que llevan el curso de ~3.240 a **~4.230 palabras** (430 lecciones de palabras):
+  - **B1** (`vocabB1x.ts`, 343 palabras, 20 temas): herramientas, cocina, cuerpo, síntomas, ropa, animales, jardín, deporte, hotel y aeropuerto, aparatos de la casa, oficina, alimentos, cantidades, materiales, momentos de la vida, paisajes, verbos y adjetivos del día a día, expresiones de tiempo y lugares de la ciudad.
+  - **B2** (`vocabB2x.ts`, 262 palabras, 16 temas): mercado laboral, vivienda, movilidad, nutrición, crianza, consumo, delitos, catástrofes, religión, música y espectáculos, agricultura, celular, turismo, y más verbos, adjetivos y sustantivos.
+  - **C1** (`vocabC1x.ts`, 226 palabras, 12 temas): psicología, sociología, urbanismo, mercados financieros, medicina avanzada, política educativa, derecho laboral, técnica energética, y más verbos, adjetivos, sustantivos y modismos.
+  - **C2** (`vocabC2x.ts`, 152 palabras, 8 temas): humanidades, cine y series, reacciones en la conversación, registro culto, verbos y adjetivos con matiz, modismos y refranes.
+- Se escribieron ~1.400 palabras y se quitaron unas 420 que ya estaban en el curso: ninguna palabra se repite entre niveles.
+- Los temas nuevos van **después** de los originales, así no cambia ningún id de palabra ni de lección y el progreso guardado sigue valiendo. En el recorrido aparecen como dos unidades «Más palabras I y II» antes de cada simulacro (B1–C2).
+- **Lo que falta para la meta (~8.000):** unas 3.800 palabras. Lo más útil sería ampliar A2–B1 (léxico de alta frecuencia) y agregar familias de palabras derivadas.
+
 ---
 
 ## 7. Riesgos

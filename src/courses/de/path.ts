@@ -79,6 +79,8 @@ const unitsB1: PathUnit[] = [
   unit('de-b1-10', 'B1 · Decisiones', '⚖️', ['de-doppelkonnektoren', 'de-je-desto', 'de-brauchen-zu'], ['bildung2', 'medien2'], ['dt-b1-umzug-entscheidung', 'lt-b1-umfrage']),
   unit('de-b1-11', 'B1 · Verbos con preposición', '🔗', ['de-verben-praep-2', 'de-wo-da', 'de-reflexiv-dativ'], ['rektion'], ['dt-b1-radio']),
   unit('de-b1-12', 'B1 · Mi opinión', '🗣️', ['de-meinung', 'de-wortbildung', 'de-futur-vermutung', 'de-adjektiv-stark', 'de-indefinitpronomen'], ['diskussion', 'abstrakt', 'verben3', 'adjektive3', 'konnektoren-b1'], ['lt-b1-bewerbung', 'dt-b1-entscheidung']),
+  unit('de-b1-extra-1', 'B1 · Más palabras I', '🧰', [], ['werkzeug', 'kueche', 'koerper2', 'beschwerden', 'kleidung2', 'tiere2', 'garten', 'sport', 'unterkunft', 'haushaltsgeraete'], []),
+  unit('de-b1-extra-2', 'B1 · Más palabras II', '🧰', [], ['buero', 'lebensmittel2', 'mengen', 'material', 'lebensereignisse', 'landschaft', 'alltagsverben2', 'zeitangaben', 'adjektive-b1x', 'stadtorte'], []),
   examUnit('B1'),
 ]
 
@@ -95,6 +97,8 @@ const unitsB2: PathUnit[] = [
   unit('de-b2-10', 'B2 · Rección', '🔗', ['de-es-korrelat', 'de-adjektiv-praep', 'de-nomen-praep'], ['adjektiv-praep', 'nomen-praep', 'kundenservice'], ['dt-b2-kundengespraech']),
   unit('de-b2-11', 'B2 · Palabras y registro', '🗨️', ['de-wortbildung-2', 'de-register'], ['umgangssprache', 'redewendungen'], ['lt-b2-blog-sprache', 'dt-b2-stammtisch']),
   unit('de-b2-12', 'B2 · Argumentar y presentar', '🎤', ['de-grafik', 'de-eroerterung'], ['redemittel', 'bildung3', 'konnektoren-b2'], ['lt-b2-eroerterung', 'dt-b2-vortrag']),
+  unit('de-b2-extra-1', 'B2 · Más palabras I', '🗂️', [], ['arbeitsmarkt', 'immobilien', 'mobilitaet', 'ernaehrung', 'erziehung', 'konsum', 'kriminalitaet', 'katastrophen'], []),
+  unit('de-b2-extra-2', 'B2 · Más palabras II', '🗂️', [], ['religion', 'musik-theater', 'landwirtschaft', 'smartphone', 'verben-b2x', 'adjektive-b2x', 'nomen-b2x', 'tourismus'], []),
   examUnit('B2'),
 ]
 
@@ -111,6 +115,8 @@ const unitsC1: PathUnit[] = [
   unit('de-c1-10', 'C1 · Rección culta', '⚖️', ['de-verben-genitiv', 'de-adjektiv-kasus', 'de-es-funktionen'], ['geschichte'], ['lt-c1-mauerfall']),
   unit('de-c1-11', 'C1 · Estilo y coherencia', '✒️', ['de-vorfeld-nachfeld', 'de-textverweise', 'de-reformulieren'], ['kunst', 'redewendungen-c1'], ['lt-c1-erzaehlung', 'dt-c1-pruefung']),
   unit('de-c1-12', 'C1 · Mi voz en alemán', '🏁', ['de-modalitaetsverben', 'de-sprichwoerter'], ['sprichwoerter'], ['lt-c1-essay', 'dt-c1-podcast', 'dt-c1-eroeffnung']),
+  unit('de-c1-extra-1', 'C1 · Más palabras I', '📚', [], ['psychologie2', 'soziologie', 'stadtplanung', 'finanzmarkt', 'medizin3', 'bildungspolitik'], []),
+  unit('de-c1-extra-2', 'C1 · Más palabras II', '📚', [], ['arbeitsrecht', 'energietechnik', 'verben-c1x', 'adjektive-c1x', 'nomen-c1x', 'redewendungen-c1x'], []),
   examUnit('C1'),
 ]
 
@@ -127,6 +133,8 @@ const unitsC2: PathUnit[] = [
   unit('de-c2-10', 'C2 · Hablar rápido', '📻', ['de-ellipse', 'de-ironie'], ['redewendungen-c2'], ['dt-c2-radio']),
   unit('de-c2-11', 'C2 · Escribir con estilo', '✍️', ['de-stilmittel', 'de-glosse', 'de-rezension'], ['stilfiguren'], ['lt-c2-glosse', 'lt-c2-rezension']),
   unit('de-c2-12', 'C2 · Ottos Weg', '🏡', ['de-final-c2', 'de-wortspiele'], ['philosophie', 'sprichwoerter2'], ['lt-c2-rede', 'dt-c2-philosophie', 'dt-c2-einbuergerung']),
+  unit('de-c2-extra-1', 'C2 · Más palabras I', '🖋️', [], ['geisteswissenschaft', 'film', 'gespraech-nativ', 'gehoben2'], []),
+  unit('de-c2-extra-2', 'C2 · Más palabras II', '🖋️', [], ['verben-c2x', 'adjektive-c2x', 'redewendungen-c2x', 'sprichwoerter3'], []),
   examUnit('C2'),
 ]
 

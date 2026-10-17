@@ -3,9 +3,13 @@ import type { CefrLevel } from './levels.ts'
 import { vocabA1 } from './vocabA1.ts'
 import { vocabA2 } from './vocabA2.ts'
 import { vocabB1 } from './vocabB1.ts'
+import { vocabB1x } from './vocabB1x.ts'
 import { vocabB2 } from './vocabB2.ts'
+import { vocabB2x } from './vocabB2x.ts'
 import { vocabC1 } from './vocabC1.ts'
+import { vocabC1x } from './vocabC1x.ts'
 import { vocabC2 } from './vocabC2.ts'
+import { vocabC2x } from './vocabC2x.ts'
 
 // Vocabulario del alemán. Cada sustantivo se aprende con su artículo y su plural.
 // Los ids (la palabra, o palabra·clase si se repite) no deben cambiar: de ellos dependen
@@ -80,16 +84,17 @@ function build(themes: GermanTheme[], level: CefrLevel, previous: GermanWord[] =
 
 export const germanThemesA1 = vocabA1
 export const germanThemesA2 = vocabA2
-export const germanThemesB1 = vocabB1
-export const germanThemesB2 = vocabB2
-export const germanThemesC1 = vocabC1
-export const germanThemesC2 = vocabC2
+// Las tandas extra («…x») van después de los temas originales, así los ids no cambian.
+export const germanThemesB1 = [...vocabB1, ...vocabB1x]
+export const germanThemesB2 = [...vocabB2, ...vocabB2x]
+export const germanThemesC1 = [...vocabC1, ...vocabC1x]
+export const germanThemesC2 = [...vocabC2, ...vocabC2x]
 export const germanVocabA1 = build(vocabA1, 'A1')
 export const germanVocabA2 = build(vocabA2, 'A2', germanVocabA1)
-export const germanVocabB1 = build(vocabB1, 'B1', [...germanVocabA1, ...germanVocabA2])
-export const germanVocabB2 = build(vocabB2, 'B2', [...germanVocabA1, ...germanVocabA2, ...germanVocabB1])
-export const germanVocabC1 = build(vocabC1, 'C1', [...germanVocabA1, ...germanVocabA2, ...germanVocabB1, ...germanVocabB2])
-export const germanVocabC2 = build(vocabC2, 'C2', [...germanVocabA1, ...germanVocabA2, ...germanVocabB1, ...germanVocabB2, ...germanVocabC1])
+export const germanVocabB1 = build(germanThemesB1, 'B1', [...germanVocabA1, ...germanVocabA2])
+export const germanVocabB2 = build(germanThemesB2, 'B2', [...germanVocabA1, ...germanVocabA2, ...germanVocabB1])
+export const germanVocabC1 = build(germanThemesC1, 'C1', [...germanVocabA1, ...germanVocabA2, ...germanVocabB1, ...germanVocabB2])
+export const germanVocabC2 = build(germanThemesC2, 'C2', [...germanVocabA1, ...germanVocabA2, ...germanVocabB1, ...germanVocabB2, ...germanVocabC1])
 export const germanVocab: GermanWord[] = [...germanVocabA1, ...germanVocabA2, ...germanVocabB1, ...germanVocabB2, ...germanVocabC1, ...germanVocabC2]
 export const germanWordById = new Map(germanVocab.map((w) => [w.id, w]))
 
@@ -122,10 +127,10 @@ function lessonsOf(themes: GermanTheme[], words: GermanWord[], level: CefrLevel)
 
 export const germanVocabLessonsA1 = lessonsOf(vocabA1, germanVocabA1, 'A1')
 export const germanVocabLessonsA2 = lessonsOf(vocabA2, germanVocabA2, 'A2')
-export const germanVocabLessonsB1 = lessonsOf(vocabB1, germanVocabB1, 'B1')
-export const germanVocabLessonsB2 = lessonsOf(vocabB2, germanVocabB2, 'B2')
-export const germanVocabLessonsC1 = lessonsOf(vocabC1, germanVocabC1, 'C1')
-export const germanVocabLessonsC2 = lessonsOf(vocabC2, germanVocabC2, 'C2')
+export const germanVocabLessonsB1 = lessonsOf(germanThemesB1, germanVocabB1, 'B1')
+export const germanVocabLessonsB2 = lessonsOf(germanThemesB2, germanVocabB2, 'B2')
+export const germanVocabLessonsC1 = lessonsOf(germanThemesC1, germanVocabC1, 'C1')
+export const germanVocabLessonsC2 = lessonsOf(germanThemesC2, germanVocabC2, 'C2')
 export const germanVocabLessons: GermanVocabLesson[] = [...germanVocabLessonsA1, ...germanVocabLessonsA2, ...germanVocabLessonsB1, ...germanVocabLessonsB2, ...germanVocabLessonsC1, ...germanVocabLessonsC2]
 export const germanVocabLessonById = new Map(germanVocabLessons.map((l) => [l.id, l]))
 
