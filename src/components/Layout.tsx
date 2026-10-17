@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { Suspense, useState } from 'react'
 import { Link, NavLink, Outlet, useLocation } from 'react-router'
 import { type CourseSection, courseById } from '../courses'
 import { useAccount } from '../lib/account/store'
@@ -71,7 +71,9 @@ export function Layout() {
       <GuestBanner />
 
       <main id="contenido" className="mx-auto w-full max-w-5xl flex-1 px-4 pt-6 pb-24 md:pb-10 print:p-0">
-        <Outlet />
+        <Suspense fallback={<p className="py-10 text-center text-slate-500">Cargando…</p>}>
+          <Outlet />
+        </Suspense>
       </main>
 
       <Toaster />

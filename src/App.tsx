@@ -1,35 +1,47 @@
-import { lazy, Suspense } from 'react'
+import { type ComponentType, lazy } from 'react'
 import { Route, Routes } from 'react-router'
 import { ComingSoon } from './components/ComingSoon'
 import { Layout } from './components/Layout'
-import { ChartPage } from './features/chart/ChartPage'
-import { CoursesPage } from './features/courses/CoursesPage'
-import { DailyPage } from './features/daily/DailyPage'
-import { ExtraLessonPage } from './features/extra/ExtraLessonPage'
-import { CounterLessonRoute, CountersPage } from './features/study/CountersPages'
-import { KanjiLessonRoute, KanjiPage } from './features/study/KanjiPages'
-import { VocabLessonRoute, VocabPage } from './features/study/VocabPages'
-import { ConjugationPage } from './features/grammar/ConjugationPage'
-import { PathPlacementPage } from './features/path/PathPlacementPage'
-import { ReadingRoute, ReadingsPage } from './features/study/ReadingPages'
-import { MockExamPage } from './features/study/MockExamPage'
-import { GamesPage } from './features/games/GamesPage'
-import { GrammarLessonRoute } from './features/grammar/GrammarLessonPage'
-import { GrammarPage } from './features/grammar/GrammarPage'
 import { HomePage } from './features/home/HomePage'
 import { LearnPage } from './features/learn/LearnPage'
-import { LessonRoute } from './features/learn/LessonPage'
-import { PlacementPage } from './features/learn/PlacementPage'
-import { PracticePage } from './features/practice/PracticePage'
-import { ProgressPage } from './features/progress/ProgressPage'
-import { ReviewPage } from './features/review/ReviewPage'
-import { UnitReviewRoute } from './features/review/UnitReviewPage'
-import { WeakReviewPage } from './features/review/WeakReviewPage'
 
-// Las páginas de cuenta usan Firebase Auth: se cargan solo al visitarlas.
-const LoginPage = lazy(() => import('./features/account/LoginPage').then((m) => ({ default: m.LoginPage })))
-const ProfilePage = lazy(() => import('./features/account/ProfilePage').then((m) => ({ default: m.ProfilePage })))
-const loading = <p className="py-10 text-center text-slate-500">Cargando…</p>
+/**
+ * Página que se carga al visitarla (su código queda en un archivo aparte). El inicio y
+ * el recorrido van en el paquete principal; el resto se baja cuando se abre.
+ * Layout muestra «Cargando…» mientras tanto.
+ */
+function page<M>(load: () => Promise<M>, pick: (m: M) => ComponentType) {
+  return lazy(() => load().then((m) => ({ default: pick(m) })))
+}
+
+const CoursesPage = page(() => import('./features/courses/CoursesPage'), (m) => m.CoursesPage)
+const DailyPage = page(() => import('./features/daily/DailyPage'), (m) => m.DailyPage)
+const ChartPage = page(() => import('./features/chart/ChartPage'), (m) => m.ChartPage)
+const LessonRoute = page(() => import('./features/learn/LessonPage'), (m) => m.LessonRoute)
+const PlacementPage = page(() => import('./features/learn/PlacementPage'), (m) => m.PlacementPage)
+const PathPlacementPage = page(() => import('./features/path/PathPlacementPage'), (m) => m.PathPlacementPage)
+const GrammarPage = page(() => import('./features/grammar/GrammarPage'), (m) => m.GrammarPage)
+const GrammarLessonRoute = page(() => import('./features/grammar/GrammarLessonPage'), (m) => m.GrammarLessonRoute)
+const ConjugationPage = page(() => import('./features/grammar/ConjugationPage'), (m) => m.ConjugationPage)
+const ReadingsPage = page(() => import('./features/study/ReadingPages'), (m) => m.ReadingsPage)
+const ReadingRoute = page(() => import('./features/study/ReadingPages'), (m) => m.ReadingRoute)
+const MockExamPage = page(() => import('./features/study/MockExamPage'), (m) => m.MockExamPage)
+const VocabPage = page(() => import('./features/study/VocabPages'), (m) => m.VocabPage)
+const VocabLessonRoute = page(() => import('./features/study/VocabPages'), (m) => m.VocabLessonRoute)
+const CountersPage = page(() => import('./features/study/CountersPages'), (m) => m.CountersPage)
+const CounterLessonRoute = page(() => import('./features/study/CountersPages'), (m) => m.CounterLessonRoute)
+const KanjiPage = page(() => import('./features/study/KanjiPages'), (m) => m.KanjiPage)
+const KanjiLessonRoute = page(() => import('./features/study/KanjiPages'), (m) => m.KanjiLessonRoute)
+const ExtraLessonPage = page(() => import('./features/extra/ExtraLessonPage'), (m) => m.ExtraLessonPage)
+const PracticePage = page(() => import('./features/practice/PracticePage'), (m) => m.PracticePage)
+const GamesPage = page(() => import('./features/games/GamesPage'), (m) => m.GamesPage)
+const ReviewPage = page(() => import('./features/review/ReviewPage'), (m) => m.ReviewPage)
+const UnitReviewRoute = page(() => import('./features/review/UnitReviewPage'), (m) => m.UnitReviewRoute)
+const WeakReviewPage = page(() => import('./features/review/WeakReviewPage'), (m) => m.WeakReviewPage)
+const ProgressPage = page(() => import('./features/progress/ProgressPage'), (m) => m.ProgressPage)
+// Las páginas de cuenta usan Firebase Auth.
+const LoginPage = page(() => import('./features/account/LoginPage'), (m) => m.LoginPage)
+const ProfilePage = page(() => import('./features/account/ProfilePage'), (m) => m.ProfilePage)
 
 export default function App() {
   return (
@@ -62,8 +74,8 @@ export default function App() {
         <Route path="repaso/unidad/:unitId" element={<UnitReviewRoute />} />
         <Route path="repaso/debiles" element={<WeakReviewPage />} />
         <Route path="progreso" element={<ProgressPage />} />
-        <Route path="entrar" element={<Suspense fallback={loading}><LoginPage /></Suspense>} />
-        <Route path="perfil" element={<Suspense fallback={loading}><ProfilePage /></Suspense>} />
+        <Route path="entrar" element={<LoginPage />} />
+        <Route path="perfil" element={<ProfilePage />} />
         <Route path="*" element={<ComingSoon title="Página no encontrada" />} />
       </Route>
     </Routes>

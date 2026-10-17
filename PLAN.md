@@ -413,7 +413,11 @@ Meta: que quien termine la etapa pueda aprobar el JLPT N4. Va por tandas, cada u
   - Trazos de KanjiVG, con animación y práctica de escritura.
   - 39 lecciones en 8 grupos (personas, tiempo, adjetivos, lugares, comida, escuela, verbos, trabajo), que siguen a las del N5. Tienen tarjetas SRS de lectura y escritura.
   - 5 unidades de kanji N4 en el recorrido y en los bloques N4 de la nivelación.
-  - **Pendiente:** el paquete ya pesa 1,1 MB (358 KB comprimido). Conviene cargar los trazos y el contenido de cada nivel por partes.
+- ✅ **Carga más liviana:**
+  - Los trazos de kanji (244 KB) se bajan solo la primera vez que se dibuja un kanji (`loadKanjiStrokes`, `useStrokesReady`).
+  - Cada página, salvo el inicio y el recorrido, va en su propio archivo y se carga al abrirla.
+  - La primera carga bajó de 1.110 KB (358 KB comprimido) a 735 KB (234 KB comprimido).
+  - Lo que queda es sobre todo contenido que el recorrido necesita para calcular estados. Para bajarlo más habría que cargar el contenido N4/N3 de forma asíncrona.
 - **B4 · Furigana:** lector con kanji y lectura encima, que se puede ocultar, y opción de texto sin espacios.
 - **B5 · Lecturas y diálogos N4:** de ~200 caracteres, con audio más lento opcional.
 - **B6 · Simulacro N4,** unidades N4 en el recorrido y bloques N4 en la nivelación.

@@ -78,8 +78,10 @@ const cache = new Map<string, Point[][]>()
 export function expectedStrokes(char: string): Point[][] {
   let strokes = cache.get(char)
   if (!strokes) {
-    strokes = (getStrokes(char)?.strokes ?? []).map(pathToPoints)
-    cache.set(char, strokes)
+    const data = getStrokes(char)
+    strokes = (data?.strokes ?? []).map(pathToPoints)
+    // Si los trazos (de kanji) aún no se cargan, no se guarda el resultado vacío.
+    if (data) cache.set(char, strokes)
   }
   return strokes
 }

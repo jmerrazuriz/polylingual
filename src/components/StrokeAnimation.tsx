@@ -1,5 +1,6 @@
 import type { CSSProperties } from 'react'
 import { getStrokes } from '../courses/ja/kana'
+import { useStrokesReady } from '../lib/strokes/useStrokes'
 
 const STROKE_SECONDS = 0.55
 const GAP_SECONDS = 0.15
@@ -17,7 +18,10 @@ type Props = {
  * cambia la `key` del componente.
  */
 export function StrokeAnimation({ parts, size = 160, showNumbers = true }: Props) {
+  const ready = useStrokesReady(parts)
   let index = 0
+
+  if (!ready) return <StrokesLoading size={size} />
 
   return (
     <div className="flex justify-center gap-1">
@@ -73,6 +77,20 @@ export function StrokeAnimation({ parts, size = 160, showNumbers = true }: Props
           </svg>
         )
       })}
+    </div>
+  )
+}
+
+/** Lugar del dibujo mientras llegan los trazos de kanji. */
+export function StrokesLoading({ size }: { size: number }) {
+  return (
+    <div
+      role="status"
+      aria-label="Cargando los trazos"
+      style={{ width: size, height: size }}
+      className="flex animate-pulse items-center justify-center rounded-xl bg-white text-sm text-slate-400 dark:bg-slate-800"
+    >
+      …
     </div>
   )
 }

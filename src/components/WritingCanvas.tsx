@@ -1,6 +1,8 @@
 import { type CSSProperties, type PointerEvent, useEffect, useRef, useState } from 'react'
 import { getStrokes } from '../courses/ja/kana'
 import { checkStroke, expectedStrokes, type StrokeCheck } from '../lib/strokes/evaluate'
+import { useStrokesReady } from '../lib/strokes/useStrokes'
+import { StrokesLoading } from './StrokeAnimation'
 import type { Point } from '../lib/strokes/geometry'
 
 /** calcar: silueta completa · guía: solo el siguiente trazo · memoria: nada · libre: silueta y sin corrección. */
@@ -30,7 +32,20 @@ const toPath = (points: readonly Point[]) =>
     ? `M${points[0].x},${points[0].y}l0.01,0`
     : points.map((p, i) => `${i ? 'L' : 'M'}${p.x.toFixed(1)},${p.y.toFixed(1)}`).join('')
 
-export function WritingCanvas({ char, help, onComplete }: Props) {
+/** Lienzo para escribir el carácter; si es un kanji, espera a que lleguen sus trazos. */
+export function WritingCanvas(props: Props) {
+  const ready = useStrokesReady([props.char])
+  if (!ready) {
+    return (
+      <div className="flex justify-center">
+        <StrokesLoading size={280} />
+      </div>
+    )
+  }
+  return <ReadyCanvas {...props} />
+}
+
+function ReadyCanvas({ char, help, onComplete }: Props) {
   const svgRef = useRef<SVGSVGElement>(null)
   const paths = getStrokes(char)?.strokes ?? []
   const strokes = expectedStrokes(char)

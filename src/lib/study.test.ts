@@ -1,9 +1,9 @@
 import { vocabLessons } from '../courses/ja/vocab'
 import { readingTexts } from './readings'
-import { describe, expect, it } from 'vitest'
+import { beforeAll, describe, expect, it } from 'vitest'
 import { grammarByCourse } from '../courses/content'
 import { counterLessons, counters, numbers } from '../courses/ja/counters'
-import { getStrokes } from '../courses/ja/kana'
+import { getStrokes, loadKanjiStrokes } from '../courses/ja/kana'
 import { kanjiByChar, kanjiLessons, kanjiList } from '../courses/ja/kanji'
 import { lessons as kanaLessons } from '../courses/ja/lessons'
 import { buildExtraLesson } from './extra'
@@ -15,6 +15,9 @@ import { units } from './units'
 
 const readable = (kana: string) => romajiReadings(kana.replace(/[\s、。〜()]/g, ''))
 const done = (ids: string[]) => Object.fromEntries(ids.map((id) => [id, { correct: 1, total: 1 }]))
+
+// Los trazos de kanji se cargan aparte (como en la app).
+beforeAll(() => loadKanjiStrokes())
 
 describe('contadores', () => {
   it('cada contador tiene 10 lecturas y marca bien cuáles son especiales', () => {
