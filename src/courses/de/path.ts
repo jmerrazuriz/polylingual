@@ -86,6 +86,12 @@ const unitsB1: PathUnit[] = [
   unit('de-b1-familien', 'B1 · Familias de palabras', '🌳', [], ['familie-fahren', 'familie-stellen', 'familie-sprechen', 'familie-schreiben', 'familie-nehmen', 'familie-ziehen', 'familie-legen', 'familie-halten', 'familie-arbeiten', 'familie-wohnen', 'familie-kaufen', 'familie-bilden'], []),
   unit('de-b1-extra-3', 'B1 · Más palabras III', '🧰', [], ['nomen-b1y-1', 'nomen-b1y-2', 'welt-b1y', 'natur-b1y', 'verben-b1y-1', 'verben-b1y-2'], []),
   unit('de-b1-extra-4', 'B1 · Más palabras IV', '🧰', [], ['verben-b1y-3', 'verben-b1y-4', 'verben-b1y-5', 'adjektive-b1y-1', 'adjektive-b1y-2', 'adjektive-b1y-3'], []),
+  unit('de-b1-extra-5', 'B1 · Más palabras V', '🧰', [], ['b1z-berufe', 'b1z-berufe2', 'b1z-gerichte', 'b1z-zutaten', 'b1z-wohnung', 'b1z-moebel', 'b1z-putzen', 'b1z-arzt'], []),
+  unit('de-b1-extra-6', 'B1 · Más palabras VI', '🧰', [], ['b1z-amt', 'b1z-bahn', 'b1z-auto', 'b1z-hobbys', 'b1z-sportarten', 'b1z-wetter', 'b1z-baeume', 'b1z-gefuehle'], []),
+  unit('de-b1-extra-7', 'B1 · Más palabras VII', '🧰', [], ['b1z-kinder', 'b1z-post', 'b1z-feste', 'b1z-geld', 'b1z-internet', 'b1z-strasse', 'b1z-urlaub', 'b1z-koerperpflege'], []),
+  unit('de-b1-extra-8', 'B1 · Más palabras VIII', '🧰', [], ['b1z-zusammen', 'b1z-gesundleben', 'b1z-schule', 'b1z-einkauf', 'b1w-laender', 'b1w-nationalitaet', 'b1w-getraenke', 'b1w-geschaefte'], []),
+  unit('de-b1-extra-9', 'B1 · Más palabras IX', '🧰', [], ['b1w-schuhe', 'b1w-farben', 'b1w-haustiere', 'b1w-gartengeraete', 'b1w-verkehrsmittel', 'b1w-gesicht', 'b1w-krankenhaus', 'b1w-instrumente'], []),
+  unit('de-b1-extra-10', 'B1 · Más palabras X', '🧰', [], ['b1w-wald', 'b1w-ung', 'b1w-heit', 'b1w-adverbien'], []),
   examUnit('B1'),
 ]
 
@@ -104,6 +110,13 @@ const unitsB2: PathUnit[] = [
   unit('de-b2-12', 'B2 · Argumentar y presentar', '🎤', ['de-grafik', 'de-eroerterung'], ['redemittel', 'bildung3', 'konnektoren-b2'], ['lt-b2-eroerterung', 'dt-b2-vortrag']),
   unit('de-b2-extra-1', 'B2 · Más palabras I', '🗂️', [], ['arbeitsmarkt', 'immobilien', 'mobilitaet', 'ernaehrung', 'erziehung', 'konsum', 'kriminalitaet', 'katastrophen'], []),
   unit('de-b2-extra-2', 'B2 · Más palabras II', '🗂️', [], ['religion', 'musik-theater', 'landwirtschaft', 'smartphone', 'verben-b2x', 'adjektive-b2x', 'nomen-b2x', 'tourismus'], []),
+  unit('de-b2-extra-3', 'B2 · Más palabras III', '🗂️', [], ['b2z-motor', 'b2z-fahrwerk', 'b2z-elektrik', 'b2z-werkstattalltag', 'b2z-bauen', 'b2z-krankheiten', 'b2z-organe', 'b2z-firma'], []),
+  unit('de-b2-extra-4', 'B2 · Más palabras IV', '🗂️', [], ['b2z-geschaeft', 'b2z-steuern', 'b2z-geografie', 'b2z-tiere', 'b2z-kueche2', 'b2z-charakter', 'b2z-kommunikation', 'b2z-verben'], []),
+  unit('de-b2-extra-5', 'B2 · Más palabras V', '🗂️', [], ['b2z-adjektive', 'b2z-nomen', 'b2z-medienwelt', 'b2z-kunst', 'b2z-recht', 'b2z-wohnungssuche', 'b2z-umweltalltag', 'b2z-redewendungen'], []),
+  unit('de-b2-extra-6', 'B2 · Más palabras VI', '🗂️', [], ['b2z-sicherheit', 'b2z-zeit', 'b2z-oeffentlich', 'b2w-fleisch-fisch', 'b2w-brot', 'b2w-gesellschaft', 'b2w-buerokratie', 'b2w-telefonie'], []),
+  unit('de-b2-extra-7', 'B2 · Más palabras VII', '🗂️', [], ['b2w-email', 'b2w-arbeitszeit', 'b2w-auto-kauf', 'b2w-wetterlagen', 'b2w-verben-be', 'b2w-verben-er', 'b2w-adjektive-ig', 'b2w-adjektive-bar'], []),
+  unit('de-b2-extra-8', 'B2 · Más palabras VIII', '🗂️', [], ['b2w-schaft', 'b2w-sport', 'b2w-uni', 'b2w-redewendungen', 'b2w-software', 'b2w-zahnarzt', 'b2w-hochzeit', 'b2w-buecher'], []),
+  unit('de-b2-extra-9', 'B2 · Más palabras IX', '🗂️', [], ['b2w-haustechnik', 'b2w-optik', 'b2w-kosmetik', 'b2w-trauer'], []),
   examUnit('B2'),
 ]
 
@@ -122,6 +135,11 @@ const unitsC1: PathUnit[] = [
   unit('de-c1-12', 'C1 · Mi voz en alemán', '🏁', ['de-modalitaetsverben', 'de-sprichwoerter'], ['sprichwoerter'], ['lt-c1-essay', 'dt-c1-podcast', 'dt-c1-eroeffnung']),
   unit('de-c1-extra-1', 'C1 · Más palabras I', '📚', [], ['psychologie2', 'soziologie', 'stadtplanung', 'finanzmarkt', 'medizin3', 'bildungspolitik'], []),
   unit('de-c1-extra-2', 'C1 · Más palabras II', '📚', [], ['arbeitsrecht', 'energietechnik', 'verben-c1x', 'adjektive-c1x', 'nomen-c1x', 'redewendungen-c1x'], []),
+  unit('de-c1-extra-3', 'C1 · Más palabras III', '📚', [], ['c1z-chemie', 'c1z-physik', 'c1z-biologie', 'c1z-astronomie', 'c1z-mathe', 'c1z-it', 'c1z-bwl', 'c1z-personal'], []),
+  unit('de-c1-extra-4', 'C1 · Más palabras IV', '📚', [], ['c1z-logistik', 'c1z-eu', 'c1z-paedagogik', 'c1z-linguistik', 'c1z-klima', 'c1z-geologie', 'c1z-sicherheitspolitik', 'c1z-justiz'], []),
+  unit('de-c1-extra-5', 'C1 · Más palabras V', '📚', [], ['c1z-medizinfach', 'c1z-pharma', 'c1z-marketing', 'c1z-verben-a', 'c1z-verben-b', 'c1z-adjektive-a', 'c1z-adjektive-b', 'c1z-nomen-a'], []),
+  unit('de-c1-extra-6', 'C1 · Más palabras VI', '📚', [], ['c1z-nomen-b', 'c1z-fvg', 'c1z-redewendungen', 'c1z-design', 'c1z-religion', 'c1z-musik', 'c1w-ung-a', 'c1w-ung-b'], []),
+  unit('de-c1-extra-7', 'C1 · Más palabras VII', '📚', [], ['c1w-komposita-adj', 'c1w-komposita-nomen', 'c1w-verben', 'c1w-adverbien', 'c1w-technik', 'c1w-umwelttechnik', 'c1w-einwanderung'], []),
   examUnit('C1'),
 ]
 
@@ -140,6 +158,10 @@ const unitsC2: PathUnit[] = [
   unit('de-c2-12', 'C2 · Ottos Weg', '🏡', ['de-final-c2', 'de-wortspiele'], ['philosophie', 'sprichwoerter2'], ['lt-c2-rede', 'dt-c2-philosophie', 'dt-c2-einbuergerung']),
   unit('de-c2-extra-1', 'C2 · Más palabras I', '🖋️', [], ['geisteswissenschaft', 'film', 'gespraech-nativ', 'gehoben2'], []),
   unit('de-c2-extra-2', 'C2 · Más palabras II', '🖋️', [], ['verben-c2x', 'adjektive-c2x', 'redewendungen-c2x', 'sprichwoerter3'], []),
+  unit('de-c2-extra-3', 'C2 · Más palabras III', '🖋️', [], ['c2z-geschichte', 'c2z-umgangssprache', 'c2z-zwillingsformeln', 'c2z-interjektionen', 'c2z-latein', 'c2z-literarisch', 'c2z-adjektive-lit', 'c2z-nomen-lit'], []),
+  unit('de-c2-extra-4', 'C2 · Más palabras IV', '🖋️', [], ['c2z-oesterreich2', 'c2z-schweiz2', 'c2z-norden', 'c2z-recht', 'c2z-philosophie2', 'c2z-psyche', 'c2z-wirtschaft', 'c2z-presse'], []),
+  unit('de-c2-extra-5', 'C2 · Más palabras V', '🖋️', [], ['c2z-redewendungen1', 'c2z-redewendungen2', 'c2z-sprichwoerter', 'c2z-verben', 'c2z-adjektive', 'c2z-nomen', 'c2z-theater', 'c2z-abkuerzungen'], []),
+  unit('de-c2-extra-6', 'C2 · Más palabras VI', '🖋️', [], ['c2z-fachwerkstatt', 'c2z-wortpaare', 'c2z-alltagshumor'], []),
   examUnit('C2'),
 ]
 

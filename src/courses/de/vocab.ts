@@ -6,12 +6,19 @@ import { vocabA2x } from './vocabA2x.ts'
 import { vocabB1 } from './vocabB1.ts'
 import { vocabB1x } from './vocabB1x.ts'
 import { vocabB1y } from './vocabB1y.ts'
+import { vocabB1z } from './vocabB1z.ts'
+import { vocabB1w } from './vocabB1w.ts'
 import { vocabB2 } from './vocabB2.ts'
 import { vocabB2x } from './vocabB2x.ts'
+import { vocabB2z } from './vocabB2z.ts'
+import { vocabB2w } from './vocabB2w.ts'
 import { vocabC1 } from './vocabC1.ts'
 import { vocabC1x } from './vocabC1x.ts'
+import { vocabC1z } from './vocabC1z.ts'
+import { vocabC1w } from './vocabC1w.ts'
 import { vocabC2 } from './vocabC2.ts'
 import { vocabC2x } from './vocabC2x.ts'
+import { vocabC2z } from './vocabC2z.ts'
 
 // Vocabulario del alemán. Cada sustantivo se aprende con su artículo y su plural.
 // Los ids (la palabra, o palabra·clase si se repite) no deben cambiar: de ellos dependen
@@ -87,10 +94,10 @@ function build(themes: GermanTheme[], level: CefrLevel, previous: GermanWord[] =
 export const germanThemesA1 = vocabA1
 export const germanThemesA2 = [...vocabA2, ...vocabA2x]
 // Las tandas extra («…x») van después de los temas originales, así los ids no cambian.
-export const germanThemesB1 = [...vocabB1, ...vocabB1x, ...vocabB1y]
-export const germanThemesB2 = [...vocabB2, ...vocabB2x]
-export const germanThemesC1 = [...vocabC1, ...vocabC1x]
-export const germanThemesC2 = [...vocabC2, ...vocabC2x]
+export const germanThemesB1 = [...vocabB1, ...vocabB1x, ...vocabB1y, ...vocabB1z, ...vocabB1w]
+export const germanThemesB2 = [...vocabB2, ...vocabB2x, ...vocabB2z, ...vocabB2w]
+export const germanThemesC1 = [...vocabC1, ...vocabC1x, ...vocabC1z, ...vocabC1w]
+export const germanThemesC2 = [...vocabC2, ...vocabC2x, ...vocabC2z]
 export const germanVocabA1 = build(vocabA1, 'A1')
 export const germanVocabA2 = build(germanThemesA2, 'A2', germanVocabA1)
 export const germanVocabB1 = build(germanThemesB1, 'B1', [...germanVocabA1, ...germanVocabA2])

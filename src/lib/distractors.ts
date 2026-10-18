@@ -15,12 +15,22 @@ type Options<T> = {
   random?: () => number
 }
 
+const SAMPLE = 40
+
+/** `n` elementos distintos al azar, sin copiar ni barajar toda la lista. */
+function sample<T>(list: readonly T[], n: number, random: () => number): T[] {
+  const picked = new Set<number>()
+  while (picked.size < n) picked.add(Math.floor(random() * list.length))
+  return [...picked].map((i) => list[i])
+}
+
 /** La respuesta más `count - 1` distractores distintos, tomados de los niveles más parecidos. */
 export function similarOptions<T>(answer: string, { tiers, pick, closeness, count = 4, random = Math.random }: Options<T>): string[] {
   const out = new Set<string>([answer])
   for (const tier of tiers) {
     if (out.size >= count) break
-    let list = shuffle(tier, random)
+    // En niveles grandes basta una muestra al azar: barajar miles de palabras en cada pregunta es lento.
+    let list = tier.length > SAMPLE ? sample(tier, SAMPLE, random) : shuffle(tier, random)
     // Orden estable por cercanía (en 3 grupos), así se mantiene el azar entre los igual de cercanos.
     if (closeness) list = list.map((x, i) => ({ x, i, c: Math.min(2, closeness(x)) })).sort((a, b) => a.c - b.c || a.i - b.i).map((e) => e.x)
     for (const x of list) {

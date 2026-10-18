@@ -14,7 +14,11 @@ const pickDistinct = <T,>(pool: T[], n: number, random: () => number) => {
 
 const groupBy = (key: (w: GermanWord) => string) => {
   const map = new Map<string, GermanWord[]>()
-  for (const x of germanVocab) map.set(key(x), [...(map.get(key(x)) ?? []), x])
+  for (const x of germanVocab) {
+    const list = map.get(key(x))
+    if (list) list.push(x)
+    else map.set(key(x), [x])
+  }
   return map
 }
 const byThemePos = groupBy((x) => `${x.theme}|${x.pos}`)
@@ -27,14 +31,15 @@ const byPos = groupBy((x) => x.pos)
  */
 function options(w: GermanWord, pick: (x: GermanWord) => string, random: () => number): string[] {
   const answer = pick(w)
-  const others = (list?: GermanWord[]) => (list ?? []).filter((x) => x.id !== w.id)
+  // La propia palabra no hace falta excluirla: su texto ya es la respuesta y no se repite.
+  const theme = byThemePos.get(`${w.theme}|${w.pos}`) ?? []
   return similarOptions(answer, {
     tiers: [
       // Si la respuesta es un número («el tercio»), primero otros números del tema.
-      others(byThemePos.get(`${w.theme}|${w.pos}`)).filter((x) => looksNumeric(pick(x)) === looksNumeric(answer)),
-      others(byThemePos.get(`${w.theme}|${w.pos}`)),
-      others(byLevelPos.get(`${w.level}|${w.pos}`)),
-      others(byPos.get(w.pos)),
+      theme.filter((x) => looksNumeric(pick(x)) === looksNumeric(answer)),
+      theme,
+      byLevelPos.get(`${w.level}|${w.pos}`) ?? [],
+      byPos.get(w.pos) ?? [],
     ],
     pick,
     closeness: (x) => Math.abs(pick(x).length - answer.length) / 4,

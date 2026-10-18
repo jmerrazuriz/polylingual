@@ -39,9 +39,9 @@ describe('gramática', () => {
 })
 
 describe('vocabulario', () => {
-  it('más de 4.800 palabras (A1–C2); los sustantivos con género y plural, sin ids repetidos', () => {
+  it('más de 8.000 palabras (A1–C2); los sustantivos con género y plural, sin ids repetidos', () => {
     expect(germanVocab.filter((w) => w.level === 'A1').length).toBeGreaterThanOrEqual(600)
-    expect(germanVocab.length).toBeGreaterThanOrEqual(4800)
+    expect(germanVocab.length).toBeGreaterThanOrEqual(8000)
     expect(new Set(germanVocab.map((w) => w.id)).size).toBe(germanVocab.length)
     for (const w of germanVocab) {
       if (w.pos === 'noun') {
