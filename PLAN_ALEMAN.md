@@ -4,6 +4,8 @@ Meta: que quien termine el curso entienda, hable y escriba alemán a nivel **C2 
 
 Fecha del plan: octubre de 2026.
 
+> **Estado: plan cerrado (17-10-2026).** El curso tiene las etapas D0–D6 completas: A1–C2 con 195 lecciones de gramática, ~8.000 palabras, 96 textos de *Ottos Weg*, seis simulacros Goethe, juegos y práctica libre. Lo único que no se puede hacer desde la app es la etapa D7 (revisión por un hablante nativo): queda como recomendación antes de usar el curso para preparar un examen real.
+
 ---
 
 ## 1. Qué encontramos (investigación)
@@ -237,7 +239,7 @@ El curso alemán ya está en `src/courses/index.ts` con `status: 'soon'` y `spee
 | ✅ **D4 · B2** (17-10-2026) | ~35 lecciones, +1.600 palabras, Konjunktiv I y participios, Schreiben con lista de control (sin audio grabado: se usa la voz del navegador). | Simulacro B2. |
 | ✅ **D5 · C1** (17-10-2026) | ~35 lecciones, +2.000 palabras, nominalización, estilo académico y Modalpartikeln. | Simulacro C1. |
 | ✅ **D6 · C2** (17-10-2026) | ~30 lecciones, +2.000 palabras, variedades, modismos, literatura y matices. | Simulacro C2. |
-| **D7 · Revisión** | Revisión de un hablante nativo (o profesor de alemán como lengua extranjera) de cada nivel, empezando por A1–B1. | Contenido revisado y errores corregidos. |
+| ⏸️ **D7 · Revisión** (pendiente, externa) | Revisión de un hablante nativo (o profesor de alemán como lengua extranjera) de cada nivel, empezando por A1–B1. | Contenido revisado y errores corregidos. |
 
 ### Qué quedó hecho en D0
 - **Recorrido por curso** (`src/lib/coursePath.ts`):
@@ -389,7 +391,24 @@ El curso alemán ya está en `src/courses/index.ts` con `status: 'soon'` y `spee
 - **Distractores más parecidos (japonés y alemán):** las alternativas de las preguntas de palabras se eligen por niveles (`lib/distractors.ts`). Primero vienen del mismo tema y clase de palabra (si la respuesta es un número, otros números), luego del mismo nivel y al final del resto. En kanji, primero los de la misma lección y unidad.
   - Se reescribieron ~100 preguntas hechas a mano (gramática y lecturas de ambos cursos) en las que la respuesta correcta era mucho más larga que las demás.
   - `scripts/scan-options.ts` busca ese tipo de pistas obvias.
-- **Falta para la meta:** unas 3.100 palabras.
+- **Falta para la meta:** unas 3.100 palabras (completadas en la tanda siguiente).
+
+### Tanda final: meta de ~8.000 palabras (17-10-2026)
+- Unas 3.150 palabras nuevas en 148 temas, que llevan el curso a **8.009 palabras** (807 lecciones de palabras):
+  - **B1** (`vocabB1z.ts`, `vocabB1w.ts`): oficios, comidas, vivienda y muebles, limpieza, médico, oficina pública, transporte, auto, pasatiempos, deportes, clima, árboles y aves, emociones, niños, correo, fiestas alemanas, dinero, internet, conducir, vacaciones, cuidado personal, vecinos, colegio, compras, países y nacionalidades, bebidas, tiendas, calzado, colores, mascotas, jardín, hospital, instrumentos, bosque, y sustantivos en *-ung* y *-heit/-keit*.
+  - **B2** (`vocabB2z.ts`, `vocabB2w.ts`): el taller en detalle (motor, frenos, electricidad, día a día), construcción, enfermedades y órganos, la empresa, negocios, impuestos, geografía, fauna, cocina, carácter, comunicación, medios, arte, derecho cotidiano, buscar departamento, ecología diaria, seguridad laboral, plazos, servicios públicos, carnes y pan, sociedad, formularios, teléfono, correos, turnos, comprar un auto, fenómenos naturales, derivados (*be-, ver-, er-, ent-, zer-, -bar, -los, -schaft, -nis*), deporte, universidad, oficina, dentista, bodas, libros, instalaciones, óptica, belleza y duelo.
+  - **C1** (`vocabC1z.ts`, `vocabC1w.ts`): química, física, biología, astronomía, matemáticas, informática, administración, recursos humanos, logística, Europa, pedagogía, lingüística, clima, geología, defensa, justicia, especialidades médicas, farmacia, marketing, diseño, religión, música, nominalizaciones, compuestos de informes, técnica, técnica ambiental e inmigración (*Blaue Karte, Chancenkarte*).
+  - **C2** (`vocabC2z.ts`): épocas de la historia alemana, coloquialismos, pares fijos (*kurz und gut*), interjecciones, latinismos, lenguaje literario, más Austria y Suiza, el norte, jurídico, filosofía, matices psicológicos y económicos, periodismo, modismos, refranes, teatro, abreviaturas y frases irónicas.
+- En el recorrido: unidades «Más palabras» antes de cada simulacro (B1–C2). Ningún id existente cambió.
+
+### Juegos y práctica libre (17-10-2026)
+- **Juegos** (`/juegos` en alemán, `GermanGamesPage`):
+  - Parejas (palabra ↔ significado), Escucha y une (significado ↔ sonido) y Singular y plural.
+  - Tres desafíos de 60 segundos (`SpeedGame`), donde cada error descuenta 3 s: **Der, die, das**, **Conjugación rápida** (presente, Präteritum y Perfekt con el motor de conjugación) y **Terminaciones** (artículo + adjetivo + sustantivo en nominativo, acusativo y dativo con el motor de declinación).
+  - Se guardan récords por juego y por selección de niveles.
+- **Practicar** (`/practicar` en alemán, `GermanPracticePage`): sesiones de 12 ejercicios de palabras, escritura, artículos, plurales, conjugación y declinación. No cambian el recorrido.
+- Las palabras salen de las lecciones de palabras ya hechas (o de las abiertas si aún son pocas), con filtro por nivel (`courses/de/practice.ts`).
+- El inicio del alemán enlaza ambas secciones, y el logro «Récord» ahora vale para cualquier curso.
 
 ---
 
