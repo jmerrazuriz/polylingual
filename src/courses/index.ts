@@ -56,7 +56,7 @@ export const courses: Course[] = [
     speechLang: 'de-DE',
     voiceName: 'una voz alemana',
     voiceSample: 'Guten Tag',
-    sections: ['tabla', 'aprender'],
+    sections: ['tabla', 'aprender', 'practicar', 'juegos'],
   },
   {
     id: 'fr',

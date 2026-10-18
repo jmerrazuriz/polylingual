@@ -43,6 +43,8 @@ const KanjiLessonRoute = page(() => import('./features/study/KanjiPages'), (m) =
 const ExtraLessonPage = page(() => import('./features/extra/ExtraLessonPage'), (m) => m.ExtraLessonPage)
 const PracticePage = page(() => import('./features/practice/PracticePage'), (m) => m.PracticePage)
 const GamesPage = page(() => import('./features/games/GamesPage'), (m) => m.GamesPage)
+const GermanGamesPage = page(() => import('./features/german/GermanGamesPage'), (m) => m.GermanGamesPage)
+const GermanPracticePage = page(() => import('./features/german/GermanPracticePage'), (m) => m.GermanPracticePage)
 const ReviewPage = page(() => import('./features/review/ReviewPage'), (m) => m.ReviewPage)
 const UnitReviewRoute = page(() => import('./features/review/UnitReviewPage'), (m) => m.UnitReviewRoute)
 const WeakReviewPage = page(() => import('./features/review/WeakReviewPage'), (m) => m.WeakReviewPage)
@@ -82,8 +84,8 @@ export default function App() {
         <Route path="kanji/:lessonId" element={<CourseOnly course="ja"><KanjiLessonRoute /></CourseOnly>} />
         <Route path="extra" element={<CourseOnly course="ja"><ExtraLessonPage /></CourseOnly>} />
         <Route path="gramatica/:lessonId" element={<GrammarLessonRoute />} />
-        <Route path="practicar" element={<CourseOnly course="ja"><PracticePage /></CourseOnly>} />
-        <Route path="juegos" element={<CourseOnly course="ja"><GamesPage /></CourseOnly>} />
+        <Route path="practicar" element={<ByCourse ja={<PracticePage />} de={<GermanPracticePage />} />} />
+        <Route path="juegos" element={<ByCourse ja={<GamesPage />} de={<GermanGamesPage />} />} />
         <Route path="repasar" element={<ReviewPage />} />
         <Route path="repaso/unidad/:unitId" element={<CourseOnly course="ja"><UnitReviewRoute /></CourseOnly>} />
         <Route path="repaso/debiles" element={<CourseOnly course="ja"><WeakReviewPage /></CourseOnly>} />
@@ -130,4 +132,10 @@ function CourseOnly({ course, children }: { course: string; children: ReactNode 
       </div>
     </section>
   )
+}
+
+/** Una sección que existe en varios cursos con contenido propio (juegos, práctica). */
+function ByCourse({ ja, de }: { ja: ReactNode; de: ReactNode }) {
+  const course = useProgress((s) => s.course)
+  return course === 'de' ? de : course === 'ja' ? ja : <CourseOnly course="ja">{ja}</CourseOnly>
 }

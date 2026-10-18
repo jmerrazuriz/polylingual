@@ -234,6 +234,8 @@ function GermanHome() {
           { to: '/palabras', glyph: 'W', title: 'Palabras', text: 'Con artículo y plural, y repaso espaciado.' },
           { to: '/textos', glyph: 'T', title: 'Lectura y audio', text: 'Las historias de Otto y Hans, como en el examen.' },
           { to: '/tabla', glyph: 'der', title: 'Tablas', text: 'Artículos, casos, terminaciones y un conjugador.' },
+          { to: '/practicar', glyph: '✍️', title: 'Practicar', text: 'Artículos, plurales, conjugación y declinación en sesiones cortas.' },
+          { to: '/juegos', glyph: '🎮', title: 'Juegos', text: 'Parejas, sonidos y desafíos contra el reloj.' },
           { to: exam.to, glyph: '📝', title: `Simulacro Goethe ${exam.id}`, text: 'La meta del nivel: leer, escuchar, escribir y hablar.' },
         ].map((f) => (
           <Link

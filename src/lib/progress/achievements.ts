@@ -90,7 +90,7 @@ export const achievements: Achievement[] = [
     description: 'Completa 7 lecciones del día.',
     check: (p) => Object.values(p.daily).filter(isDailyComplete).length >= 7,
   },
-  { id: 'primer-record', course: 'ja', icon: '🏆', title: 'Récord', description: 'Consigue un récord en cualquier juego.', check: (p) => Object.keys(p.records).length > 0 },
+  { id: 'primer-record', icon: '🏆', title: 'Récord', description: 'Consigue un récord en cualquier juego.', check: (p) => Object.keys(p.records).length > 0 },
   ...germanAchievements,
 ]
 
