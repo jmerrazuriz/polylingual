@@ -1,4 +1,5 @@
 import { type ReactNode, useEffect, useRef, useState } from 'react'
+import { allKana, kanaByChar } from '../../courses/ja/kana'
 import type { Kana } from '../../courses/ja/types'
 import { useSpeech } from '../../lib/audio/useSpeech'
 import { type Question, questionPrompt } from '../../lib/quiz'
@@ -238,6 +239,7 @@ function Feedback({ answer }: { answer: Answer }) {
         )}
       </p>
       {word && <p>Significa «{word.meaning}».</p>}
+      {!correct && <WrongPick answer={answer} />}
       {tip && !correct && <p>💡 {tip}</p>}
     </div>
   )
@@ -257,5 +259,24 @@ function Countdown({ seconds, onTimeout }: { seconds: number; onTimeout: () => v
     <div className="h-1.5 w-full overflow-hidden rounded-full bg-slate-200 dark:bg-slate-800" aria-hidden>
       <div className="countdown h-full rounded-full bg-amber-500" style={{ animationDuration: `${seconds}s` }} />
     </div>
+  )
+}
+
+/** Qué es lo que se eligió por error: «o» es お; ぬ se lee «nu». */
+function WrongPick({ answer }: { answer: Answer }) {
+  const { question, given } = answer
+  if (!given || question.type === 'type-word') return null
+  const script = question.kana.script
+  if (question.type === 'romaji-to-kana') {
+    const picked = kanaByChar.get(given)
+    return picked ? <p>Elegiste <span className="font-jp text-base">{picked.char}</span>, que se lee «{picked.romaji}».</p> : null
+  }
+  const same = allKana.find((k) => k.script === script && k.romaji === given.trim().toLowerCase())
+  return same ? (
+    <p>
+      «{given}» es <span className="font-jp text-base">{same.char}</span>; <span className="font-jp text-base">{question.kana.char}</span> se lee «{question.kana.romaji}».
+    </p>
+  ) : (
+    <p>Respondiste «{given}».</p>
   )
 }

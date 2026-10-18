@@ -3,11 +3,14 @@ import { Furigana } from '../../components/Furigana'
 import { KanaInput } from '../../components/KanaInput'
 import { UmlautKeys } from '../../components/UmlautKeys'
 import type { GrammarExercise } from '../../courses/grammar'
+import { buildFeedback, type FeedbackContext } from '../../lib/feedback'
+import { contextFor } from '../../lib/exerciseContext'
 import { checkGerman } from '../../lib/germanInput'
 import { finishKana, matchesKana } from '../../lib/kanaInput'
 import { useSpeech } from '../../lib/audio/useSpeech'
 import { useProgress } from '../../lib/progress/store'
 import { shuffle } from '../../lib/random'
+import { RichText } from './RichText'
 
 const KANA = /[぀-ヿ]/
 
@@ -28,40 +31,31 @@ type Props = {
   onDone: (correct: boolean) => void
   /** Muestra «No lo sé» mientras no se responde; cuenta como incorrecta. */
   onSkip?: () => void
+  /** La lección o el texto del ejercicio, para explicar el porqué de la corrección. */
+  context?: FeedbackContext
 }
 
 /** Un ejercicio de gramática con su corrección. Se avanza con «Siguiente». */
-export function GrammarExerciseView({ exercise, onDone, onSkip }: Props) {
+export function GrammarExerciseView({ exercise, onDone, onSkip, context }: Props) {
   const [result, setResult] = useState<boolean | null>(null)
+  const [given, setGiven] = useState<string | null>(null)
   const { speak } = useSpeech()
   const course = useProgress((s) => s.course)
 
-  const check = (correct: boolean, spoken: string) => {
+  const check = (correct: boolean, spoken: string, answer: string) => {
     setResult(correct)
+    setGiven(answer)
     speak(spoken)
   }
 
   return (
     <div className="flex flex-col gap-5">
-      {exercise.type === 'choice' && <Choice exercise={exercise} result={result} onAnswer={(ok) => check(ok, choiceSpeech(exercise, course))} />}
-      {exercise.type === 'meaning' && <Meaning exercise={exercise} result={result} onAnswer={(ok) => check(ok, exercise.text)} />}
-      {exercise.type === 'order' && <Order exercise={exercise} result={result} onAnswer={(ok) => check(ok, exercise.answer.join(' '))} />}
-      {exercise.type === 'type' && <Type exercise={exercise} result={result} onAnswer={(ok) => check(ok, exercise.answers[0])} />}
+      {exercise.type === 'choice' && <Choice exercise={exercise} result={result} onAnswer={(ok, g) => check(ok, choiceSpeech(exercise, course), g)} />}
+      {exercise.type === 'meaning' && <Meaning exercise={exercise} result={result} onAnswer={(ok, g) => check(ok, exercise.text, g)} />}
+      {exercise.type === 'order' && <Order exercise={exercise} result={result} onAnswer={(ok, g) => check(ok, exercise.answer.join(' '), g)} />}
+      {exercise.type === 'type' && <Type exercise={exercise} result={result} onAnswer={(ok, g) => check(ok, exercise.answers[0], g)} />}
 
-      {result !== null && (
-        <div
-          role="status"
-          className={`flex flex-col gap-1 rounded-2xl p-3 text-sm ${
-            result
-              ? 'bg-emerald-50 text-emerald-900 dark:bg-emerald-950/50 dark:text-emerald-200'
-              : 'bg-red-50 text-red-900 dark:bg-red-950/50 dark:text-red-200'
-          }`}
-        >
-          <p className="font-extrabold">{result ? '✓ ¡Correcto!' : '✗ No es correcto'}</p>
-          {!result && <p>La respuesta es: <Answer exercise={exercise} /></p>}
-          {(exercise.type === 'choice' || exercise.type === 'type') && exercise.explanation && <p>💡 {exercise.explanation}</p>}
-        </div>
-      )}
+      {result !== null && <FeedbackBox exercise={exercise} given={given} correct={result} context={context ?? contextFor(exercise)} />}
 
       {result === null && onSkip && (
         <button onClick={onSkip} className="self-center text-sm font-bold text-slate-500 underline hover:text-slate-800 dark:hover:text-white">
@@ -78,12 +72,46 @@ export function GrammarExerciseView({ exercise, onDone, onSkip }: Props) {
   )
 }
 
-function Answer({ exercise }: { exercise: GrammarExercise }) {
-  const text = exercise.type === 'order' ? exercise.answer.join(' ') : exercise.type === 'type' ? exercise.answers[0] : exercise.answer
+/** La corrección explicada: breve al acertar; al fallar, qué estuvo mal, qué es lo correcto y por qué. */
+export function FeedbackBox({ exercise, given, correct, context }: { exercise: GrammarExercise; given: string | null; correct: boolean; context?: FeedbackContext }) {
+  const f = buildFeedback(exercise, given, correct, context)
   return (
-    <span className={`font-bold ${jpClass(text)}`}>
-      <Furigana text={text} />
-    </span>
+    <div
+      role="status"
+      className={`flex flex-col gap-1.5 rounded-2xl p-3 text-sm ${
+        correct ? 'bg-emerald-50 text-emerald-900 dark:bg-emerald-950/50 dark:text-emerald-200' : 'bg-red-50 text-red-900 dark:bg-red-950/50 dark:text-red-200'
+      }`}
+    >
+      <p className="font-extrabold">{correct ? '✓ ¡Correcto!' : '✗ No es correcto'}</p>
+      {correct && f.brief && (
+        <p className={jpClass(f.brief)}>
+          <RichText text={f.brief} />
+        </p>
+      )}
+      {!correct && f.given && (
+        <p className={jpClass(f.given)}>
+          <RichText text={f.given} />
+        </p>
+      )}
+      {!correct && f.right && (
+        <p>
+          Lo correcto:{' '}
+          <span className={`font-bold ${jpClass(f.right)}`}>
+            <Furigana text={f.right} />
+          </span>
+        </p>
+      )}
+      {!correct && f.why && (
+        <p className={jpClass(f.why)}>
+          💡 <RichText text={f.why} />
+        </p>
+      )}
+      {f.quote && (
+        <p className="opacity-90">
+          📖 En el texto: <span className={`font-bold ${jpClass(f.quote.text)}`}><Furigana text={f.quote.text} /></span> («{f.quote.meaning}»)
+        </p>
+      )}
+    </div>
   )
 }
 
@@ -98,7 +126,7 @@ const optionClass = (state: 'idle' | 'right' | 'wrong' | 'faded') =>
           : 'border-slate-200 bg-white hover:border-accent dark:border-slate-800 dark:bg-slate-900'
   }`
 
-function Options(props: { options: string[]; answer: string; result: boolean | null; onAnswer: (ok: boolean) => void }) {
+function Options(props: { options: string[]; answer: string; result: boolean | null; onAnswer: (ok: boolean, given: string) => void }) {
   const { answer, result, onAnswer } = props
   const [options] = useState(() => shuffle(props.options))
   const [picked, setPicked] = useState<string | null>(null)
@@ -112,7 +140,7 @@ function Options(props: { options: string[]; answer: string; result: boolean | n
             disabled={result !== null}
             onClick={() => {
               setPicked(o)
-              onAnswer(o === answer)
+              onAnswer(o === answer, o)
             }}
             className={`${optionClass(state)} ${jpClass(o)}`}
           >
@@ -126,7 +154,7 @@ function Options(props: { options: string[]; answer: string; result: boolean | n
   )
 }
 
-function Choice({ exercise, result, onAnswer }: { exercise: Extract<GrammarExercise, { type: 'choice' }>; result: boolean | null; onAnswer: (ok: boolean) => void }) {
+function Choice({ exercise, result, onAnswer }: { exercise: Extract<GrammarExercise, { type: 'choice' }>; result: boolean | null; onAnswer: (ok: boolean, given: string) => void }) {
   const [before, after] = exercise.prompt.split('＿')
   const isBlank = after !== undefined
   return (
@@ -159,7 +187,7 @@ function Choice({ exercise, result, onAnswer }: { exercise: Extract<GrammarExerc
   )
 }
 
-function Meaning({ exercise, result, onAnswer }: { exercise: Extract<GrammarExercise, { type: 'meaning' }>; result: boolean | null; onAnswer: (ok: boolean) => void }) {
+function Meaning({ exercise, result, onAnswer }: { exercise: Extract<GrammarExercise, { type: 'meaning' }>; result: boolean | null; onAnswer: (ok: boolean, given: string) => void }) {
   return (
     <>
       <p className="text-sm font-bold text-slate-500 uppercase">¿Qué significa?</p>
@@ -172,7 +200,7 @@ function Meaning({ exercise, result, onAnswer }: { exercise: Extract<GrammarExer
 }
 
 /** Ordenar palabras: se tocan en la bolsa para agregarlas y en la frase para quitarlas. */
-function Order({ exercise, result, onAnswer }: { exercise: Extract<GrammarExercise, { type: 'order' }>; result: boolean | null; onAnswer: (ok: boolean) => void }) {
+function Order({ exercise, result, onAnswer }: { exercise: Extract<GrammarExercise, { type: 'order' }>; result: boolean | null; onAnswer: (ok: boolean, given: string) => void }) {
   const [bank] = useState(() => {
     // Desordenadas, pero nunca ya en el orden correcto.
     let tiles = shuffle(exercise.answer.map((word, i) => ({ word, i })))
@@ -225,7 +253,10 @@ function Order({ exercise, result, onAnswer }: { exercise: Extract<GrammarExerci
       {!done && (
         <button
           disabled={chosen.length !== bank.length}
-          onClick={() => onAnswer(chosen.map((c) => bank[c].word).join(' ') === exercise.answer.join(' '))}
+          onClick={() => {
+            const built = chosen.map((c) => bank[c].word).join(' ')
+            onAnswer(built === exercise.answer.join(' '), built)
+          }}
           className="self-center rounded-full bg-ink px-8 py-3 font-bold text-white disabled:opacity-40"
         >
           Comprobar
@@ -238,7 +269,7 @@ function Order({ exercise, result, onAnswer }: { exercise: Extract<GrammarExerci
 const normalizeText = (text: string) => text.trim().toLowerCase().replace(/\s+/g, ' ')
 
 /** Escribir la respuesta (en kana: el romaji se convierte al escribir). */
-function Type({ exercise, result, onAnswer }: { exercise: Extract<GrammarExercise, { type: 'type' }>; result: boolean | null; onAnswer: (ok: boolean) => void }) {
+function Type({ exercise, result, onAnswer }: { exercise: Extract<GrammarExercise, { type: 'type' }>; result: boolean | null; onAnswer: (ok: boolean, given: string) => void }) {
   const [value, setValue] = useState('')
   const [caseNote, setCaseNote] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
@@ -251,11 +282,13 @@ function Type({ exercise, result, onAnswer }: { exercise: Extract<GrammarExercis
       // En alemán las mayúsculas importan; si solo fallan ellas, cuenta pero se avisa.
       const check = checkGerman(value, exercise.answers)
       setCaseNote(check === 'case')
-      onAnswer(check !== 'wrong')
+      onAnswer(check !== 'wrong', value)
       return
     }
+    const typed = exercise.kana ? finishKana(value) : value
     onAnswer(
       exercise.kana ? matchesKana(value, exercise.answers) : exercise.answers.some((a) => normalizeText(a) === normalizeText(value)),
+      typed,
     )
   }
   return (

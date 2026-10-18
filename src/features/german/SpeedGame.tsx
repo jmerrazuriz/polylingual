@@ -16,6 +16,8 @@ type Props = {
 }
 
 const FEEDBACK_MS = 550
+/** Al fallar se deja más tiempo para leer la explicación. */
+const WRONG_FEEDBACK_MS = 1800
 /** Un error descuenta tiempo: así no conviene responder al azar. */
 const PENALTY_SECONDS = 3
 
@@ -77,7 +79,7 @@ function SpeedRun({ title, instructions, next, recordKey, onExit, onRetry, secon
     setTimeout(() => {
       setFeedback(null)
       setQuestion(withShuffled(next()))
-    }, FEEDBACK_MS)
+    }, ok ? FEEDBACK_MS : WRONG_FEEDBACK_MS)
   }
 
   const style = (option: string) => {
@@ -108,6 +110,13 @@ function SpeedRun({ title, instructions, next, recordKey, onExit, onRetry, secon
         <span className="text-3xl font-extrabold">{question.prompt}</span>
         {question.hint && <span className="text-sm opacity-80">{question.hint}</span>}
       </section>
+      {feedback && !feedback.ok && (
+        <p role="status" className="rounded-2xl bg-red-50 p-3 text-sm text-red-900 dark:bg-red-950/50 dark:text-red-200">
+          {question.whyWrong?.[feedback.chosen] && <span className="block">{question.whyWrong[feedback.chosen]}</span>}
+          <span className="block font-bold">Lo correcto: {question.answer}</span>
+          {question.explanation && <span className="block">💡 {question.explanation}</span>}
+        </p>
+      )}
       <div className={`grid gap-2 ${question.options.length <= 3 ? 'grid-cols-3' : 'grid-cols-1 sm:grid-cols-2'}`}>
         {question.options.map((o) => (
           <button key={o} lang="de" onClick={() => answer(o)} className={`rounded-2xl border-2 px-4 py-3 text-lg font-bold transition ${style(o)}`}>

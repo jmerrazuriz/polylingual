@@ -484,6 +484,22 @@ La fase 5 (cuentas) puede adelantarse si quieres probar entre dispositivos desde
 
 ---
 
+### Corrección explicada (18-10-2026, todos los cursos)
+- **Al fallar**, cada ejercicio explica qué estuvo mal y qué es lo correcto, con lo que se está viendo:
+  - Qué se eligió o escribió, y por qué no sirve.
+  - Opciones: qué significa en realidad la opción elegida, o de qué persona, tiempo o caso es.
+  - Al escribir: si fallan solo las mayúsculas, los acentos o diéresis, el artículo, o desde qué letra difiere.
+  - La respuesta correcta; en los ejercicios de completar, la frase entera.
+  - El porqué: la explicación propia del ejercicio o el párrafo de la lección que habla de la respuesta. En lecturas y simulacros, la línea del texto donde está la respuesta.
+- **Al acertar**, una explicación breve: la frase completa con la regla de la lección, o la ficha de la palabra.
+- **Dónde está:**
+  - `lib/feedback.ts` (lógica pura, con tests) y `FeedbackBox` en `GrammarExerciseView`.
+  - `lib/exerciseContext.ts` encuentra la lección o el texto de cada ejercicio escrito a mano, aunque aparezca en la nivelación, el simulacro o el repaso.
+  - Los ejercicios generados traen su propia explicación (`explanation` y `whyWrong`):
+    - Palabras en alemán: género con la terminación que lo delata, patrón del plural, qué significa cada opción (`courses/de/explain.ts`).
+    - Japonés: palabras, kanji, contadores y kana.
+    - Juegos y práctica alemana: conjugación, declinación y artículos.
+
 ## 9. Ideas para después de la v1
 - Kanji: KanjiVG ya los incluye y el mismo evaluador de trazos sirve.
 - Frases cortas con furigana.

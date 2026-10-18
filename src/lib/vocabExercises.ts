@@ -42,9 +42,39 @@ function options(entry: VocabEntry, pick: (v: VocabEntry) => string, random: () 
   })
 }
 
+// Para explicar las opciones incorrectas: a qué palabra corresponde cada significado o lectura.
+const byMeaning = new Map<string, VocabEntry>()
+const byKana = new Map<string, VocabEntry>()
+for (const v of vocab) {
+  if (!byMeaning.has(v.meaning)) byMeaning.set(v.meaning, v)
+  if (!byKana.has(v.kana)) byKana.set(v.kana, v)
+}
+const shown = (v: VocabEntry) => (v.written ? `${furiganaToPlain(v.written)} (${v.kana})` : v.kana)
+
+/** La ficha breve de la palabra: cómo se escribe, cómo se lee y qué significa. */
+export const wordNote = (v: VocabEntry) => `${shown(v)} = «${v.meaning}» (${wordPosText(v)}).`
+
+function whyWrong(options: readonly string[], answer: string, explain: (o: string) => string | undefined): Record<string, string> {
+  return Object.fromEntries(options.filter((o) => o !== answer).flatMap((o) => {
+    const text = explain(o)
+    return text ? [[o, text]] : []
+  }))
+}
+
 /** ¿Qué significa la palabra? (kana, o kanji con furigana → español) */
 export function wordMeaningExercise(entry: VocabEntry, random = Math.random): GrammarExercise {
-  return { type: 'meaning', text: entry.written ?? entry.kana, options: options(entry, (v) => v.meaning, random), answer: entry.meaning }
+  const opts = options(entry, (v) => v.meaning, random)
+  return {
+    type: 'meaning',
+    text: entry.written ?? entry.kana,
+    options: opts,
+    answer: entry.meaning,
+    explanation: wordNote(entry),
+    whyWrong: whyWrong(opts, entry.meaning, (o) => {
+      const v = byMeaning.get(o)
+      return v ? `«${o}» se dice ${shown(v)}.` : undefined
+    }),
+  }
 }
 
 /** Palabras con forma escrita en kanji, para las preguntas de lectura. */
@@ -63,6 +93,11 @@ export function wordReadingExercise(entry: VocabEntry, random = Math.random): Gr
     hint: entry.meaning,
     options: [answer, ...others],
     answer,
+    explanation: wordNote(entry),
+    whyWrong: whyWrong([answer, ...others], answer, (o) => {
+      const v = byKana.get(o)
+      return v?.written ? `${o} es la lectura de ${furiganaToPlain(v.written)} («${v.meaning}»).` : undefined
+    }),
   }
 }
 
@@ -72,7 +107,17 @@ export function wordChoiceExercise(entry: VocabEntry, random = Math.random): Gra
     type: 'choice',
     prompt: `¿Cómo se dice «${entry.meaning}»?`,
     hint: wordPosText(entry),
-    options: options(entry, (v) => v.kana, random),
+    explanation: wordNote(entry),
+    ...(() => {
+      const opts = options(entry, (v) => v.kana, random)
+      return {
+        options: opts,
+        whyWrong: whyWrong(opts, entry.kana, (o) => {
+          const v = byKana.get(o)
+          return v ? `${o} significa «${v.meaning}».` : undefined
+        }),
+      }
+    })(),
     answer: entry.kana,
   }
 }
@@ -85,6 +130,7 @@ export function wordTypeExercise(entry: VocabEntry): GrammarExercise {
     hint: `Escríbelo en japonés (${wordPosText(entry)})`,
     answers: [entry.kana],
     kana: true,
+    explanation: wordNote(entry),
   }
 }
 

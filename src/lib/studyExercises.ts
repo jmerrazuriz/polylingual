@@ -28,13 +28,28 @@ function readingExercise(c: Counter, n: number, random: () => number): GrammarEx
     regular !== answer
       ? [answer, regular, ...withDistractors(answer, otherNumbers, 3, random).slice(1)]
       : withDistractors(answer, otherNumbers, 4, random)
+  const whyWrong: Record<string, string> = {}
+  for (const o of options) {
+    if (o === answer) continue
+    const k = c.readings.indexOf(o)
+    whyWrong[o] =
+      o === regular
+        ? `${o} sería la lectura «regular» (número + ${c.reading}), pero con ${n}${c.kanji} el sonido cambia.`
+        : k >= 0
+          ? `${o} es ${k + 1}${c.kanji}, no ${n}${c.kanji}.`
+          : `${o} no es una lectura de ${n}${c.kanji}.`
+  }
   return {
     type: 'choice',
     prompt: `¿Cómo se lee ${n}${c.kanji}?`,
     hint: c.use.split(':')[0],
     options,
     answer,
-    ...(c.irregular.includes(n) ? { explanation: `Es una lectura especial: ${answer}.` } : {}),
+    explanation:
+      c.irregular.includes(n) || answer !== regular
+        ? `Es una lectura especial: ${n}${c.kanji} se lee ${answer}.`
+        : `${n}${c.kanji} se lee ${answer} (${numbers[n - 1].readings[0]} + ${c.reading}).`,
+    whyWrong,
   }
 }
 
@@ -42,8 +57,17 @@ function whichCounterExercise(c: Counter, random: () => number): GrammarExercise
   // つ sirve para casi todo y 個 se le parece: no se ofrecen juntos.
   const excluded = c.id === 'tsu' ? ['ko'] : c.id === 'ko' ? ['tsu'] : ['tsu']
   const thing = c.things[Math.floor(random() * c.things.length)]
-  const pool = counters.filter((o) => o.id !== c.id && !excluded.includes(o.id)).map(counterLabel)
-  return { type: 'choice', prompt: `¿Qué contador usas para contar ${thing}?`, options: withDistractors(counterLabel(c), pool, 4, random), answer: counterLabel(c) }
+  const others = counters.filter((o) => o.id !== c.id && !excluded.includes(o.id))
+  const options = withDistractors(counterLabel(c), others.map(counterLabel), 4, random)
+  const byLabel = new Map(others.map((o) => [counterLabel(o), o]))
+  return {
+    type: 'choice',
+    prompt: `¿Qué contador usas para contar ${thing}?`,
+    options,
+    answer: counterLabel(c),
+    explanation: `${counterLabel(c)} se usa para ${c.use}.`,
+    whyWrong: Object.fromEntries(options.filter((o) => byLabel.has(o)).map((o) => [o, `${o} se usa para ${byLabel.get(o)!.use}.`])),
+  }
 }
 
 const allCounterExamples = counters.flatMap((c) => c.examples)
@@ -116,6 +140,43 @@ function kanjiNeighbors(char: string): Kanji[][] {
 const kanjiMeaningOptions = (kanji: Kanji, random: () => number) =>
   similarOptions(kanji.meaning, { tiers: kanjiNeighbors(kanji.char), pick: (k) => k.meaning, random })
 
+// Para explicar las opciones incorrectas de kanji: de qué kanji es cada significado y de qué palabra cada lectura.
+const kanjiByMeaning = new Map(kanjiList.map((k) => [k.meaning, k]))
+const exampleByReading = new Map(kanjiList.flatMap((k) => k.examples.map((e) => [e.reading, e] as const)))
+
+/** La ficha breve de un kanji: significado y lecturas. */
+export const kanjiNote = (k: Kanji) =>
+  `${k.char} = «${k.meaning}»${k.on.length ? ` · on: ${k.on.join('、')}` : ''}${k.kun.length ? ` · kun: ${k.kun.join('、')}` : ''}.`
+
+function kanjiMeaningExercise(kanji: Kanji, random: () => number): GrammarExercise {
+  const options = kanjiMeaningOptions(kanji, random)
+  return {
+    type: 'meaning',
+    text: kanji.char,
+    options,
+    answer: kanji.meaning,
+    explanation: kanjiNote(kanji),
+    whyWrong: Object.fromEntries(options.filter((o) => o !== kanji.meaning && kanjiByMeaning.has(o)).map((o) => [o, `«${o}» es el kanji ${kanjiByMeaning.get(o)!.char}.`])),
+  }
+}
+
+function kanjiReadingExercise(kanji: Kanji, example: Kanji['examples'][number], random: () => number): GrammarExercise {
+  const options = kanjiReadingOptions(kanji, example.reading, random)
+  return {
+    type: 'choice',
+    prompt: `¿Cómo se lee «${example.word}» (${example.meaning})?`,
+    options,
+    answer: example.reading,
+    explanation: `${example.word} se lee ${example.reading}. ${kanjiNote(kanji)}`,
+    whyWrong: Object.fromEntries(
+      options.filter((o) => o !== example.reading && exampleByReading.has(o)).map((o) => {
+        const e = exampleByReading.get(o)!
+        return [o, `${o} es la lectura de ${e.word} («${e.meaning}»).`]
+      }),
+    ),
+  }
+}
+
 export const kanjiReadingOptions = (kanji: Kanji, reading: string, random: () => number) =>
   similarOptions(reading, {
     tiers: kanjiNeighbors(kanji.char).map((tier) => tier.flatMap((k) => k.examples)),
@@ -129,15 +190,7 @@ export function kanjiLessonExercises(lesson: KanjiLesson, random = Math.random):
   const exercises = lesson.chars.flatMap((char): GrammarExercise[] => {
     const kanji = kanjiByChar.get(char)!
     const example = kanji.examples[Math.floor(random() * kanji.examples.length)]
-    return [
-      { type: 'meaning', text: kanji.char, options: kanjiMeaningOptions(kanji, random), answer: kanji.meaning },
-      {
-        type: 'choice',
-        prompt: `¿Cómo se lee «${example.word}» (${example.meaning})?`,
-        options: kanjiReadingOptions(kanji, example.reading, random),
-        answer: example.reading,
-      },
-    ]
+    return [kanjiMeaningExercise(kanji, random), kanjiReadingExercise(kanji, example, random)]
   })
   return shuffle(exercises, random)
 }
@@ -162,15 +215,7 @@ export type TaggedExercise = { char?: string; skill?: 'read' | 'write'; exercise
 export function kanjiReviewExercise(char: string, random = Math.random): TaggedExercise {
   const kanji = kanjiByChar.get(char)!
   const example = kanji.examples[Math.floor(random() * kanji.examples.length)]
-  const exercise: GrammarExercise =
-    random() < 0.5
-      ? { type: 'meaning', text: kanji.char, options: kanjiMeaningOptions(kanji, random), answer: kanji.meaning }
-      : {
-          type: 'choice',
-          prompt: `¿Cómo se lee «${example.word}» (${example.meaning})?`,
-          options: kanjiReadingOptions(kanji, example.reading, random),
-          answer: example.reading,
-        }
+  const exercise: GrammarExercise = random() < 0.5 ? kanjiMeaningExercise(kanji, random) : kanjiReadingExercise(kanji, example, random)
   return { char, exercise }
 }
 

@@ -20,12 +20,14 @@ export type GrammarExercise =
       options: string[]
       answer: string
       explanation?: string
+      /** Por qué no sirve cada opción incorrecta (se muestra si se elige). */
+      whyWrong?: Record<string, string>
       format?: 'paraphrase' | 'usage'
     }
   /** Elegir qué significa la frase. */
-  | { type: 'meaning'; text: string; options: string[]; answer: string }
+  | { type: 'meaning'; text: string; options: string[]; answer: string; explanation?: string; whyWrong?: Record<string, string> }
   /** Ordenar las palabras para formar la frase. */
-  | { type: 'order'; meaning: string; answer: string[] }
+  | { type: 'order'; meaning: string; answer: string[]; explanation?: string }
   /**
    * Escribir la respuesta. Con `kana`, el romaji se convierte en kana al escribir (japonés).
    * Con `german`, hay botones ä ö ü ß, se acepta ae/oe/ue/ss y se avisa si fallan las mayúsculas.

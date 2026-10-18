@@ -1,5 +1,6 @@
 import { looksNumeric, similarOptions } from '../../lib/distractors.ts'
 import type { GrammarExercise } from '../grammar.ts'
+import { articleWhyWrong, genderReason, pluralReason, whyWrongMeanings, whyWrongWords, wordNote } from './explain.ts'
 import { articleFor, type GermanWord, germanVocab, germanWordCard, germanWordFromCard, withArticle } from './vocab.ts'
 
 // Ejercicios de palabras alemanas para las lecciones y el repaso: significado, cómo se dice,
@@ -48,20 +49,16 @@ function options(w: GermanWord, pick: (x: GermanWord) => string, random: () => n
 }
 
 /** ¿Qué significa «der Tisch»? */
-export const meaningExercise = (w: GermanWord, random = Math.random): GrammarExercise => ({
-  type: 'meaning',
-  text: withArticle(w),
-  options: options(w, (x) => x.meaning, random),
-  answer: w.meaning,
-})
+export function meaningExercise(w: GermanWord, random = Math.random): GrammarExercise {
+  const opts = options(w, (x) => x.meaning, random)
+  return { type: 'meaning', text: withArticle(w), options: opts, answer: w.meaning, explanation: wordNote(w), whyWrong: whyWrongMeanings(opts, w.meaning) }
+}
 
 /** ¿Cómo se dice «mesa»? → der Tisch */
-export const sayExercise = (w: GermanWord, random = Math.random): GrammarExercise => ({
-  type: 'choice',
-  prompt: `¿Cómo se dice «${w.meaning}»?`,
-  options: options(w, withArticle, random),
-  answer: withArticle(w),
-})
+export function sayExercise(w: GermanWord, random = Math.random): GrammarExercise {
+  const opts = options(w, withArticle, random)
+  return { type: 'choice', prompt: `¿Cómo se dice «${w.meaning}»?`, options: opts, answer: withArticle(w), explanation: wordNote(w), whyWrong: whyWrongWords(opts, withArticle(w)) }
+}
 
 /** ＿ Tisch → der / die / das */
 export const articleExercise = (w: GermanWord): GrammarExercise => ({
@@ -70,6 +67,8 @@ export const articleExercise = (w: GermanWord): GrammarExercise => ({
   hint: w.meaning,
   options: ['der', 'die', 'das'],
   answer: articleFor(w),
+  explanation: genderReason(w),
+  whyWrong: articleWhyWrong(w),
 })
 
 /** Plurales falsos pero creíbles para elegir el correcto. */
@@ -89,6 +88,7 @@ export function pluralExercise(w: GermanWord, random = Math.random): GrammarExer
     hint: `${w.meaning} (plural)`,
     options: [answer, ...pickDistinct(wrong, 3, random)],
     answer,
+    explanation: pluralReason(w),
   }
 }
 
@@ -105,6 +105,7 @@ export function writeExercise(w: GermanWord): GrammarExercise {
     hint: w.pos === 'noun' ? 'Con el artículo (der, die, das).' : plain !== w.word ? 'El verbo con su preposición (sin el caso).' : undefined,
     answers: plain !== w.word ? [plain, w.word] : [withArticle(w), ...variants],
     german: true,
+    explanation: wordNote(w),
   }
 }
 

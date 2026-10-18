@@ -2,7 +2,8 @@ import type { GrammarExercise } from '../grammar.ts'
 import type { PairItem } from '../../lib/pairs.ts'
 import type { ProgressData } from '../../lib/progress/model.ts'
 import { shuffle } from '../../lib/random.ts'
-import { type Case, caseNames, type Determiner, type Noun, nounPhrase } from './engine/declension.ts'
+import { adjectiveEndings, adjectiveKind, type Case, caseNames, type Determiner, type Noun, nounPhrase } from './engine/declension.ts'
+import { genderReason } from './explain.ts'
 import { type Forms, perfekt, persons, praeteritum, present, type Verb } from './engine/conjugation.ts'
 import type { CefrLevel } from './levels.ts'
 import { germanUnlockedIds } from './progress.ts'
@@ -50,7 +51,17 @@ export const pluralPairs = (words: readonly GermanWord[]): PairItem[] =>
     .map((w) => ({ id: w.id, left: withArticle(w), right: `die ${w.plural}`, speak: withArticle(w) }))
 
 /** Una pregunta de juego rápido: enunciado, opciones y respuesta. */
-export type SpeedQuestion = { prompt: string; hint?: string; options: string[]; answer: string; speak?: string }
+export type SpeedQuestion = {
+  prompt: string
+  hint?: string
+  options: string[]
+  answer: string
+  speak?: string
+  /** Por qué la respuesta es esa (se muestra al fallar y, breve, al acertar). */
+  explanation?: string
+  /** Qué es cada opción incorrecta. */
+  whyWrong?: Record<string, string>
+}
 
 /** der / die / das de un sustantivo al azar del pool. */
 export function articleQuestion(words: readonly GermanWord[], random = Math.random): SpeedQuestion | null {
@@ -58,7 +69,7 @@ export function articleQuestion(words: readonly GermanWord[], random = Math.rand
   if (!list.length) return null
   const w = list[Math.floor(random() * list.length)]
   const answer = withArticle(w).split(' ')[0]
-  return { prompt: w.word, hint: w.meaning, options: ['der', 'die', 'das'], answer, speak: withArticle(w) }
+  return { prompt: w.word, hint: w.meaning, options: ['der', 'die', 'das'], answer, speak: withArticle(w), explanation: genderReason(w) }
 }
 
 type Tense = { name: string; forms: (v: Verb) => Forms }
@@ -78,7 +89,18 @@ export function conjugationQuestion(random = Math.random, tenseCount = 3): Speed
   // Distractores: la misma persona en otros tiempos y el mismo tiempo en otras personas.
   const candidates = [...tenses.map((t) => t.forms(v)[i]), ...forms]
   const options = [answer, ...shuffle([...new Set(candidates)].filter((f) => f !== answer), random).slice(0, 3)]
-  return { prompt: `${persons[i]} · ${v.inf}`, hint: `${tense.name} · ${v.meaning}`, options, answer }
+  // De qué persona y tiempo es cada forma incorrecta.
+  const labels = new Map<string, string>()
+  for (const t of tenses) t.forms(v).forEach((f, k) => labels.has(f) || labels.set(f, `${persons[k]}, ${t.name}`))
+  const whyWrong = Object.fromEntries(options.filter((o) => o !== answer && labels.has(o)).map((o) => [o, `«${o}» es la forma de ${labels.get(o)}.`]))
+  return {
+    prompt: `${persons[i]} · ${v.inf}`,
+    hint: `${tense.name} · ${v.meaning}`,
+    options,
+    answer,
+    explanation: `${persons[i]} ${answer}: ${tense.name} de «${v.inf}» (${v.meaning}).`,
+    whyWrong,
+  }
 }
 
 const determiners: { d: Determiner; label: string }[] = [
@@ -107,7 +129,22 @@ export function declensionQuestion(words: readonly GermanWord[], random = Math.r
   const others = practiceCases.filter((x) => x !== c).map((x) => nounPhrase(noun, det.d, x, num, adj))
   const otherDet = determiners.filter((x) => x !== det && !(num === 'pl' && x.d.kind === 'indef')).map((x) => nounPhrase(noun, x.d, c, num, adj))
   const options = [answer, ...shuffle([...new Set([...others, ...otherDet])].filter((o) => o !== answer), random).slice(0, 3)]
+  const slot = num === 'pl' ? 'pl' : noun.gender
+  const kind = adjectiveKind(det.d, slot)
+  const kindName = { weak: 'débil', mixed: 'mixta', strong: 'fuerte' }[kind]
+  const whyWrong: Record<string, string> = {}
+  practiceCases.forEach((x) => {
+    const phrase = nounPhrase(noun, det.d, x, num, adj)
+    if (phrase !== answer) whyWrong[phrase] ??= `«${phrase}» es el ${caseNames[x].toLowerCase()}, no el ${caseNames[c].toLowerCase()}.`
+  })
+  determiners.forEach((x) => {
+    if (x === det || (num === 'pl' && x.d.kind === 'indef')) return
+    const phrase = nounPhrase(noun, x.d, c, num, adj)
+    if (phrase !== answer) whyWrong[phrase] ??= `«${phrase}» es ${x.d.kind === 'none' ? 'sin artículo' : `con ${x.label}`}.`
+  })
   return {
+    explanation: `${caseNames[c]} ${num === 'pl' ? 'plural' : `(${withArticle(w).split(' ')[0]})`} ${det.d.kind === 'none' ? 'sin artículo' : `con ${det.label}`}: el adjetivo lleva la terminación ${kindName} -${adjectiveEndings[kind][c][slot]}.`,
+    whyWrong,
     prompt: `${adj} + ${withArticle(w)}${num === 'pl' ? ' (plural)' : ''}`,
     hint: `${caseNames[c]} · ${det.d.kind === 'none' ? 'sin artículo' : `con ${det.label}`}`,
     options,
@@ -116,7 +153,15 @@ export function declensionQuestion(words: readonly GermanWord[], random = Math.r
 }
 
 /** La pregunta rápida como ejercicio de opción, para las sesiones de práctica. */
-export const asExercise = (q: SpeedQuestion): GrammarExercise => ({ type: 'choice', prompt: q.prompt, hint: q.hint, options: q.options, answer: q.answer })
+export const asExercise = (q: SpeedQuestion): GrammarExercise => ({
+  type: 'choice',
+  prompt: q.prompt,
+  hint: q.hint,
+  options: q.options,
+  answer: q.answer,
+  explanation: q.explanation,
+  whyWrong: q.whyWrong,
+})
 
 export type PracticeMode = 'palabras' | 'articulos' | 'plurales' | 'escribir' | 'conjugacion' | 'declinacion'
 
