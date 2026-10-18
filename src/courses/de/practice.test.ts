@@ -63,7 +63,7 @@ describe('juegos y práctica del alemán', () => {
   it('la declinación produce frases correctas', () => {
     const words = germanVocab.filter((w) => w.word === 'Tisch')
     let found = false
-    for (let i = 0; i < 400 && !found; i++) {
+    for (let i = 0; i < 5000 && !found; i++) {
       const q = declensionQuestion(words)
       if (q && q.hint?.startsWith('Dativo') && q.hint.includes('der/die/das') && q.prompt.startsWith('neu ') && !q.prompt.includes('plural')) {
         expect(q.answer).toBe('dem neuen Tisch')
