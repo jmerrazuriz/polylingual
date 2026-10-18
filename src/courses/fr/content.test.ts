@@ -11,14 +11,17 @@ import { frenchPath, frenchPathItems } from './path'
 import { articleQuestion, conjugationQuestion, frenchWordPool, numberQuestion, practiceSession, type PracticeMode } from './practice'
 import { frenchItemStatus } from './progress'
 import { readingsA1 } from './readingsA1'
+import { readingsA2 } from './readingsA2'
+import { fauxAmiQuestion, homophoneQuestion } from './homophones'
 import { frenchVocab, frenchVocabLessons, frenchWordCard, frenchWordFromCard, nounLine, withArticle } from './vocab'
 import { frenchLessonExercises, frenchWordReviewExercise } from './vocabExercises'
 
 const word = (w: string) => frenchVocab.find((x) => x.word === w)!
 
-describe('gramática A1', () => {
-  it('33 lecciones con ejemplos y ejercicios bien armados, todos con su explicación', () => {
+describe('gramática', () => {
+  it('33 lecciones A1 y 30 A2 con ejemplos y ejercicios bien armados, todos con su explicación', () => {
     expect(frenchGrammar.filter((g) => g.level === 'A1')).toHaveLength(33)
+    expect(frenchGrammar.filter((g) => g.level === 'A2')).toHaveLength(30)
     expect(new Set(frenchGrammar.map((g) => g.id)).size).toBe(frenchGrammar.length)
     for (const g of frenchGrammar) {
       expect(g.examples.length, g.id).toBeGreaterThanOrEqual(4)
@@ -49,12 +52,14 @@ describe('formato de las explicaciones', () => {
       }
     }
     expect(withoutMarks('*Je vais **au** marché* y **bien**')).toBe('Je vais au marché y bien')
+    expect(withoutMarks('***Il faut** venir* y *b → **c***')).toBe('Il faut venir y b → c')
   })
 })
 
-describe('vocabulario A1', () => {
-  it('al menos 650 palabras, sin ids repetidos; los sustantivos con género', () => {
+describe('vocabulario', () => {
+  it('al menos 650 palabras A1 y 1.300 en total (A1–A2), sin ids repetidos; los sustantivos con género', () => {
     expect(frenchVocab.filter((w) => w.level === 'A1').length).toBeGreaterThanOrEqual(650)
+    expect(frenchVocab.length).toBeGreaterThanOrEqual(1300)
     expect(new Set(frenchVocab.map((w) => w.id)).size).toBe(frenchVocab.length)
     for (const w of frenchVocab) {
       if (w.pos === 'noun') expect(w.gender, w.word).toBeTruthy()
@@ -120,12 +125,14 @@ describe('vocabulario A1', () => {
   })
 })
 
-describe('lecturas A1', () => {
-  it('8 lecturas y 8 diálogos; cada uno pide una lección que existe y que va antes en el recorrido', () => {
-    expect(readingsA1.filter((t) => t.kind === 'reading')).toHaveLength(8)
-    expect(readingsA1.filter((t) => t.kind === 'dialogue')).toHaveLength(8)
+describe('lecturas', () => {
+  it('8 lecturas y 8 diálogos por nivel; cada uno pide una lección que existe y que va antes en el recorrido', () => {
+    for (const texts of [readingsA1, readingsA2]) {
+      expect(texts.filter((t) => t.kind === 'reading')).toHaveLength(8)
+      expect(texts.filter((t) => t.kind === 'dialogue')).toHaveLength(8)
+    }
     const order = frenchPathItems.map((i) => `${i.kind}:${i.id}`)
-    for (const t of readingsA1) {
+    for (const t of [...readingsA1, ...readingsA2]) {
       expect(frenchGrammar.some((g) => g.id === t.requires), t.id).toBe(true)
       expect(order.indexOf(`grammar:${t.requires}`), t.id).toBeLessThan(order.indexOf(`reading:${t.id}`))
       expect(t.questions.length, t.id).toBeGreaterThanOrEqual(3)
@@ -135,17 +142,19 @@ describe('lecturas A1', () => {
 })
 
 describe('recorrido', () => {
-  it('incluye cada lección una sola vez y termina en el simulacro DELF A1', () => {
+  it('incluye cada lección una sola vez y cada nivel termina en su simulacro DELF', () => {
     const keys = frenchPathItems.map((i) => `${i.kind}:${i.id}`)
     expect(new Set(keys).size).toBe(keys.length)
     const expected = [
       ...frenchGrammar.map((g) => `grammar:${g.id}`),
       ...frenchVocabLessons.map((l) => `vocab:${l.id}`),
-      ...readingsA1.map((t) => `reading:${t.id}`),
+      ...[...readingsA1, ...readingsA2].map((t) => `reading:${t.id}`),
       'exam:A1',
+      'exam:A2',
     ]
     expect(new Set(keys)).toEqual(new Set(expected))
-    expect(frenchPath.at(-1)!.id).toBe('fr-examen-a1')
+    expect(frenchPath.at(-1)!.id).toBe('fr-examen-a2')
+    expect(frenchPath.map((u) => u.id)).toContain('fr-examen-a1')
     for (const u of frenchPath) for (const s of u.stops) expect(s.items.length).toBeLessThanOrEqual(3)
   })
 
@@ -165,7 +174,7 @@ describe('juegos y práctica', () => {
 
   it('las preguntas rápidas traen la respuesta entre opciones distintas y su explicación', () => {
     for (let i = 0; i < 200; i++) {
-      for (const q of [conjugationQuestion(), numberQuestion(), articleQuestion(words)!]) {
+      for (const q of [conjugationQuestion(Math.random, 5), numberQuestion(), articleQuestion(words)!, homophoneQuestion(), fauxAmiQuestion()]) {
         expect(q.options).toContain(q.answer)
         expect(new Set(q.options).size).toBe(q.options.length)
         expect(q.explanation).toBeTruthy()
@@ -173,8 +182,8 @@ describe('juegos y práctica', () => {
     }
   })
 
-  it('cada modo de práctica arma una sesión con las palabras del A1', () => {
-    expect(words.length).toBeGreaterThanOrEqual(600)
+  it('cada modo de práctica arma una sesión con las palabras de A1 y A2', () => {
+    expect(words.length).toBeGreaterThanOrEqual(1300)
     for (const m of frenchCourse.practiceModes) expect(practiceSession(m.mode as PracticeMode, words).length, m.mode).toBe(12)
     for (const g of frenchCourse.games) {
       if (g.pairs) expect(g.pairs(words).length, g.id).toBeGreaterThanOrEqual(6)

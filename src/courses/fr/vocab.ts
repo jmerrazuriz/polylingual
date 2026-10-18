@@ -2,6 +2,7 @@ import { definiteArticle, indefiniteArticle } from './engine/articles.ts'
 import { isHAspire } from './engine/phonetics.ts'
 import type { CefrLevel } from './levels.ts'
 import { vocabA1 } from './vocabA1.ts'
+import { vocabA2 } from './vocabA2.ts'
 
 // Vocabulario del francés. Cada sustantivo se aprende con su artículo y su género (que el
 // artículo elidido «l’» no deja ver). Los ids (la palabra, o palabra·clase si se repite) no deben
@@ -79,8 +80,10 @@ function build(themes: FrenchTheme[], level: CefrLevel, previous: FrenchWord[] =
 }
 
 export const frenchThemesA1 = vocabA1
+export const frenchThemesA2 = vocabA2
 export const frenchVocabA1 = build(vocabA1, 'A1')
-export const frenchVocab: FrenchWord[] = [...frenchVocabA1]
+export const frenchVocabA2 = build(vocabA2, 'A2', frenchVocabA1)
+export const frenchVocab: FrenchWord[] = [...frenchVocabA1, ...frenchVocabA2]
 export const frenchWordById = new Map(frenchVocab.map((w) => [w.id, w]))
 
 const typographic = (s: string) => s.replace(/'/g, '’')
@@ -139,7 +142,8 @@ function lessonsOf(themes: FrenchTheme[], words: FrenchWord[], level: CefrLevel)
 }
 
 export const frenchVocabLessonsA1 = lessonsOf(vocabA1, frenchVocabA1, 'A1')
-export const frenchVocabLessons: FrenchVocabLesson[] = [...frenchVocabLessonsA1]
+export const frenchVocabLessonsA2 = lessonsOf(vocabA2, frenchVocabA2, 'A2')
+export const frenchVocabLessons: FrenchVocabLesson[] = [...frenchVocabLessonsA1, ...frenchVocabLessonsA2]
 export const frenchVocabLessonById = new Map(frenchVocabLessons.map((l) => [l.id, l]))
 
 /** Tarjetas de repaso de palabras francesas: «fw-<id>». */

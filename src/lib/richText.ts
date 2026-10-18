@@ -1,7 +1,7 @@
 // Marcas de formato de las explicaciones: **negrita** y *cursiva* (que puede llevar negritas adentro).
 
 export const BOLD = /(\*\*[^*]+\*\*)/
-export const ITALIC = /((?<!\*)\*(?!\*)(?:\*\*[^*]+\*\*|[^*])+?\*(?!\*))/
+export const ITALIC = /((?<!\*)\*(?=\*\*[^*]|[^*])(?:\*\*[^*]+\*\*|[^*])+?\*(?!\*))/
 
 /** El texto sin las marcas, como se ve en pantalla. */
 export const withoutMarks = (text: string) =>

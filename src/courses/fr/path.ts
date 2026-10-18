@@ -52,7 +52,23 @@ const unitsA1: PathUnit[] = [
   examUnit('A1'),
 ]
 
-const unitsByLevel: Record<CefrLevel, PathUnit[]> = { A1: unitsA1, A2: [], B1: [], B2: [], C1: [], C2: [] }
+const unitsA2: PathUnit[] = [
+  unit('fr-a2-1', 'A2 · Lo que pasó ayer', '📜', ['fr-pc-avoir', 'fr-participes', 'fr-pc-etre'], ['recit', 'urgences'], ['ft-a2-urgences']),
+  unit('fr-a2-2', 'A2 · Un turno en el hospital', '🏥', ['fr-pc-pronominaux', 'fr-pc-negation'], ['hopital'], ['ft-a2-garde']),
+  unit('fr-a2-3', 'A2 · Recuerdos de Chile', '🌊', ['fr-imparfait', 'fr-pc-imparfait'], ['sentiments'], ['ft-a2-enfance', 'ft-a2-souvenir']),
+  unit('fr-a2-4', 'A2 · Un departamento propio', '🔑', ['fr-cod', 'fr-coi', 'fr-pronoms-infinitif'], ['location', 'taches'], ['ft-a2-visite', 'ft-a2-bail']),
+  unit('fr-a2-5', 'A2 · Banco y prefectura', '🏦', ['fr-devoir-falloir', 'fr-subjonctif-intro'], ['banque-poste', 'sejour'], ['ft-a2-banque', 'ft-a2-renouvellement']),
+  unit('fr-a2-6', 'A2 · Un trabajo mejor', '📄', ['fr-comparatif', 'fr-superlatif', 'fr-conditionnel-politesse'], ['postuler', 'travail-a2'], ['ft-a2-annonce', 'ft-a2-entretien']),
+  unit('fr-a2-7', 'A2 · Teléfono y reclamos', '📱', ['fr-y', 'fr-en'], ['telephone', 'reclamations'], ['ft-a2-operateur']),
+  unit('fr-a2-8', 'A2 · Planes y viajes', '🚆', ['fr-futur-simple', 'fr-si-present', 'fr-en-dans'], ['voyages', 'nature'], ['ft-a2-marseille']),
+  unit('fr-a2-9', 'A2 · Fiestas y amigos', '🎉', ['fr-relatifs', 'fr-venir-de', 'fr-tout'], ['fetes', 'caractere'], ['ft-a2-anniversaire']),
+  unit('fr-a2-10', 'A2 · En la cocina', '🍲', ['fr-adverbes-ment', 'fr-negations-a2', 'fr-lequel'], ['cuisine-a2', 'sport'], ['ft-a2-recette']),
+  unit('fr-a2-11', 'A2 · Estudiar y aprender', '🎓', ['fr-depuis', 'fr-savoir-connaitre'], ['formation', 'medias'], ['ft-a2-formation']),
+  unit('fr-a2-12', 'A2 · Un año en Lyon', '🌱', ['fr-homophones', 'fr-faux-amis'], ['verbes-a2', 'mots-a2', 'faux-amis'], ['ft-a2-un-an']),
+  examUnit('A2'),
+]
+
+const unitsByLevel: Record<CefrLevel, PathUnit[]> = { A1: unitsA1, A2: unitsA2, B1: [], B2: [], C1: [], C2: [] }
 
 export const frenchPath: PathUnit[] = cefrLevels.flatMap((l) => unitsByLevel[l])
 

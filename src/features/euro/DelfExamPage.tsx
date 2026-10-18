@@ -55,6 +55,41 @@ const tasks: Partial<Record<CefrLevel, ExamTasks>> = {
       'Hablé sin pasar al español, con la pronunciación clara (letras mudas, nasales)',
     ],
   },
+  A2: {
+    form: {
+      context: 'Camila le responde a una invitación de su colega Sophie. Completa las palabras que faltan (1–5).',
+      text: 'Salut Sophie, merci pour ton invitation ! Malheureusement, je ne (1) ___ pas venir samedi : je travaille. Hier, je (2) ___ allée chez le médecin et il m’a dit de me reposer. Mais on (3) ___ se voir dimanche ? Je te (4) ___ ce soir. (5) ___ bises, Camila',
+      fields: [
+        { label: '(1) – no puedo (pouvoir)', answers: ['peux'] },
+        { label: '(2) – fui (auxiliar de aller)', answers: ['suis'] },
+        { label: '(3) – podríamos (pouvoir, condicional)', answers: ['pourrait', 'peut'] },
+        { label: '(4) – te llamo (appeler)', answers: ['appelle', 'téléphone'] },
+        { label: '(5) – muchos besos', answers: ['Grosses', 'grosses'] },
+      ],
+    },
+    message: {
+      prompt:
+        'Escribe un correo (60 a 80 palabras) a una amiga: le cuentas un fin de semana que pasaste en otra ciudad. Di dónde fuiste, con quién, qué tiempo hacía, qué hiciste y qué te gustó más.',
+      checks: [
+        'Saludo y despedida adecuados (Chère… / Salut… — Bises, À bientôt)',
+        'Usas el passé composé para las acciones (je suis allée, on a visité…)',
+        'Usas el imparfait para describir (il faisait beau, c’était…)',
+        'Das al menos tres detalles (lugar, actividades, comida, personas)',
+        'Das tu opinión (j’ai adoré…, le plus beau, c’était génial parce que…)',
+        'Revisas los homófonos y la concordancia con être (a/à, et/est, je suis allée)',
+      ],
+      model:
+        'Chère Sophie, le week-end dernier, je suis allée à Annecy avec Julien. Il faisait très beau et le lac était magnifique ! Samedi, on a loué des vélos et on a fait le tour du lac. Le soir, nous avons mangé une tartiflette dans un petit restaurant : c’était délicieux. Dimanche, j’ai visité la vieille ville. Ce que j’ai préféré, c’est le marché. Je voudrais y retourner avec toi ! Bises, Camila',
+    },
+    speaking: [
+      'Parte 1 (entrevista dirigida): hablé de mí, de mi trabajo, de mi familia y de mis gustos, con detalles',
+      'Parte 2 (monólogo): conté una experiencia pasada (un viaje, una fiesta) usando el passé composé y el imparfait',
+      'Parte 2: di mi opinión y expliqué por qué (parce que, comme, donc)',
+      'Parte 3 (diálogo simulado): resolví una situación práctica (devolver un producto, reservar, pedir información) con cortesía (je voudrais, pourriez-vous…)',
+      'Parte 3: propuse una solución o acepté/rechacé con una razón',
+      'Hablé con fluidez y sin pasar al español; me corregí cuando me equivoqué',
+    ],
+  },
 }
 
 function pickTexts(level: CefrLevel, kind: 'reading' | 'dialogue', n: number): ReadingText[] {

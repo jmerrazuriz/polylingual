@@ -314,7 +314,7 @@ El nombre, la profesión y la ciudad son decisión del usuario (sección 11).
 |---|---|---|
 | **F0 · Base común** ✅ | Generalizar nivelación, simulacro, juegos, práctica y entrada de texto (sección 7). Motor de conjugación y artículos franceses con tests. Tablas (artículos, contracciones, pronombres, conjugador, números). | El japonés y el alemán siguen igual (todos los tests pasan) y existe un recorrido francés vacío. |
 | **F1 · A1** ✅ | Generalizar nivelación, simulacro, juegos y práctica (lo que quedó de F0). Corrección explicada en todos los ejercicios. Pronunciación, ~30 lecciones, ~650 palabras, 16 textos, simulacro DELF A1, test de nivelación A1, y juegos (parejas, escucha, *le ou la*, números, conjugación) y práctica. | Se puede hacer el A1 entero y jugar. El curso pasa a «disponible». |
-| **F2 · A2** | ~30 lecciones, hasta ~1.300 palabras, juegos de homófonos y falsos amigos, simulacro A2. | Igual que F1. |
+| **F2 · A2** ✅ | ~30 lecciones, hasta ~1.300 palabras, juegos de homófonos y falsos amigos, simulacro A2. | Igual que F1. |
 | **F3 · B1** | ~35 lecciones, hasta ~2.400 palabras, juego de concordancias, simulacro B1. | Simulacro B1 con puntaje DELF. |
 | **F4 · B2** | ~35 lecciones, hasta ~4.000 palabras, simulacro B2 con ensayo y lista de control. | Simulacro B2. |
 | **F5 · C1** | ~35 lecciones, hasta ~6.000 palabras, síntesis + ensayo, simulacro DALF C1. | Simulacro C1. |
@@ -370,6 +370,25 @@ El nombre, la profesión y la ciudad son decisión del usuario (sección 11).
   - Los módulos del simulacro (`ExamModules.tsx`) los usan el Goethe y el DELF.
   - El japonés y el alemán no cambian: 291 tests pasan.
 - **Formato:** las explicaciones admiten *cursiva* (los ejemplos en francés), también con **negritas** adentro. Un test revisa que no queden asteriscos sueltos en ningún curso.
+
+
+### Qué quedó hecho en F2 (18-10-2026)
+- **Gramática A2** (`grammarA2a.ts`, `grammarA2b.ts`): 30 lecciones, cada ejercicio con su explicación y el porqué de cada opción incorrecta.
+  - El pasado: passé composé con *avoir* y *être* (concordancia), participios irregulares, pronominales y negación en pasado, *imparfait* y el contraste entre los dos.
+  - Pronombres: directos (*le, la, les*), indirectos (*lui, leur*), con infinitivo (*je vais l’appeler*), *y* y *en*.
+  - Futuro simple, *si* + presente, comparativo y superlativo (*meilleur, mieux*), relativos *qui/que/où*, adverbios en *-ment*.
+  - Negaciones (*jamais, rien, personne, plus*), *devoir* e *il faut*, condicional de cortesía, *venir de / être en train de*, *depuis / il y a / pendant*, *en / dans* + duración, *tout*, *quel / lequel*, *savoir / connaître* y el primer subjuntivo (*il faut que*).
+  - Una lección de **homófonos** (a/à, et/est, son/sont, on/ont, ce/se, ces/ses, ou/où) con la prueba de cada uno, y otra de **falsos amigos**.
+- **Vocabulario A2** (`vocabA2.ts`): 635 palabras nuevas en 24 temas, **1.302 en total**.
+  - Urgencias y hospital, arriendo y tareas de la casa, trabajo y postulación, banco, correo y residencia, teléfono, reclamos, viajes, fiestas, sentimientos, carácter, naturaleza, cocina, estudios, medios, deporte.
+  - Un tema de falsos amigos (*embarrassé, enceinte, constipé, quitter, subir…*).
+- **16 textos A2** (8 lecturas y 8 diálogos): urgencias, notas de turno, la infancia en Valparaíso, el departamento propio, el banco, la carta de la prefectura, la oferta y la entrevista en la clínica, el servicio al cliente, Marsella, el cumpleaños de Julien, la receta de empanadas, un curso y «un año en Lyon».
+- **Recorrido A2**: 12 unidades y el simulacro DELF A2 (`/delf/a2`), con ficha corregida, correo autoevaluado y las tres partes del oral.
+- **Juegos nuevos**: *A ou à ?* (homófonos, 37 frases) y *Faux amis* (25 falsos amigos, con la trampa explicada). Se abren cuando hay palabras A2 en juego.
+- **Práctica**: modos de homófonos y falsos amigos; la conjugación suma passé composé, imparfait y futuro cuando hay palabras A2.
+- **Motor**: 17 verbos más (*jeter, nettoyer, essayer, espérer, conduire, se souvenir, se promener, s’inquiéter…*), verificados.
+- **Logro** DELF A2.
+- **Formato**: las cursivas pueden empezar con una negrita (*«**Il faut** venir»*); el test de asteriscos lo cubre.
 
 ---
 
