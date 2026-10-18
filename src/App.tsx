@@ -20,6 +20,7 @@ const CoursesPage = page(() => import('./features/courses/CoursesPage'), (m) => 
 const DailyPage = page(() => import('./features/daily/DailyPage'), (m) => m.DailyPage)
 const ChartPage = page(() => import('./features/chart/ChartPage'), (m) => m.ChartPage)
 const GermanTablesPage = page(() => import('./features/chart/GermanTablesPage'), (m) => m.GermanTablesPage)
+const FrenchTablesPage = page(() => import('./features/chart/FrenchTablesPage'), (m) => m.FrenchTablesPage)
 const GermanVocabPage = page(() => import('./features/german/GermanStudyPages'), (m) => m.GermanVocabPage)
 const GermanVocabLessonRoute = page(() => import('./features/german/GermanStudyPages'), (m) => m.GermanVocabLessonRoute)
 const GermanReadingsPage = page(() => import('./features/german/GermanStudyPages'), (m) => m.GermanReadingsPage)
@@ -98,10 +99,12 @@ export default function App() {
   )
 }
 
-/** La tabla de consulta del curso activo: kana en japonés; artículos, casos y verbos en alemán. */
+/** La tabla de consulta del curso activo: kana en japonés; artículos, casos y verbos en alemán y francés. */
 function TableRoute() {
   const course = useProgress((s) => s.course)
-  return course === 'de' ? <GermanTablesPage /> : <ChartPage />
+  if (course === 'de') return <GermanTablesPage />
+  if (course === 'fr') return <FrenchTablesPage />
+  return <ChartPage />
 }
 
 /**
@@ -134,8 +137,11 @@ function CourseOnly({ course, children }: { course: string; children: ReactNode 
   )
 }
 
-/** Una sección que existe en varios cursos con contenido propio (juegos, práctica). */
-function ByCourse({ ja, de }: { ja: ReactNode; de: ReactNode }) {
+/** Una sección que existe en varios cursos con contenido propio (juegos, práctica). Si el curso aún no la tiene, se avisa. */
+function ByCourse({ ja, de, fr }: { ja: ReactNode; de: ReactNode; fr?: ReactNode }) {
   const course = useProgress((s) => s.course)
-  return course === 'de' ? de : course === 'ja' ? ja : <CourseOnly course="ja">{ja}</CourseOnly>
+  if (course === 'de') return de
+  if (course === 'ja') return ja
+  if (course === 'fr' && fr) return fr
+  return <ComingSoon title="Esta sección llega pronto" phase="F1" />
 }

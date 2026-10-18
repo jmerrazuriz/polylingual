@@ -312,14 +312,36 @@ El nombre, la profesión y la ciudad son decisión del usuario (sección 11).
 
 | Etapa | Contenido | Hecho cuando… |
 |---|---|---|
-| **F0 · Base común** | Generalizar nivelación, simulacro, juegos, práctica y entrada de texto (sección 7). Motor de conjugación y artículos franceses con tests. Tablas (artículos, contracciones, pronombres, conjugador, números). | El japonés y el alemán siguen igual (todos los tests pasan) y existe un recorrido francés vacío. |
-| **F1 · A1** | Corrección explicada en todos los ejercicios. Pronunciación, ~30 lecciones, ~650 palabras, 16 textos, simulacro DELF A1, test de nivelación A1, y juegos (parejas, escucha, *le ou la*, números, conjugación) y práctica. | Se puede hacer el A1 entero y jugar. El curso pasa a «disponible». |
+| **F0 · Base común** ✅ | Generalizar nivelación, simulacro, juegos, práctica y entrada de texto (sección 7). Motor de conjugación y artículos franceses con tests. Tablas (artículos, contracciones, pronombres, conjugador, números). | El japonés y el alemán siguen igual (todos los tests pasan) y existe un recorrido francés vacío. |
+| **F1 · A1** | Generalizar nivelación, simulacro, juegos y práctica (lo que quedó de F0). Corrección explicada en todos los ejercicios. Pronunciación, ~30 lecciones, ~650 palabras, 16 textos, simulacro DELF A1, test de nivelación A1, y juegos (parejas, escucha, *le ou la*, números, conjugación) y práctica. | Se puede hacer el A1 entero y jugar. El curso pasa a «disponible». |
 | **F2 · A2** | ~30 lecciones, hasta ~1.300 palabras, juegos de homófonos y falsos amigos, simulacro A2. | Igual que F1. |
 | **F3 · B1** | ~35 lecciones, hasta ~2.400 palabras, juego de concordancias, simulacro B1. | Simulacro B1 con puntaje DELF. |
 | **F4 · B2** | ~35 lecciones, hasta ~4.000 palabras, simulacro B2 con ensayo y lista de control. | Simulacro B2. |
 | **F5 · C1** | ~35 lecciones, hasta ~6.000 palabras, síntesis + ensayo, simulacro DALF C1. | Simulacro C1. |
 | **F6 · C2** | ~30 lecciones, hasta ~8.000 palabras, variedades y estilo, simulacro DALF C2 (2 pruebas de 50). | Simulacro C2. Plan cerrado. |
 | **F7 · Revisión** (externa) | Revisión de un hablante nativo o profesor de FLE, empezando por A1–B1. | Contenido revisado y errores corregidos. |
+
+
+### Qué quedó hecho en F0 (18-10-2026)
+- **Motor francés** (`src/courses/fr/engine/`, con tests):
+  - `conjugation.ts`: los tres grupos y sus cambios ortográficos (*mangeons, commençons, achète, préfère, appelle, paie*), presente, *passé composé* y *plus-que-parfait* con *être/avoir* y concordancia `(e)`, *imparfait*, *futur proche*, futuro, condicional, subjuntivo, imperativo, gerundio, pronominales (*me lève, m'appelle, lève-toi*) y el pronombre sujeto con elisión (*j'aime, j'habite*).
+  - `verbs.ts`: 71 verbos base que declaran solo lo irregular.
+  - `articles.ts`: definido, indefinido, partitivo, negación (*pas de / pas d'*), contracciones (*au, aux, du, des*), demostrativos (*ce/cet/cette/ces*), posesivos (*mon amie*) y el porqué de cada artículo para la corrección explicada.
+  - `phonetics.ts`: elisión ante vocal y *h* muda, con una lista de palabras con *h* aspirada (*le héros, le haricot*).
+  - `numbers.ts`: números en letras con 70/80/90, *et un*, *quatre-vingts* y *cents*, variantes belga y suiza, ordinales y el porqué de cada forma.
+- **Entrada de texto:**
+  - `lib/frenchInput.ts`: las mayúsculas no cuentan, *oe* vale por *œ*, el apóstrofo da igual, y si solo fallan los acentos la respuesta cuenta pero se avisa «casi».
+  - Los ejercicios `type` aceptan `french: true`.
+  - `LetterKeys` común; `UmlautKeys` (alemán) y `FrenchKeys` (é è ê ë à â î ï ô û ù ü ç œ) lo usan.
+  - La corrección explicada reconoce el artículo elidido (*le école → l'école*).
+- **Simulacro DELF/DALF** (`courses/fr/exams.ts`, con tests): cuatro pruebas de 25 (A1–C1), aprobado con 50/100 y mínimo 5/25; C2 con dos pruebas de 50 y mínimo 10/50.
+- **Tablas de francés** (`/tabla`): artículos con ejemplos, contracciones, posesivos, pronombres (COD, COI, tónicos, reflexivos, *y/en/on* y su orden), conjugador con los 8 tiempos y práctica escrita, y números con variantes.
+- **El curso:**
+  - `levels.ts` (metas por nivel, Camila y Julien), `path.ts` (recorrido con los seis niveles «en preparación») y `coursePath('fr')`.
+  - Inicio propio del francés.
+  - Se puede elegir solo en desarrollo (`devPreview`, «Vista previa»); en producción sigue «Próximamente».
+  - Las secciones que aún no tiene (juegos, práctica) avisan «llega en F1» en vez de mostrar las de otro idioma.
+- **Se pasa a F1** la generalización de las pantallas de nivelación, simulacro, juegos y práctica (`PlacementBlocks`, `CefrExamPage`, lógica común de `courses/de/practice.ts`). Conviene hacerla con el contenido A1 a mano para probarla con datos reales. El japonés y el alemán no cambian (277 tests pasan).
 
 ---
 

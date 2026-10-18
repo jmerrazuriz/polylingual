@@ -27,9 +27,9 @@ export function ReviewPage() {
         <p className="text-slate-600 dark:text-slate-400">
           {next
             ? `No tienes repasos pendientes. El próximo es ${describeDue(next, now())}.`
-            : course === 'de'
-              ? 'Todavía no tienes repasos. Completa una lección de palabras y aparecerán aquí.'
-              : 'Todavía no tienes repasos. Completa una lección y sus caracteres aparecerán aquí.'}
+            : course === 'ja'
+              ? 'Todavía no tienes repasos. Completa una lección y sus caracteres aparecerán aquí.'
+              : 'Todavía no tienes repasos. Completa una lección de palabras y aparecerán aquí.'}
         </p>
         <Link to="/aprender" className="rounded-full bg-ink px-6 py-3 font-bold text-white hover:opacity-90">
           Ir a las lecciones

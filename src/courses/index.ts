@@ -10,6 +10,8 @@ export type Course = {
   native: string
   flag: string
   status: 'available' | 'soon'
+  /** Curso en preparación que ya se puede abrir en desarrollo (npm run dev) para probarlo. */
+  devPreview?: boolean
   /** Frase corta para el selector y el inicio. */
   tagline: string
   /** Código de idioma para la voz del navegador. */
@@ -64,12 +66,16 @@ export const courses: Course[] = [
     native: 'Français',
     flag: '🇫🇷',
     status: 'soon',
-    tagline: 'Pronunciación, vocabulario y gramática.',
+    devPreview: true,
+    tagline: 'Le chemin de Camila: del A1 al C2, para vivir, estudiar y trabajar en Francia.',
     speechLang: 'fr-FR',
     voiceName: 'una voz francesa',
     voiceSample: 'Bonjour',
-    sections: ['aprender', 'gramatica', 'practicar', 'juegos'],
+    sections: ['tabla', 'aprender'],
   },
 ]
+
+/** ¿Se puede elegir el curso? Los que están en preparación solo se abren en desarrollo. */
+export const isCourseOpen = (c: Course) => c.status === 'available' || (!!c.devPreview && import.meta.env.DEV)
 
 export const courseById = (id: string) => courses.find((c) => c.id === id) ?? courses[0]

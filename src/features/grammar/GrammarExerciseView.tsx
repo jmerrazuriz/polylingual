@@ -1,10 +1,11 @@
 import { useRef, useState } from 'react'
 import { Furigana } from '../../components/Furigana'
 import { KanaInput } from '../../components/KanaInput'
-import { UmlautKeys } from '../../components/UmlautKeys'
+import { FrenchKeys, UmlautKeys } from '../../components/UmlautKeys'
 import type { GrammarExercise } from '../../courses/grammar'
 import { buildFeedback, type FeedbackContext } from '../../lib/feedback'
 import { contextFor } from '../../lib/exerciseContext'
+import { checkFrench } from '../../lib/frenchInput'
 import { checkGerman } from '../../lib/germanInput'
 import { finishKana, matchesKana } from '../../lib/kanaInput'
 import { useSpeech } from '../../lib/audio/useSpeech'
@@ -20,8 +21,8 @@ const KANA = /[぀-ヿ]/
  */
 function choiceSpeech(exercise: Extract<GrammarExercise, { type: 'choice' }>, course: string): string {
   if (exercise.prompt.includes('＿')) return exercise.prompt.replace('＿', exercise.answer)
-  // En alemán las preguntas sin hueco van en español y la respuesta en alemán.
-  if (course === 'de') return exercise.answer
+  // En alemán y francés las preguntas sin hueco van en español y la respuesta en el idioma.
+  if (course !== 'ja') return exercise.answer
   return KANA.test(exercise.answer) ? exercise.answer : exercise.prompt
 }
 const jpClass = (text: string) => (KANA.test(text) ? 'font-jp' : '')
@@ -272,6 +273,7 @@ const normalizeText = (text: string) => text.trim().toLowerCase().replace(/\s+/g
 function Type({ exercise, result, onAnswer }: { exercise: Extract<GrammarExercise, { type: 'type' }>; result: boolean | null; onAnswer: (ok: boolean, given: string) => void }) {
   const [value, setValue] = useState('')
   const [caseNote, setCaseNote] = useState(false)
+  const [accentNote, setAccentNote] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
   const done = result !== null
   const submit = () => {
@@ -282,6 +284,13 @@ function Type({ exercise, result, onAnswer }: { exercise: Extract<GrammarExercis
       // En alemán las mayúsculas importan; si solo fallan ellas, cuenta pero se avisa.
       const check = checkGerman(value, exercise.answers)
       setCaseNote(check === 'case')
+      onAnswer(check !== 'wrong', value)
+      return
+    }
+    if (exercise.french) {
+      // En francés, si solo fallan los acentos, cuenta pero se avisa.
+      const check = checkFrench(value, exercise.answers)
+      setAccentNote(check === 'accents')
       onAnswer(check !== 'wrong', value)
       return
     }
@@ -308,7 +317,7 @@ function Type({ exercise, result, onAnswer }: { exercise: Extract<GrammarExercis
         ) : (
           <input
             ref={inputRef}
-            lang={exercise.german ? 'de' : undefined}
+            lang={exercise.german ? 'de' : exercise.french ? 'fr' : undefined}
             value={value}
             onChange={(e) => setValue(e.target.value)}
             disabled={done}
@@ -320,7 +329,11 @@ function Type({ exercise, result, onAnswer }: { exercise: Extract<GrammarExercis
           />
         )}
         {exercise.german && !done && <UmlautKeys inputRef={inputRef} value={value} onChange={setValue} />}
+        {exercise.french && !done && <FrenchKeys inputRef={inputRef} value={value} onChange={setValue} />}
         {caseNote && <p className="text-sm font-bold text-amber-700 dark:text-amber-300">Ojo con las mayúsculas: en alemán los sustantivos (y «Sie» formal) van con mayúscula.</p>}
+        {accentNote && (
+          <p className="text-sm font-bold text-amber-700 dark:text-amber-300">Casi: fíjate en los acentos. Se escribe «{exercise.answers[0]}».</p>
+        )}
         {!done && (
           <button type="submit" disabled={!value.trim()} className="self-center rounded-full bg-ink px-8 py-3 font-bold text-white disabled:opacity-40">
             Comprobar

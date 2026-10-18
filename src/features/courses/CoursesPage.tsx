@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router'
-import { courses } from '../../courses'
+import { courses, isCourseOpen } from '../../courses'
 import { useProgress } from '../../lib/progress/store'
 
 /** Elegir qué idioma estudiar. Cada curso guarda su propio progreso. */
@@ -20,7 +20,8 @@ export function CoursesPage() {
       <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         {courses.map((c) => {
           const active = c.id === current
-          const soon = c.status === 'soon'
+          const soon = !isCourseOpen(c)
+          const preview = !soon && c.status === 'soon'
           return (
             <li key={c.id}>
               <button
@@ -46,6 +47,10 @@ export function CoursesPage() {
                 {soon ? (
                   <span className="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-bold text-slate-500 dark:bg-slate-800">
                     Próximamente
+                  </span>
+                ) : preview ? (
+                  <span className="rounded-full bg-amber-50 px-2.5 py-1 text-xs font-bold text-amber-700 dark:bg-slate-800 dark:text-amber-300">
+                    Vista previa
                   </span>
                 ) : active ? (
                   <span className="rounded-full bg-red-50 px-2.5 py-1 text-xs font-bold text-accent dark:bg-slate-800">Actual</span>

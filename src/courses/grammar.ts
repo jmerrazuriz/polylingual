@@ -31,8 +31,9 @@ export type GrammarExercise =
   /**
    * Escribir la respuesta. Con `kana`, el romaji se convierte en kana al escribir (japonés).
    * Con `german`, hay botones ä ö ü ß, se acepta ae/oe/ue/ss y se avisa si fallan las mayúsculas.
+   * Con `french`, hay botones é è ç œ…, las mayúsculas no cuentan y si solo fallan los acentos se avisa («casi»).
    */
-  | { type: 'type'; prompt: string; hint?: string; answers: string[]; kana?: boolean; german?: boolean; explanation?: string }
+  | { type: 'type'; prompt: string; hint?: string; answers: string[]; kana?: boolean; german?: boolean; french?: boolean; explanation?: string }
 
 export type GrammarLesson = {
   id: string

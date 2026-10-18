@@ -2,6 +2,7 @@ import { Link } from 'react-router'
 import { courseById } from '../../courses'
 import { characters } from '../../courses/de/levels'
 import { germanPathItems } from '../../courses/de/path'
+import { characters as frenchCharacters } from '../../courses/fr/levels'
 import { germanItemStatus } from '../../courses/de/progress'
 import { useAccount } from '../../lib/account/store'
 import { isDailyComplete } from '../../lib/daily'
@@ -28,6 +29,7 @@ const features = [
 export function HomePage() {
   const course = courseById(useProgress((s) => s.course))
   if (course.id === 'de') return <GermanHome />
+  if (course.id === 'fr') return <FrenchHome />
   return (
     <div className="flex flex-col gap-10">
       <section className="flex flex-col items-center gap-4 pt-6 text-center">
@@ -244,6 +246,54 @@ function GermanHome() {
             className="flex items-center gap-4 rounded-2xl border border-slate-200 bg-white p-4 transition hover:-translate-y-0.5 hover:shadow-md dark:border-slate-800 dark:bg-slate-900"
           >
             <span lang="de" className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-ink text-xl font-extrabold text-white">
+              {f.glyph}
+            </span>
+            <span>
+              <span className="block font-extrabold">{f.title}</span>
+              <span className="text-sm text-slate-500 dark:text-slate-400">{f.text}</span>
+            </span>
+          </Link>
+        ))}
+      </section>
+    </div>
+  )
+}
+
+/** Inicio del curso de francés: en preparación (F0). Por ahora, el recorrido vacío y las tablas. */
+function FrenchHome() {
+  return (
+    <div className="flex flex-col gap-8">
+      <section className="flex flex-col items-center gap-4 pt-6 text-center">
+        <div lang="fr" className="flex gap-3 text-6xl font-extrabold md:text-7xl">
+          <span className="text-ink dark:text-white">É</span>
+          <span className="text-accent">ç</span>
+        </div>
+        <h1 className="text-3xl font-extrabold md:text-4xl">🇫🇷 Francés · Le chemin de Camila</h1>
+        <p className="max-w-md text-slate-600 dark:text-slate-400">
+          Del A1 al C2, con francés para vivir, estudiar y trabajar en Francia. El curso está en preparación: las lecciones llegan pronto.
+        </p>
+      </section>
+
+      <section className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+        {Object.values(frenchCharacters).map((c) => (
+          <div key={c.name} className="flex flex-col gap-1 rounded-2xl border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900">
+            <span className="text-lg font-extrabold">{c.name}</span>
+            <span className="text-sm text-slate-500 dark:text-slate-400">{c.description}</span>
+          </div>
+        ))}
+      </section>
+
+      <section className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+        {[
+          { to: '/aprender', glyph: 'A1', title: 'Recorrido', text: 'Los seis niveles, del A1 al C2 (en preparación).' },
+          { to: '/tabla', glyph: 'l’', title: 'Tablas', text: 'Artículos, contracciones, pronombres, un conjugador y los números.' },
+        ].map((f) => (
+          <Link
+            key={f.to}
+            to={f.to}
+            className="flex items-center gap-4 rounded-2xl border border-slate-200 bg-white p-4 transition hover:-translate-y-0.5 hover:shadow-md dark:border-slate-800 dark:bg-slate-900"
+          >
+            <span lang="fr" className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-ink text-xl font-extrabold text-white">
               {f.glyph}
             </span>
             <span>

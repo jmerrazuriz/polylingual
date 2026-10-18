@@ -98,8 +98,9 @@ export function diagnoseTyping(given: string, answers: readonly string[]): strin
   if (answers.some((a) => a.toLowerCase() === g.toLowerCase())) return 'Solo fallan las mayúsculas.'
   if (answers.some((a) => fold(a) === fold(g))) return 'Faltan o sobran tildes o diéresis: fíjate en los signos de cada letra.'
   const articles = ['der', 'die', 'das', 'le', 'la', "l'", 'les', 'un', 'une']
-  const [ga, ...gr] = g.split(' ')
-  const [ta, ...tr] = target.split(' ')
+  const words = (s: string) => s.replace(/^([lL])['’]/, "l' ").split(' ')
+  const [ga, ...gr] = words(g)
+  const [ta, ...tr] = words(target)
   if (articles.includes(ga.toLowerCase()) && articles.includes(ta.toLowerCase()) && fold(gr.join(' ')) === fold(tr.join(' ')) && ga.toLowerCase() !== ta.toLowerCase()) {
     return `La palabra está bien, pero el artículo es «${ta}», no «${ga}».`
   }

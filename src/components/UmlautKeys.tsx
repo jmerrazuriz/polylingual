@@ -1,8 +1,11 @@
 import type { RefObject } from 'react'
+import { frenchKeys } from '../lib/frenchInput'
 import { germanKeys } from '../lib/germanInput'
 
-/** Botones ä ö ü ß para escribir en alemán sin teclado alemán. Insertan en la posición del cursor. */
-export function UmlautKeys({ inputRef, value, onChange }: { inputRef: RefObject<HTMLInputElement | null>; value: string; onChange: (v: string) => void }) {
+type KeysProps = { inputRef: RefObject<HTMLInputElement | null>; value: string; onChange: (v: string) => void }
+
+/** Botones con letras especiales para escribir sin teclado del idioma. Insertan en la posición del cursor. */
+export function LetterKeys({ inputRef, value, onChange, keys, label }: KeysProps & { keys: readonly string[]; label: string }) {
   const insert = (ch: string) => {
     const el = inputRef.current
     const start = el?.selectionStart ?? value.length
@@ -14,8 +17,8 @@ export function UmlautKeys({ inputRef, value, onChange }: { inputRef: RefObject<
     })
   }
   return (
-    <div className="flex flex-wrap gap-1.5" aria-label="Letras alemanas">
-      {germanKeys.map((k) => (
+    <div className="flex flex-wrap gap-1.5" aria-label={label}>
+      {keys.map((k) => (
         <button
           key={k}
           type="button"
@@ -29,3 +32,9 @@ export function UmlautKeys({ inputRef, value, onChange }: { inputRef: RefObject<
     </div>
   )
 }
+
+/** ä ö ü ß. */
+export const UmlautKeys = (props: KeysProps) => <LetterKeys {...props} keys={germanKeys} label="Letras alemanas" />
+
+/** é è ê à ç œ… */
+export const FrenchKeys = (props: KeysProps) => <LetterKeys {...props} keys={frenchKeys} label="Letras francesas" />
