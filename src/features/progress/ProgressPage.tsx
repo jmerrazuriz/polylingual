@@ -4,7 +4,7 @@ import { kanjiLessons, kanjiList } from '../../courses/ja/kanji'
 import { lessonsByScript } from '../../courses/ja/lessons'
 import type { Kana } from '../../courses/ja/types'
 import { achievementsOf } from '../../lib/progress/achievements'
-import { GermanProgress } from './GermanProgress'
+import { EuroProgress } from '../euro/EuroProgress'
 import { currentStreak, dayKey, daysBefore, longestStreak, readingMastery } from '../../lib/progress/model'
 import { useProgress } from '../../lib/progress/store'
 import { now } from '../../lib/time'
@@ -62,7 +62,7 @@ export function ProgressPage() {
         <Calendar activity={progress.activity} goal={goal} now={t} />
       </section>
 
-      {!japanese && <GermanProgress />}
+      {!japanese && <EuroProgress />}
 
       {japanese && scripts.map(({ title, list, script }) => {
         const lessons = lessonsByScript[script]

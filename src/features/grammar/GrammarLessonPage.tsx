@@ -32,7 +32,7 @@ export function GrammarLessonRoute() {
     )
   }
   // En alemán la siguiente lección del recorrido puede ser de palabras: se vuelve al recorrido.
-  const next = course === 'de' ? undefined : lessons[lessons.indexOf(lesson) + 1]
+  const next = course !== 'ja' ? undefined : lessons[lessons.indexOf(lesson) + 1]
   return <GrammarLessonView key={lesson.id} lesson={lesson} number={lessons.indexOf(lesson) + 1} next={next} />
 }
 

@@ -29,7 +29,7 @@ export type Feedback = {
   quote?: { text: string; meaning: string }
 }
 
-const plain = (s: string) => furiganaToPlain(s).replace(/\*\*/g, '')
+const plain = (s: string) => furiganaToPlain(s).replace(/\*/g, '')
 const norm = (s: string) =>
   plain(s)
     .toLowerCase()

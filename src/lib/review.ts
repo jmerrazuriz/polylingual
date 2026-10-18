@@ -7,6 +7,8 @@ import { kanjiReviewExercise, kanjiWritingItem, type TaggedExercise } from './st
 import { wordFromCard, wordReviewExercise } from './vocabExercises.ts'
 import { germanWordFromCard } from '../courses/de/vocab.ts'
 import { germanWordReviewExercise } from '../courses/de/vocabExercises.ts'
+import { frenchWordFromCard } from '../courses/fr/vocab.ts'
+import { frenchWordReviewExercise } from '../courses/fr/vocabExercises.ts'
 import type { WritingItem } from './writing.ts'
 
 export const REVIEW_LIMIT = 20
@@ -19,10 +21,10 @@ export const REVIEW_LIMIT = 20
 export type ReviewPlan = { reading: Question[]; exercises: TaggedExercise[]; writing: WritingItem[] }
 
 /** Caracteres que tienen tarjetas de repaso: kana, kanji y palabras («w-<id>»). */
-export const isReviewable = (char: string) => kanaByChar.has(char) || kanjiByChar.has(char) || !!wordFromCard(char) || !!germanWordFromCard(char)
+export const isReviewable = (char: string) => kanaByChar.has(char) || kanjiByChar.has(char) || !!wordFromCard(char) || !!germanWordFromCard(char) || !!frenchWordFromCard(char)
 
-/** Curso de una tarjeta: las palabras alemanas son «dw-<id>»; kana, kanji y «w-<id>» son del japonés. */
-export const cardCourse = (char: string): string => (germanWordFromCard(char) ? 'de' : 'ja')
+/** Curso de una tarjeta: palabras alemanas «dw-<id>», francesas «fw-<id>»; kana, kanji y «w-<id>» son del japonés. */
+export const cardCourse = (char: string): string => (germanWordFromCard(char) ? 'de' : frenchWordFromCard(char) ? 'fr' : 'ja')
 
 /** Solo las tarjetas de un curso: cada idioma repasa lo suyo, sin mezclarse con los otros. */
 export function cardsOfCourse(cards: Record<string, SrsCard>, course: string): Record<string, SrsCard> {
@@ -61,11 +63,12 @@ export function buildReview(cards: Record<string, SrsCard>, now: number, random 
   const exercises = due.flatMap(({ char, skill }): TaggedExercise[] => {
     if (wordFromCard(char)) return [wordReviewExercise(char, skill, random)]
     if (germanWordFromCard(char)) return [germanWordReviewExercise(char, skill, random)]
+    if (frenchWordFromCard(char)) return [frenchWordReviewExercise(char, skill, random)]
     return skill === 'read' && kanjiByChar.has(char) ? [kanjiReviewExercise(char, random)] : []
   })
 
   const writing = due
-    .filter((c) => c.skill === 'write' && !wordFromCard(c.char) && !germanWordFromCard(c.char))
+    .filter((c) => c.skill === 'write' && !wordFromCard(c.char) && !germanWordFromCard(c.char) && !frenchWordFromCard(c.char))
     .map(({ char }): WritingItem => {
       const kana = kanaByChar.get(char)
       return kana ? { prompt: kana.romaji, kana: kana.char, parts: kana.parts } : kanjiWritingItem(char)

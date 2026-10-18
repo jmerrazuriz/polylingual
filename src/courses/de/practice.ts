@@ -1,3 +1,4 @@
+import type { SpeedQuestion } from '../euro.ts'
 import type { GrammarExercise } from '../grammar.ts'
 import type { PairItem } from '../../lib/pairs.ts'
 import type { ProgressData } from '../../lib/progress/model.ts'
@@ -50,18 +51,7 @@ export const pluralPairs = (words: readonly GermanWord[]): PairItem[] =>
     .filter((w) => w.plural && w.plural !== w.word)
     .map((w) => ({ id: w.id, left: withArticle(w), right: `die ${w.plural}`, speak: withArticle(w) }))
 
-/** Una pregunta de juego rápido: enunciado, opciones y respuesta. */
-export type SpeedQuestion = {
-  prompt: string
-  hint?: string
-  options: string[]
-  answer: string
-  speak?: string
-  /** Por qué la respuesta es esa (se muestra al fallar y, breve, al acertar). */
-  explanation?: string
-  /** Qué es cada opción incorrecta. */
-  whyWrong?: Record<string, string>
-}
+export type { SpeedQuestion }
 
 /** der / die / das de un sustantivo al azar del pool. */
 export function articleQuestion(words: readonly GermanWord[], random = Math.random): SpeedQuestion | null {
@@ -69,7 +59,7 @@ export function articleQuestion(words: readonly GermanWord[], random = Math.rand
   if (!list.length) return null
   const w = list[Math.floor(random() * list.length)]
   const answer = withArticle(w).split(' ')[0]
-  return { prompt: w.word, hint: w.meaning, options: ['der', 'die', 'das'], answer, speak: withArticle(w), explanation: genderReason(w) }
+  return { prompt: w.word, hint: w.meaning, options: ['der', 'die', 'das'], answer, speak: withArticle(w), keepOrder: true, explanation: genderReason(w) }
 }
 
 type Tense = { name: string; forms: (v: Verb) => Forms }

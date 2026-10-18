@@ -1,46 +1,43 @@
 import { useState } from 'react'
 import { Link } from 'react-router'
 import { SaveProgressPrompt } from '../../components/SaveProgressPrompt'
-import { germanGrammar } from '../../courses/de/grammar'
-import { germanPath } from '../../courses/de/path'
-import { germanItemDone } from '../../courses/de/progress'
-import { germanVocabLessonById, germanWordCard } from '../../courses/de/vocab'
-import { meaningExercise, sayExercise } from '../../courses/de/vocabExercises'
+import type { EuroCourse } from '../../courses/euro'
 import type { GrammarExercise } from '../../courses/grammar'
 import type { PathItem, PathUnit } from '../../lib/path'
 import { progressSnapshot, useProgress } from '../../lib/progress/store'
 import { shuffle } from '../../lib/random'
 import { GrammarExerciseView } from '../grammar/GrammarExerciseView'
+import { useEuroCourse } from './useEuroCourse'
 
-// Test de nivelación del alemán: bloques de dos unidades del recorrido, de lo más fácil a lo
-// más difícil. Cada bloque aprobado (80 %) completa sus lecciones y sus palabras entran al repaso.
+// Test de nivelación de los cursos europeos: bloques de dos unidades del recorrido, de lo más fácil
+// a lo más difícil. Cada bloque aprobado (80 %) completa sus lecciones y sus palabras entran al repaso.
 
 const QUESTIONS = 8
 const PASS = 0.8
 
 type Block = { title: string; units: PathUnit[] }
 
-const blocks: Block[] = (() => {
-  const units = germanPath.filter((u) => !u.id.startsWith('examen-'))
+function blocksOf(course: EuroCourse): Block[] {
+  const units = course.path.filter((u) => !u.stops.some((s) => s.items.some((i) => i.kind === 'exam')))
   const out: Block[] = []
   for (let i = 0; i < units.length; i += 2) {
     const pair = units.slice(i, i + 2)
     out.push({ title: pair.map((u) => u.title.replace(/^[ABC][12] · /, '')).join(' y '), units: pair })
   }
   return out
-})()
+}
 
 const itemsOf = (b: Block): PathItem[] => b.units.flatMap((u) => u.stops.flatMap((s) => s.items))
 
-function buildQuestions(b: Block): GrammarExercise[] {
+function buildQuestions(course: EuroCourse, b: Block): GrammarExercise[] {
   const items = itemsOf(b)
   const grammar = items
     .filter((i) => i.kind === 'grammar')
-    .flatMap((i) => germanGrammar.find((g) => g.id === i.id)!.exercises.filter((e) => e.type === 'choice' || e.type === 'type'))
-  const words = items.filter((i) => i.kind === 'vocab').flatMap((i) => germanVocabLessonById.get(i.id)!.words)
+    .flatMap((i) => course.grammar.find((g) => g.id === i.id)!.exercises.filter((e) => e.type === 'choice' || e.type === 'type'))
+  const words = items.filter((i) => i.kind === 'vocab').flatMap((i) => course.vocabLessonById.get(i.id)!.words)
   const vocab = shuffle(words)
     .slice(0, 3)
-    .map((w, k) => (k % 2 ? meaningExercise(w) : sayExercise(w)))
+    .map((w, k) => (k % 2 ? course.meaningExercise(w) : course.sayExercise(w)))
   return shuffle([...shuffle(grammar).slice(0, QUESTIONS - vocab.length), ...vocab])
 }
 
@@ -49,16 +46,18 @@ type Phase =
   | { kind: 'block'; index: number; questions: GrammarExercise[]; step: number; correct: number }
   | { kind: 'done'; passed: number; last?: { correct: number; total: number } }
 
-export function GermanPlacement() {
+export function EuroPlacement() {
+  const course = useEuroCourse()
+  const [blocks] = useState(() => blocksOf(course))
   const apply = useProgress((s) => s.applyPlacement)
   const [start] = useState(() => {
     const p = progressSnapshot()
-    const i = blocks.findIndex((b) => !itemsOf(b).every((item) => germanItemDone(p, item)))
+    const i = blocks.findIndex((b) => !itemsOf(b).every((item) => course.itemDone(p, item)))
     return i === -1 ? blocks.length : i
   })
   const [phase, setPhase] = useState<Phase>({ kind: 'intro' })
 
-  const startBlock = (index: number) => setPhase({ kind: 'block', index, questions: buildQuestions(blocks[index]), step: 0, correct: 0 })
+  const startBlock = (index: number) => setPhase({ kind: 'block', index, questions: buildQuestions(course, blocks[index]), step: 0, correct: 0 })
 
   const finish = (passed: number, last?: { correct: number; total: number }) => {
     if (passed > start) {
@@ -66,7 +65,7 @@ export function GermanPlacement() {
       apply({
         lessons: items
           .filter((i) => i.kind === 'vocab' || i.kind === 'reading')
-          .map((i) => ({ id: i.id, chars: i.kind === 'vocab' ? germanVocabLessonById.get(i.id)!.words.map(germanWordCard) : [] })),
+          .map((i) => ({ id: i.id, chars: i.kind === 'vocab' ? course.vocabLessonById.get(i.id)!.words.map((w) => course.wordCard(w)) : [] })),
         grammar: items.filter((i) => i.kind === 'grammar').map((i) => i.id),
         units: [],
       })
@@ -80,9 +79,9 @@ export function GermanPlacement() {
         <span className="text-6xl" aria-hidden>
           🧭
         </span>
-        <h1 className="text-2xl font-extrabold">Test de nivelación de alemán</h1>
+        <h1 className="text-2xl font-extrabold">Test de nivelación de {course.name}</h1>
         <p className="text-slate-600 dark:text-slate-400">
-          ¿Ya sabes algo de alemán? Responde bloques de {QUESTIONS} preguntas, de lo más fácil (A1) a lo más difícil (C2). Cada bloque que apruebes con
+          ¿Ya sabes algo de {course.name}? Responde bloques de {QUESTIONS} preguntas, de lo más fácil a lo más difícil (hasta {blocks.at(-1)?.units.at(-1)?.title.slice(0, 2)}). Cada bloque que apruebes con
           80 % completa esa parte del recorrido, y sus palabras entran a tus repasos. Puedes parar cuando quieras.
         </p>
         {start >= blocks.length ? (
@@ -94,7 +93,7 @@ export function GermanPlacement() {
         )}
         <ol className="flex w-full flex-col gap-1 text-left text-sm text-slate-500">
           {blocks.map((b, i) => (
-            <li key={b.title}>
+            <li key={i}>
               {i < start ? '✓' : `${i + 1}.`} {b.title}
             </li>
           ))}
@@ -136,7 +135,7 @@ export function GermanPlacement() {
       </h1>
       <p className="text-slate-600 dark:text-slate-400">
         {phase.last ? `En el último bloque acertaste ${phase.last.correct} de ${phase.last.total}. ` : ''}
-        Tu recorrido sigue desde {phase.passed < blocks.length ? `«${blocks[phase.passed].title}»` : 'el simulacro Goethe A1'}.
+        Tu recorrido sigue desde {phase.passed < blocks.length ? `«${blocks[phase.passed].title}»` : `el simulacro ${course.examName('A1')}`}.
       </p>
       <SaveProgressPrompt />
       <Link to="/aprender" className="rounded-full bg-ink px-6 py-3 font-bold text-white hover:opacity-90">

@@ -1,6 +1,7 @@
 import { germanPath, germanPathLevels } from '../courses/de/path.ts'
 import { germanItemStatus } from '../courses/de/progress.ts'
-import { frenchItemStatus, frenchPath, frenchPathLevels } from '../courses/fr/path.ts'
+import { frenchPath, frenchPathLevels } from '../courses/fr/path.ts'
+import { frenchItemStatus } from '../courses/fr/progress.ts'
 import { type ItemStatus, japanesePath, japanesePathLevels, type PathItem, pathItemStatus, type PathLevel, type PathUnit } from './path.ts'
 import type { ProgressData } from './progress/model.ts'
 
@@ -43,8 +44,8 @@ const french: CoursePath = {
   units: frenchPath,
   levels: frenchPathLevels,
   itemStatus: frenchItemStatus,
-  hasPlacement: false,
-  firstLessonTo: null,
+  hasPlacement: true,
+  firstLessonTo: '/gramatica/fr-alphabet',
   intro: 'Le chemin de Camila: acompaña a Camila, enfermera chilena en Lyon, y a su vecino Julien Moreau, del A1 al C2.',
   dailyLessons: false,
 }

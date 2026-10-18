@@ -36,7 +36,7 @@ export function PathPage() {
   const course = useProgress((s) => s.course)
   const { iconLang, iconFont } = iconStyle(course)
   const cp = coursePath(course)
-  const icons = course === 'de' ? germanIcon : kindIcon
+  const icons = course === 'ja' ? kindIcon : germanIcon
   const { stops, current, itemStatus } = pathStatusFor(cp.units, cp.itemStatus(progressSnapshot(), guest))
   const [open, setOpen] = useState<string | null>(null)
   const selected = open ?? current?.id ?? null

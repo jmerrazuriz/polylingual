@@ -1,9 +1,9 @@
 import { Link } from 'react-router'
 import { courseById } from '../../courses'
-import { characters } from '../../courses/de/levels'
-import { germanPathItems } from '../../courses/de/path'
+import { characters as germanCharacters } from '../../courses/de/levels'
+import type { EuroCourse } from '../../courses/euro'
+import { euroCourses } from '../../courses/euroCourses'
 import { characters as frenchCharacters } from '../../courses/fr/levels'
-import { germanItemStatus } from '../../courses/de/progress'
 import { useAccount } from '../../lib/account/store'
 import { isDailyComplete } from '../../lib/daily'
 import { lessons as allLessons } from '../../courses/ja/lessons'
@@ -28,8 +28,7 @@ const features = [
 
 export function HomePage() {
   const course = courseById(useProgress((s) => s.course))
-  if (course.id === 'de') return <GermanHome />
-  if (course.id === 'fr') return <FrenchHome />
+  if (euroCourses[course.id]) return <EuroHome course={euroCourses[course.id]} />
   return (
     <div className="flex flex-col gap-10">
       <section className="flex flex-col items-center gap-4 pt-6 text-center">
@@ -174,28 +173,54 @@ function DailyCard() {
   )
 }
 
-/** Inicio del curso de alemán: seguir el recorrido Ottos Weg, repasar y las secciones. */
-function GermanHome() {
+/** Lo que cambia en el inicio de cada curso europeo. */
+const euroHome: Record<string, { hero: [string, string]; title: string; text: string; characters: { name: string; description: string }[]; words: string; texts: string; tables: [string, string]; practice: string }> = {
+  de: {
+    hero: ['Ä', 'ß'],
+    title: '🇩🇪 Alemán · Ottos Weg',
+    text: 'Del A1 al C2, con alemán para vivir y trabajar en Alemania.',
+    characters: Object.values(germanCharacters),
+    words: 'Con artículo y plural, y repaso espaciado.',
+    texts: 'Las historias de Otto y Hans, como en el examen.',
+    tables: ['der', 'Artículos, casos, terminaciones y un conjugador.'],
+    practice: 'Artículos, plurales, conjugación y declinación en sesiones cortas.',
+  },
+  fr: {
+    hero: ['É', 'ç'],
+    title: '🇫🇷 Francés · Le chemin de Camila',
+    text: 'Del A1 al C2, con francés para vivir, estudiar y trabajar en Francia.',
+    characters: Object.values(frenchCharacters),
+    words: 'Con artículo y género, y repaso espaciado.',
+    texts: 'Las historias de Camila y Julien, como en el examen.',
+    tables: ['l’', 'Artículos, pronombres, un conjugador y los números.'],
+    practice: 'Género, femeninos, conjugación y números en sesiones cortas.',
+  },
+}
+
+/** Inicio de un curso europeo: seguir el recorrido, repasar y las secciones. */
+function EuroHome({ course }: { course: EuroCourse }) {
   const guest = useAccount((s) => s.status !== 'user')
   const cards = useProgress((s) => s.cards)
   useProgress((s) => s.lessons)
   useProgress((s) => s.grammar)
   useProgress((s) => s.records)
-  const status = germanItemStatus(progressSnapshot(), guest)
-  const next = germanPathItems.find((i) => status(i) === 'open' && i.kind !== 'exam') ?? germanPathItems.find((i) => status(i) === 'open')
-  const exam = germanPathItems.find((i) => i.kind === 'exam' && status(i) !== 'done') ?? germanPathItems.filter((i) => i.kind === 'exam').at(-1)!
-  const done = germanPathItems.filter((i) => status(i) === 'done').length
-  const due = dueNowCount(cardsOfCourse(cards, 'de'), now())
+  const home = euroHome[course.id]
+  const items = course.path.flatMap((u) => u.stops.flatMap((s) => s.items))
+  const status = course.itemStatus(progressSnapshot(), guest)
+  const next = items.find((i) => status(i) === 'open' && i.kind !== 'exam') ?? items.find((i) => status(i) === 'open')
+  const exam = items.find((i) => i.kind === 'exam' && status(i) !== 'done') ?? items.filter((i) => i.kind === 'exam').at(-1)
+  const done = items.filter((i) => status(i) === 'done').length
+  const due = dueNowCount(cardsOfCourse(cards, course.id), now())
   return (
     <div className="flex flex-col gap-8">
       <section className="flex flex-col items-center gap-4 pt-6 text-center">
-        <div lang="de" className="flex gap-3 text-6xl font-extrabold md:text-7xl">
-          <span className="text-ink dark:text-white">Ä</span>
-          <span className="text-accent">ß</span>
+        <div lang={course.lang} className="flex gap-3 text-6xl font-extrabold md:text-7xl">
+          <span className="text-ink dark:text-white">{home.hero[0]}</span>
+          <span className="text-accent">{home.hero[1]}</span>
         </div>
-        <h1 className="text-3xl font-extrabold md:text-4xl">🇩🇪 Alemán · Ottos Weg</h1>
+        <h1 className="text-3xl font-extrabold md:text-4xl">{home.title}</h1>
         <p className="max-w-md text-slate-600 dark:text-slate-400">
-          Del A1 al C2, con alemán para vivir y trabajar en Alemania. {done}/{germanPathItems.length} lecciones del recorrido completadas.
+          {home.text} {done}/{items.length} lecciones del recorrido completadas.
         </p>
       </section>
 
@@ -221,7 +246,7 @@ function GermanHome() {
       )}
 
       <section className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-        {Object.values(characters).map((c) => (
+        {home.characters.map((c) => (
           <div key={c.name} className="flex flex-col gap-1 rounded-2xl border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900">
             <span className="text-lg font-extrabold">{c.name}</span>
             <span className="text-sm text-slate-500 dark:text-slate-400">{c.description}</span>
@@ -233,67 +258,19 @@ function GermanHome() {
         {[
           { to: '/aprender', glyph: 'A1', title: 'Recorrido', text: 'Unidad por unidad, del A1 al C2.' },
           { to: '/gramatica', glyph: 'G', title: 'Gramática', text: 'Explicaciones cortas, ejemplos con audio y ejercicios.' },
-          { to: '/palabras', glyph: 'W', title: 'Palabras', text: 'Con artículo y plural, y repaso espaciado.' },
-          { to: '/textos', glyph: 'T', title: 'Lectura y audio', text: 'Las historias de Otto y Hans, como en el examen.' },
-          { to: '/tabla', glyph: 'der', title: 'Tablas', text: 'Artículos, casos, terminaciones y un conjugador.' },
-          { to: '/practicar', glyph: '✍️', title: 'Practicar', text: 'Artículos, plurales, conjugación y declinación en sesiones cortas.' },
+          { to: '/palabras', glyph: 'W', title: 'Palabras', text: home.words },
+          { to: '/textos', glyph: 'T', title: 'Lectura y audio', text: home.texts },
+          { to: '/tabla', glyph: home.tables[0], title: 'Tablas', text: home.tables[1] },
+          { to: '/practicar', glyph: '✍️', title: 'Practicar', text: home.practice },
           { to: '/juegos', glyph: '🎮', title: 'Juegos', text: 'Parejas, sonidos y desafíos contra el reloj.' },
-          { to: exam.to, glyph: '📝', title: `Simulacro Goethe ${exam.id}`, text: 'La meta del nivel: leer, escuchar, escribir y hablar.' },
+          ...(exam ? [{ to: exam.to, glyph: '📝', title: `Simulacro ${course.examName(exam.id as 'A1')}`, text: 'La meta del nivel: escuchar, leer, escribir y hablar.' }] : []),
         ].map((f) => (
           <Link
             key={f.to}
             to={f.to}
             className="flex items-center gap-4 rounded-2xl border border-slate-200 bg-white p-4 transition hover:-translate-y-0.5 hover:shadow-md dark:border-slate-800 dark:bg-slate-900"
           >
-            <span lang="de" className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-ink text-xl font-extrabold text-white">
-              {f.glyph}
-            </span>
-            <span>
-              <span className="block font-extrabold">{f.title}</span>
-              <span className="text-sm text-slate-500 dark:text-slate-400">{f.text}</span>
-            </span>
-          </Link>
-        ))}
-      </section>
-    </div>
-  )
-}
-
-/** Inicio del curso de francés: en preparación (F0). Por ahora, el recorrido vacío y las tablas. */
-function FrenchHome() {
-  return (
-    <div className="flex flex-col gap-8">
-      <section className="flex flex-col items-center gap-4 pt-6 text-center">
-        <div lang="fr" className="flex gap-3 text-6xl font-extrabold md:text-7xl">
-          <span className="text-ink dark:text-white">É</span>
-          <span className="text-accent">ç</span>
-        </div>
-        <h1 className="text-3xl font-extrabold md:text-4xl">🇫🇷 Francés · Le chemin de Camila</h1>
-        <p className="max-w-md text-slate-600 dark:text-slate-400">
-          Del A1 al C2, con francés para vivir, estudiar y trabajar en Francia. El curso está en preparación: las lecciones llegan pronto.
-        </p>
-      </section>
-
-      <section className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-        {Object.values(frenchCharacters).map((c) => (
-          <div key={c.name} className="flex flex-col gap-1 rounded-2xl border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900">
-            <span className="text-lg font-extrabold">{c.name}</span>
-            <span className="text-sm text-slate-500 dark:text-slate-400">{c.description}</span>
-          </div>
-        ))}
-      </section>
-
-      <section className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-        {[
-          { to: '/aprender', glyph: 'A1', title: 'Recorrido', text: 'Los seis niveles, del A1 al C2 (en preparación).' },
-          { to: '/tabla', glyph: 'l’', title: 'Tablas', text: 'Artículos, contracciones, pronombres, un conjugador y los números.' },
-        ].map((f) => (
-          <Link
-            key={f.to}
-            to={f.to}
-            className="flex items-center gap-4 rounded-2xl border border-slate-200 bg-white p-4 transition hover:-translate-y-0.5 hover:shadow-md dark:border-slate-800 dark:bg-slate-900"
-          >
-            <span lang="fr" className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-ink text-xl font-extrabold text-white">
+            <span lang={course.lang} className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-ink text-xl font-extrabold text-white">
               {f.glyph}
             </span>
             <span>

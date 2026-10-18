@@ -1,6 +1,7 @@
 import { type ComponentType, lazy, type ReactNode } from 'react'
 import { Link, Route, Routes } from 'react-router'
 import { courseById } from './courses'
+import { isEuroCourse } from './courses/euroCourses'
 import { ComingSoon } from './components/ComingSoon'
 import { Layout } from './components/Layout'
 import { HomePage } from './features/home/HomePage'
@@ -21,11 +22,12 @@ const DailyPage = page(() => import('./features/daily/DailyPage'), (m) => m.Dail
 const ChartPage = page(() => import('./features/chart/ChartPage'), (m) => m.ChartPage)
 const GermanTablesPage = page(() => import('./features/chart/GermanTablesPage'), (m) => m.GermanTablesPage)
 const FrenchTablesPage = page(() => import('./features/chart/FrenchTablesPage'), (m) => m.FrenchTablesPage)
-const GermanVocabPage = page(() => import('./features/german/GermanStudyPages'), (m) => m.GermanVocabPage)
-const GermanVocabLessonRoute = page(() => import('./features/german/GermanStudyPages'), (m) => m.GermanVocabLessonRoute)
-const GermanReadingsPage = page(() => import('./features/german/GermanStudyPages'), (m) => m.GermanReadingsPage)
-const GermanReadingRoute = page(() => import('./features/german/GermanStudyPages'), (m) => m.GermanReadingRoute)
-const GoetheExamPage = page(() => import('./features/german/GoetheExamPage'), (m) => m.GoetheExamPage)
+const EuroVocabPage = page(() => import('./features/euro/EuroStudyPages'), (m) => m.EuroVocabPage)
+const EuroVocabLessonRoute = page(() => import('./features/euro/EuroStudyPages'), (m) => m.EuroVocabLessonRoute)
+const EuroReadingsPage = page(() => import('./features/euro/EuroStudyPages'), (m) => m.EuroReadingsPage)
+const EuroReadingRoute = page(() => import('./features/euro/EuroStudyPages'), (m) => m.EuroReadingRoute)
+const GoetheExamPage = page(() => import('./features/euro/GoetheExamPage'), (m) => m.GoetheExamPage)
+const DelfExamPage = page(() => import('./features/euro/DelfExamPage'), (m) => m.DelfExamPage)
 const LessonRoute = page(() => import('./features/learn/LessonPage'), (m) => m.LessonRoute)
 const PlacementPage = page(() => import('./features/learn/PlacementPage'), (m) => m.PlacementPage)
 const PathPlacementPage = page(() => import('./features/path/PathPlacementPage'), (m) => m.PathPlacementPage)
@@ -44,8 +46,8 @@ const KanjiLessonRoute = page(() => import('./features/study/KanjiPages'), (m) =
 const ExtraLessonPage = page(() => import('./features/extra/ExtraLessonPage'), (m) => m.ExtraLessonPage)
 const PracticePage = page(() => import('./features/practice/PracticePage'), (m) => m.PracticePage)
 const GamesPage = page(() => import('./features/games/GamesPage'), (m) => m.GamesPage)
-const GermanGamesPage = page(() => import('./features/german/GermanGamesPage'), (m) => m.GermanGamesPage)
-const GermanPracticePage = page(() => import('./features/german/GermanPracticePage'), (m) => m.GermanPracticePage)
+const EuroGamesPage = page(() => import('./features/euro/EuroGamesPage'), (m) => m.EuroGamesPage)
+const EuroPracticePage = page(() => import('./features/euro/EuroPracticePage'), (m) => m.EuroPracticePage)
 const ReviewPage = page(() => import('./features/review/ReviewPage'), (m) => m.ReviewPage)
 const UnitReviewRoute = page(() => import('./features/review/UnitReviewPage'), (m) => m.UnitReviewRoute)
 const WeakReviewPage = page(() => import('./features/review/WeakReviewPage'), (m) => m.WeakReviewPage)
@@ -72,11 +74,12 @@ export default function App() {
         <Route path="lectura/:textId" element={<CourseOnly course="ja"><ReadingRoute /></CourseOnly>} />
         <Route path="simulacro" element={<CourseOnly course="ja"><MockExamPage /></CourseOnly>} />
         <Route path="simulacro/:level" element={<CourseOnly course="ja"><MockExamPage /></CourseOnly>} />
-        <Route path="palabras" element={<CourseOnly course="de"><GermanVocabPage /></CourseOnly>} />
-        <Route path="palabras/:lessonId" element={<CourseOnly course="de"><GermanVocabLessonRoute /></CourseOnly>} />
-        <Route path="textos" element={<CourseOnly course="de"><GermanReadingsPage /></CourseOnly>} />
-        <Route path="textos/:textId" element={<CourseOnly course="de"><GermanReadingRoute /></CourseOnly>} />
+        <Route path="palabras" element={<EuroOnly><EuroVocabPage /></EuroOnly>} />
+        <Route path="palabras/:lessonId" element={<EuroOnly><EuroVocabLessonRoute /></EuroOnly>} />
+        <Route path="textos" element={<EuroOnly><EuroReadingsPage /></EuroOnly>} />
+        <Route path="textos/:textId" element={<EuroOnly><EuroReadingRoute /></EuroOnly>} />
         <Route path="goethe/:level" element={<CourseOnly course="de"><GoetheExamPage /></CourseOnly>} />
+        <Route path="delf/:level" element={<CourseOnly course="fr"><DelfExamPage /></CourseOnly>} />
         <Route path="vocabulario" element={<CourseOnly course="ja"><VocabPage /></CourseOnly>} />
         <Route path="vocabulario/:lessonId" element={<CourseOnly course="ja"><VocabLessonRoute /></CourseOnly>} />
         <Route path="contadores" element={<CourseOnly course="ja"><CountersPage /></CourseOnly>} />
@@ -85,8 +88,8 @@ export default function App() {
         <Route path="kanji/:lessonId" element={<CourseOnly course="ja"><KanjiLessonRoute /></CourseOnly>} />
         <Route path="extra" element={<CourseOnly course="ja"><ExtraLessonPage /></CourseOnly>} />
         <Route path="gramatica/:lessonId" element={<GrammarLessonRoute />} />
-        <Route path="practicar" element={<ByCourse ja={<PracticePage />} de={<GermanPracticePage />} />} />
-        <Route path="juegos" element={<ByCourse ja={<GamesPage />} de={<GermanGamesPage />} />} />
+        <Route path="practicar" element={<ByCourse ja={<PracticePage />} euro={<EuroPracticePage />} />} />
+        <Route path="juegos" element={<ByCourse ja={<GamesPage />} euro={<EuroGamesPage />} />} />
         <Route path="repasar" element={<ReviewPage />} />
         <Route path="repaso/unidad/:unitId" element={<CourseOnly course="ja"><UnitReviewRoute /></CourseOnly>} />
         <Route path="repaso/debiles" element={<CourseOnly course="ja"><WeakReviewPage /></CourseOnly>} />
@@ -137,11 +140,16 @@ function CourseOnly({ course, children }: { course: string; children: ReactNode 
   )
 }
 
-/** Una sección que existe en varios cursos con contenido propio (juegos, práctica). Si el curso aún no la tiene, se avisa. */
-function ByCourse({ ja, de, fr }: { ja: ReactNode; de: ReactNode; fr?: ReactNode }) {
+/** Una sección que existe en varios cursos con contenido propio (juegos, práctica): japonés o cursos europeos. */
+function ByCourse({ ja, euro }: { ja: ReactNode; euro: ReactNode }) {
   const course = useProgress((s) => s.course)
-  if (course === 'de') return de
   if (course === 'ja') return ja
-  if (course === 'fr' && fr) return fr
-  return <ComingSoon title="Esta sección llega pronto" phase="F1" />
+  if (isEuroCourse(course)) return euro
+  return <ComingSoon title="Esta sección llega pronto" />
+}
+
+/** Secciones de los cursos europeos (palabras y textos): alemán o francés; en japonés se ofrece cambiar. */
+function EuroOnly({ children }: { children: ReactNode }) {
+  const course = useProgress((s) => s.course)
+  return isEuroCourse(course) ? children : <CourseOnly course="de">{children}</CourseOnly>
 }

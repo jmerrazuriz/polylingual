@@ -65,13 +65,12 @@ export const courses: Course[] = [
     name: 'Francés',
     native: 'Français',
     flag: '🇫🇷',
-    status: 'soon',
-    devPreview: true,
+    status: 'available',
     tagline: 'Le chemin de Camila: del A1 al C2, para vivir, estudiar y trabajar en Francia.',
     speechLang: 'fr-FR',
     voiceName: 'una voz francesa',
     voiceSample: 'Bonjour',
-    sections: ['tabla', 'aprender'],
+    sections: ['tabla', 'aprender', 'practicar', 'juegos'],
   },
 ]
 

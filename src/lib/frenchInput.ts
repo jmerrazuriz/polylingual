@@ -11,7 +11,7 @@ const tidy = (s: string) =>
     .replace(/[’`´]/g, "'")
     .replace(/\s*'\s*/g, "'")
     .replace(/\s+/g, ' ')
-    .replace(/[.!?]$/, '')
+    .replace(/\s*[.!?]+$/, '')
     .replace(/œ/g, 'oe')
     .replace(/æ/g, 'ae')
 

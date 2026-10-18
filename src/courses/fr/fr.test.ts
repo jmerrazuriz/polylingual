@@ -32,10 +32,10 @@ describe('simulacros DELF y DALF', () => {
 })
 
 describe('curso de francés', () => {
-  it('tiene su recorrido propio, vacío y con los seis niveles', () => {
+  it('tiene su recorrido propio con los seis niveles y test de nivelación', () => {
     const cp = coursePath('fr')
-    expect(cp.units).toEqual([])
+    expect(cp.units.length).toBeGreaterThan(0)
     expect(cp.levels.map((l) => l.level)).toEqual(['A1', 'A2', 'B1', 'B2', 'C1', 'C2'])
-    expect(cp.hasPlacement).toBe(false)
+    expect(cp.hasPlacement).toBe(true)
   })
 })

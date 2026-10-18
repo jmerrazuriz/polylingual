@@ -29,6 +29,20 @@ const germanWordsInReview = (p: ProgressData) => new Set(Object.keys(p.cards).fi
 const germanTextsRead = (p: ProgressData) => Object.keys(p.lessons).filter((id) => /^(lt|dt)-/.test(id)).length
 const goethePassed = (p: ProgressData, level: string) => !!p.records[`goethe-${level}:aprobado`]
 
+const frenchGrammarDone = (p: ProgressData) => Object.keys(p.grammar).filter((id) => id.startsWith('fr-')).length
+const frenchWordsInReview = (p: ProgressData) => new Set(Object.keys(p.cards).filter((id) => id.startsWith('fw-')).map((id) => id.split(':')[0])).size
+const frenchTextsRead = (p: ProgressData) => Object.keys(p.lessons).filter((id) => id.startsWith('ft-')).length
+const delfPassed = (p: ProgressData, level: string) => !!p.records[`delf-${level}:aprobado`]
+
+const frenchAchievements: Achievement[] = [
+  { id: 'fr-premiere-lecon', course: 'fr', icon: '🥐', title: 'Premiers pas', description: 'Completa tu primera lección de gramática francesa.', check: (p) => frenchGrammarDone(p) > 0 },
+  { id: 'fr-grammaire-30', course: 'fr', icon: '📘', title: 'Bases sólidas', description: 'Completa 30 lecciones de gramática francesa.', check: (p) => frenchGrammarDone(p) >= 30 },
+  { id: 'fr-mots-100', course: 'fr', icon: '🗂️', title: '100 mots', description: 'Ten 100 palabras francesas en repaso.', check: (p) => frenchWordsInReview(p) >= 100 },
+  { id: 'fr-mots-500', course: 'fr', icon: '📚', title: '500 mots', description: 'Ten 500 palabras francesas en repaso.', check: (p) => frenchWordsInReview(p) >= 500 },
+  { id: 'fr-textes-10', course: 'fr', icon: '📖', title: 'Lectrice', description: 'Lee 10 episodios de Le chemin de Camila.', check: (p) => frenchTextsRead(p) >= 10 },
+  { id: 'fr-delf-a1', course: 'fr', icon: '🎓', title: 'DELF A1', description: 'Aprueba el simulacro DELF A1.', check: (p) => delfPassed(p, 'a1') },
+]
+
 const germanAchievements: Achievement[] = [
   { id: 'de-erste-lektion', course: 'de', icon: '🥨', title: 'Erste Schritte', description: 'Completa tu primera lección de gramática alemana.', check: (p) => germanGrammarDone(p) > 0 },
   { id: 'de-grammatik-30', course: 'de', icon: '📗', title: 'Base sólida', description: 'Completa 30 lecciones de gramática alemana.', check: (p) => germanGrammarDone(p) >= 30 },
@@ -92,6 +106,7 @@ export const achievements: Achievement[] = [
   },
   { id: 'primer-record', icon: '🏆', title: 'Récord', description: 'Consigue un récord en cualquier juego.', check: (p) => Object.keys(p.records).length > 0 },
   ...germanAchievements,
+  ...frenchAchievements,
 ]
 
 /** Logros que se muestran en un curso: los generales y los de ese idioma. */

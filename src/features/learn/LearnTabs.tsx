@@ -15,14 +15,14 @@ export type LearnTab =
   | 'textos'
 
 /** Pestañas de cada curso: recorrido y gramática son comunes; las demás son de cada idioma. */
-const tabs: { tab: LearnTab; label: string; to: string; course?: string }[] = [
+const tabs: { tab: LearnTab; label: string; to: string; course?: string | string[] }[] = [
   { tab: 'recorrido', label: 'Recorrido', to: '/aprender' },
   { tab: 'hiragana', label: 'Hiragana', to: '/aprender?silabario=hiragana', course: 'ja' },
   { tab: 'katakana', label: 'Katakana', to: '/aprender?silabario=katakana', course: 'ja' },
   { tab: 'vocabulario', label: 'Vocabulario', to: '/vocabulario', course: 'ja' },
   { tab: 'gramatica', label: 'Gramática', to: '/gramatica' },
-  { tab: 'palabras', label: 'Palabras', to: '/palabras', course: 'de' },
-  { tab: 'textos', label: 'Lectura y audio', to: '/textos', course: 'de' },
+  { tab: 'palabras', label: 'Palabras', to: '/palabras', course: ['de', 'fr'] },
+  { tab: 'textos', label: 'Lectura y audio', to: '/textos', course: ['de', 'fr'] },
   { tab: 'conjugacion', label: 'Conjugación', to: '/conjugacion', course: 'ja' },
   { tab: 'lectura', label: 'Lectura y audio', to: '/lectura', course: 'ja' },
   { tab: 'contadores', label: 'Contadores', to: '/contadores', course: 'ja' },
@@ -32,7 +32,7 @@ const tabs: { tab: LearnTab; label: string; to: string; course?: string }[] = [
 /** Pestañas de la sección Aprender. En pantallas chicas se desplazan de lado. */
 export function LearnTabs({ current }: { current: LearnTab }) {
   const course = useProgress((s) => s.course)
-  const visible = tabs.filter((t) => !t.course || t.course === course)
+  const visible = tabs.filter((t) => !t.course || [t.course].flat().includes(course))
   if (visible.length < 2) return null
   return (
     <nav aria-label="Aprender" className="-mx-4 overflow-x-auto px-4">

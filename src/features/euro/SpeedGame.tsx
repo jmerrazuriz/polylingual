@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import type { SpeedQuestion } from '../../courses/de/practice'
+import type { SpeedQuestion } from '../../courses/euro'
 import { useSpeech } from '../../lib/audio/useSpeech'
 import { useProgress } from '../../lib/progress/store'
 import { shuffle } from '../../lib/random'
@@ -11,6 +11,8 @@ type Props = {
   /** Nueva pregunta en cada turno. */
   next: () => SpeedQuestion
   recordKey: string
+  /** Idioma de las opciones (para la voz y la tipografía). */
+  lang?: string
   onExit: () => void
   seconds?: number
 }
@@ -27,7 +29,7 @@ export function SpeedGame(props: Props) {
   return <SpeedRun key={game} {...props} onRetry={() => setGame((g) => g + 1)} />
 }
 
-function SpeedRun({ title, instructions, next, recordKey, onExit, onRetry, seconds = 60 }: Props & { onRetry: () => void }) {
+function SpeedRun({ title, instructions, next, recordKey, lang, onExit, onRetry, seconds = 60 }: Props & { onRetry: () => void }) {
   const [question, setQuestion] = useState(() => withShuffled(next()))
   const [left, setLeft] = useState(seconds)
   const [stats, setStats] = useState({ correct: 0, wrong: 0, streak: 0, best: 0 })
@@ -106,7 +108,7 @@ function SpeedRun({ title, instructions, next, recordKey, onExit, onRetry, secon
         <span>✗ {stats.wrong}</span>
         <span>🔥 {stats.streak}</span>
       </div>
-      <section lang="de" className="flex flex-col items-center gap-1 rounded-2xl bg-ink p-6 text-center text-white">
+      <section lang={lang} className="flex flex-col items-center gap-1 rounded-2xl bg-ink p-6 text-center text-white">
         <span className="text-3xl font-extrabold">{question.prompt}</span>
         {question.hint && <span className="text-sm opacity-80">{question.hint}</span>}
       </section>
@@ -117,9 +119,9 @@ function SpeedRun({ title, instructions, next, recordKey, onExit, onRetry, secon
           {question.explanation && <span className="block">💡 {question.explanation}</span>}
         </p>
       )}
-      <div className={`grid gap-2 ${question.options.length <= 3 ? 'grid-cols-3' : 'grid-cols-1 sm:grid-cols-2'}`}>
+      <div className={`grid gap-2 ${question.options.length === 2 ? 'grid-cols-2' : question.options.length === 3 ? 'grid-cols-3' : 'grid-cols-1 sm:grid-cols-2'}`}>
         {question.options.map((o) => (
-          <button key={o} lang="de" onClick={() => answer(o)} className={`rounded-2xl border-2 px-4 py-3 text-lg font-bold transition ${style(o)}`}>
+          <button key={o} lang={lang} onClick={() => answer(o)} className={`rounded-2xl border-2 px-4 py-3 text-lg font-bold transition ${style(o)}`}>
             {o}
           </button>
         ))}
@@ -128,7 +130,7 @@ function SpeedRun({ title, instructions, next, recordKey, onExit, onRetry, secon
   )
 }
 
-/** Opciones desordenadas, salvo der/die/das, que van siempre en ese orden. */
+/** Opciones desordenadas, salvo las de orden fijo (der/die/das, un/une). */
 function withShuffled(q: SpeedQuestion): SpeedQuestion {
-  return q.options.join() === 'der,die,das' ? q : { ...q, options: shuffle(q.options) }
+  return q.keepOrder ? q : { ...q, options: shuffle(q.options) }
 }

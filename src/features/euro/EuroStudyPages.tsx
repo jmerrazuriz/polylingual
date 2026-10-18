@@ -2,35 +2,23 @@ import { useMemo, useState } from 'react'
 import { Link, useParams } from 'react-router'
 import { ComingSoon } from '../../components/ComingSoon'
 import { SaveProgressPrompt } from '../../components/SaveProgressPrompt'
-import { germanUnlockedIds } from '../../courses/de/progress'
-import { lookupGerman } from '../../courses/de/glossary'
-import { germanTexts } from '../../courses/de/texts'
-import { type GermanWord, germanThemesA1, germanThemesA2, germanThemesB1, germanThemesB2, germanThemesC1, germanThemesC2, germanVocabLessonById, germanVocabLessons, germanWordCard, nounLine, withArticle } from '../../courses/de/vocab'
-import { germanLessonExercises } from '../../courses/de/vocabExercises'
+import type { EuroCourse, EuroWord } from '../../courses/euro'
 import type { ReadingText } from '../../courses/reading'
 import { useAccount } from '../../lib/account/store'
 import { useSpeech } from '../../lib/audio/useSpeech'
 import { useProgress } from '../../lib/progress/store'
 import { GrammarExerciseView } from '../grammar/GrammarExerciseView'
 import { LearnTabs } from '../learn/LearnTabs'
+import { useEuroCourse } from './useEuroCourse'
 
-const textById = new Map(germanTexts.map((t) => [t.id, t]))
-
-/** Lecciones abiertas del alemán de un tipo (sigue el recorrido). */
-function useGermanUnlocked(kind: 'vocab' | 'reading') {
+/** Lecciones abiertas de un tipo (sigue el recorrido del curso). */
+function useUnlocked(course: EuroCourse, kind: 'vocab' | 'reading') {
   const guest = useAccount((s) => s.status !== 'user')
   const lessons = useProgress((s) => s.lessons)
   const grammar = useProgress((s) => s.grammar)
   const records = useProgress((s) => s.records)
   const unlockAll = useProgress((s) => s.unlockAll)
-  return useMemo(() => germanUnlockedIds({ lessons, grammar, records, unlockAll }, guest, kind), [lessons, grammar, records, unlockAll, guest, kind])
-}
-
-const genderColor: Record<string, string> = {
-  m: 'text-sky-700 dark:text-sky-300',
-  f: 'text-rose-700 dark:text-rose-300',
-  n: 'text-emerald-700 dark:text-emerald-300',
-  pl: 'text-amber-700 dark:text-amber-300',
+  return useMemo(() => course.unlockedIds({ lessons, grammar, records, unlockAll }, guest, kind), [course, lessons, grammar, records, unlockAll, guest, kind])
 }
 
 function Locked({ back, label }: { back: string; label: string }) {
@@ -50,25 +38,24 @@ function Locked({ back, label }: { back: string; label: string }) {
 
 /* ─────────────── Palabras ─────────────── */
 
-export function GermanVocabPage() {
-  const unlocked = useGermanUnlocked('vocab')
+export function EuroVocabPage() {
+  const course = useEuroCourse()
+  const unlocked = useUnlocked(course, 'vocab')
   const done = useProgress((s) => s.lessons)
   return (
     <div className="flex flex-col gap-6">
       <header className="flex flex-col gap-1">
         <h1 className="text-2xl font-extrabold">Aprender</h1>
-        <p className="text-sm text-slate-500 dark:text-slate-400">
-          Palabras por tema, siempre con su artículo y su plural. Lo que aprendes entra a tus repasos.
-        </p>
+        <p className="text-sm text-slate-500 dark:text-slate-400">{course.vocabIntro}</p>
       </header>
       <LearnTabs current="palabras" />
-      {[...germanThemesA1.map((t) => ({ ...t, level: 'A1' })), ...germanThemesA2.map((t) => ({ ...t, level: 'A2' })), ...germanThemesB1.map((t) => ({ ...t, level: 'B1' })), ...germanThemesB2.map((t) => ({ ...t, level: 'B2' })), ...germanThemesC1.map((t) => ({ ...t, level: 'C1' })), ...germanThemesC2.map((t) => ({ ...t, level: 'C2' }))].map((theme) => (
+      {course.themes.map((theme) => (
         <section key={theme.id} className="flex flex-col gap-2">
           <h2 className="text-sm font-extrabold text-slate-500 uppercase">
             {theme.level} · {theme.title}
           </h2>
           <ul className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-            {germanVocabLessons
+            {course.vocabLessons
               .filter((l) => l.theme === theme.id)
               .map((l) => {
                 const open = unlocked.has(l.id)
@@ -77,8 +64,8 @@ export function GermanVocabPage() {
                   <>
                     <span className="flex-1">
                       <span className="block font-extrabold">{l.title}</span>
-                      <span lang="de" className="text-sm text-slate-500 dark:text-slate-400">
-                        {l.words.slice(0, 4).map(withArticle).join(' · ')}…
+                      <span lang={course.lang} className="text-sm text-slate-500 dark:text-slate-400">
+                        {l.words.slice(0, 4).map((w) => course.withArticle(w)).join(' · ')}…
                       </span>
                     </span>
                     {result ? (
@@ -113,28 +100,29 @@ export function GermanVocabPage() {
   )
 }
 
-export function GermanVocabLessonRoute() {
+export function EuroVocabLessonRoute() {
   const { lessonId } = useParams()
-  const unlocked = useGermanUnlocked('vocab')
-  const lesson = lessonId ? germanVocabLessonById.get(lessonId) : undefined
+  const course = useEuroCourse()
+  const unlocked = useUnlocked(course, 'vocab')
+  const lesson = lessonId ? course.vocabLessonById.get(lessonId) : undefined
   if (!lesson) return <ComingSoon title="Lección no encontrada" />
   if (!unlocked.has(lesson.id)) return <Locked back="/palabras" label="Ver las lecciones de palabras" />
-  return <GermanVocabLesson key={lesson.id} lessonId={lesson.id} />
+  return <VocabLesson key={lesson.id} course={course} lessonId={lesson.id} />
 }
 
-function WordCard({ w }: { w: GermanWord }) {
+function WordCard({ course, w }: { course: EuroCourse; w: EuroWord }) {
   const { available, speak } = useSpeech()
   return (
     <li>
       <button
-        onClick={() => speak(w.pos === 'noun' && w.plural && w.gender !== 'pl' ? `${withArticle(w)}. die ${w.plural}` : withArticle(w))}
+        onClick={() => speak(course.speakWord(w))}
         disabled={!available}
         className="flex w-full items-center gap-3 rounded-2xl border border-slate-200 bg-white p-3 text-left enabled:hover:border-accent dark:border-slate-800 dark:bg-slate-900"
       >
         {available && <span aria-hidden>🔊</span>}
         <span className="flex-1">
-          <span lang="de" className={`block text-lg font-bold ${w.gender ? genderColor[w.gender] : ''}`}>
-            {nounLine(w)}
+          <span lang={course.lang} className={`block text-lg font-bold ${course.genderClass(w)}`}>
+            {course.nounLine(w)}
           </span>
           <span className="text-sm text-slate-600 dark:text-slate-300">{w.meaning}</span>
         </span>
@@ -143,19 +131,20 @@ function WordCard({ w }: { w: GermanWord }) {
   )
 }
 
-function GermanVocabLesson({ lessonId }: { lessonId: string }) {
-  const lesson = germanVocabLessonById.get(lessonId)!
-  const [exercises] = useState(() => germanLessonExercises(lesson.words))
+function VocabLesson({ course, lessonId }: { course: EuroCourse; lessonId: string }) {
+  const lesson = course.vocabLessonById.get(lessonId)!
+  const [exercises] = useState(() => course.lessonExercises(lesson.words))
   const [step, setStep] = useState(-1)
   const [correct, setCorrect] = useState(0)
   const complete = useProgress((s) => s.completeLesson)
   const total = exercises.length
   const finished = step >= total
+  const hasNouns = lesson.words.some((w) => w.pos === 'noun')
 
   const answer = (ok: boolean) => {
     const score = correct + (ok ? 1 : 0)
     setCorrect(score)
-    if (step + 1 === total) complete(lesson.id, score, total, lesson.words.map(germanWordCard))
+    if (step + 1 === total) complete(lesson.id, score, total, lesson.words.map((w) => course.wordCard(w)))
     setStep(step + 1)
   }
 
@@ -175,20 +164,26 @@ function GermanVocabLesson({ lessonId }: { lessonId: string }) {
           <p className="text-sm font-bold text-slate-500 uppercase">Palabras · {lesson.level}</p>
           <h1 className="text-2xl font-extrabold">{lesson.title}</h1>
           <p className="text-sm text-slate-600 dark:text-slate-400">
-            {lesson.words.some((w) => w.pos === 'noun') ? (
+            {course.lessonIntro(lesson.words)}
+            {hasNouns && (
               <>
-            Aprende cada sustantivo con su artículo (color: <span className={genderColor.m}>der</span>,{' '}
-            <span className={genderColor.f}>die</span>, <span className={genderColor.n}>das</span>) y su plural. Toca una palabra para oírla.
+                {' '}
+                Colores:{' '}
+                {course.genders.map((g, i) => (
+                  <span key={g.gender}>
+                    {i > 0 && ', '}
+                    <span lang={course.lang} className={g.className}>
+                      {g.article}
+                    </span>
+                  </span>
+                ))}
+                .
               </>
-            ) : (
-              lesson.words.some((w) => /\+ (Akk|Dat)\./.test(w.word))
-                ? 'Aprende cada expresión completa (con su preposición y su caso). Toca una para oírla.'
-                : 'Aprende cada palabra o expresión completa, tal como se usa. Toca una para oírla.'
             )}
           </p>
           <ul className="flex flex-col gap-2">
             {lesson.words.map((w) => (
-              <WordCard key={w.id} w={w} />
+              <WordCard key={w.id} course={course} w={w} />
             ))}
           </ul>
           <button onClick={() => setStep(0)} className="self-center rounded-full bg-ink px-8 py-3 font-bold text-white hover:opacity-90">
@@ -220,20 +215,19 @@ function GermanVocabLesson({ lessonId }: { lessonId: string }) {
 
 /* ─────────────── Lecturas y diálogos ─────────────── */
 
-export function GermanReadingsPage() {
-  const unlocked = useGermanUnlocked('reading')
+export function EuroReadingsPage() {
+  const course = useEuroCourse()
+  const unlocked = useUnlocked(course, 'reading')
   const done = useProgress((s) => s.lessons)
   return (
     <div className="flex flex-col gap-6">
       <header className="flex flex-col gap-1">
         <h1 className="text-2xl font-extrabold">Aprender</h1>
-        <p className="text-sm text-slate-500 dark:text-slate-400">
-          Ottos Weg: lecturas y diálogos con audio, como en el examen Goethe. Toca una palabra para ver qué significa.
-        </p>
+        <p className="text-sm text-slate-500 dark:text-slate-400">{course.textsIntro}</p>
       </header>
       <LearnTabs current="textos" />
       <ul className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-        {germanTexts.map((t) => {
+        {course.texts.map((t) => {
           const open = unlocked.has(t.id)
           const result = done[t.id]
           const body = (
@@ -273,23 +267,24 @@ export function GermanReadingsPage() {
   )
 }
 
-export function GermanReadingRoute() {
+export function EuroReadingRoute() {
   const { textId } = useParams()
-  const unlocked = useGermanUnlocked('reading')
-  const text = textId ? textById.get(textId) : undefined
+  const course = useEuroCourse()
+  const unlocked = useUnlocked(course, 'reading')
+  const text = textId ? course.texts.find((t) => t.id === textId) : undefined
   if (!text) return <ComingSoon title="Texto no encontrado" />
   if (!unlocked.has(text.id)) return <Locked back="/textos" label="Ver los textos" />
-  return <GermanReadingView key={text.id} text={text} />
+  return <ReadingView key={text.id} course={course} text={text} />
 }
 
-function GermanReadingView({ text }: { text: ReadingText }) {
+function ReadingView({ course, text }: { course: EuroCourse; text: ReadingText }) {
   const [step, setStep] = useState<'text' | 'questions' | 'done'>('text')
   const [index, setIndex] = useState(0)
   const [correct, setCorrect] = useState(0)
   const [showText, setShowText] = useState(text.kind === 'reading')
   const [showMeaning, setShowMeaning] = useState(false)
   const [playing, setPlaying] = useState(false)
-  const [word, setWord] = useState<{ token: string; info?: ReturnType<typeof lookupGerman> } | null>(null)
+  const [word, setWord] = useState<{ token: string; info?: ReturnType<EuroCourse['lookup']> } | null>(null)
   const complete = useProgress((s) => s.completeLesson)
   const { available, voiceFound, speak, speakLines, stop } = useSpeech()
   const total = text.questions.length
@@ -326,7 +321,9 @@ function GermanReadingView({ text }: { text: ReadingText }) {
 
       {step === 'text' && (
         <section className="flex flex-col gap-4">
-          <p className="text-sm font-bold text-slate-500 uppercase">{text.kind === 'reading' ? '📖 Lectura' : '🎧 Diálogo'} · Ottos Weg</p>
+          <p className="text-sm font-bold text-slate-500 uppercase">
+            {text.kind === 'reading' ? '📖 Lectura' : '🎧 Diálogo'} · {course.story}
+          </p>
           <h1 className="text-2xl font-extrabold">{text.title}</h1>
           {text.context && <p className="text-slate-600 dark:text-slate-400">{text.context}</p>}
           {available ? (
@@ -336,7 +333,7 @@ function GermanReadingView({ text }: { text: ReadingText }) {
           ) : (
             text.kind === 'dialogue' && (
               <p className="rounded-xl bg-amber-50 p-3 text-sm text-amber-900 dark:bg-amber-950/40 dark:text-amber-200">
-                {voiceFound ? 'El audio está apagado en los ajustes: puedes leer el diálogo.' : 'Tu navegador no tiene voz alemana: puedes leer el diálogo.'}
+                {voiceFound ? 'El audio está apagado en los ajustes: puedes leer el diálogo.' : `Tu navegador no tiene voz en ${course.name}: puedes leer el diálogo.`}
               </p>
             )
           )}
@@ -351,11 +348,11 @@ function GermanReadingView({ text }: { text: ReadingText }) {
                       </button>
                     )}
                     <div className="flex flex-col gap-0.5">
-                      <p lang="de" className="text-lg leading-relaxed">
+                      <p lang={course.lang} className="text-lg leading-relaxed">
                         {line.speaker && <span className="mr-2 text-sm font-bold text-accent">{line.speaker}:</span>}
                         {line.text.split(/\s+/).map((token, k) => (
                           <span key={k}>
-                            <button onClick={() => setWord({ token, info: lookupGerman(token) })} className="rounded hover:bg-accent/10">
+                            <button onClick={() => setWord({ token, info: course.lookup(token) })} className="rounded hover:bg-accent/10">
                               {token}
                             </button>{' '}
                           </span>
@@ -368,13 +365,13 @@ function GermanReadingView({ text }: { text: ReadingText }) {
               </ul>
               {word && (
                 <p role="status" className="rounded-xl bg-sky-50 p-3 text-sm text-sky-900 dark:bg-sky-950/40 dark:text-sky-200">
-                  <span lang="de" className="font-bold">
-                    {word.token.replace(/[.,!?;:]/g, '')}
+                  <span lang={course.lang} className="font-bold">
+                    {word.token.replace(/[.,!?;:«»]/g, '')}
                   </span>
                   {word.info ? (
                     <>
                       {' '}
-                      → <strong>{word.info.word.meaning}</strong> (<span lang="de">{nounLine(word.info.word)}</span>
+                      → <strong>{word.info.word.meaning}</strong> (<span lang={course.lang}>{course.nounLine(word.info.word)}</span>
                       {word.info.form && `, ${word.info.form}`})
                     </>
                   ) : (

@@ -313,7 +313,7 @@ El nombre, la profesión y la ciudad son decisión del usuario (sección 11).
 | Etapa | Contenido | Hecho cuando… |
 |---|---|---|
 | **F0 · Base común** ✅ | Generalizar nivelación, simulacro, juegos, práctica y entrada de texto (sección 7). Motor de conjugación y artículos franceses con tests. Tablas (artículos, contracciones, pronombres, conjugador, números). | El japonés y el alemán siguen igual (todos los tests pasan) y existe un recorrido francés vacío. |
-| **F1 · A1** | Generalizar nivelación, simulacro, juegos y práctica (lo que quedó de F0). Corrección explicada en todos los ejercicios. Pronunciación, ~30 lecciones, ~650 palabras, 16 textos, simulacro DELF A1, test de nivelación A1, y juegos (parejas, escucha, *le ou la*, números, conjugación) y práctica. | Se puede hacer el A1 entero y jugar. El curso pasa a «disponible». |
+| **F1 · A1** ✅ | Generalizar nivelación, simulacro, juegos y práctica (lo que quedó de F0). Corrección explicada en todos los ejercicios. Pronunciación, ~30 lecciones, ~650 palabras, 16 textos, simulacro DELF A1, test de nivelación A1, y juegos (parejas, escucha, *le ou la*, números, conjugación) y práctica. | Se puede hacer el A1 entero y jugar. El curso pasa a «disponible». |
 | **F2 · A2** | ~30 lecciones, hasta ~1.300 palabras, juegos de homófonos y falsos amigos, simulacro A2. | Igual que F1. |
 | **F3 · B1** | ~35 lecciones, hasta ~2.400 palabras, juego de concordancias, simulacro B1. | Simulacro B1 con puntaje DELF. |
 | **F4 · B2** | ~35 lecciones, hasta ~4.000 palabras, simulacro B2 con ensayo y lista de control. | Simulacro B2. |
@@ -342,6 +342,34 @@ El nombre, la profesión y la ciudad son decisión del usuario (sección 11).
   - Se puede elegir solo en desarrollo (`devPreview`, «Vista previa»); en producción sigue «Próximamente».
   - Las secciones que aún no tiene (juegos, práctica) avisan «llega en F1» en vez de mostrar las de otro idioma.
 - **Se pasa a F1** la generalización de las pantallas de nivelación, simulacro, juegos y práctica (`PlacementBlocks`, `CefrExamPage`, lógica común de `courses/de/practice.ts`). Conviene hacerla con el contenido A1 a mano para probarla con datos reales. El japonés y el alemán no cambian (277 tests pasan).
+
+
+### Qué quedó hecho en F1 (18-10-2026)
+- **El curso pasa a «disponible»**: el A1 se puede hacer entero, con juegos, práctica, nivelación y simulacro.
+- **Gramática A1** (`grammarA1a.ts`, `grammarA1b.ts`): 33 lecciones.
+  - Pronunciación: alfabeto y acentos, letras mudas, nasales, liaison y elisión.
+  - *Être, avoir*, pronombres sujeto (*tu/vous, on*), presente de -er, *faire, aller, venir, prendre, mettre, vouloir, pouvoir* y pronominales.
+  - Artículos, plural, *il y a*, negación, preguntas, partitivo, cantidades, contracciones, *à/en/au* con ciudades y países.
+  - Adjetivos, posesivos, demostrativos, imperativo, *c’est / il est*, futur proche y pronombres tónicos.
+  - Números (con 70/80/90), la hora y la fecha.
+  - Cada ejercicio trae su explicación y, en las opciones, por qué cada respuesta incorrecta no sirve.
+- **Vocabulario A1** (`vocabA1.ts`): 667 palabras en 23 temas y 69 lecciones.
+  - Cada sustantivo con su artículo y su género, que se indica cuando el *l’* lo esconde (*l’école (f.)*).
+  - Plurales irregulares, femeninos de adjetivos y profesiones, y *h* aspirada.
+  - Ejercicios: significado, cómo se dice, *un/une*, femenino, plural irregular y escribir (sin acentos = «casi»).
+  - Explicaciones: género por la terminación (*-tion, -té → f.; -ment, -age → m.*), las excepciones y los cognados con otro género que en español (*le lait, la mer*).
+- **16 textos A1** de *Le chemin de Camila* (8 lecturas y 8 diálogos), con glosario que reconoce elisiones, plurales, femeninos y verbos conjugados.
+- **Recorrido A1**: 10 unidades y el simulacro DELF A1, con desbloqueo lineal como en alemán.
+- **Simulacro DELF A1** (`/delf/a1`): escuchar, leer, escribir (ficha corregida + mensaje autoevaluado) y hablar (autoevaluación), con puntaje sobre 25 por prueba.
+- **Juegos**: parejas, escucha y une, masculino/femenino, *Un ou une ?*, conjugación rápida y *Les nombres*.
+- **Práctica**: palabras, escribir, género, femenino, conjugación y números.
+- **Logros del francés**: primera lección, 30 lecciones, 100 y 500 palabras, 10 textos, DELF A1.
+- **Lo que quedó de F0, hecho:** las pantallas del alemán ahora son comunes (`features/euro/`).
+  - Cada curso llena un `EuroCourse` (`courses/de/course.ts`, `courses/fr/course.ts`).
+  - Palabras, textos, nivelación, juegos, práctica, progreso e inicio son las mismas pantallas para los dos idiomas.
+  - Los módulos del simulacro (`ExamModules.tsx`) los usan el Goethe y el DELF.
+  - El japonés y el alemán no cambian: 291 tests pasan.
+- **Formato:** las explicaciones admiten *cursiva* (los ejemplos en francés), también con **negritas** adentro. Un test revisa que no queden asteriscos sueltos en ningún curso.
 
 ---
 

@@ -2,6 +2,7 @@
 // es mucho más larga que las demás. Uso: npx tsx scripts/scan-options.ts
 import { grammarByCourse } from '../src/courses/content.ts'
 import { germanTexts } from '../src/courses/de/texts.ts'
+import { frenchTexts } from '../src/courses/fr/texts.ts'
 import type { GrammarExercise } from '../src/courses/grammar.ts'
 import { looksNumeric } from '../src/lib/distractors.ts'
 import { readingTexts } from '../src/lib/readings.ts'
@@ -24,6 +25,7 @@ function check(where: string, e: GrammarExercise) {
 for (const [course, lessons] of Object.entries(grammarByCourse)) for (const g of lessons) for (const e of g.exercises) check(`${course}:gramática:${g.id}`, e)
 for (const t of readingTexts) for (const e of t.questions ?? []) check(`ja:lectura:${t.id}`, e)
 for (const t of germanTexts) for (const e of t.questions) check(`de:texto:${t.id}`, e)
+for (const t of frenchTexts) for (const e of t.questions) check(`fr:texto:${t.id}`, e)
 
 for (const f of found) console.log(`${f.why.padEnd(16)} ${f.where}\n   ${f.prompt}\n   ✔ ${f.answer}\n   ✘ ${f.options.filter((o) => o !== f.answer).join(' | ')}`)
 console.log(`\n${found.length} preguntas para revisar`)
