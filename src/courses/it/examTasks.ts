@@ -63,4 +63,55 @@ export const cilsTasks: Partial<Record<CefrLevel, CilsTasks>> = {
       'Pronuncié las dobles consonantes y los sonidos ci/ce, chi/che, gli y gn',
     ],
   },
+  A2: {
+    structures: [
+      c('Ieri mattina Lucca ＿ in Questura.', 'è andato', ['ha andato', 'è andata', 'va'], 'andare usa essere y concuerda: Lucca è andato.', { 'ha andato': 'andare va con essere.', 'è andata': 'Lucca es hombre: andato.', va: 'Con «ieri mattina» va el pasado.' }),
+      c('Quando ero piccolo, ＿ sempre al mare con i nonni.', 'andavo', ['sono andato', 'vado', 'andrò'], 'Una costumbre en el pasado: imperfetto.', { 'sono andato': 'Una costumbre (sempre, da piccolo) va en imperfetto.', vado: 'Es presente.', andrò: 'Es futuro.' }),
+      c('Hai visto Giulia? — Sì, ＿ vista ieri.', 'l’ho', ['le ho', 'la ho', 'gli ho'], 'la + ho = l’ho, y el participio concuerda: vista.', { 'le ho': '«le» es plural o indirecto; Giulia es objeto directo: la.', 'la ho': 'la se apostrofa ante ho: l’ho.', 'gli ho': '«gli» es indirecto (a él).' }),
+      c('Quanti figli hai? — ＿ ho due.', 'Ne', ['Li', 'Ci', 'Gli'], 'Con una cantidad: ne.', { Li: 'Con una cantidad se usa ne.', Ci: '«ci» es para lugares.', Gli: '«gli» es indirecto.' }),
+      c('Vivo a Bologna ＿ due anni.', 'da', ['fa', 'per', 'tra'], 'Presente + da: algo que empezó y sigue.', { fa: '«fa» va detrás del tiempo y con un pasado.', per: '«per» marca una duración cerrada.', tra: '«tra» es «dentro de», hacia el futuro.' }),
+      c('Scusi, ＿ dirmi dov’è la farmacia?', 'potrebbe', ['potrà', 'potresti', 'può essere'], 'Petición cortés con Lei: condicional.', { potrà: 'Es futuro; para pedir con cortesía, condicional.', potresti: '«potresti» es de tu; a un desconocido, Lei.', 'può essere': '«può essere» es «puede ser».' }),
+      c('Domani, se non piove, ＿ al mare.', 'andremo', ['siamo andati', 'andavamo', 'andassimo'], 'Un plan para mañana: futuro.', { 'siamo andati': 'Es pasado.', andavamo: 'Es imperfetto: pasado.', andassimo: 'Es subjuntivo imperfecto: no va aquí.' }),
+      c('Questo è il ristorante ＿ ti ho parlato.', 'di cui', ['che', 'cui', 'dove'], 'parlare di qualcosa → di cui.', { che: 'Con preposición (parlare di) se usa cui.', cui: 'Falta la preposición: di cui.', dove: 'No se habla «dove»: se habla «di» algo.' }),
+      c('Napoli è più grande ＿ Bologna.', 'di', ['che', 'come', 'quanto'], 'Entre dos nombres: più… di.', { che: '«che» compara adjetivos o verbos, o va ante una preposición.', come: '«come» es para la igualdad.', quanto: '«quanto» es para la igualdad.' }),
+      c('Signora, non ＿! È tutto in regola.', 'si preoccupi', ['preoccuparti', 'ti preoccupi', 'si preoccupa'], 'Imperativo negativo de Lei: non si preoccupi.', { preoccuparti: 'Es de tu.', 'ti preoccupi': 'Es el presente de tu.', 'si preoccupa': 'Es el presente de lei.' }),
+      c('In questo negozio ＿ prodotti biologici.', 'si vendono', ['si vende', 'se vendono', 'vendesi'], 'si impersonal con un plural: si vendono.', { 'si vende': '«prodotti» es plural: si vendono.', 'se vendono': 'Se escribe si.', vendesi: '«vendesi» se usa solo en avisos y con singular.' }),
+      c('Telefono a Giulia e ＿ dico tutto.', 'le', ['la', 'gli', 'lo'], 'dire a qualcuno: indirecto. A ella: le.', { la: 'dire a qualcuno lleva indirecto: le.', gli: '«gli» es a él.', lo: '«lo» es directo.' }),
+    ],
+    form: {
+      context: 'Giulia, una amiga de Lucca, quiere inscribirse en un gimnasio. Lee lo que cuenta y completa la ficha por ella.',
+      text: 'Mi chiamo Giulia Romano. Sono nata a Firenze il 14 maggio 1996 e abito a Bologna, in via Saragozza 40. Lavoro come infermiera all’ospedale Sant’Orsola, quindi posso venire in palestra solo la sera, dopo le sette. Vorrei fare il corso di nuoto.',
+      fields: [
+        { label: 'Luogo di nascita', answers: ['Firenze'] },
+        { label: 'Data di nascita', answers: ['14/05/1996', '14 maggio 1996', '14.05.1996', '14-05-1996', '14/5/1996'] },
+        { label: 'Professione', answers: ['infermiera', 'l’infermiera'] },
+        { label: 'Corso', answers: ['nuoto', 'il nuoto', 'corso di nuoto', 'il corso di nuoto'] },
+        { label: 'Orario preferito', answers: ['sera', 'la sera', 'di sera', 'dopo le sette', 'dopo le 19', 'la sera dopo le sette'] },
+      ],
+    },
+    message: {
+      prompt:
+        'Escribe un correo (50 a 70 palabras) a la señora Conti, tu jefa en el taller: ayer te enfermaste y hoy no puedes ir a trabajar. Cuéntale qué te pasó, qué te dijo el médico y cuándo vuelves, y discúlpate.',
+      checks: [
+        'Saludo y despedida formales (Gentile signora Conti, … Cordiali saluti)',
+        'Usas Lei (Le scrivo, Le mando, La ringrazio)',
+        'Cuentas qué pasó con el passato prossimo (Ieri sono stato male, sono andato dal medico…)',
+        'Describes cómo estabas con el imperfetto (Avevo la febbre, ero molto stanco…)',
+        'Dices qué te dijo el médico y cuándo vuelves (Il medico mi ha detto di… Tornerò lunedì)',
+        'Te disculpas con cortesía (Mi dispiace per il disagio)',
+        'Revisas los auxiliares y la concordancia (sono andato/a, ho preso)',
+      ],
+      model:
+        'Gentile signora Conti, Le scrivo perché oggi non posso venire in laboratorio. Ieri sera sono stato male: avevo la febbre alta e mal di gola. Stamattina sono andato dal medico, che mi ha detto di restare a casa tre giorni. Le mando il certificato via email. Tornerò lunedì mattina. Mi dispiace per il disagio. Cordiali saluti, Lucca Ferrari',
+    },
+    speaking: [
+      'Parte 1 (conversación con el examinador): hablé de mi trabajo, mi casa y mi tiempo libre con frases completas',
+      'Parte 1: conté qué hice el fin de semana pasado, con el passato prossimo y el auxiliar correcto',
+      'Parte 2 (monólogo): conté cómo era mi vida cuando era chico, con el imperfetto (abitavo, andavo, mi piaceva…)',
+      'Parte 2: hablé de un plan para el futuro (L’anno prossimo andrò…, Mi piacerebbe…)',
+      'Juego de roles: pedí algo con cortesía en una tienda, un banco o la Questura (Vorrei…, Potrebbe…?)',
+      'Usé bien los pronombres (lo, la, gli, le, ne, ci) y las preposiciones articuladas (dal medico, in banca, al mare)',
+      'Pronuncié las dobles consonantes y los grupos gli, gn, sc',
+    ],
+  },
 }

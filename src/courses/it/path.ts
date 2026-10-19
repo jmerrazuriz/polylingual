@@ -53,7 +53,21 @@ const unitsA1: PathUnit[] = [
   examUnit('A1'),
 ]
 
-const unitsByLevel: Record<CefrLevel, PathUnit[]> = { A1: unitsA1, A2: [], B1: [], B2: [], C1: [], C2: [] }
+const unitsA2: PathUnit[] = [
+  unit('it-a2-1', 'A2 · En la Questura', '🛂', ['it-passato-avere', 'it-participi-irregolari', 'it-passato-essere'], ['questura', 'cronologia', 'verbi-a2'], ['itx-a2-questura', 'itx-a2-diario']),
+  unit('it-a2-2', 'A2 · El contrato en el taller', '🖌️', ['it-essere-o-avere', 'it-passato-riflessivi', 'it-passato-modali'], ['impiego', 'restauro'], ['itx-a2-contratto', 'itx-a2-laboratorio']),
+  unit('it-a2-3', 'A2 · Donde el médico de cabecera', '💊', ['it-da-fa', 'it-imperfetto', 'it-imperfetto-usi'], ['salute', 'farmacia', 'aspetto'], ['itx-a2-medico', 'itx-a2-infanzia']),
+  unit('it-a2-4', 'A2 · Un departamento nuevo', '🔑', ['it-passato-imperfetto', 'it-pronomi-diretti', 'it-pronomi-passato'], ['affitto', 'faccende'], ['itx-a2-annunci', 'itx-a2-padrone']),
+  unit('it-a2-5', 'A2 · Banco y correo', '🏦', ['it-pronomi-indiretti', 'it-ne', 'it-ci'], ['banca', 'posta'], ['itx-a2-banca']),
+  unit('it-a2-6', 'A2 · Al teléfono y en clase', '📱', ['it-articolate-complete', 'it-preposizioni-uso', 'it-futuro'], ['tecnologia', 'studio'], ['itx-a2-telefono', 'itx-a2-corso']),
+  unit('it-a2-7', 'A2 · Un reclamo', '📦', ['it-futuro-usi', 'it-condizionale', 'it-imperativo-pronomi'], ['reclami', 'sentimenti'], ['itx-a2-reclamo', 'itx-a2-negozio']),
+  unit('it-a2-8', 'A2 · De viaje por Italia', '🚆', ['it-imperativo-negativo', 'it-stare-per', 'it-comparativi'], ['viaggi', 'natura'], ['itx-a2-sciopero']),
+  unit('it-a2-9', 'A2 · Navidad en Nápoles', '🎄', ['it-superlativi', 'it-relativi', 'it-si-impersonale'], ['feste', 'carattere', 'sport'], ['itx-a2-natale']),
+  unit('it-a2-10', 'A2 · En la cocina con Bruno', '🍝', ['it-indefiniti', 'it-avverbi', 'it-congiunzioni', 'it-email-formale'], ['cucina', 'ristorante', 'connettivi'], ['itx-a2-ragu']),
+  examUnit('A2'),
+]
+
+const unitsByLevel: Record<CefrLevel, PathUnit[]> = { A1: unitsA1, A2: unitsA2, B1: [], B2: [], C1: [], C2: [] }
 
 export const italianPath: PathUnit[] = cefrLevels.flatMap((l) => unitsByLevel[l])
 

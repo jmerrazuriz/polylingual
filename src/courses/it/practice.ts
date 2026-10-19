@@ -8,8 +8,10 @@ import { numberReason, numberToWords } from './engine/numbers.ts'
 import { startOf } from './engine/phonetics.ts'
 import { doublesQuestion } from './doubles.ts'
 import { articleNote, pluralNote } from './explain.ts'
+import { falsoAmicoQuestion } from './falsiAmici.ts'
 import type { CefrLevel } from './levels.ts'
 import { italianUnlockedIds } from './progress.ts'
+import { prepositionQuestion } from './prepositions.ts'
 import { verbs } from './verbs.ts'
 import { type ItalianWord, italianVocabLessonById, pluralWithArticle, withArticle } from './vocab.ts'
 import { articleExercise, hasArticleQuestion, hasPluralQuestion, meaningExercise, pluralExercise, sayExercise, writeExercise } from './vocabExercises.ts'
@@ -167,7 +169,7 @@ export const asExercise = (q: SpeedQuestion): GrammarExercise => ({
   whyWrong: q.whyWrong,
 })
 
-export type PracticeMode = 'palabras' | 'escribir' | 'articulos' | 'plurales' | 'dobles' | 'conjugacion' | 'numeros'
+export type PracticeMode = 'palabras' | 'escribir' | 'articulos' | 'plurales' | 'dobles' | 'conjugacion' | 'numeros' | 'preposiciones' | 'falsos-amigos'
 
 /** Una sesión de práctica libre de `count` ejercicios con las palabras del pool. */
 export function practiceSession(mode: PracticeMode, words: readonly ItalianWord[], count = 12, random = Math.random): GrammarExercise[] {
@@ -191,5 +193,12 @@ export function practiceSession(mode: PracticeMode, words: readonly ItalianWord[
       return repeat(() => asExercise(conjugationQuestion(random, tenseCountFor(words))))
     case 'numeros':
       return repeat(() => asExercise(numberQuestion(random)))
+    case 'preposiciones':
+      return repeat(() => {
+        const q = prepositionQuestion(words, random)
+        return q ? asExercise(q) : null
+      })
+    case 'falsos-amigos':
+      return words.some((w) => w.level !== 'A1') ? repeat(() => asExercise(falsoAmicoQuestion(random))) : []
   }
 }

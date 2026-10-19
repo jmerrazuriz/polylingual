@@ -2,6 +2,7 @@ import { definiteArticle, indefiniteArticle, type Noun } from './engine/articles
 import { pluralOf as nounPlural } from './engine/plurals.ts'
 import type { CefrLevel } from './levels.ts'
 import { vocabA1 } from './vocabA1.ts'
+import { vocabA2 } from './vocabA2.ts'
 
 // Vocabulario del italiano. Cada sustantivo se aprende con su artículo y su plural, porque el
 // artículo cambia con el sonido inicial (il libro, lo zaino, l'amico; i libri, gli zaini, gli
@@ -92,7 +93,9 @@ function build(themes: ItalianTheme[], level: CefrLevel, previous: ItalianWord[]
 
 export const italianThemesA1 = vocabA1
 export const italianVocabA1 = build(vocabA1, 'A1')
-export const italianVocab: ItalianWord[] = [...italianVocabA1]
+export const italianThemesA2 = vocabA2
+export const italianVocabA2 = build(vocabA2, 'A2', italianVocabA1)
+export const italianVocab: ItalianWord[] = [...italianVocabA1, ...italianVocabA2]
 export const italianWordById = new Map(italianVocab.map((w) => [w.id, w]))
 
 const typographic = (s: string) => s.replace(/'/g, '’')
@@ -163,7 +166,8 @@ function lessonsOf(themes: ItalianTheme[], words: ItalianWord[], level: CefrLeve
 }
 
 export const italianVocabLessonsA1 = lessonsOf(vocabA1, italianVocabA1, 'A1')
-export const italianVocabLessons: ItalianVocabLesson[] = [...italianVocabLessonsA1]
+export const italianVocabLessonsA2 = lessonsOf(vocabA2, italianVocabA2, 'A2')
+export const italianVocabLessons: ItalianVocabLesson[] = [...italianVocabLessonsA1, ...italianVocabLessonsA2]
 export const italianVocabLessonById = new Map(italianVocabLessons.map((l) => [l.id, l]))
 
 /** Tarjetas de repaso de palabras italianas: «iw-<id>». */

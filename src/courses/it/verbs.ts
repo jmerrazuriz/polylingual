@@ -249,6 +249,21 @@ export const verbs: Verb[] = [
   { inf: 'pulire', meaning: 'limpiar', isc: true },
   { inf: 'spedire', meaning: 'enviar (por correo)', isc: true },
   { inf: 'costruire', meaning: 'construir', isc: true },
+  // A2
+  { inf: 'guarire', meaning: 'sanarse, curarse', isc: true },
+  { inf: 'restituire', meaning: 'devolver', isc: true },
+  { inf: 'sostituire', meaning: 'reemplazar', isc: true },
+  { inf: 'tossire', meaning: 'toser', isc: true },
+  { inf: 'richiedere', meaning: 'solicitar', participle: 'richiesto', remoto: 'richiesi' },
+  { inf: 'assumere', meaning: 'contratar', participle: 'assunto', remoto: 'assunsi' },
+  { inf: 'smettere', meaning: 'dejar de', participle: 'smesso', remoto: 'smisi' },
+  { inf: 'proteggere', meaning: 'proteger', participle: 'protetto', remoto: 'protessi' },
+  { inf: 'dipingere', meaning: 'pintar', participle: 'dipinto', remoto: 'dipinsi' },
+  { inf: 'risolvere', meaning: 'resolver', participle: 'risolto', remoto: 'risolsi' },
+  { inf: 'aggiungere', meaning: 'agregar', participle: 'aggiunto', remoto: 'aggiunsi' },
+  { inf: 'friggere', meaning: 'freír', participle: 'fritto', remoto: 'frissi' },
+  { inf: 'prescrivere', meaning: 'recetar', participle: 'prescritto', remoto: 'prescrissi' },
+  { inf: 'scadere', meaning: 'vencer (un plazo)', aux: essere, future: 'scadr', remoto: 'scaddi' },
   // Pronominales
   { inf: 'alzarsi', meaning: 'levantarse' },
   { inf: 'chiamarsi', meaning: 'llamarse' },
@@ -258,6 +273,9 @@ export const verbs: Verb[] = [
   { inf: 'vestirsi', meaning: 'vestirse' },
   { inf: 'divertirsi', meaning: 'divertirse' },
   { inf: 'sentirsi', meaning: 'sentirse' },
+  { inf: 'trasferirsi', meaning: 'mudarse, trasladarse', isc: true },
+  { inf: 'iscriversi', meaning: 'inscribirse', participle: 'iscritto', remoto: 'iscrissi' },
+  { inf: 'rompersi', meaning: 'romperse', participle: 'rotto', remoto: 'ruppi' },
   { inf: 'sedersi', meaning: 'sentarse', present: ['siedo', 'siedi', 'siede', 'sediamo', 'sedete', 'siedono'] },
 ]
 

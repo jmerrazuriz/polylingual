@@ -2,13 +2,15 @@ import type { EuroCourse, EuroWord } from '../euro.ts'
 import type { EuroGame } from '../euro.ts'
 import { checkItalian } from '../../lib/italianInput.ts'
 import { doublesQuestion } from './doubles.ts'
+import { falsoAmicoQuestion } from './falsiAmici.ts'
 import { lookupItalian } from './glossary.ts'
 import { italianGrammar } from './grammar.ts'
 import { italianPath } from './path.ts'
 import { articleQuestion, audioPairs, conjugationQuestion, italianPoolLevels, italianWordPool, meaningPairs, numberQuestion, practiceSession, type PracticeMode, pluralPairs, pluralQuestion, tenseCountFor } from './practice.ts'
+import { prepositionQuestion } from './prepositions.ts'
 import { italianItemDone, italianItemStatus, italianUnlockedIds } from './progress.ts'
 import { italianTexts } from './texts.ts'
-import { type ItalianWord, italianThemesA1, italianVocabLessonById, italianVocabLessons, italianWordCard, ITALIAN_WORD_PREFIX, nounLine, speakWord, withArticle } from './vocab.ts'
+import { type ItalianWord, italianThemesA1, italianThemesA2, italianVocabLessonById, italianVocabLessons, italianWordCard, ITALIAN_WORD_PREFIX, nounLine, speakWord, withArticle } from './vocab.ts'
 import { italianLessonExercises, meaningExercise, sayExercise } from './vocabExercises.ts'
 
 // El italiano como curso europeo: lo que las pantallas comunes necesitan de él.
@@ -101,6 +103,26 @@ const games: EuroGame[] = [
     record: (n) => `${n} correctas`,
     question: () => numberQuestion(),
   },
+  {
+    id: 'it-speed-prepositions',
+    glyph: 'dal·nel·sul',
+    title: 'Preposizioni',
+    text: 'in banca, dal medico, al mare; su + il = sul (desde A2).',
+    instructions: 'Elige la preposición que falta o la forma unida al artículo. Cada error descuenta 3 segundos.',
+    kind: 'speed',
+    record: (n) => `${n} correctas`,
+    question: (ws) => prepositionQuestion(ws as ItalianWord[]),
+  },
+  {
+    id: 'it-speed-falsi-amici',
+    glyph: 'burro ≠',
+    title: 'Falsi amici',
+    text: 'Las palabras que parecen españolas y no lo son: burro, salire, camera… (desde A2).',
+    instructions: 'Elige lo que significa de verdad. Cada error descuenta 3 segundos.',
+    kind: 'speed',
+    record: (n) => `${n} correctas`,
+    question: (ws) => (ws.some((w) => w.level !== 'A1') ? falsoAmicoQuestion() : null),
+  },
 ]
 
 export const italianCourse: EuroCourse = {
@@ -122,7 +144,7 @@ export const italianCourse: EuroCourse = {
       : words.some((w) => w.pos === 'adj')
         ? 'Aprende cada adjetivo con su femenino. Toca una palabra para oírla.'
         : 'Aprende cada palabra o expresión completa, tal como se usa. Toca una para oírla.',
-  themes: italianThemesA1.map((t) => ({ id: t.id, title: t.title, level: 'A1' as const })),
+  themes: [...italianThemesA1.map((t) => ({ id: t.id, title: t.title, level: 'A1' as const })), ...italianThemesA2.map((t) => ({ id: t.id, title: t.title, level: 'A2' as const }))],
   vocabLessons: italianVocabLessons,
   vocabLessonById: italianVocabLessonById,
   texts: italianTexts,
@@ -150,8 +172,10 @@ export const italianCourse: EuroCourse = {
     { mode: 'articulos', glyph: 'il·lo·la', title: 'Artículos', text: 'il, lo, l’, la; un, uno, una, un’: el artículo según el género y la primera letra.' },
     { mode: 'plurales', glyph: 'i·gli·le', title: 'Plurales', text: 'El plural con su artículo: i parchi, gli zaini, le uova.' },
     { mode: 'dobles', glyph: 'pala·palla', title: 'Dobles consonantes', text: 'pala o palla, sete o sette: la doble cambia la palabra.' },
-    { mode: 'conjugacion', glyph: 'io sono', title: 'Conjugación', text: 'El presente de los verbos frecuentes; los otros tiempos se suman con el A2.' },
+    { mode: 'conjugacion', glyph: 'io sono', title: 'Conjugación', text: 'El presente en el A1; desde el A2 también el passato prossimo, el imperfetto y el futuro.' },
     { mode: 'numeros', glyph: '21·28·33', title: 'Números', text: 'Del número a las letras: ventuno, ventotto, trentatré.' },
+    { mode: 'preposiciones', glyph: 'dal·nel·sul', title: 'Preposiciones', text: 'in banca, dal medico, al mare; su + il = sul (desde A2).' },
+    { mode: 'falsos-amigos', glyph: '≠', title: 'Falsos amigos', text: 'burro, salire, camera… lo que significan de verdad (desde A2).' },
   ],
   practiceSession: (mode, words, count) => practiceSession(mode as PracticeMode, words as ItalianWord[], count),
   check: (input, answers) => {

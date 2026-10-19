@@ -46,6 +46,8 @@ const italianAchievements: Achievement[] = [
   { id: 'it-parole-500', course: 'it', icon: '📚', title: '500 parole', description: 'Ten 500 palabras italianas en repaso.', check: (p) => italianWordsInReview(p) >= 500 },
   { id: 'it-testi-10', course: 'it', icon: '📖', title: 'Lettore', description: 'Lee 10 episodios de La strada di Lucca.', check: (p) => italianTextsRead(p) >= 10 },
   { id: 'it-cils-a1', course: 'it', icon: '🎓', title: 'CILS A1', description: 'Aprueba el simulacro CILS A1.', check: (p) => cilsPassed(p, 'a1') },
+  { id: 'it-cils-a2', course: 'it', icon: '🏅', title: 'CILS A2', description: 'Aprueba el simulacro CILS A2, el nivel de la residencia de larga duración.', check: (p) => cilsPassed(p, 'a2') },
+  { id: 'it-parole-1000', course: 'it', icon: '🏛️', title: '1000 parole', description: 'Ten 1000 palabras italianas en repaso.', check: (p) => italianWordsInReview(p) >= 1000 },
 ]
 
 const frenchAchievements: Achievement[] = [

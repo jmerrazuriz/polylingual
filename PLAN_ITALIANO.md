@@ -433,7 +433,7 @@ Como *Ottos Weg* en alemán y *Le chemin de Camila* en francés. Los apellidos s
 |---|---|---|
 | **I0 · Base** ✅ | Motor italiano (conjugación, artículos, plurales, números) con tests. `italianInput` y `ItalianKeys`. Ampliar lo europeo a tres cursos (sección 7). Puntaje CILS con tests. `ItalianTablesPage`. Recorrido italiano vacío, visible solo en desarrollo. | El japonés, el alemán y el francés siguen igual (todos los tests pasan) y existe un recorrido italiano vacío. |
 | **I1 · A1** ✅ | Pronunciación, ~30 lecciones, ~650 palabras y 16 textos de *La strada di Lucca*. Simulacro CILS A1 con módulo de estructuras y test de nivelación. Juegos (parejas, escucha, *il/lo/la*, plurales, dobles, conjugación, números), práctica y **lección del día**. `export-review.ts` por curso. | Se puede hacer el A1 entero, jugar y tener lección del día. El curso pasa a «disponible». |
-| **I2 · A2** | ~30 lecciones, hasta ~1.300 palabras, juegos de preposiciones y falsos amigos, simulacro A2. | Igual que I1. |
+| **I2 · A2** ✅ | ~30 lecciones, hasta ~1.300 palabras, juegos de preposiciones y falsos amigos, simulacro A2. | Igual que I1. |
 | **I3 · B1** | ~35 lecciones, hasta ~2.400 palabras, juegos de pronombres y subjuntivo, simulacro UNO-B1. | Simulacro B1 con puntaje CILS. |
 | **I4 · B2** | ~35 lecciones, hasta ~4.000 palabras, passato remoto en el motor y el glosario, juego de conectores, simulacro DUE-B2 con ensayo y lista de control. | Simulacro B2. |
 | **I5 · C1** | ~35 lecciones, hasta ~5.700 palabras, variedades y registro, juego de registros, simulacro TRE-C1. | Simulacro C1. |
@@ -475,6 +475,20 @@ Como *Ottos Weg* en alemán y *Le chemin de Camila* en francés. Los apellidos s
 - **Recorrido A1**: 10 unidades y el simulacro CILS A1 (`/cils/a1`), con la prueba de estructuras de comunicación.
 - **Juegos**: parejas, escucha, singular/plural, *Il, lo o la?*, *Plurali*, *Doppia o no?*, conjugación e *I numeri*. **Práctica**: palabras, escribir, artículos, plurales, dobles, conjugación y números.
 - **Logros** del italiano, repaso de tarjetas «iw-», y `scripts/export-review.ts it` para la revisión externa.
+- El simulacro CILS A1 se probó completo en el navegador (las cinco pruebas y el resultado).
+
+
+### Qué quedó hecho en I2 (19-10-2026)
+- **Gramática A2** (`grammarA2a.ts`, `grammarA2b.ts`): 31 lecciones.
+  - El pasado: passato prossimo con avere y essere, participios irregulares, cuál auxiliar, pronominales y modales en pasado, *da/fa*, imperfetto y los dos pasados juntos.
+  - Pronombres directos e indirectos, concordancia con *l’ho vista*, *ne* y *ci*, y todas las preposiciones articuladas y sus usos (*in banca, dal medico, al mare*).
+  - Futuro (también de suposición), condicional de cortesía, imperativo con pronombres y negativo, *stare per*, comparativos y superlativos, relativos, *si* impersonal, indefinidos, adverbios, conectores y el correo formal.
+- **Vocabulario A2** (`vocabA2.ts`): 693 palabras en 24 temas y 70 lecciones (1.348 en total), entre ellas la Questura, el contrato, el taller de restauración, la salud, el arriendo, el banco, el correo, los reclamos, los viajes, las fiestas y la cocina.
+- **16 textos A2** de *La strada di Lucca* (8 lecturas y 8 diálogos): la Questura, el contrato con la señora Conti, el médico de cabecera, la infancia en Valparaíso, el departamento nuevo, el banco, el reclamo, el paro de trenes, la Navidad en Nápoles y el ragú de la nonna.
+- **Recorrido A2**: 10 unidades y el simulacro CILS A2 (`/cils/a2`), con 12 preguntas de estructuras, la ficha del gimnasio, el correo a la jefa y la lista para hablar. Se probó completo en el navegador.
+- **Juegos y práctica**: *Preposizioni* (uso y fusión con el artículo) y *Falsi amici* (30 palabras), que se abren con las palabras A2; la conjugación suma passato prossimo, imperfetto y futuro.
+- **Motor**: 17 verbos más (*assumere, richiedere, trasferirsi, restituire, guarire…*) para que el glosario reconozca sus formas.
+- **Logros**: CILS A2 y 1000 parole.
 
 ---
 
