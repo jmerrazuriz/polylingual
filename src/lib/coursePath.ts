@@ -16,8 +16,8 @@ export type CoursePath = {
   /** Primera lección, para «empezar de cero». */
   firstLessonTo: string | null
   intro: string
-  /** ¿Tiene lección del día y lección extra? */
-  dailyLessons: boolean
+  /** ¿Tiene lección extra (sin límite)? La lección del día la tienen todos los cursos. */
+  extraLessons: boolean
 }
 
 const japanese: CoursePath = {
@@ -27,7 +27,7 @@ const japanese: CoursePath = {
   hasPlacement: true,
   firstLessonTo: '/aprender/vocales',
   intro: 'Tu recorrido por el japonés, unidad por unidad. Cada parada agrupa unas pocas lecciones.',
-  dailyLessons: true,
+  extraLessons: true,
 }
 
 const german: CoursePath = {
@@ -37,7 +37,7 @@ const german: CoursePath = {
   hasPlacement: true,
   firstLessonTo: '/gramatica/de-aussprache',
   intro: 'Ottos Weg: acompaña a Otto y a su amigo Hans Schmidt, del A1 al C2, con alemán para vivir y trabajar en Alemania.',
-  dailyLessons: false,
+  extraLessons: false,
 }
 
 const french: CoursePath = {
@@ -47,7 +47,7 @@ const french: CoursePath = {
   hasPlacement: true,
   firstLessonTo: '/gramatica/fr-alphabet',
   intro: 'Le chemin de Camila: acompaña a Camila, enfermera chilena en Lyon, y a su vecino Julien Moreau, del A1 al C2.',
-  dailyLessons: false,
+  extraLessons: false,
 }
 
 const paths: Record<string, CoursePath> = { ja: japanese, de: german, fr: french }

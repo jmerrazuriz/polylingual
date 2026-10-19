@@ -133,7 +133,8 @@ function WordCard({ course, w }: { course: EuroCourse; w: EuroWord }) {
   )
 }
 
-function VocabLesson({ course, lessonId }: { course: EuroCourse; lessonId: string }) {
+/** Lección de palabras; con `onFinish` (lección del día) avisa al terminar en vez de mostrar el cierre. */
+export function VocabLesson({ course, lessonId, onFinish }: { course: EuroCourse; lessonId: string; onFinish?: () => void }) {
   const lesson = course.vocabLessonById.get(lessonId)!
   const [exercises] = useState(() => course.lessonExercises(lesson.words))
   const [step, setStep] = useState(-1)
@@ -148,7 +149,10 @@ function VocabLesson({ course, lessonId }: { course: EuroCourse; lessonId: strin
 
   const answer = (ok: boolean) => {
     const next = quiz.answer(ok)
-    if (queueDone(next)) complete(lesson.id, firstTryCorrect(next), total, lesson.words.map((w) => course.wordCard(w)))
+    if (queueDone(next)) {
+      complete(lesson.id, firstTryCorrect(next), total, lesson.words.map((w) => course.wordCard(w)))
+      onFinish?.()
+    }
   }
 
   return (
@@ -285,7 +289,8 @@ export function EuroReadingRoute() {
   return <ReadingView key={text.id} course={course} text={text} />
 }
 
-function ReadingView({ course, text }: { course: EuroCourse; text: ReadingText }) {
+/** Lectura o diálogo con preguntas; con `onFinish` (lección del día) avisa al terminar. */
+export function ReadingView({ course, text, onFinish }: { course: EuroCourse; text: ReadingText; onFinish?: () => void }) {
   const [step, setStep] = useState<'text' | 'questions' | 'done'>('text')
   const quiz = useRetryQueue(text.questions.length)
   const correct = firstTryCorrect(quiz.state)
@@ -313,6 +318,7 @@ function ReadingView({ course, text }: { course: EuroCourse; text: ReadingText }
     if (queueDone(next)) {
       complete(text.id, firstTryCorrect(next), total)
       setStep('done')
+      onFinish?.()
     }
   }
 

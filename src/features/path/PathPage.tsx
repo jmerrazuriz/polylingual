@@ -78,22 +78,22 @@ export function PathPage() {
 
       {cp.hasPlacement && hasNotStarted(progressSnapshot()) && <PlacementOffer firstLessonTo={cp.firstLessonTo} language={courseById(course).name.toLowerCase()} />}
 
-      {cp.dailyLessons && (
-        <div className="grid grid-cols-2 gap-2">
-          <Link to="/hoy" className="flex items-center gap-2 rounded-2xl border border-slate-200 bg-white p-3 hover:border-accent dark:border-slate-800 dark:bg-slate-900">
-            <span className="text-2xl" aria-hidden>
-              ☀️
-            </span>
-            <span className="text-sm font-bold">Lección de hoy</span>
-          </Link>
+      <div className={`grid gap-2 ${cp.extraLessons ? 'grid-cols-2' : 'grid-cols-1'}`}>
+        <Link to="/hoy" className="flex items-center gap-2 rounded-2xl border border-slate-200 bg-white p-3 hover:border-accent dark:border-slate-800 dark:bg-slate-900">
+          <span className="text-2xl" aria-hidden>
+            ☀️
+          </span>
+          <span className="text-sm font-bold">Lección de hoy</span>
+        </Link>
+        {cp.extraLessons && (
           <Link to="/extra" className="flex items-center gap-2 rounded-2xl border border-slate-200 bg-white p-3 hover:border-accent dark:border-slate-800 dark:bg-slate-900">
             <span className="text-2xl" aria-hidden>
               ♾️
             </span>
             <span className="text-sm font-bold">Lección extra (sin límite)</span>
           </Link>
-        </div>
-      )}
+        )}
+      </div>
 
       {cp.levels.map((lvl) => {
         const levelStops = lvl.units.flatMap((unit) => unit.stops)
@@ -134,7 +134,7 @@ export function PathPage() {
         )
       })}
 
-      {cp.dailyLessons && (
+      {cp.extraLessons && (
         <p className="text-center text-sm text-slate-500">¿Terminaste todo? Sigue con la lección extra: se arma sola con lo que ya sabes.</p>
       )}
     </div>

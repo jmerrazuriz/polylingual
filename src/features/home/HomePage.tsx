@@ -224,6 +224,9 @@ function EuroHome({ course }: { course: EuroCourse }) {
         </p>
       </section>
 
+      <DailyCard />
+      <DailyStrip />
+
       {next && (
         <Link to={next.to} className="flex items-center gap-4 rounded-2xl bg-accent p-5 text-white shadow-md hover:opacity-95">
           <span className="text-4xl" aria-hidden>

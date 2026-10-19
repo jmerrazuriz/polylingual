@@ -470,6 +470,12 @@ El nombre, la profesión y la ciudad son decisión del usuario (sección 11).
 - **Logro** DALF C2. El juego y la práctica de registros ya incluían el C2.
 - **Repetir lo fallado**: en todos los idiomas, las preguntas falladas de una lección del recorrido vuelven al final (en el mismo orden) hasta acertarlas; la nota cuenta el primer intento.
 
+### Preparación de F7 (19-10-2026)
+- Guía de revisión en `REVISION_FRANCES.md`: alcance por fases (A1–B1 primero), qué revisar por prioridad, zonas de riesgo, cómo reportar (ID, problema, corrección, gravedad) y un mensaje en francés para la persona que revisa.
+- Página de revisión publicada con todo el curso por nivel y sección, con buscador, comentarios de claude.ai y notas locales que se copian para enviarlas por correo.
+- `scripts/export-review.ts` genera `revision/datos.json` (para la página) y `revision/vocabulario.csv` (para una planilla).
+- Pendiente: encontrar a la persona que revisa y compartirle la página.
+
 ---
 
 ## 10. Lecciones de los cursos anteriores que aplicamos desde el inicio

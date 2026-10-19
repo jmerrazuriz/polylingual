@@ -1,0 +1,501 @@
+<title>Relecture du chemin de Camila</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Mesa de corrección: columna de lectura centrada, barra de herramientas fija arriba, marcas de «bolígrafo rojo» para las notas. */
+:root {
+  --paper: #f6f7f9;
+  --sheet: #ffffff;
+  --ink: #1b2130;
+  --muted: #5d6679;
+  --rule: #dfe3ea;
+  --blue: #2a4b8d;
+  --blue-soft: #e8eef9;
+  --pen: #b4232a;
+  --pen-soft: #fbeceb;
+  --ok: #1f7a4d;
+  --ok-soft: #e6f4ec;
+  --font-fr: 'Literata', Georgia, 'Times New Roman', serif;
+  --font-ui: 'IBM Plex Sans', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-id: 'IBM Plex Mono', ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #12151c; --sheet: #1a1f29; --ink: #e6e9ef; --muted: #9aa3b5; --rule: #2c3342;
+    --blue: #8eaaf0; --blue-soft: #1f2a44; --pen: #f08a8f; --pen-soft: #3a1f23; --ok: #6fcf9b; --ok-soft: #173126;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #12151c; --sheet: #1a1f29; --ink: #e6e9ef; --muted: #9aa3b5; --rule: #2c3342;
+  --blue: #8eaaf0; --blue-soft: #1f2a44; --pen: #f08a8f; --pen-soft: #3a1f23; --ok: #6fcf9b; --ok-soft: #173126;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--paper); color: var(--ink); font: 15px/1.55 var(--font-ui);
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 0 120px;
+}
+.wrap { max-width: 860px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px; }
+h1, h2, h3 { text-wrap: balance; margin: 0; }
+p { margin: 0; }
+[lang="fr"] { font-family: var(--font-fr); }
+.id { font: 500 12px/1.4 var(--font-id); color: var(--muted); letter-spacing: 0.01em; }
+.label { font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+
+header.top { padding-top: 28px; display: flex; flex-direction: column; gap: 10px; }
+header.top h1 { font: 600 30px/1.15 var(--font-fr); }
+header.top .lead { color: var(--muted); max-width: 64ch; }
+.fr-note { font-family: var(--font-fr); font-style: italic; color: var(--muted); max-width: 64ch; }
+.stats { display: flex; flex-wrap: wrap; gap: 8px 18px; font-variant-numeric: tabular-nums; color: var(--muted); font-size: 13px; }
+.stats b { color: var(--ink); }
+
+details.guide { background: var(--sheet); border: 1px solid var(--rule); border-radius: 10px; padding: 14px 16px; }
+details.guide summary { cursor: pointer; font-weight: 600; }
+.guide-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px 22px; margin-top: 12px; }
+.guide-grid h3 { font-size: 14px; margin-bottom: 4px; }
+.guide-grid ol, .guide-grid ul { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 3px; color: var(--muted); }
+.sev { display: inline-block; font-size: 12px; font-weight: 600; padding: 1px 7px; border-radius: 999px; }
+.sev.err { background: var(--pen-soft); color: var(--pen); }
+.sev.imp { background: var(--blue-soft); color: var(--blue); }
+.sev.dud { background: var(--rule); color: var(--muted); }
+
+.toolbar {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--paper);
+  padding-block: 10px; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; border-bottom: 1px solid var(--rule);
+}
+.seg { display: flex; flex-wrap: wrap; border: 1px solid var(--rule); border-radius: 8px; overflow: hidden; background: var(--sheet); }
+.seg button { font: 600 13px var(--font-ui); color: var(--muted); background: none; border: 0; padding: 7px 11px; cursor: pointer; position: relative; }
+.seg button + button { border-left: 1px solid var(--rule); }
+.seg button[aria-pressed="true"] { background: var(--blue); color: var(--sheet); }
+.seg button .phase { position: absolute; top: 3px; right: 3px; width: 5px; height: 5px; border-radius: 50%; background: var(--pen); }
+.seg button[aria-pressed="true"] .phase { background: var(--sheet); }
+input#search { flex: 1 1 180px; min-width: 0; font: 14px var(--font-ui); color: var(--ink); background: var(--sheet); border: 1px solid var(--rule); border-radius: 8px; padding: 7px 10px; }
+button.notes-btn { font: 600 13px var(--font-ui); color: var(--pen); background: var(--pen-soft); border: 1px solid transparent; border-radius: 8px; padding: 7px 11px; cursor: pointer; }
+button:focus-visible, input:focus-visible, textarea:focus-visible, .rv:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+.count { font-size: 13px; color: var(--muted); }
+
+.card { background: var(--sheet); border: 1px solid var(--rule); border-radius: 10px; padding: 16px; display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.card h2 { font-size: 18px; }
+.card .head { display: flex; flex-direction: column; gap: 2px; }
+.pattern { font-family: var(--font-fr); background: var(--blue-soft); color: var(--ink); padding: 8px 12px; border-radius: 6px; }
+.expl { display: flex; flex-direction: column; gap: 8px; max-width: 72ch; }
+.block { display: flex; flex-direction: column; gap: 6px; }
+.rv { border-radius: 6px; padding: 6px 8px; margin-inline: -8px; cursor: pointer; border: 1px solid transparent; }
+.rv:hover { background: var(--paper); }
+.rv.selected { border-color: var(--blue); background: var(--blue-soft); }
+.rv.noted { box-shadow: inset 3px 0 0 var(--pen); }
+.pair { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 4px 16px; }
+.pair .es { color: var(--muted); }
+@media (max-width: 560px) { .pair { grid-template-columns: minmax(0, 1fr); } }
+.speaker { font: 600 12px var(--font-ui); color: var(--blue); margin-right: 6px; }
+.ex { display: flex; flex-direction: column; gap: 4px; }
+.ex .q { font-weight: 500; }
+.opts { display: flex; flex-wrap: wrap; gap: 6px; }
+.opt { font-family: var(--font-fr); font-size: 14px; padding: 2px 8px; border-radius: 4px; border: 1px solid var(--rule); }
+.opt.right { border-color: var(--ok); background: var(--ok-soft); color: var(--ok); font-weight: 600; }
+.why { color: var(--muted); font-size: 13px; padding-left: 16px; margin: 0; }
+.ok-line { font-size: 13px; color: var(--ok); }
+table.words { width: 100%; border-collapse: collapse; }
+table.words td { padding: 0; vertical-align: top; border-top: 1px solid var(--rule); }
+table.words td > div { display: grid; grid-template-columns: minmax(0, 1.2fr) 90px minmax(0, 1fr); gap: 4px 12px; }
+table.words .cls { color: var(--muted); font-size: 12px; }
+@media (max-width: 560px) { table.words td > div { grid-template-columns: minmax(0, 1fr); } }
+.empty { color: var(--muted); padding: 24px 0; text-align: center; }
+
+.actionbar {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 10; background: var(--sheet); border-top: 1px solid var(--rule);
+  padding: 10px max(16px, env(safe-area-inset-right, 0px)) calc(10px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  box-shadow: 0 -6px 18px rgba(0, 0, 0, 0.08);
+}
+.actionbar .inner { max-width: 860px; margin: 0 auto; display: flex; flex-direction: column; gap: 8px; }
+.actionbar .row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.actionbar .what { flex: 1 1 200px; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.btn { font: 600 13px var(--font-ui); border-radius: 8px; padding: 8px 12px; cursor: pointer; border: 1px solid var(--rule); background: var(--sheet); color: var(--ink); }
+.btn.primary { background: var(--blue); border-color: var(--blue); color: var(--sheet); }
+.btn.pen { background: var(--pen); border-color: var(--pen); color: var(--sheet); }
+textarea { width: 100%; min-height: 72px; font: 14px/1.5 var(--font-ui); color: var(--ink); background: var(--paper); border: 1px solid var(--rule); border-radius: 8px; padding: 8px 10px; resize: vertical; }
+.sevs { display: flex; gap: 6px; flex-wrap: wrap; }
+.sevs label { display: flex; align-items: center; gap: 4px; font-size: 13px; cursor: pointer; }
+.status { font-size: 13px; color: var(--muted); }
+
+aside.notes { position: fixed; inset: 0; z-index: 20; background: rgba(10, 14, 22, 0.45); display: flex; justify-content: flex-end; }
+aside.notes .panel {
+  width: min(460px, 100%); height: 100%; background: var(--sheet); display: flex; flex-direction: column; gap: 12px;
+  padding: calc(16px + env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) calc(16px + env(safe-area-inset-bottom, 0px)) 16px; overflow-y: auto;
+}
+.note { border-top: 1px solid var(--rule); padding-top: 10px; display: flex; flex-direction: column; gap: 4px; }
+.note .ctx { font-family: var(--font-fr); color: var(--muted); font-size: 13px; }
+.note .txt { white-space: pre-wrap; }
+@media (prefers-reduced-motion: no-preference) { .rv { transition: background 120ms; } }
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <span class="label">Polylingual · curso de francés · revisión F7</span>
+    <h1>Relecture du chemin de Camila</h1>
+    <p class="lead">Todo el contenido del curso de francés para su revisión por un hablante nativo o un profesor de FLE. Elige un nivel y una sección, toca cualquier frase, palabra o ejercicio y deja un comentario o una nota con lo que haya que corregir.</p>
+    <p class="fr-note" lang="fr">Merci de relire ce cours ! Touchez une phrase, un mot ou un exercice pour laisser un commentaire ou une note : le problème, la correction proposée et la gravité. Commencez par les niveaux A1 à B1.</p>
+    <div class="stats" id="stats"><span>Cargando el contenido…</span></div>
+  </header>
+
+  <details class="guide" id="guide" open>
+    <summary>Guía de revisión</summary>
+    <div class="guide-grid">
+      <div>
+        <h3>Qué revisar, por prioridad</h3>
+        <ol>
+          <li>Errores de francés: ortografía, acentos, género y artículo, elisión, plurales, concordancias, conjugación, espacios antes de : ; ! ? y dentro de « ».</li>
+          <li>Ejercicios: una sola respuesta correcta, opciones incorrectas de verdad, explicaciones exactas.</li>
+          <li>Naturalidad y registro (francés de Francia).</li>
+          <li>Traducciones: sentido exacto. El español es chileno a propósito.</li>
+          <li>Datos culturales y formato DELF/DALF.</li>
+        </ol>
+      </div>
+      <div>
+        <h3>Cómo reportar</h3>
+        <ul>
+          <li>Toca el elemento: aparece su ID abajo.</li>
+          <li><b>Comentar</b> deja un comentario en la página (si tu cuenta lo permite).</li>
+          <li><b>Anotar</b> guarda una nota en este navegador; al final, <b>Copiar todas las notas</b> y pégalas en un correo.</li>
+          <li>Gravedad: <span class="sev err">Error</span> <span class="sev imp">Mejora</span> <span class="sev dud">Duda</span></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Orden sugerido</h3>
+        <ul>
+          <li>Fase 1: A1, A2 y B1 (marcados con un punto rojo), unas 12 a 16 horas.</li>
+          <li>Fase 2: B2 y C1. Fase 3: C2.</li>
+          <li>Zonas de riesgo: expresiones idiomáticas, variedades regionales, subjuntivo frente a indicativo, textos largos de B2 a C2.</li>
+        </ul>
+      </div>
+    </div>
+  </details>
+
+  <div class="toolbar" role="toolbar" aria-label="Filtros">
+    <div class="seg" id="levels" aria-label="Nivel"></div>
+    <div class="seg" id="sections" aria-label="Sección"></div>
+    <input id="search" type="search" placeholder="Buscar en este nivel…" aria-label="Buscar en este nivel">
+    <button class="notes-btn" id="notesBtn" type="button">Mis notas (0)</button>
+  </div>
+  <p class="count" id="count"></p>
+  <main id="list" class="wrap" style="gap: 14px"><p class="empty">Cargando el contenido del curso…</p></main>
+</div>
+
+<div class="actionbar" id="bar" hidden>
+  <div class="inner">
+    <div class="row">
+      <span class="what"><span class="id" id="barId"></span></span>
+      <button class="btn primary" id="commentBtn" type="button" hidden>Comentar</button>
+      <button class="btn pen" id="noteBtn" type="button">Anotar</button>
+      <button class="btn" id="closeBar" type="button" aria-label="Cerrar">✕</button>
+    </div>
+    <div id="noteForm" hidden>
+      <div class="block">
+        <label class="label" for="noteText">Problema y corrección propuesta</label>
+        <textarea id="noteText" maxlength="2000" placeholder="Ej.: «la hôpital» → «l’hôpital» (elisión)"></textarea>
+        <div class="row">
+          <div class="sevs" role="radiogroup" aria-label="Gravedad">
+            <label><input type="radio" name="sev" value="Error" id="sevErr" checked> Error</label>
+            <label><input type="radio" name="sev" value="Mejora" id="sevImp"> Mejora</label>
+            <label><input type="radio" name="sev" value="Duda" id="sevDud"> Duda</label>
+          </div>
+          <span style="flex:1"></span>
+          <button class="btn" id="deleteNote" type="button" hidden>Borrar nota</button>
+          <button class="btn pen" id="saveNote" type="button">Guardar nota</button>
+        </div>
+      </div>
+    </div>
+    <p class="status" id="barStatus" role="status"></p>
+  </div>
+</div>
+
+<aside class="notes" id="notes" hidden aria-label="Mis notas">
+  <div class="panel">
+    <div class="row" style="display:flex;gap:8px;align-items:center">
+      <h2 style="flex:1;font-size:18px">Mis notas</h2>
+      <button class="btn" id="closeNotes" type="button">Cerrar</button>
+    </div>
+    <p class="status">Se guardan solo en este navegador. Cópialas y envíalas por correo cuando termines una sesión.</p>
+    <div class="row" style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn primary" id="copyNotes" type="button">Copiar todas las notas</button>
+      <button class="btn" id="clearNotes" type="button">Borrar todas</button>
+    </div>
+    <p class="status" id="notesStatus" role="status"></p>
+    <textarea id="copyArea" readonly hidden aria-label="Notas para copiar"></textarea>
+    <div id="notesList"></div>
+  </div>
+</aside>
+
+<script>
+(function () {
+  const LEVELS = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2']
+  const PHASE1 = ['A1', 'A2', 'B1']
+  const SECTIONS = [['grammar', 'Gramática'], ['vocab', 'Vocabulario'], ['texts', 'Textos']]
+  const STORE = 'relecture-notes-v1'
+  const state = { data: null, level: 'A1', section: 'grammar', query: '', selected: null, comments: null }
+  const items = new Map() // id → { el, context }
+  const $ = (id) => document.getElementById(id)
+
+  // Notas locales (solo en este navegador).
+  let notes = {}
+  try { notes = JSON.parse(localStorage.getItem(STORE) || '{}') || {} } catch (e) { notes = {} }
+  const saveNotes = () => { try { localStorage.setItem(STORE, JSON.stringify(notes)) } catch (e) {} }
+  try { const s = JSON.parse(localStorage.getItem(STORE + ':view') || '{}'); if (LEVELS.includes(s.level)) state.level = s.level; if (SECTIONS.some(([k]) => k === s.section)) state.section = s.section } catch (e) {}
+  const saveView = () => { try { localStorage.setItem(STORE + ':view', JSON.stringify({ level: state.level, section: state.section })) } catch (e) {} }
+
+  const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]))
+  // Negrita y cursiva del curso: ***x***, **x**, *x*.
+  const rich = (s) => esc(s).replace(/\*\*\*(.+?)\*\*\*/g, '<strong><em>$1</em></strong>').replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>').replace(/\*(.+?)\*/g, '<em>$1</em>')
+  const plain = (s) => String(s ?? '').replace(/\*/g, '')
+
+  function el(tag, attrs, html) {
+    const e = document.createElement(tag)
+    for (const [k, v] of Object.entries(attrs || {})) if (v !== undefined && v !== null) e.setAttribute(k, v)
+    if (html !== undefined) e.innerHTML = html
+    return e
+  }
+  /** Un elemento revisable: se puede tocar para comentarlo o anotarlo. */
+  function rv(tag, id, context, html, extra) {
+    const { class: cls, ...rest } = extra || {}
+    const e = el(tag, Object.assign({ class: ['rv', cls && cls.replace(/^rv\s*/, ''), notes[id] && 'noted'].filter(Boolean).join(' '), tabindex: '0', 'data-id': id, 'data-comment-target': '' }, rest), html)
+    items.set(id, { el: e, context })
+    return e
+  }
+
+  function exerciseHtml(x) {
+    const opts = (x.options || []).map((o) => `<span class="opt${o === x.answer ? ' right' : ''}" lang="fr">${o === x.answer ? '✓ ' : ''}${esc(o)}</span>`).join('')
+    const why = x.whyWrong ? `<ul class="why">${Object.entries(x.whyWrong).map(([k, v]) => `<li><span lang="fr">${esc(k)}</span>: ${esc(v)}</li>`).join('')}</ul>` : ''
+    return `<span class="label">${esc(x.kind)}</span>
+      <span class="q" lang="fr">${esc(x.prompt)}</span>${x.hint ? `<span class="why">pista: ${esc(x.hint)}</span>` : ''}
+      ${opts ? `<div class="opts">${opts}</div>` : `<span class="ok-line">Respuesta: <span lang="fr">${esc(x.answer)}</span></span>`}
+      ${x.explanation ? `<span>${rich(x.explanation)}</span>` : ''}${why}`
+  }
+
+  const matches = (...texts) => !state.query || texts.some((t) => plain(t).toLowerCase().includes(state.query))
+
+  function renderGrammar(level) {
+    const out = []
+    for (const g of level.grammar) {
+      const all = [g.title, g.summary, g.pattern, ...g.explanation, ...g.examples.flatMap((x) => [x.text, x.meaning]), ...g.exercises.flatMap((x) => [x.prompt, x.answer, ...(x.options || []), x.explanation])]
+      if (!matches(...all)) continue
+      const card = el('article', { class: 'card' })
+      card.append(el('div', { class: 'head' }, `<span class="id">${esc(g.id)}</span><h2>${esc(g.title)}</h2><span class="count">${esc(g.summary)}</span>`))
+      card.append(rv('p', `${g.id} · estructura`, g.pattern, rich(g.pattern), { class: 'rv pattern', lang: 'fr' }))
+      const ex = el('div', { class: 'expl' })
+      g.explanation.forEach((p, i) => ex.append(rv('p', `${g.id} · explicación ${i + 1}`, p, rich(p))))
+      card.append(ex)
+      const exs = el('div', { class: 'block' }, '<span class="label">Ejemplos</span>')
+      g.examples.forEach((x, i) => exs.append(rv('div', `${g.id} · ejemplo ${i + 1}`, x.text, `<div class="pair"><span lang="fr">${esc(x.text)}</span><span class="es">${esc(x.meaning)}</span></div>`)))
+      card.append(exs)
+      const ejs = el('div', { class: 'block' }, '<span class="label">Ejercicios</span>')
+      g.exercises.forEach((x, i) => ejs.append(rv('div', `${g.id} · ejercicio ${i + 1}`, x.prompt, exerciseHtml(x), { class: 'rv ex' })))
+      card.append(ejs)
+      out.push(card)
+    }
+    return out
+  }
+
+  function renderVocab(level) {
+    const out = []
+    for (const t of level.vocab) {
+      const words = t.words.filter((w) => matches(w.line, w.meaning, w.id))
+      if (!words.length) continue
+      const card = el('article', { class: 'card' })
+      card.append(el('div', { class: 'head' }, `<span class="id">${esc(t.id)}</span><h2>${esc(t.title)}</h2><span class="count">${words.length} palabras</span>`))
+      const table = el('table', { class: 'words' })
+      const body = el('tbody')
+      for (const w of words) {
+        const tr = el('tr')
+        const td = el('td')
+        td.append(rv('div', `fw-${w.id}`, w.line, `<span lang="fr">${esc(w.line)}</span><span class="cls">${esc(w.pos)}</span><span>${esc(w.meaning)}</span>`))
+        tr.append(td)
+        body.append(tr)
+      }
+      table.append(body)
+      card.append(table)
+      out.push(card)
+    }
+    return out
+  }
+
+  function renderTexts(level) {
+    const out = []
+    for (const t of level.texts) {
+      if (!matches(t.title, t.context, ...t.lines.flatMap((l) => [l.text, l.meaning]), ...t.questions.flatMap((q) => [q.prompt, ...(q.options || [])]))) continue
+      const card = el('article', { class: 'card' })
+      card.append(el('div', { class: 'head' }, `<span class="id">${esc(t.id)}</span><h2>${esc(t.title)}</h2><span class="count">${esc(t.kind)}${t.context ? ' · ' + esc(t.context) : ''}</span>`))
+      const lines = el('div', { class: 'block' }, '<span class="label">Texto</span>')
+      t.lines.forEach((l, i) => lines.append(rv('div', `${t.id} · línea ${i + 1}`, l.text, `<div class="pair"><span lang="fr">${l.speaker ? `<span class="speaker">${esc(l.speaker)}</span>` : ''}${esc(l.text)}</span><span class="es">${esc(l.meaning)}</span></div>`)))
+      card.append(lines)
+      const qs = el('div', { class: 'block' }, '<span class="label">Preguntas</span>')
+      t.questions.forEach((q, i) => qs.append(rv('div', `${t.id} · pregunta ${i + 1}`, q.prompt, exerciseHtml(q), { class: 'rv ex' })))
+      card.append(qs)
+      out.push(card)
+    }
+    return out
+  }
+
+  function renderControls() {
+    const lv = $('levels')
+    lv.innerHTML = ''
+    for (const l of LEVELS) {
+      const b = el('button', { type: 'button', 'aria-pressed': String(l === state.level), title: PHASE1.includes(l) ? 'Fase 1 de la revisión' : undefined }, `${l}${PHASE1.includes(l) ? '<span class="phase" aria-hidden="true"></span>' : ''}`)
+      b.addEventListener('click', () => { state.level = l; saveView(); render() })
+      lv.append(b)
+    }
+    const sc = $('sections')
+    sc.innerHTML = ''
+    for (const [k, label] of SECTIONS) {
+      const b = el('button', { type: 'button', 'aria-pressed': String(k === state.section) }, label)
+      b.addEventListener('click', () => { state.section = k; saveView(); render() })
+      sc.append(b)
+    }
+  }
+
+  function render() {
+    renderControls()
+    if (!state.data) return
+    const level = state.data.levels.find((l) => l.level === state.level)
+    items.clear()
+    const cards = state.section === 'grammar' ? renderGrammar(level) : state.section === 'vocab' ? renderVocab(level) : renderTexts(level)
+    const list = $('list')
+    list.replaceChildren(...(cards.length ? cards : [el('p', { class: 'empty' }, state.query ? 'Nada coincide con la búsqueda en este nivel y sección.' : 'Esta sección está vacía.')]))
+    const n = state.section === 'vocab' ? level.vocab.reduce((a, t) => a + t.words.length, 0) : state.section === 'grammar' ? level.grammar.length : level.texts.length
+    const unit = state.section === 'vocab' ? 'palabras' : state.section === 'grammar' ? 'lecciones' : 'textos'
+    $('count').textContent = `${state.level} · ${n} ${unit}${state.query ? ` · ${cards.length} ${state.section === 'vocab' ? 'temas' : unit} con «${state.query}»` : ''}`
+    select(null)
+  }
+
+  // Selección de un elemento y barra de acciones.
+  function select(id) {
+    if (state.selected && items.get(state.selected)) items.get(state.selected).el.classList.remove('selected')
+    state.selected = id && items.has(id) ? id : null
+    $('bar').hidden = !state.selected
+    $('noteForm').hidden = true
+    $('barStatus').textContent = ''
+    if (!state.selected) return
+    items.get(state.selected).el.classList.add('selected')
+    $('barId').textContent = state.selected
+    $('noteBtn').textContent = notes[state.selected] ? 'Ver mi nota' : 'Anotar'
+  }
+  $('list').addEventListener('click', (e) => {
+    if (e.target.closest('a, button, input, textarea')) return
+    const t = e.target.closest('.rv')
+    if (t) select(t.dataset.id === state.selected ? null : t.dataset.id)
+  })
+  $('list').addEventListener('keydown', (e) => {
+    if ((e.key === 'Enter' || e.key === ' ') && e.target.classList?.contains('rv')) { e.preventDefault(); select(e.target.dataset.id) }
+  })
+  $('closeBar').addEventListener('click', () => select(null))
+
+  $('noteBtn').addEventListener('click', () => {
+    const n = notes[state.selected]
+    $('noteForm').hidden = false
+    $('noteText').value = n ? n.text : ''
+    $(n && n.sev === 'Mejora' ? 'sevImp' : n && n.sev === 'Duda' ? 'sevDud' : 'sevErr').checked = true
+    $('deleteNote').hidden = !n
+    $('noteText').focus()
+  })
+  $('saveNote').addEventListener('click', () => {
+    const text = $('noteText').value.trim()
+    if (!text) { $('barStatus').textContent = 'Escribe el problema y la corrección antes de guardar.'; return }
+    const sev = document.querySelector('input[name="sev"]:checked').value
+    const it = items.get(state.selected)
+    notes[state.selected] = { text, sev, level: state.level, context: plain(it ? it.context : '').slice(0, 140), at: Date.now() }
+    saveNotes()
+    if (it) it.el.classList.add('noted')
+    updateNotesCount()
+    $('noteForm').hidden = true
+    $('noteBtn').textContent = 'Ver mi nota'
+    $('barStatus').textContent = 'Nota guardada en este navegador.'
+  })
+  $('deleteNote').addEventListener('click', () => {
+    delete notes[state.selected]
+    saveNotes()
+    const it = items.get(state.selected)
+    if (it) it.el.classList.remove('noted')
+    updateNotesCount()
+    $('noteForm').hidden = true
+    $('noteBtn').textContent = 'Anotar'
+    $('barStatus').textContent = 'Nota borrada.'
+  })
+
+  // Comentarios de claude.ai (si esta vista los permite).
+  $('commentBtn').addEventListener('click', async () => {
+    const it = items.get(state.selected)
+    if (!state.comments || !it) return
+    try {
+      const r = await state.comments.openComposer({ element: it.el })
+      $('barStatus').textContent = r.opened ? `Escribe tu comentario. Empieza con el ID: ${state.selected}` : 'Termina primero el comentario que tienes abierto.'
+    } catch (err) {
+      if (err && (err.code === 'unavailable' || err.code === 'forbidden' || err.code === 'not_granted' || err.code === 'capability_disabled' || err.code === 'capability_removed')) {
+        state.comments = null
+        $('commentBtn').hidden = true
+        $('barStatus').textContent = 'Los comentarios no están disponibles en esta vista: usa «Anotar».'
+      } else if (err && err.code === 'rate_limited') {
+        $('barStatus').textContent = 'Espera unos segundos antes de abrir otro comentario.'
+      } else {
+        $('barStatus').textContent = 'No se pudo abrir el comentario. Puedes usar «Anotar».'
+      }
+    }
+  })
+
+  // Panel de notas.
+  function noteLines() {
+    return Object.entries(notes).sort((a, b) => a[1].at - b[1].at).map(([id, n]) => `[${n.level || ''}] ${id} · ${n.sev}\n  Texto: ${n.context}\n  Nota: ${n.text}`)
+  }
+  function updateNotesCount() { $('notesBtn').textContent = `Mis notas (${Object.keys(notes).length})` }
+  function renderNotes() {
+    const list = $('notesList')
+    const entries = Object.entries(notes).sort((a, b) => a[1].at - b[1].at)
+    list.replaceChildren(...(entries.length ? entries.map(([id, n]) => el('div', { class: 'note' }, `<span class="id">${esc(n.level || '')} · ${esc(id)}</span><span><span class="sev ${n.sev === 'Error' ? 'err' : n.sev === 'Mejora' ? 'imp' : 'dud'}">${esc(n.sev)}</span></span><span class="ctx" lang="fr">${esc(n.context)}</span><span class="txt">${esc(n.text)}</span>`)) : [el('p', { class: 'status' }, 'Todavía no hay notas. Toca un elemento y elige «Anotar».')]))
+    $('copyArea').hidden = true
+    $('notesStatus').textContent = ''
+  }
+  $('notesBtn').addEventListener('click', () => { renderNotes(); $('notes').hidden = false; $('closeNotes').focus() })
+  $('closeNotes').addEventListener('click', () => { $('notes').hidden = true })
+  $('notes').addEventListener('click', (e) => { if (e.target === $('notes')) $('notes').hidden = true })
+  $('copyNotes').addEventListener('click', () => {
+    const text = `Relecture «Le chemin de Camila» · ${new Date().toLocaleDateString('es')}\n\n` + noteLines().join('\n\n')
+    const area = $('copyArea')
+    const fallback = () => { area.hidden = false; area.value = text; area.focus(); area.select(); $('notesStatus').textContent = 'Selecciona el texto de arriba y cópialo.' }
+    if (!Object.keys(notes).length) { $('notesStatus').textContent = 'No hay notas que copiar.'; return }
+    try {
+      navigator.clipboard.writeText(text).then(() => { $('notesStatus').textContent = `${Object.keys(notes).length} notas copiadas. Pégalas en un correo.` }, fallback)
+    } catch (e) { fallback() }
+  })
+  let confirmClear = false
+  $('clearNotes').addEventListener('click', () => {
+    if (!confirmClear) { confirmClear = true; $('clearNotes').textContent = 'Confirmar: borrar todas'; $('notesStatus').textContent = 'Esto borra todas las notas de este navegador. Cópialas antes si no las enviaste.'; return }
+    notes = {}
+    saveNotes()
+    confirmClear = false
+    $('clearNotes').textContent = 'Borrar todas'
+    updateNotesCount()
+    render()
+    renderNotes()
+  })
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { if (!$('notes').hidden) $('notes').hidden = true; else select(null) } })
+
+  let timer = null
+  $('search').addEventListener('input', (e) => { clearTimeout(timer); timer = setTimeout(() => { state.query = e.target.value.trim().toLowerCase(); render() }, 200) })
+
+  renderControls()
+  updateNotesCount()
+  fetch('datos.json')
+    .then((r) => { if (!r.ok) throw new Error(r.status); return r.json() })
+    .then((data) => {
+      state.data = data
+      const tot = (k) => data.levels.reduce((a, l) => a + (k === 'vocab' ? l.vocab.reduce((b, t) => b + t.words.length, 0) : l[k].length), 0)
+      $('stats').innerHTML = `<span><b>${tot('grammar')}</b> lecciones de gramática</span><span><b>${tot('vocab').toLocaleString('es')}</b> palabras</span><span><b>${tot('texts')}</b> textos</span><span>versión del ${esc(data.generated)}</span>`
+      render()
+    })
+    .catch(() => { $('list').replaceChildren(el('p', { class: 'empty' }, 'No se pudo cargar el contenido. Recarga la página.')) })
+
+  if (window.claude && claude.use) claude.use('comments').then((c) => { if (c) { state.comments = c; $('commentBtn').hidden = false } }).catch(() => {})
+})()
+</script>

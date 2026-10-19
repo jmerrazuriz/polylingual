@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router'
 import { SaveProgressPrompt } from '../../components/SaveProgressPrompt'
 import { grammarByCourse } from '../../courses/content'
+import type { EuroCourse } from '../../courses/euro'
+import { euroCourses } from '../../courses/euroCourses'
 import { kanaByChar } from '../../courses/ja/kana'
 import { counterLessons } from '../../courses/ja/counters'
 import { kanjiLessons } from '../../courses/ja/kanji'
@@ -10,8 +12,8 @@ import { readingById } from '../../lib/readings'
 import { ReadingTextView } from '../study/ReadingPages'
 import { lessons } from '../../courses/ja/lessons'
 import { useAccount } from '../../lib/account/store'
-import { DAILY_REVIEW_LIMIT, type DailyStep, dailyStepInfo, isDailyComplete, planDaily } from '../../lib/daily'
-import { kanaPairItems } from '../../lib/pairs'
+import { DAILY_PRACTICE_COUNT, DAILY_REVIEW_LIMIT, type DailyStep, dailyPathItem, dailyStepInfo, isDailyComplete, learnedWords, planDaily } from '../../lib/daily'
+import { kanaPairItems, uniquePairs } from '../../lib/pairs'
 import { dayKey, recordKey } from '../../lib/progress/model'
 import { progressSnapshot, useProgress } from '../../lib/progress/store'
 import { shuffle } from '../../lib/random'
@@ -26,6 +28,7 @@ import { CounterLessonView } from '../study/CountersPages'
 import { KanjiLessonView } from '../study/KanjiPages'
 import { VocabLessonView } from '../study/VocabPages'
 import { MixedSession } from '../practice/MixedSession'
+import { ReadingView, VocabLesson } from '../euro/EuroStudyPages'
 
 /** Título de la lección nueva del día, sea de kana, contadores o kanji. */
 const lessonTitle = (id?: string) =>
@@ -34,8 +37,16 @@ const lessonTitle = (id?: string) =>
 /** Parejas del mini juego diario: 6, al azar entre lo ya aprendido. */
 const GAME_PAIRS = 6
 
+/** Título del paso «nuevo» de un curso europeo: la lección del recorrido guardada como «tipo:id». */
+const euroItemTitle = (course: EuroCourse, lesson?: string) => {
+  const item = dailyPathItem(lesson)
+  return item ? course.path.flatMap((u) => u.stops.flatMap((s) => s.items)).find((i) => i.kind === item.kind && i.id === item.id)?.title : undefined
+}
+
 export function DailyPage() {
   const day = dayKey(now())
+  const courseId = useProgress((s) => s.course)
+  const euro = euroCourses[courseId]
   const record = useProgress((s) => s.daily[day])
   const updateDaily = useProgress((s) => s.updateDaily)
   const guest = useAccount((s) => s.status !== 'user')
@@ -58,7 +69,14 @@ export function DailyPage() {
     if (leave) setActive(null)
   }
 
-  if (active) return <DailyStepRunner step={active} lessonId={record.lesson} grammarId={record.grammar} onDone={() => markDone(active, active !== 'juego')} onExit={() => setActive(null)} />
+  if (active) {
+    const onDone = () => markDone(active, active !== 'juego')
+    return euro ? (
+      <EuroDailyStep course={euro} step={active} lesson={record.lesson} mode={record.mode} onDone={onDone} onExit={() => setActive(null)} />
+    ) : (
+      <DailyStepRunner step={active} lessonId={record.lesson} grammarId={record.grammar} onDone={onDone} onExit={() => setActive(null)} />
+    )
+  }
 
   const steps = record.steps as DailyStep[]
   const complete = isDailyComplete(record)
@@ -87,10 +105,14 @@ export function DailyPage() {
             const done = record.done.includes(step)
             const detail =
               step === 'nuevo'
-                ? lessonTitle(record.lesson)
+                ? euro
+                  ? euroItemTitle(euro, record.lesson)
+                  : lessonTitle(record.lesson)
                 : step === 'gramatica'
-                  ? grammarByCourse.ja.find((g) => g.id === record.grammar)?.title
-                  : undefined
+                  ? grammarByCourse[courseId]?.find((g) => g.id === record.grammar)?.title
+                  : step === 'practica' && euro
+                    ? `${euro.practiceModes.find((m) => m.mode === record.mode)?.title ?? 'Práctica'}: ${DAILY_PRACTICE_COUNT} ejercicios con tus palabras.`
+                    : undefined
             return (
               <li key={step}>
                 <button
@@ -234,5 +256,73 @@ function DailyStepRunner({ step, lessonId, grammarId, onDone, onExit }: RunnerPr
       onComplete={onDone}
       onExit={onExit}
     />
+  )
+}
+
+type EuroStepProps = { course: EuroCourse; step: DailyStep; lesson?: string; mode?: string; onDone: () => void; onExit: () => void }
+
+/** Pasos de la lección del día en alemán y francés, con las pantallas de siempre. */
+function EuroDailyStep({ course, step, lesson, mode, onDone, onExit }: EuroStepProps) {
+  const [plan] = useState(() => {
+    const p = progressSnapshot()
+    const words = learnedWords(p)
+    if (step === 'repasos') return { exercises: buildReview(cardsOfCourse(p.cards, course.id), now()).exercises.slice(0, DAILY_REVIEW_LIMIT), pairs: [] }
+    if (step === 'practica' && mode) return { exercises: course.practiceSession(mode, words, DAILY_PRACTICE_COUNT).map((exercise) => ({ exercise })), pairs: [] }
+    if (step === 'juego') {
+      const game = course.games.find((g) => g.pairs)
+      return { exercises: [], pairs: game ? uniquePairs(game.pairs!(shuffle(words))).slice(0, GAME_PAIRS) : [], instructions: game?.instructions }
+    }
+    return { exercises: [], pairs: [] }
+  })
+
+  const back = (
+    <button onClick={onExit} className="self-start text-sm font-semibold text-slate-500 hover:underline">
+      ← Lección de hoy
+    </button>
+  )
+
+  if (step === 'nuevo') {
+    const item = dailyPathItem(lesson)
+    const grammar = item?.kind === 'grammar' ? grammarByCourse[course.id]?.find((g) => g.id === item.id) : undefined
+    const text = item?.kind === 'reading' ? course.texts.find((t) => t.id === item.id) : undefined
+    return (
+      <div className="flex flex-col gap-3">
+        {back}
+        {grammar && <GrammarLessonView lesson={grammar} number={grammarByCourse[course.id].indexOf(grammar) + 1} onFinish={onDone} />}
+        {item?.kind === 'vocab' && course.vocabLessonById.has(item.id) && <VocabLesson course={course} lessonId={item.id} onFinish={onDone} />}
+        {text && <ReadingView course={course} text={text} onFinish={onDone} />}
+      </div>
+    )
+  }
+
+  if (step === 'juego' && plan.pairs.length >= 4) {
+    return (
+      <PairsGame
+        items={plan.pairs}
+        variant="text"
+        instructions={plan.instructions ?? 'Une cada palabra con su significado.'}
+        recordKey={recordKey('daily-pairs', [course.id])}
+        onComplete={onDone}
+        onExit={onExit}
+      />
+    )
+  }
+
+  if (plan.exercises.length === 0) {
+    return (
+      <div className="mx-auto flex max-w-md flex-col items-center gap-4 py-10 text-center">
+        <p className="text-slate-600 dark:text-slate-400">No queda nada pendiente en este paso. ¡Bien!</p>
+        <button onClick={onDone} className="rounded-full bg-ink px-6 py-3 font-bold text-white">
+          Marcar como hecho
+        </button>
+      </div>
+    )
+  }
+
+  return (
+    <div className="flex flex-col gap-3">
+      {back}
+      <MixedSession reading={[]} exercises={plan.exercises} writing={[]} onFinish={onDone} />
+    </div>
   )
 }

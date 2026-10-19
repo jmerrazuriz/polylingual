@@ -5,7 +5,9 @@ import { courseById, courses } from '../courses'
 import { grammarByCourse } from '../courses/content'
 import { japaneseGrammar } from '../courses/ja/grammar'
 import { allKana, kanaByChar } from '../courses/ja/kana'
-import { planDaily, isDailyComplete } from './daily'
+import { dailyPathItem, planDaily, isDailyComplete } from './daily'
+import { frenchCourse } from '../courses/fr/course'
+import { frenchVocabLessons, frenchWordCard } from '../courses/fr/vocab'
 import { dayKey, emptyCourse, emptyProgress, mergeProgress, parseProgress, toStored } from './progress/model'
 import { gradeForReading, review } from './progress/srs'
 import { progressSnapshot, useProgress } from './progress/store'
@@ -205,7 +207,28 @@ describe('lección del día', () => {
     expect(r.grammar).toBe('desu')
   })
 
-  it('se completa cuando todos sus pasos están hechos', () => {
+  it('el francés y el alemán tienen su propia lección del día', () => {
+    const fresh = planDaily({ ...emptyProgress(), course: 'fr' }, t0, false)
+    expect(fresh.steps).toEqual(['nuevo'])
+    expect(fresh.lesson).toBe('grammar:fr-alphabet')
+    expect(dailyPathItem(fresh.lesson)).toEqual({ kind: 'grammar', id: 'fr-alphabet' })
+
+    const lesson = frenchVocabLessons[0]
+    const card = review(undefined, gradeForReading(true), t0 - 86_400_000 * 30)
+    const p = { ...emptyProgress(), course: 'fr', lessons: { [lesson.id]: { correct: 9, total: 10 } }, cards: { [`${frenchWordCard(lesson.words[0])}:read`]: card } }
+    const r = planDaily(p, t0, false)
+    expect(r.steps).toEqual(['repasos', 'nuevo', 'practica', 'juego'])
+    expect(frenchCourse.practiceModes.map((m) => m.mode)).toContain(r.mode)
+    // La práctica cambia de un día a otro.
+    const modes = new Set(Array.from({ length: 6 }, (_, d) => planDaily(p, t0 + d * 86_400_000, false).mode))
+    expect(modes.size).toBeGreaterThan(1)
+
+    const de = planDaily({ ...emptyProgress(), course: 'de' }, t0, false)
+    expect(de.steps).toEqual(['nuevo'])
+    expect(dailyPathItem(de.lesson)?.kind).toBe('grammar')
+  })
+
+    it('se completa cuando todos sus pasos están hechos', () => {
     expect(isDailyComplete({ steps: ['nuevo', 'juego'], done: ['nuevo'] })).toBe(false)
     expect(isDailyComplete({ steps: ['nuevo', 'juego'], done: ['juego', 'nuevo'] })).toBe(true)
     expect(isDailyComplete({ steps: [], done: [] })).toBe(false)

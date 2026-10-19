@@ -9,7 +9,7 @@ export type LessonResult = { correct: number; total: number }
 export type KanaStat = { readOk: number; readTotal: number; writeScore: number; writeCount: number }
 
 /** Lección de un día: qué pasos tiene, qué lección y gramática tocan y qué pasos se completaron. */
-export type DailyRecord = { steps: string[]; lesson?: string; grammar?: string; done: string[] }
+export type DailyRecord = { steps: string[]; lesson?: string; grammar?: string; mode?: string; done: string[] }
 
 /** Progreso de un curso (idioma). */
 export type CourseData = {
@@ -224,6 +224,7 @@ function parseCourse(raw: unknown): CourseData {
       steps: strings(rec.steps),
       ...(typeof rec.lesson === 'string' ? { lesson: rec.lesson } : {}),
       ...(typeof rec.grammar === 'string' ? { grammar: rec.grammar } : {}),
+      ...(typeof rec.mode === 'string' ? { mode: rec.mode } : {}),
       done: strings(rec.done),
     }
   }

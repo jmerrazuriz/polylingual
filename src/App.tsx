@@ -62,7 +62,7 @@ export default function App() {
       <Route element={<Layout />}>
         <Route index element={<HomePage />} />
         <Route path="cursos" element={<CoursesPage />} />
-        <Route path="hoy" element={<CourseOnly course="ja"><DailyPage /></CourseOnly>} />
+        <Route path="hoy" element={<ByCourse ja={<DailyPage />} euro={<DailyPage />} />} />
         <Route path="tabla" element={<TableRoute />} />
         <Route path="aprender" element={<LearnPage />} />
         <Route path="aprender/:lessonId" element={<CourseOnly course="ja"><LessonRoute /></CourseOnly>} />
