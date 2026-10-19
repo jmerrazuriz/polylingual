@@ -1,6 +1,7 @@
 import type { RefObject } from 'react'
 import { frenchKeys } from '../lib/frenchInput'
 import { germanKeys } from '../lib/germanInput'
+import { italianKeys } from '../lib/italianInput'
 
 type KeysProps = { inputRef: RefObject<HTMLInputElement | null>; value: string; onChange: (v: string) => void }
 
@@ -38,3 +39,6 @@ export const UmlautKeys = (props: KeysProps) => <LetterKeys {...props} keys={ger
 
 /** é è ê à ç œ… */
 export const FrenchKeys = (props: KeysProps) => <LetterKeys {...props} keys={frenchKeys} label="Letras francesas" />
+
+/** à è é ì ò ù */
+export const ItalianKeys = (props: KeysProps) => <LetterKeys {...props} keys={italianKeys} label="Letras italianas" />

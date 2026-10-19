@@ -4,7 +4,7 @@ import type { ProgressData } from '../lib/progress/model.ts'
 import type { GrammarExercise, GrammarLesson } from './grammar.ts'
 import type { ReadingText } from './reading.ts'
 
-// Lo común a los cursos de idiomas europeos (alemán y francés): niveles MCER, palabras con
+// Lo común a los cursos de idiomas europeos (alemán, francés e italiano): niveles MCER, palabras con
 // género, textos de una historia, simulacro por nivel, juegos y práctica. Cada curso llena un
 // `EuroCourse` y las pantallas compartidas (features/euro) lo usan.
 
@@ -60,19 +60,22 @@ export type FormTask = { context: string; text: string; fields: { label: string;
 export type MessageTask = { prompt: string; checks: string[]; model: string }
 export type ExamTasks = { form: FormTask; message: MessageTask; speaking: string[] }
 
+/** Los idiomas europeos de la app. Sumar uno nuevo empieza aquí. */
+export type EuroLang = 'de' | 'fr' | 'it'
+
 export type EuroCourse = {
-  id: 'de' | 'fr'
+  id: EuroLang
   /** Código del idioma para `lang` y las letras especiales. */
-  lang: 'de' | 'fr'
-  /** «alemán», «francés». */
+  lang: EuroLang
+  /** «alemán», «francés», «italiano». */
   name: string
-  /** «Ottos Weg», «Le chemin de Camila». */
+  /** «Ottos Weg», «Le chemin de Camila», «La strada di Lucca». */
   story: string
   /** Una línea para la página de textos. */
   textsIntro: string
   /** Una línea para la página de palabras. */
   vocabIntro: string
-  /** «Goethe-Zertifikat», «DELF». */
+  /** «Goethe-Zertifikat», «DELF», «CILS». */
   examName(level: EuroLevel): string
   examPath(level: EuroLevel): string
   /** El color de cada género y su artículo, para la leyenda de las lecciones. */

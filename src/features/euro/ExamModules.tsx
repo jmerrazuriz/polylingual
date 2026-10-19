@@ -1,12 +1,12 @@
 import { useRef, useState } from 'react'
-import { FrenchKeys, UmlautKeys } from '../../components/UmlautKeys'
+import { FrenchKeys, ItalianKeys, UmlautKeys } from '../../components/UmlautKeys'
 import type { FormTask, MessageTask } from '../../courses/euro'
 import type { GrammarExercise } from '../../courses/grammar'
 import type { ReadingText } from '../../courses/reading'
 import { useSpeech } from '../../lib/audio/useSpeech'
 import { GrammarExerciseView } from '../grammar/GrammarExerciseView'
 
-// Módulos comunes de los simulacros (Goethe y DELF): leer o escuchar textos con preguntas,
+// Módulos comunes de los simulacros (Goethe, DELF y CILS): leer o escuchar textos con preguntas,
 // escribir (formulario corregido + mensaje autoevaluado) y hablar (autoevaluación guiada).
 
 export type Result = { correct: number; total: number }
@@ -14,8 +14,13 @@ export type Result = { correct: number; total: number }
 /** Comparar una respuesta escrita: 'almost' cuenta, pero se avisa (mayúsculas o acentos). */
 export type Check = (input: string, answers: string[]) => 'ok' | 'almost' | 'wrong'
 
-const Keys = ({ lang, ...props }: { lang: string } & Parameters<typeof UmlautKeys>[0]) =>
-  lang === 'fr' ? <FrenchKeys {...props} /> : <UmlautKeys {...props} />
+/** Las letras especiales de cada idioma europeo. */
+const keysByLang: Record<string, typeof UmlautKeys> = { de: UmlautKeys, fr: FrenchKeys, it: ItalianKeys }
+
+const Keys = ({ lang, ...props }: { lang: string } & Parameters<typeof UmlautKeys>[0]) => {
+  const LangKeys = keysByLang[lang] ?? UmlautKeys
+  return <LangKeys {...props} />
+}
 
 /** Leer o escuchar: cada texto y sus preguntas. Al escuchar, el audio se puede oír dos veces y no se muestra el texto. */
 export function QuestionsModule({ title, texts, listen, lang, onDone }: { title: string; texts: ReadingText[]; listen: boolean; lang: string; onDone: (r: Result) => void }) {

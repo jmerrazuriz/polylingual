@@ -44,7 +44,7 @@ export function ReviewPage() {
         reading={plan.reading}
         exercises={plan.exercises}
         writing={plan.writing}
-        labels={{ reading: 'Repaso de lectura', exercises: course === 'de' ? 'Repaso de palabras' : 'Repaso de kanji y palabras', writing: 'Repaso de escritura' }}
+        labels={{ reading: 'Repaso de lectura', exercises: course === 'ja' ? 'Repaso de kanji y palabras' : 'Repaso de palabras', writing: 'Repaso de escritura' }}
         onFinish={setResult}
       />
     )

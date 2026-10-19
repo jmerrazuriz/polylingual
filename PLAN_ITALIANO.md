@@ -409,25 +409,21 @@ El curso ya está en `src/courses/index.ts` con `status: 'soon'` y `speechLang: 
 
 ---
 
-## 8. Personaje e historia (propuesta)
+## 8. Personaje e historia: *La strada di Lucca*
 
-Como *Ottos Weg* en alemán y *Le chemin de Camila* en francés.
+Como *Ottos Weg* en alemán y *Le chemin de Camila* en francés. Los apellidos son de los más comunes de Italia: **Ferrari** es el tercero y **Esposito** el cuarto, después de Rossi y Russo ([Money.it](https://www.money.it/cognomi-piu-diffusi-italia-mondo-2026), [Italianismo](https://www.italianismo.com.br/it/1000-sobrenomes-italianos-mais-comuns/)).
 
-**Propuesta: *La strada di Matías*.**
-- **Matías Ferrari** es un arquitecto chileno, bisnieto de genoveses que emigraron a Valparaíso.
+- **Lucca Ferrari** es un restaurador de patrimonio chileno, de Valparaíso, bisnieto de genoveses que emigraron a Chile.
   - Con la ley de 2025 ya no puede pedir la ciudadanía por descendencia.
-  - Se va a **Bolonia** a un máster en **restauración del patrimonio**, un área donde Italia busca especialistas.
-  - Así recorre el camino de la residencia: A2 y luego B1.
-- **Chiara Esposito** es su vecina napolitana, bibliotecaria. Con ella aparecen el sur, el dialecto y la familia italiana.
+  - Se va a trabajar a un taller de restauración en **Bolonia** y recorre el camino de la residencia: el *permesso di soggiorno*, la residencia de larga duración (A2) y, años después, la **nacionalidad** (B1). Para quien no es de la Unión Europea, la nacionalidad por residencia pide diez años de residencia legal.
+- **Bruno Esposito** es su amigo napolitano, compañero de departamento y de taller. Con él aparecen el sur, el dialecto, la comida y la familia italiana.
 - **La historia por nivel:**
-  - A1: llegada, *codice fiscale* y primera pieza compartida.
-  - A2: la Questura, el *permesso* y la primera práctica en un taller de restauración.
-  - B1: el trabajo en un estudio y la carpeta para la ciudadanía.
-  - B2: una obra en Florencia, un viaje a Nápoles y a Génova en busca de los bisabuelos.
-  - C1: un congreso de patrimonio en Venecia y un artículo académico.
-  - C2: escribe una columna y viaja a Sicilia, a Lugano (Ticino) y a Buenos Aires, donde están el italiano de los emigrantes y el *cocoliche*.
-
-El nombre, la profesión y la ciudad son decisión del usuario (sección 11).
+  - A1: llegada a Bolonia, el *codice fiscale*, la inscripción en el municipio y el departamento compartido con Bruno.
+  - A2: la Questura y el *permesso di soggiorno*, el contrato en el taller, el médico de cabecera.
+  - B1: el trabajo diario, los derechos laborales y el CILS B1 pensando en la nacionalidad.
+  - B2: una obra en Florencia, Nápoles con la familia de Bruno y Génova en busca de los bisabuelos.
+  - C1: un congreso de patrimonio en Venecia, un artículo académico y la solicitud de la nacionalidad.
+  - C2: escribe una columna, viaja a Sicilia, a Lugano (Ticino) y a Buenos Aires (el italiano de los emigrantes y el *cocoliche*) y **jura como ciudadano italiano**.
 
 ---
 
@@ -435,14 +431,40 @@ El nombre, la profesión y la ciudad son decisión del usuario (sección 11).
 
 | Etapa | Contenido | Hecho cuando… |
 |---|---|---|
-| **I0 · Base** | Motor italiano (conjugación, artículos, plurales, números) con tests. `italianInput` y `ItalianKeys`. Ampliar lo europeo a tres cursos (sección 7). Puntaje CILS con tests. `ItalianTablesPage`. Recorrido italiano vacío, visible solo en desarrollo. | El japonés, el alemán y el francés siguen igual (todos los tests pasan) y existe un recorrido italiano vacío. |
-| **I1 · A1** | Pronunciación, ~30 lecciones, ~650 palabras y 16 textos de *La strada di Matías*. Simulacro CILS A1 con módulo de estructuras y test de nivelación. Juegos (parejas, escucha, *il/lo/la*, plurales, dobles, conjugación, números), práctica y **lección del día**. `export-review.ts` por curso. | Se puede hacer el A1 entero, jugar y tener lección del día. El curso pasa a «disponible». |
+| **I0 · Base** ✅ | Motor italiano (conjugación, artículos, plurales, números) con tests. `italianInput` y `ItalianKeys`. Ampliar lo europeo a tres cursos (sección 7). Puntaje CILS con tests. `ItalianTablesPage`. Recorrido italiano vacío, visible solo en desarrollo. | El japonés, el alemán y el francés siguen igual (todos los tests pasan) y existe un recorrido italiano vacío. |
+| **I1 · A1** | Pronunciación, ~30 lecciones, ~650 palabras y 16 textos de *La strada di Lucca*. Simulacro CILS A1 con módulo de estructuras y test de nivelación. Juegos (parejas, escucha, *il/lo/la*, plurales, dobles, conjugación, números), práctica y **lección del día**. `export-review.ts` por curso. | Se puede hacer el A1 entero, jugar y tener lección del día. El curso pasa a «disponible». |
 | **I2 · A2** | ~30 lecciones, hasta ~1.300 palabras, juegos de preposiciones y falsos amigos, simulacro A2. | Igual que I1. |
 | **I3 · B1** | ~35 lecciones, hasta ~2.400 palabras, juegos de pronombres y subjuntivo, simulacro UNO-B1. | Simulacro B1 con puntaje CILS. |
 | **I4 · B2** | ~35 lecciones, hasta ~4.000 palabras, passato remoto en el motor y el glosario, juego de conectores, simulacro DUE-B2 con ensayo y lista de control. | Simulacro B2. |
 | **I5 · C1** | ~35 lecciones, hasta ~5.700 palabras, variedades y registro, juego de registros, simulacro TRE-C1. | Simulacro C1. |
 | **I6 · C2** | ~30 lecciones, hasta ~7.700 palabras, estilo y variedades, simulacro QUATTRO-C2 (ensayo y carta formal). | Simulacro C2. Plan cerrado. |
 | **I7 · Revisión** (externa) | Revisión por un hablante nativo o un profesor de italiano L2, empezando por A1–B1, con la misma página de revisión del francés. | Contenido revisado y errores corregidos. |
+
+
+### Qué quedó hecho en I0 (19-10-2026)
+- **Motor italiano** (`src/courses/it/engine/`, con tests):
+  - `conjugation.ts`: las tres conjugaciones con *-isc-*, *cerco/cerchi*, *mangio/mangi* e *invio/invii*.
+    - Tiempos: presente, passato prossimo y los demás compuestos con *essere/avere* y concordancia (*andato/a*), imperfetto, futuro, condicional, subjuntivo en sus cuatro tiempos, passato remoto (regular y del tipo *presi, prendesti, prese*), trapassato remoto.
+    - Imperativo con *Lei* y negativo, gerundio, *stare* + gerundio y pronominales (*mi alzo, alzati, alziamoci*).
+  - `verbs.ts`: 104 verbos base que declaran solo lo irregular.
+  - `articles.ts`: *il/lo/l'/la/i/gli/le*, *un/uno/una/un'*, las 35 preposiciones articuladas, partitivo, *quel/quello/quegli*, *bel/begli*, posesivos con y sin artículo (*mia madre*, *il loro padre*) y el porqué de cada forma.
+  - `plurals.ts`: los plurales regulares, *-chi/-ci*, *-ghi/-gi*, *-cie/-ce*, invariables e irregulares (*le uova*), con su explicación.
+  - `pronouns.ts`: combinados (*me lo, glielo, gliene*) y pegados al verbo (*dimmi, fallo, dagli, dammelo, vattene*).
+  - `numbers.ts`: números en letras (*ventuno, ventitré, centotto, millenovecentottantaquattro, ventunmila*) y ordinales.
+- **Entrada de texto** (`lib/italianInput.ts`):
+  - Las mayúsculas y el tipo de apóstrofo no cuentan.
+  - Si solo fallan las tildes, la respuesta cuenta pero se avisa «casi».
+  - **Una doble consonante que falta o sobra es error**, con la explicación (*Lleva doble «l»: se escribe «palla»*).
+  - Teclas *à è é ì ò ù* (`ItalianKeys`). Los ejercicios `type` aceptan `italian: true`.
+  - La corrección explicada reconoce los artículos italianos (*il studente → lo studente*).
+- **Simulacro CILS** (`courses/it/exams.ts`, con tests): cinco pruebas; 12 puntos y mínimo 7 en A1–A2, 20 y mínimo 11 desde el B1; se aprueba solo si se pasa cada una.
+- **Tablas de italiano** (`/tabla`): artículos, preposiciones articuladas, plurales, pronombres (con combinados, *ci/ne* y pegados), conjugador con 15 tiempos y práctica escrita, y números.
+- **Lo europeo, listo para un tercer idioma:** tipo `EuroLang`; las teclas del simulacro, el desbloqueo, la nivelación y el repaso ya no preguntan por `'de'` o `'fr'`.
+- **El curso:**
+  - `levels.ts` (metas por nivel, Lucca y Bruno), `path.ts` (los seis niveles «en preparación») y `coursePath('it')`.
+  - Inicio propio en vista previa. Se puede elegir solo en desarrollo; en producción sigue «Próximamente».
+- **Ícono en iPhone:** `apple-touch-icon.png` (180 px) y un ícono PNG de 192 px, porque Safari no usa el SVG al agregar la app a la pantalla de inicio.
+- El japonés, el alemán y el francés no cambian: 327 tests pasan.
 
 ---
 
@@ -460,13 +482,12 @@ El nombre, la profesión y la ciudad son decisión del usuario (sección 11).
 
 ---
 
-## 11. Decisiones pendientes (para el usuario)
-1. **Personaje y enfoque:**
-   - ¿*La strada di Matías* (arquitecto restaurador en Bolonia) u otro nombre, profesión o ciudad?
-   - ¿Prioridad en «vivir y obtener la nacionalidad» o en «estudiar en Italia»?
-2. **Examen de referencia:** CILS (Siena), por su prueba de estructuras, o CELI o PLIDA. ¿Se agrega una nota sobre el **B1 Cittadinanza**?
-3. **Costos:** como en alemán y francés, **sin IA y sin audio grabado** (autoevaluación guiada y voz del navegador). ¿Se mantiene?
-4. **Variedad:** italiano estándar como base, con reconocimiento de italianos regionales, dialectos, Ticino y el italiano rioplatense en C1–C2. ¿Está bien?
+## 11. Decisiones (19-10-2026)
+1. **Personaje:** *La strada di Lucca*, con Lucca Ferrari y su amigo Bruno Esposito (sección 8).
+2. **Enfoque:** vivir en Italia y obtener la nacionalidad. Las metas de nivel nombran el trámite: A2 → residencia de larga duración, B1 → nacionalidad.
+3. **Examen de referencia:** CILS. Las metas mencionan también el B1 Cittadinanza.
+4. **Costos:** como en alemán y francés, sin IA y sin audio grabado (autoevaluación guiada y voz del navegador).
+5. **Variedad:** italiano estándar como base, con reconocimiento de italianos regionales, dialectos, Ticino y el italiano rioplatense en C1–C2.
 
 ---
 

@@ -22,6 +22,7 @@ const DailyPage = page(() => import('./features/daily/DailyPage'), (m) => m.Dail
 const ChartPage = page(() => import('./features/chart/ChartPage'), (m) => m.ChartPage)
 const GermanTablesPage = page(() => import('./features/chart/GermanTablesPage'), (m) => m.GermanTablesPage)
 const FrenchTablesPage = page(() => import('./features/chart/FrenchTablesPage'), (m) => m.FrenchTablesPage)
+const ItalianTablesPage = page(() => import('./features/chart/ItalianTablesPage'), (m) => m.ItalianTablesPage)
 const EuroVocabPage = page(() => import('./features/euro/EuroStudyPages'), (m) => m.EuroVocabPage)
 const EuroVocabLessonRoute = page(() => import('./features/euro/EuroStudyPages'), (m) => m.EuroVocabLessonRoute)
 const EuroReadingsPage = page(() => import('./features/euro/EuroStudyPages'), (m) => m.EuroReadingsPage)
@@ -102,11 +103,12 @@ export default function App() {
   )
 }
 
-/** La tabla de consulta del curso activo: kana en japonés; artículos, casos y verbos en alemán y francés. */
+/** La tabla de consulta del curso activo: kana en japonés; artículos, casos y verbos en alemán, francés e italiano. */
 function TableRoute() {
   const course = useProgress((s) => s.course)
   if (course === 'de') return <GermanTablesPage />
   if (course === 'fr') return <FrenchTablesPage />
+  if (course === 'it') return <ItalianTablesPage />
   return <ChartPage />
 }
 

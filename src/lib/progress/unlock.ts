@@ -16,6 +16,9 @@ import { unlockedReadings } from '../readings.ts'
 import type { LessonResult } from './model.ts'
 import { useProgress } from './store.ts'
 
+/** Desbloqueo por el recorrido de cada curso europeo (se importa aparte para no cargar sus juegos). */
+const euroUnlockedIds: Record<string, typeof germanUnlockedIds> = { de: germanUnlockedIds, fr: frenchUnlockedIds }
+
 /** El katakana se abre al terminar los básicos del hiragana (la lección «W y N»). */
 export const KATAKANA_UNLOCKED_BY = 'w'
 
@@ -65,9 +68,9 @@ export function useUnlockedGrammar(ids: readonly string[]): Set<string> {
   const records = useProgress((s) => s.records)
   const unlockAll = useProgress((s) => s.unlockAll)
   const course = useProgress((s) => s.course)
-  // En alemán la gramática sigue el recorrido (cada lección abre la siguiente).
-  if (course === 'de') return germanUnlockedIds({ lessons, grammar, records, unlockAll }, guest, 'grammar')
-  if (course === 'fr') return frenchUnlockedIds({ lessons, grammar, records, unlockAll }, guest, 'grammar')
+  // En los cursos europeos la gramática sigue el recorrido (cada lección abre la siguiente).
+  const euro = euroUnlockedIds[course]
+  if (euro) return euro({ lessons, grammar, records, unlockAll }, guest, 'grammar')
   return unlockedGrammar(ids, grammar, lessons, guest || unlockAll)
 }
 

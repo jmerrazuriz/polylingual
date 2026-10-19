@@ -1,11 +1,12 @@
 import { useRef, useState } from 'react'
 import { Furigana } from '../../components/Furigana'
 import { KanaInput } from '../../components/KanaInput'
-import { FrenchKeys, UmlautKeys } from '../../components/UmlautKeys'
+import { FrenchKeys, ItalianKeys, UmlautKeys } from '../../components/UmlautKeys'
 import type { GrammarExercise } from '../../courses/grammar'
 import { buildFeedback, type FeedbackContext } from '../../lib/feedback'
 import { contextFor } from '../../lib/exerciseContext'
 import { checkFrench } from '../../lib/frenchInput'
+import { checkItalian } from '../../lib/italianInput'
 import { checkGerman } from '../../lib/germanInput'
 import { finishKana, matchesKana } from '../../lib/kanaInput'
 import { useSpeech } from '../../lib/audio/useSpeech'
@@ -287,6 +288,13 @@ function Type({ exercise, result, onAnswer }: { exercise: Extract<GrammarExercis
       onAnswer(check !== 'wrong', value)
       return
     }
+    if (exercise.italian) {
+      // En italiano, si solo fallan las tildes, cuenta pero se avisa; las dobles sí cuentan.
+      const check = checkItalian(value, exercise.answers)
+      setAccentNote(check === 'accents')
+      onAnswer(check === 'ok' || check === 'accents', value)
+      return
+    }
     if (exercise.french) {
       // En francés, si solo fallan los acentos, cuenta pero se avisa.
       const check = checkFrench(value, exercise.answers)
@@ -317,7 +325,7 @@ function Type({ exercise, result, onAnswer }: { exercise: Extract<GrammarExercis
         ) : (
           <input
             ref={inputRef}
-            lang={exercise.german ? 'de' : exercise.french ? 'fr' : undefined}
+            lang={exercise.german ? 'de' : exercise.french ? 'fr' : exercise.italian ? 'it' : undefined}
             value={value}
             onChange={(e) => setValue(e.target.value)}
             disabled={done}
@@ -330,6 +338,7 @@ function Type({ exercise, result, onAnswer }: { exercise: Extract<GrammarExercis
         )}
         {exercise.german && !done && <UmlautKeys inputRef={inputRef} value={value} onChange={setValue} />}
         {exercise.french && !done && <FrenchKeys inputRef={inputRef} value={value} onChange={setValue} />}
+        {exercise.italian && !done && <ItalianKeys inputRef={inputRef} value={value} onChange={setValue} />}
         {caseNote && <p className="text-sm font-bold text-amber-700 dark:text-amber-300">Ojo con las mayúsculas: en alemán los sustantivos (y «Sie» formal) van con mayúscula.</p>}
         {accentNote && (
           <p className="text-sm font-bold text-amber-700 dark:text-amber-300">Casi: fíjate en los acentos. Se escribe «{exercise.answers[0]}».</p>

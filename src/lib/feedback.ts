@@ -4,6 +4,7 @@
 
 import type { GrammarExercise } from '../courses/grammar.ts'
 import { furiganaToPlain } from './furigana.ts'
+import { doublesHint } from './italianInput.ts'
 
 /** Lo que la pantalla sabe de la lección o del texto en que aparece el ejercicio. */
 export type FeedbackContext = {
@@ -97,8 +98,11 @@ export function diagnoseTyping(given: string, answers: readonly string[]): strin
       .trim()
   if (answers.some((a) => a.toLowerCase() === g.toLowerCase())) return 'Solo fallan las mayúsculas.'
   if (answers.some((a) => fold(a) === fold(g))) return 'Faltan o sobran tildes o diéresis: fíjate en los signos de cada letra.'
-  const articles = ['der', 'die', 'das', 'le', 'la', "l'", 'les', 'un', 'une']
-  const words = (s: string) => s.replace(/^([lL])['’]/, "l' ").split(' ')
+  // Italiano: una doble consonante que falta o sobra (pala / palla).
+  const doubles = doublesHint(g, target)
+  if (doubles) return doubles
+  const articles = ['der', 'die', 'das', 'le', 'la', "l'", 'les', 'un', 'une', 'il', 'lo', 'i', 'gli', 'uno', 'una', "un'"]
+  const words = (s: string) => s.replace(/^([lL]|[uU]n)['’]/, (_m, a: string) => `${a.toLowerCase()}' `).split(' ')
   const [ga, ...gr] = words(g)
   const [ta, ...tr] = words(target)
   if (articles.includes(ga.toLowerCase()) && articles.includes(ta.toLowerCase()) && fold(gr.join(' ')) === fold(tr.join(' ')) && ga.toLowerCase() !== ta.toLowerCase()) {

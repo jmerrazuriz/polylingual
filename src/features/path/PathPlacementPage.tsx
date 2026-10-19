@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router'
 import { SaveProgressPrompt } from '../../components/SaveProgressPrompt'
 import type { GrammarExercise } from '../../courses/grammar'
+import { isEuroCourse } from '../../courses/euroCourses'
 import { coursePath } from '../../lib/coursePath'
 import { EuroPlacement } from '../euro/EuroPlacement'
 import { japanesePath } from '../../lib/path'
@@ -29,7 +30,7 @@ const unitTitles = (blocks: PlacementBlock[]) =>
 /** El test de nivelación del curso activo (por ahora solo el japonés tiene). */
 export function PathPlacementPage() {
   const course = useProgress((s) => s.course)
-  if (course === 'de' || course === 'fr') return <EuroPlacement />
+  if (isEuroCourse(course)) return <EuroPlacement />
   if (!coursePath(course).hasPlacement) {
     return (
       <section className="mx-auto flex max-w-md flex-col items-center gap-4 py-8 text-center">
