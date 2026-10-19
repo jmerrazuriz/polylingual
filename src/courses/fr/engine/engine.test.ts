@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { verbByInf, verbs } from '../verbs'
-import { conditionnel, conditionnelPasse, futur, futurAnterieur, futurProche, imparfait, imperatif, participePresent, passeCompose, passeSimple, plusQueParfait, present, subjonctif, subjonctifPasse, withSubject } from './conjugation'
+import { conditionnel, conditionnelPasse, passeAnterieur, subjonctifImparfait, futur, futurAnterieur, futurProche, imparfait, imperatif, participePresent, passeCompose, passeSimple, plusQueParfait, present, subjonctif, subjonctifPasse, withSubject } from './conjugation'
 
 const v = (inf: string) => verbByInf.get(inf)!
 
@@ -101,6 +101,12 @@ describe('conjugación francesa', () => {
     expect(passeSimple(v('venir'))).toEqual(['vins', 'vins', 'vint', 'vînmes', 'vîntes', 'vinrent'])
     expect(passeSimple(v('naître'))[2]).toBe('naquit')
     expect(passeSimple(v('prendre'))[2]).toBe('prit')
+    expect(passeAnterieur(v('finir'))[2]).toBe('eut fini')
+    expect(passeAnterieur(v('partir'))[2]).toBe('fut parti(e)')
+    expect(subjonctifImparfait(v('parler'))[2]).toBe('parlât')
+    expect(subjonctifImparfait(v('être'))).toEqual(['fusse', 'fusses', 'fût', 'fussions', 'fussiez', 'fussent'])
+    expect(subjonctifImparfait(v('venir'))[2]).toBe('vînt')
+    expect(subjonctifImparfait(v('avoir'))[2]).toBe('eût')
   })
 
   it('el pronombre sujeto con elisión: j’ante vocal y h muda', () => {
@@ -113,7 +119,7 @@ describe('conjugación francesa', () => {
 
   it('todos los verbos generan todas sus formas sin huecos', () => {
     for (const verb of verbs) {
-      for (const f of [present, passeCompose, imparfait, futur, conditionnel, subjonctif, plusQueParfait, futurProche, futurAnterieur, conditionnelPasse, subjonctifPasse, passeSimple]) {
+      for (const f of [present, passeCompose, imparfait, futur, conditionnel, subjonctif, plusQueParfait, futurProche, futurAnterieur, conditionnelPasse, subjonctifPasse, passeSimple, passeAnterieur, subjonctifImparfait]) {
         const forms = f(verb)
         expect(forms, verb.inf).toHaveLength(6)
         for (const x of forms) expect(x, `${verb.inf}: ${x}`).toMatch(/^[a-zàâäéèêëîïôöùûüç' ()-]+$/)

@@ -8,6 +8,7 @@ import { numberReason, numberToWords } from './engine/numbers.ts'
 import { genderReason } from './explain.ts'
 import { agreementQuestion } from './accords.ts'
 import { connectorQuestion } from './connecteurs.ts'
+import { registerQuestion } from './registres.ts'
 import { fauxAmiQuestion, homophoneQuestion } from './homophones.ts'
 import type { CefrLevel } from './levels.ts'
 import { frenchUnlockedIds } from './progress.ts'
@@ -136,7 +137,7 @@ export const asExercise = (q: SpeedQuestion): GrammarExercise => ({
   whyWrong: q.whyWrong,
 })
 
-export type PracticeMode = 'palabras' | 'escribir' | 'genero' | 'femenino' | 'conjugacion' | 'numeros' | 'homofonos' | 'falsos-amigos' | 'concordancias' | 'conectores'
+export type PracticeMode = 'palabras' | 'escribir' | 'genero' | 'femenino' | 'conjugacion' | 'numeros' | 'homofonos' | 'falsos-amigos' | 'concordancias' | 'conectores' | 'registros'
 
 /** Una sesión de práctica libre de `count` ejercicios con las palabras del pool. */
 export function practiceSession(mode: PracticeMode, words: readonly FrenchWord[], count = 12, random = Math.random): GrammarExercise[] {
@@ -167,6 +168,8 @@ export function practiceSession(mode: PracticeMode, words: readonly FrenchWord[]
     }
     case 'conectores':
       return words.some((w) => w.level === 'B2' || w.level === 'C1' || w.level === 'C2') ? repeat(() => asExercise(connectorQuestion(random))) : []
+    case 'registros':
+      return words.some((w) => w.level === 'C1' || w.level === 'C2') ? repeat(() => asExercise(registerQuestion(random))) : []
     case 'falsos-amigos':
       return words.some((w) => w.level !== 'A1') ? repeat(() => asExercise(fauxAmiQuestion(random))) : []
   }

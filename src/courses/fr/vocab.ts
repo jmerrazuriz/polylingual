@@ -16,6 +16,14 @@ import { vocabB2d } from './vocabB2d.ts'
 import { vocabB2e } from './vocabB2e.ts'
 import { vocabB2f } from './vocabB2f.ts'
 import { vocabB2g } from './vocabB2g.ts'
+import { vocabC1a } from './vocabC1a.ts'
+import { vocabC1b } from './vocabC1b.ts'
+import { vocabC1c } from './vocabC1c.ts'
+import { vocabC1d } from './vocabC1d.ts'
+import { vocabC1e } from './vocabC1e.ts'
+import { vocabC1f } from './vocabC1f.ts'
+import { vocabC1g } from './vocabC1g.ts'
+import { vocabC1h } from './vocabC1h.ts'
 
 // Vocabulario del francés. Cada sustantivo se aprende con su artículo y su género (que el
 // artículo elidido «l’» no deja ver). Los ids (la palabra, o palabra·clase si se repite) no deben
@@ -100,7 +108,9 @@ export const frenchVocabA2 = build(vocabA2, 'A2', frenchVocabA1)
 export const frenchThemesB2 = [...vocabB2a, ...vocabB2b, ...vocabB2c, ...vocabB2d, ...vocabB2e, ...vocabB2f, ...vocabB2g]
 export const frenchVocabB1 = build(frenchThemesB1, 'B1', [...frenchVocabA1, ...frenchVocabA2])
 export const frenchVocabB2 = build(frenchThemesB2, 'B2', [...frenchVocabA1, ...frenchVocabA2, ...frenchVocabB1])
-export const frenchVocab: FrenchWord[] = [...frenchVocabA1, ...frenchVocabA2, ...frenchVocabB1, ...frenchVocabB2]
+export const frenchThemesC1 = [...vocabC1a, ...vocabC1b, ...vocabC1c, ...vocabC1d, ...vocabC1e, ...vocabC1f, ...vocabC1g, ...vocabC1h]
+export const frenchVocabC1 = build(frenchThemesC1, 'C1', [...frenchVocabA1, ...frenchVocabA2, ...frenchVocabB1, ...frenchVocabB2])
+export const frenchVocab: FrenchWord[] = [...frenchVocabA1, ...frenchVocabA2, ...frenchVocabB1, ...frenchVocabB2, ...frenchVocabC1]
 export const frenchWordById = new Map(frenchVocab.map((w) => [w.id, w]))
 
 const typographic = (s: string) => s.replace(/'/g, '’')
@@ -162,7 +172,8 @@ export const frenchVocabLessonsA1 = lessonsOf(vocabA1, frenchVocabA1, 'A1')
 export const frenchVocabLessonsA2 = lessonsOf(vocabA2, frenchVocabA2, 'A2')
 export const frenchVocabLessonsB1 = lessonsOf(frenchThemesB1, frenchVocabB1, 'B1')
 export const frenchVocabLessonsB2 = lessonsOf(frenchThemesB2, frenchVocabB2, 'B2')
-export const frenchVocabLessons: FrenchVocabLesson[] = [...frenchVocabLessonsA1, ...frenchVocabLessonsA2, ...frenchVocabLessonsB1, ...frenchVocabLessonsB2]
+export const frenchVocabLessonsC1 = lessonsOf(frenchThemesC1, frenchVocabC1, 'C1')
+export const frenchVocabLessons: FrenchVocabLesson[] = [...frenchVocabLessonsA1, ...frenchVocabLessonsA2, ...frenchVocabLessonsB1, ...frenchVocabLessonsB2, ...frenchVocabLessonsC1]
 export const frenchVocabLessonById = new Map(frenchVocabLessons.map((l) => [l.id, l]))
 
 /** Tarjetas de repaso de palabras francesas: «fw-<id>». */

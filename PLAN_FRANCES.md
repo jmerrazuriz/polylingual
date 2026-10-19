@@ -317,7 +317,7 @@ El nombre, la profesión y la ciudad son decisión del usuario (sección 11).
 | **F2 · A2** ✅ | ~30 lecciones, hasta ~1.300 palabras, juegos de homófonos y falsos amigos, simulacro A2. | Igual que F1. |
 | **F3 · B1** ✅ | ~35 lecciones, hasta ~2.400 palabras, juego de concordancias, simulacro B1. | Simulacro B1 con puntaje DELF. |
 | **F4 · B2** ✅ | ~35 lecciones, hasta ~4.000 palabras, simulacro B2 con ensayo y lista de control. | Simulacro B2. |
-| **F5 · C1** | ~35 lecciones, hasta ~6.000 palabras, síntesis + ensayo, simulacro DALF C1. | Simulacro C1. |
+| **F5 · C1** ✅ | ~35 lecciones, hasta ~6.000 palabras, síntesis + ensayo, simulacro DALF C1. | Simulacro C1. |
 | **F6 · C2** | ~30 lecciones, hasta ~8.000 palabras, variedades y estilo, simulacro DALF C2 (2 pruebas de 50). | Simulacro C2. Plan cerrado. |
 | **F7 · Revisión** (externa) | Revisión de un hablante nativo o profesor de FLE, empezando por A1–B1. | Contenido revisado y errores corregidos. |
 
@@ -429,6 +429,27 @@ El nombre, la profesión y la ciudad son decisión del usuario (sección 11).
 - **Motor**: futur antérieur, condicional pasado, subjuntivo pasado y **passé simple** (con su forma para 51 verbos irregulares); el conjugador los muestra y el glosario reconoce sus formas.
 - **Juego nuevo** *Connecteurs* y práctica de **conectores**; la conjugación suma futur antérieur y condicional pasado desde B2.
 - **Logro** DELF B2. Se agregaron *naître* y *mourir* al vocabulario A2.
+
+### Qué quedó hecho en F5 (18-10-2026)
+- **Gramática C1** (`grammarC1a.ts`, `grammarC1b.ts`, `grammarC1c.ts`): 35 lecciones, cada ejercicio con su explicación y el porqué de cada opción incorrecta.
+  - Los matices del subjuntivo (*après que* + indicativo, *le fait que*, *de sorte que* finalidad / consecuencia, *le seul qui sache*).
+  - Los tiempos literarios: **subjuntivo imperfecto** (*qu’il fût, dût-il, ne fût-ce que*), **passé antérieur** y la combinación de tiempos del relato.
+  - Nominalización para condensar, construcciones impersonales (*il convient de, il importe que, il ressort de*), inversión tras *peut-être, aussi, à peine* y en los incisos, puesta de relieve culta (*s’il est un…, c’est*).
+  - Modalización (*aux dires de, il n’est pas exclu que, force est de constater*), conectores cultos (*dès lors, a fortiori, encore que, loin s’en faut*), concesión (*si compétente soit-elle, pour… que, quand bien même*) e hipótesis cultas (*pour peu que, à supposer que, j’eusse aimé*).
+  - Participio absoluto, puntuación francesa, registros, sinónimos precisos, colocaciones, prefijos y sufijos, figuras de estilo, discurso referido y cohesión (*ce dernier, ledit, à cet égard*).
+  - Las tareas del DALF C1: **la síntesis**, **el ensayo argumentado** y **el exposé con debate**.
+  - Pronombres dobles, causativo y *se voir* + infinitivo, relativos compuestos (*au sein duquel, ce sur quoi*), negación culta, concordancias difíciles (*demi, même, quelque, tout*, colores), verbos con preposición, tiempo, comparación (*à l’instar de, autant… autant*), argumentación, escritura académica y correo formal.
+- **Vocabulario C1** (`vocabC1a.ts` … `vocabC1h.ts`): 1.730 palabras nuevas en 80 temas, **5.707 en total**. Los temas que el dedupe dejó cortos se completaron; muchas palabras C1 «típicas» ya estaban en niveles anteriores, por eso el total queda algo bajo los ~6.000 del plan.
+  - Mundo académico, pensamiento crítico, salud pública, dolor, medicina clínica, ética y bioética, congresos.
+  - Economía, finanzas, trabajo, industria, derecho, política, geopolítica, administración, migraciones, urbanismo, ecología y medio ambiente.
+  - Medios, periodismo, titulares de prensa, literatura, figuras retóricas, filosofía, sociología, psicología, educación, ciencias, arte, cine, música, patrimonio, francofonía y sus variantes (Quebec, Bélgica, Suiza).
+  - Conectores cultos, expresiones idiomáticas, refranes, locuciones latinas, colocaciones, sinónimos con matiz, palabras que se confunden, verbos precisos, registro familiar y registro formal, nombres abstractos, adverbios y adjetivos de valoración.
+  - Emociones, carácter, gestos, maneras de hablar, sonidos, luz y color, tiempo, paisaje, mar, animales, agricultura, anatomía, cocina, moda, deporte, defensa, herramientas y medidas.
+- **16 textos C1** (8 lecturas y 8 diálogos): la entrevista de admisión al DU, un cuento en passé simple, un informe nacional, Julien corrige el estilo, una noticia falsa verificada, un debate radial sobre los padres en pabellón, el acta del comité del dolor, dos registros para un mismo problema, una crónica sobre los eufemismos, el resumen del artículo de Camila, una tribuna sobre el calor en los hospitales, las preguntas tras la ponencia, el recorrido de Inès, una videollamada con Montreal, la propuesta de coordinar la unidad del dolor y la carta de motivación.
+- **Recorrido C1**: 15 unidades, 5 de «Más palabras» y el simulacro DALF C1 (párrafo académico con huecos, **ensayo argumentado con lista de control y modelo**, y exposé + debate en el oral).
+- **Motor**: passé antérieur y subjuntivo imperfecto (con circunflejo: *parlât, fût, vînt, eût*); la tabla de conjugación los muestra.
+- **Juego nuevo** *Registres* y práctica de **registros**: pasar una frase familiar al registro formal, con el porqué de cada opción.
+- **Logro** DALF C1.
 
 ---
 

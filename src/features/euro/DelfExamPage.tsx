@@ -167,6 +167,46 @@ const tasks: Partial<Record<CefrLevel, ExamTasks>> = {
       'Usé un registro formal y estructuras B2 (subjuntivo, condicional, hipótesis)',
     ],
   },
+  C1: {
+    form: {
+      context: 'Completa el párrafo del artículo de Camila (1–6). Registro académico: subjuntivo, conectores cultos, construcciones impersonales y participio absoluto.',
+      text: 'La douleur de l’enfant demeure, à bien des égards, sous-évaluée. (1) ___ de l’enquête menée dans quarante services que seul un tiers d’entre eux recourt à une échelle validée. Bien que les outils (2) ___ connus depuis longtemps, leur usage reste marginal. (3) ___, la douleur non évaluée n’est pas traitée. Il importe donc que chaque équipe (4) ___ formée. (5) ___ cette formation dispensée, encore faudra-t-il en mesurer les effets. Si les moyens le permettaient, une étude multicentrique (6) ___ être menée dès l’an prochain.',
+      fields: [
+        { label: '(1) – se desprende (fórmula impersonal: Il ___)', answers: ['Il ressort', 'il ressort'] },
+        { label: '(2) – sean (être, subjuntivo)', answers: ['soient'] },
+        { label: '(3) – por lo tanto, desde entonces (dos palabras)', answers: ['Dès lors', 'dès lors', 'De ce fait', 'de ce fait'] },
+        { label: '(4) – sea (être, subjuntivo)', answers: ['soit'] },
+        { label: '(5) – una vez (participio absoluto: ___ cette formation dispensée)', answers: ['Une fois', 'une fois'] },
+        { label: '(6) – podría (pouvoir, condicional)', answers: ['pourrait'] },
+      ],
+    },
+    message: {
+      prompt:
+        'Ensayo argumentado (DALF C1, unas 250 palabras). Tras leer documentos sobre el tema, escribe para la revista de tu hospital: «La presencia de los padres durante los cuidados dolorosos: ¿obstáculo o recurso?». Antes, en el examen real, harías una síntesis de los documentos (unas 220 palabras, sin opinión).',
+      checks: [
+        'Título y frase de enganche; presentas el tema y formulas la problemática en forma de pregunta',
+        'Anuncias el plan y lo sigues: dos o tres partes con una idea, argumentos y un ejemplo propio cada una',
+        'Concedes el argumento contrario antes de rebatirlo (Certes…, il n’en reste pas moins que…)',
+        'Conectores cultos y variados (dès lors, qui plus est, a fortiori, encore que, toujours est-il que)',
+        'Matizas y modalizas (il semblerait que, dans une certaine mesure, il n’est pas exclu que)',
+        'Estructuras C1: nominalización, participio absoluto, inversión tras peut-être o aussi, subjuntivo cuidado',
+        'Conclusión que responde la problemática y abre una perspectiva (Reste à savoir si…)',
+        'Registro homogéneo, vocabulario preciso (sin verbos comodín) y unas 250 palabras',
+      ],
+      model:
+        'Parents au chevet : obstacle ou ressource ? « Ne restez pas, ce sera plus facile pour tout le monde. » Combien de parents ont entendu cette phrase avant une prise de sang ? Longtemps, leur présence a été perçue comme une gêne. Faut-il pour autant les tenir à l’écart des soins douloureux ? Nous verrons que, loin d’être un obstacle, ils constituent une ressource, à condition d’être préparés. Certes, un parent angoissé peut transmettre sa peur à l’enfant et déstabiliser l’équipe. Il n’en reste pas moins que l’absence du parent est, pour un jeune enfant, une source d’angoisse bien plus grande encore. Qui plus est, les études récentes montrent qu’un parent informé réduit sensiblement l’anxiété de l’enfant et, partant, sa douleur. Ainsi, dans notre service, une information de dix minutes a suffi pour diminuer le recours à la contention. Encore faut-il que les soignants soient formés : la présence parentale ne s’improvise pas. Il convient de définir le rôle de chacun, de sorte que le parent sache ce que l’on attend de lui. En définitive, la question n’est pas tant de savoir s’il faut accepter les parents que de savoir comment les accompagner. Reste à savoir si les établissements se donneront les moyens de cette ambition.',
+    },
+    speaking: [
+      'Preparé en una hora un dossier de varios documentos y saqué una problemática clara',
+      'Hice un exposé de unos 10 minutos con introducción, plan anunciado, dos o tres partes y conclusión',
+      'Usé fórmulas de transición (Dans un premier temps…, J’en viens maintenant à…, Pour conclure…)',
+      'Di una opinión argumentada y matizada, con ejemplos concretos',
+      'En el debate (unos 20 minutos), defendí mi posición, concedí y maticé (Je vous rejoins sur ce point, mais…)',
+      'Reformulé las preguntas difíciles para ganar tiempo (Si je comprends bien votre question…)',
+      'Mantuve un registro cuidado con el jurado (vous, ne completo, vocabulario preciso)',
+      'Usé estructuras C1: subjuntivo, hipótesis, inversión, conectores cultos',
+    ],
+  },
 }
 
 function pickTexts(level: CefrLevel, kind: 'reading' | 'dialogue', n: number): ReadingText[] {

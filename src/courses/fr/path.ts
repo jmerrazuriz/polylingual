@@ -111,7 +111,31 @@ const unitsB2: PathUnit[] = [
   examUnit('B2'),
 ]
 
-const unitsByLevel: Record<CefrLevel, PathUnit[]> = { A1: unitsA1, A2: unitsA2, B1: unitsB1, B2: unitsB2, C1: [], C2: [] }
+const unitsC1: PathUnit[] = [
+  unit('fr-c1-1', 'C1 · El diploma del dolor', '🎓', ['fr-subjonctif-nuances', 'fr-subjonctif-imparfait'], ['academique', 'douleur', 'clinique-c1'], ['ft-c1-du']),
+  unit('fr-c1-2', 'C1 · Relatos de otro tiempo', '📖', ['fr-passe-anterieur', 'fr-temps-recit'], ['litterature-c1', 'histoire-c1', 'rhetorique'], ['ft-c1-nouvelle']),
+  unit('fr-c1-3', 'C1 · Escribir para condensar', '🗂️', ['fr-nominalisation-c1', 'fr-tournures-impersonnelles'], ['sante-publique', 'ethique', 'pensee-critique'], ['ft-c1-rapport']),
+  unit('fr-c1-4', 'C1 · El estilo cuidado', '🎩', ['fr-inversions', 'fr-mise-en-relief-c1'], ['soutenu-c1', 'philosophie', 'abstraits'], ['ft-c1-style']),
+  unit('fr-c1-5', 'C1 · Lo que se dice', '📡', ['fr-modalisation-c1', 'fr-connecteurs-c1'], ['medias-c1', 'journalisme', 'presse-c1'], ['ft-c1-infox']),
+  unit('fr-c1-6', 'C1 · Matices y concesiones', '⚖️', ['fr-concession-c1', 'fr-hypothese-c1'], ['connecteurs-c1', 'politique-c1', 'geopolitique'], ['ft-c1-debat']),
+  unit('fr-c1-7', 'C1 · Precisión de informe', '🧾', ['fr-participe-absolu', 'fr-ponctuation'], ['droit-c1', 'administration-c1', 'travail-c1'], ['ft-c1-compte-rendu']),
+  unit('fr-c1-8', 'C1 · Cambiar de registro', '🎭', ['fr-registres-c1', 'fr-synonymes'], ['familier', 'verbes-precis', 'synonymes', 'nuances'], ['ft-c1-registres']),
+  unit('fr-c1-9', 'C1 · Las palabras justas', '🔤', ['fr-collocations', 'fr-prefixes-suffixes', 'fr-figures-style'], ['collocations', 'expressions-c1', 'expressions-c1-2', 'proverbes'], ['ft-c1-chronique']),
+  unit('fr-c1-10', 'C1 · Un texto bien hilado', '🧵', ['fr-discours-rapporte-c1', 'fr-cohesion'], ['communication', 'sociologie', 'psychologie-c1'], ['ft-c1-article']),
+  unit('fr-c1-11', 'C1 · Síntesis y ensayo', '📝', ['fr-synthese', 'fr-essai-c1'], ['ecologie-c1', 'environnement-c1', 'urbanisme-c1'], ['ft-c1-tribune']),
+  unit('fr-c1-12', 'C1 · El congreso', '🎤', ['fr-expose-oral', 'fr-pronoms-c1'], ['congres', 'sciences-c1', 'numerique-c1'], ['ft-c1-congres']),
+  unit('fr-c1-13', 'C1 · Gramática fina', '🔬', ['fr-infinitif-c1', 'fr-relatifs-c1', 'fr-negation-c1', 'fr-accords-c1'], ['economie-c1', 'finance-c1', 'industrie-c1', 'migrations'], ['ft-c1-migration']),
+  unit('fr-c1-14', 'C1 · Argumentar', '🧠', ['fr-prepositions-c1', 'fr-temps-c1', 'fr-comparaison-c1', 'fr-argumentation-c1'], ['education-c1', 'art-c1', 'cinema-c1', 'francophonie'], ['ft-c1-quebec']),
+  unit('fr-c1-15', 'C1 · Una nueva etapa', '💼', ['fr-ecrit-academique', 'fr-courrier-c1'], ['emotions-c1', 'caractere-c1', 'appreciation'], ['ft-c1-proposition', 'ft-c1-lettre']),
+  unit('fr-c1-extra-1', 'C1 · Más palabras I', '🧺', [], ['verbes-c1', 'verbes-c1-2', 'verbes-c1-3', 'verbes-c1-4', 'adverbes-c1', 'latin'], []),
+  unit('fr-c1-extra-2', 'C1 · Más palabras II', '🧺', [], ['adjectifs-c1', 'adjectifs-c1-2', 'adjectifs-c1-3', 'noms-c1', 'noms-c1-2', 'noms-c1-3'], []),
+  unit('fr-c1-extra-3', 'C1 · Más palabras III', '🧺', [], ['anatomie', 'gestes', 'parole', 'sons', 'lumiere', 'meteo-c1'], []),
+  unit('fr-c1-extra-4', 'C1 · Más palabras IV', '🧺', [], ['paysage-c1', 'mer-c1', 'animaux-c1', 'agriculture-c1', 'patrimoine', 'croyances'], []),
+  unit('fr-c1-extra-5', 'C1 · Más palabras V', '🧺', [], ['cuisine-c1', 'mode-c1', 'musique-c1', 'sport-c1', 'defense', 'outils', 'mesures'], []),
+  examUnit('C1'),
+]
+
+const unitsByLevel: Record<CefrLevel, PathUnit[]> = { A1: unitsA1, A2: unitsA2, B1: unitsB1, B2: unitsB2, C1: unitsC1, C2: [] }
 
 export const frenchPath: PathUnit[] = cefrLevels.flatMap((l) => unitsByLevel[l])
 

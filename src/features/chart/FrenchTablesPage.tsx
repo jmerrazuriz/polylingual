@@ -202,7 +202,7 @@ function PronounTables() {
   )
 }
 
-const tableTenses: TenseId[] = ['present', 'passeCompose', 'imparfait', 'futurProche', 'futur', 'conditionnel', 'subjonctif', 'plusQueParfait', 'futurAnterieur', 'conditionnelPasse', 'subjonctifPasse', 'passeSimple']
+const tableTenses: TenseId[] = ['present', 'passeCompose', 'imparfait', 'futurProche', 'futur', 'conditionnel', 'subjonctif', 'plusQueParfait', 'futurAnterieur', 'conditionnelPasse', 'subjonctifPasse', 'passeSimple', 'passeAnterieur', 'subjonctifImparfait']
 
 /** «que je parle», «qu’il parle», «que j’aime». */
 const withQue = (i: number, form: string) => {
@@ -239,7 +239,7 @@ function ConjugationTables() {
             <ul lang="fr" className="flex flex-col">
               {tenses[id].forms(verb).map((f, i) => (
                 <li key={i} className="font-bold">
-                  {shown(id === 'subjonctif' || id === 'subjonctifPasse' ? withQue(i, f) : withSubject(i, f))}
+                  {shown(id === 'subjonctif' || id === 'subjonctifPasse' || id === 'subjonctifImparfait' ? withQue(i, f) : withSubject(i, f))}
                 </li>
               ))}
             </ul>

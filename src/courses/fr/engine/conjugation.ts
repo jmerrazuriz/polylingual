@@ -201,6 +201,10 @@ export const plusQueParfait = (v: Verb) => compound(v, [AVOIR_IMP, ETRE_IMP])
 export const futurAnterieur = (v: Verb) => compound(v, [AVOIR_FUT, ETRE_FUT])
 export const conditionnelPasse = (v: Verb) => compound(v, [AVOIR_COND, ETRE_COND])
 export const subjonctifPasse = (v: Verb) => compound(v, [AVOIR_SUBJ, ETRE_SUBJ])
+const AVOIR_PS: Forms = ['eus', 'eus', 'eut', 'eûmes', 'eûtes', 'eurent']
+const ETRE_PS: Forms = ['fus', 'fus', 'fut', 'fûmes', 'fûtes', 'furent']
+/** Passé antérieur (literario): «quand il eut fini», «dès qu’elle fut partie». */
+export const passeAnterieur = (v: Verb) => compound(v, [AVOIR_PS, ETRE_PS])
 
 const CIRCUMFLEX: Record<string, string> = { a: 'â', i: 'î', u: 'û' }
 
@@ -239,6 +243,19 @@ export function imperatif(v: Verb): [string, string, string] {
 /** Participio presente / gerundio: «en parlant». */
 export const participePresent = (v: Verb) => v.presentParticiple ?? `${imperfectStem(v)}ant`
 
+/**
+ * Subjuntivo imperfecto (literario, para reconocerlo): sale del passé simple de tu + -se, -ses,
+ * y de il con acento circunflejo: parlasse, parlât; finisse, finît; fusse, fût; vinsse, vînt.
+ */
+export function subjonctifImparfait(v: Verb): Forms {
+  const raw = passeSimple({ ...v, inf: core(v) })
+  const tu = raw[1]
+  const il = raw[2]
+  // parla → parlât; finit → finît; vint → vînt: circunflejo en la última vocal.
+  const third = (il.endsWith('t') ? il : `${il}t`).replace(/([aiu])(n?)t$/, (_m, vowel: string, n: string) => `${CIRCUMFLEX[vowel]}${n}t`)
+  return withReflexive(v, [`${tu}se`, `${tu}ses`, third, `${tu}sions`, `${tu}siez`, `${tu}sent`])
+}
+
 /** «je parle», «j'aime», «tu parles», «il parle»: la forma con su pronombre sujeto. */
 export function withSubject(i: number, form: string): string {
   const subject = persons[i].split('/')[0]
@@ -258,6 +275,8 @@ export const tenses = {
   conditionnelPasse: { name: 'condicional pasado', forms: conditionnelPasse },
   subjonctifPasse: { name: 'subjuntivo pasado', forms: subjonctifPasse },
   passeSimple: { name: 'passé simple (literario)', forms: passeSimple },
+  passeAnterieur: { name: 'passé antérieur (literario)', forms: passeAnterieur },
+  subjonctifImparfait: { name: 'subjuntivo imperfecto (literario)', forms: subjonctifImparfait },
 } as const
 export type TenseId = keyof typeof tenses
 

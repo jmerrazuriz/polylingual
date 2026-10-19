@@ -5,11 +5,12 @@ import { frenchGrammar } from './grammar.ts'
 import { frenchPath } from './path.ts'
 import { agreementQuestion } from './accords.ts'
 import { connectorQuestion } from './connecteurs.ts'
+import { registerQuestion } from './registres.ts'
 import { fauxAmiQuestion, homophoneQuestion } from './homophones.ts'
 import { articleQuestion, audioPairs, conjugationQuestion, femininePairs, frenchPoolLevels, frenchWordPool, meaningPairs, numberQuestion, practiceSession, type PracticeMode, tenseCountFor } from './practice.ts'
 import { frenchItemDone, frenchItemStatus, frenchUnlockedIds } from './progress.ts'
 import { frenchTexts } from './texts.ts'
-import { type FrenchWord, frenchThemesA1, frenchThemesA2, frenchThemesB1, frenchThemesB2, frenchVocabLessonById, frenchVocabLessons, frenchWordCard, FRENCH_WORD_PREFIX, nounLine, speakWord, withArticle } from './vocab.ts'
+import { type FrenchWord, frenchThemesA1, frenchThemesA2, frenchThemesB1, frenchThemesB2, frenchThemesC1, frenchVocabLessonById, frenchVocabLessons, frenchWordCard, FRENCH_WORD_PREFIX, nounLine, speakWord, withArticle } from './vocab.ts'
 import { frenchLessonExercises, meaningExercise, sayExercise } from './vocabExercises.ts'
 
 // El francés como curso europeo: lo que las pantallas comunes necesitan de él.
@@ -123,6 +124,16 @@ const games: EuroGame[] = [
     record: (n) => `${n} correctas`,
     question: (ws) => (ws.some((w) => w.level === 'B2' || w.level === 'C1' || w.level === 'C2') ? connectorQuestion() : null),
   },
+  {
+    id: 'fr-speed-registres',
+    glyph: 'bosser → œuvrer',
+    title: 'Registres',
+    text: 'Pasar una frase familiar al registro formal: j’sais pas → je ne saurais vous le dire (desde C1).',
+    instructions: 'Elige el equivalente formal que dice lo mismo. Cada error descuenta 3 segundos.',
+    kind: 'speed',
+    record: (n) => `${n} correctas`,
+    question: (ws) => (ws.some((w) => w.level === 'C1' || w.level === 'C2') ? registerQuestion() : null),
+  },
 ]
 
 export const frenchCourse: EuroCourse = {
@@ -144,7 +155,7 @@ export const frenchCourse: EuroCourse = {
       : words.some((w) => w.pos === 'adj')
         ? 'Aprende cada adjetivo con su femenino. Toca una palabra para oírla.'
         : 'Aprende cada palabra o expresión completa, tal como se usa. Toca una para oírla.',
-  themes: [...frenchThemesA1.map((t) => ({ id: t.id, title: t.title, level: 'A1' as const })), ...frenchThemesA2.map((t) => ({ id: t.id, title: t.title, level: 'A2' as const })), ...frenchThemesB1.map((t) => ({ id: t.id, title: t.title, level: 'B1' as const })), ...frenchThemesB2.map((t) => ({ id: t.id, title: t.title, level: 'B2' as const }))],
+  themes: [...frenchThemesA1.map((t) => ({ id: t.id, title: t.title, level: 'A1' as const })), ...frenchThemesA2.map((t) => ({ id: t.id, title: t.title, level: 'A2' as const })), ...frenchThemesB1.map((t) => ({ id: t.id, title: t.title, level: 'B1' as const })), ...frenchThemesB2.map((t) => ({ id: t.id, title: t.title, level: 'B2' as const })), ...frenchThemesC1.map((t) => ({ id: t.id, title: t.title, level: 'C1' as const }))],
   vocabLessons: frenchVocabLessons,
   vocabLessonById: frenchVocabLessonById,
   texts: frenchTexts,
@@ -177,6 +188,7 @@ export const frenchCourse: EuroCourse = {
     { mode: 'falsos-amigos', glyph: '≠', title: 'Falsos amigos', text: 'embarrassé, constipé, quitter… lo que significan de verdad (desde A2).' },
     { mode: 'concordancias', glyph: '-e -s', title: 'Concordancias', text: 'Adjetivos y participios con être que concuerdan con el sujeto (desde B1).' },
     { mode: 'conectores', glyph: 'or · donc', title: 'Conectores', text: 'Pourtant, or, en revanche, néanmoins… para argumentar (desde B2).' },
+    { mode: 'registros', glyph: 'bosser → œuvrer', title: 'Registros', text: 'Del familiar al formal: la misma idea dicha para una carta o un jurado (desde C1).' },
   ],
   practiceSession: (mode, words, count) => practiceSession(mode as PracticeMode, words as FrenchWord[], count),
   check: (input, answers) => {
