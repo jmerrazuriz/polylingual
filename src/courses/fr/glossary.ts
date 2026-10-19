@@ -1,4 +1,4 @@
-import { futur, imparfait, passeCompose, present } from './engine/conjugation.ts'
+import { conditionnel, futur, imparfait, passeCompose, passeSimple, present, subjonctif } from './engine/conjugation.ts'
 import { stripAccents } from '../../lib/frenchInput.ts'
 import { verbs } from './verbs.ts'
 import { type FrenchWord, frenchVocab, pluralOf } from './vocab.ts'
@@ -8,7 +8,7 @@ import { type FrenchWord, frenchVocab, pluralOf } from './vocab.ts'
 /** Formas conjugadas → infinitivo, para el glosario («habite» → habiter, «suis» → être). */
 const verbForms = new Map<string, string>()
 for (const v of verbs) {
-  for (const f of [...present(v), ...imparfait(v), ...futur(v), ...passeCompose(v)]) {
+  for (const f of [...present(v), ...imparfait(v), ...futur(v), ...passeCompose(v), ...conditionnel(v), ...subjonctif(v), ...passeSimple(v)]) {
     // «me lève» → lève; «suis allé(e)» → allé.
     const last = f.split(' ').at(-1)!.replace(/\(e\)s?$/, '').replace(/^[mts]'/, '')
     if (!verbForms.has(last)) verbForms.set(last, v.inf)

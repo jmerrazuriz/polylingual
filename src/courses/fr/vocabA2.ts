@@ -43,6 +43,8 @@ export const vocabA2: FrenchTheme[] = [
       ['v', 'raconter', 'contar (una historia)'],
       ['v', 'grandir', 'crecer'],
       ['v', 'devenir', 'llegar a ser'],
+      ['v', 'naître', 'nacer'],
+      ['v', 'mourir', 'morir'],
     ],
   },
   {

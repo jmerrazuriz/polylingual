@@ -316,7 +316,7 @@ El nombre, la profesión y la ciudad son decisión del usuario (sección 11).
 | **F1 · A1** ✅ | Generalizar nivelación, simulacro, juegos y práctica (lo que quedó de F0). Corrección explicada en todos los ejercicios. Pronunciación, ~30 lecciones, ~650 palabras, 16 textos, simulacro DELF A1, test de nivelación A1, y juegos (parejas, escucha, *le ou la*, números, conjugación) y práctica. | Se puede hacer el A1 entero y jugar. El curso pasa a «disponible». |
 | **F2 · A2** ✅ | ~30 lecciones, hasta ~1.300 palabras, juegos de homófonos y falsos amigos, simulacro A2. | Igual que F1. |
 | **F3 · B1** ✅ | ~35 lecciones, hasta ~2.400 palabras, juego de concordancias, simulacro B1. | Simulacro B1 con puntaje DELF. |
-| **F4 · B2** | ~35 lecciones, hasta ~4.000 palabras, simulacro B2 con ensayo y lista de control. | Simulacro B2. |
+| **F4 · B2** ✅ | ~35 lecciones, hasta ~4.000 palabras, simulacro B2 con ensayo y lista de control. | Simulacro B2. |
 | **F5 · C1** | ~35 lecciones, hasta ~6.000 palabras, síntesis + ensayo, simulacro DALF C1. | Simulacro C1. |
 | **F6 · C2** | ~30 lecciones, hasta ~8.000 palabras, variedades y estilo, simulacro DALF C2 (2 pruebas de 50). | Simulacro C2. Plan cerrado. |
 | **F7 · Revisión** (externa) | Revisión de un hablante nativo o profesor de FLE, empezando por A1–B1. | Contenido revisado y errores corregidos. |
@@ -407,6 +407,28 @@ El nombre, la profesión y la ciudad son decisión del usuario (sección 11).
 - **Conjugación** en juegos y práctica: desde B1 suma condicional, subjuntivo y plus-que-parfait.
 - **Motor**: 30 verbos más (*obtenir, décevoir, souffrir, prévoir, plaire, rire, craindre, se plaindre, se taire, s’asseoir…*), verificados.
 - **Logro** DELF B1.
+
+
+### Qué quedó hecho en F4 (18-10-2026)
+- **Gramática B2** (`grammarB2a.ts`, `grammarB2b.ts`, `grammarB2c.ts`): 35 lecciones, cada ejercicio con su explicación y el porqué de cada opción incorrecta.
+  - El subjuntivo a fondo: pasado, duda y posibilidad, concesión (*quoi que, quel que soit*), conjunciones (*avant que, à moins que, sans que*), el *ne* expletivo y las relativas (*je cherche quelqu’un qui sache*).
+  - Futur antérieur, condicional pasado, *si* + plus-que-parfait e hipótesis mixtas, *au cas où* y *à condition que*.
+  - Discurso indirecto en pasado y concordancia de los tiempos (*la veille, le lendemain*).
+  - Concordancia del participio con *avoir* y de los pronominales, infinitivo pasado, participio compuesto, nominalización y *passé simple* (para reconocerlo).
+  - Relativos avanzados (*ce à quoi, au sein duquel*), expresiones con *en* e *y*, causa, consecuencia, finalidad y concesión B2 (*avoir beau, quand bien même*), tiempo y comparación con matiz.
+  - Puesta de relieve, modalización (*sans doute* ≠ *sans aucun doute*), verbos introductores, conectores lógicos, **el ensayo argumentativo**, registro culto, indefinidos, adverbios y preposiciones formales.
+- **Vocabulario B2** (`vocabB2a.ts` … `vocabB2g.ts`): 1.585 palabras nuevas en 70 temas, **3.977 en total**.
+  - Economía, finanzas, empleo, gestión de equipos, negociación, comercio, industria, agricultura, derecho laboral.
+  - Estado, justicia, elecciones, administración, seguridad, relaciones internacionales, Unión Europea, historia de Francia.
+  - Sistema de salud, psicología, enfermedades, investigación, bioética, envejecimiento, adicciones, nutrición, coordinación de cuidados y jefatura de turno.
+  - Ciencias, energía, clima, biodiversidad, espacio, IA, ciberseguridad, redes sociales, innovación, movilidad, agua, contaminación.
+  - Prensa, migraciones, urbanismo, crisis de la vivienda, escuela, universidad, cultura, literatura, cine, lengua, religión, políticas familiares.
+  - Argumentación, verbos, adjetivos y sustantivos B2, adverbios, expresiones idiomáticas, falsos amigos, registro culto, sentimientos, relaciones, gastronomía, deporte, turismo, moda y la casa.
+- **16 textos B2** (8 lecturas y 8 diálogos): cambio de turno, desiertos médicos, la IA en el hospital, un pódcast sobre vivir entre dos lenguas, un debate radial sobre el fin de la vida, una noticia difícil, la reforma de las pensiones, una negociación con la dirección, la biografía de Pasteur en passé simple, una mediación, una asamblea sindical, un editorial sobre la vivienda, las pantallas en el colegio, la columna de Camila, la entrevista de nacionalidad y el decreto.
+- **Recorrido B2**: 14 unidades, 5 de «Más palabras» y el simulacro DELF B2 (carta formal con huecos, **ensayo de 250 palabras con lista de control y modelo**, y la defensa de un punto de vista en el oral).
+- **Motor**: futur antérieur, condicional pasado, subjuntivo pasado y **passé simple** (con su forma para 51 verbos irregulares); el conjugador los muestra y el glosario reconoce sus formas.
+- **Juego nuevo** *Connecteurs* y práctica de **conectores**; la conjugación suma futur antérieur y condicional pasado desde B2.
+- **Logro** DELF B2. Se agregaron *naître* y *mourir* al vocabulario A2.
 
 ---
 

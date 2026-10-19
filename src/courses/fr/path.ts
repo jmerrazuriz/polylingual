@@ -88,7 +88,30 @@ const unitsB1: PathUnit[] = [
   examUnit('B1'),
 ]
 
-const unitsByLevel: Record<CefrLevel, PathUnit[]> = { A1: unitsA1, A2: unitsA2, B1: unitsB1, B2: [], C1: [], C2: [] }
+const unitsB2: PathUnit[] = [
+  unit('fr-b2-1', 'B2 · Jefa de turno', '🩺', ['fr-subjonctif-passe', 'fr-subjonctif-doute', 'fr-subjonctif-concession'], ['management', 'cadre-sante', 'soins-b2'], ['ft-b2-releve']),
+  unit('fr-b2-2', 'B2 · Lo que preocupa', '🏥', ['fr-subjonctif-conjonctions', 'fr-ne-expletif', 'fr-subjonctif-relatif'], ['systeme-sante', 'emploi-b2'], ['ft-b2-deserts-medicaux']),
+  unit('fr-b2-3', 'B2 · Mirar al futuro', '🔭', ['fr-futur-anterieur', 'fr-conditionnel-passe'], ['recherche', 'ia'], ['ft-b2-ia-sante']),
+  unit('fr-b2-4', 'B2 · Si hubiera sabido', '💭', ['fr-si-plus-que-parfait', 'fr-hypothese-autres'], ['psychologie', 'emotions-b2'], ['ft-b2-podcast']),
+  unit('fr-b2-5', 'B2 · Lo que se dijo', '🗣️', ['fr-concordance-temps', 'fr-discours-indirect-passe'], ['presse', 'reseaux-sociaux'], ['ft-b2-radio-debat']),
+  unit('fr-b2-6', 'B2 · Concordancias difíciles', '✍️', ['fr-accord-participe-avoir', 'fr-accord-pronominaux'], ['bioethique', 'vieillissement'], ['ft-b2-annonce', 'ft-b2-retraites']),
+  unit('fr-b2-7', 'B2 · Estilo escrito', '📰', ['fr-infinitif-passe', 'fr-participe-compose', 'fr-nominalisation'], ['economie', 'finances', 'negociation'], ['ft-b2-negociation']),
+  unit('fr-b2-8', 'B2 · La historia', '📜', ['fr-passe-simple', 'fr-relatifs-composes'], ['histoire', 'sciences'], ['ft-b2-pasteur']),
+  unit('fr-b2-9', 'B2 · Expresiones vivas', '💬', ['fr-pronoms-en-y-b2', 'fr-cause-b2'], ['relations-b2', 'expressions-b2'], ['ft-b2-conflit']),
+  unit('fr-b2-10', 'B2 · Causas y efectos', '⚖️', ['fr-consequence-b2', 'fr-but-b2', 'fr-concession-b2'], ['droit-travail', 'etat', 'justice-b2'], ['ft-b2-syndicat']),
+  unit('fr-b2-11', 'B2 · La ciudad que cambia', '🏙️', ['fr-temps-b2', 'fr-comparaison-b2'], ['urbanisme', 'crise-logement', 'mobilite'], ['ft-b2-logement']),
+  unit('fr-b2-12', 'B2 · Opinar con matices', '🎙️', ['fr-mise-en-relief-b2', 'fr-modalisation', 'fr-verbes-introducteurs'], ['argumenter-b2', 'education-b2'], ['ft-b2-ecrans']),
+  unit('fr-b2-13', 'B2 · El ensayo', '📝', ['fr-connecteurs-b2', 'fr-essai'], ['climat-b2', 'energie', 'pollution-b2'], ['ft-b2-tribune']),
+  unit('fr-b2-14', 'B2 · Ciudadana', '🗳️', ['fr-registre-b2', 'fr-indefinis-b2', 'fr-adverbes-b2', 'fr-prepositions-b2'], ['elections', 'administration-b2', 'migration', 'soutenu'], ['ft-b2-entretien-assimilation', 'ft-b2-decret']),
+  unit('fr-b2-extra-1', 'B2 · Más palabras I', '🧺', [], ['commerce-b2', 'industrie', 'agriculture', 'securite', 'international', 'europe', 'maladies-b2'], []),
+  unit('fr-b2-extra-2', 'B2 · Más palabras II', '🧺', [], ['addictions', 'nutrition', 'biodiversite-b2', 'espace', 'cybersecurite', 'innovation', 'eau'], []),
+  unit('fr-b2-extra-3', 'B2 · Más palabras III', '🧺', [], ['universite', 'culture-b2', 'litterature', 'cinema-b2', 'langue', 'religion', 'famille-societe'], []),
+  unit('fr-b2-extra-4', 'B2 · Más palabras IV', '🧺', [], ['verbes-b2', 'verbes-b2-2', 'verbes-b2-3', 'adjectifs-b2', 'adjectifs-b2-2', 'noms-b2', 'noms-b2-2'], []),
+  unit('fr-b2-extra-5', 'B2 · Más palabras V', '🧺', [], ['adverbes-b2', 'faux-amis-b2', 'gastronomie', 'sport-b2', 'tourisme-b2', 'mode', 'maison-b2'], []),
+  examUnit('B2'),
+]
+
+const unitsByLevel: Record<CefrLevel, PathUnit[]> = { A1: unitsA1, A2: unitsA2, B1: unitsB1, B2: unitsB2, C1: [], C2: [] }
 
 export const frenchPath: PathUnit[] = cefrLevels.flatMap((l) => unitsByLevel[l])
 

@@ -36,6 +36,8 @@ export type Verb = {
   imperative?: [string, string, string]
   /** Participio presente irregular (étant, ayant, sachant). */
   presentParticiple?: string
+  /** Passé simple: la 1.ª persona sin la -s («fu», «eu», «vin», «pri»); sin dato, la regla del grupo. */
+  ps?: string
 }
 
 const isPronominal = (v: Verb) => /^(se |s')/.test(v.inf)
@@ -176,6 +178,12 @@ const ETRE: Forms = ['suis', 'es', 'est', 'sommes', 'êtes', 'sont']
 const AVOIR_IMP: Forms = ['avais', 'avais', 'avait', 'avions', 'aviez', 'avaient']
 const ETRE_IMP: Forms = ['étais', 'étais', 'était', 'étions', 'étiez', 'étaient']
 const ALLER: Forms = ['vais', 'vas', 'va', 'allons', 'allez', 'vont']
+const AVOIR_FUT: Forms = ['aurai', 'auras', 'aura', 'aurons', 'aurez', 'auront']
+const ETRE_FUT: Forms = ['serai', 'seras', 'sera', 'serons', 'serez', 'seront']
+const AVOIR_COND: Forms = ['aurais', 'aurais', 'aurait', 'aurions', 'auriez', 'auraient']
+const ETRE_COND: Forms = ['serais', 'serais', 'serait', 'serions', 'seriez', 'seraient']
+const AVOIR_SUBJ: Forms = ['aie', 'aies', 'ait', 'ayons', 'ayez', 'aient']
+const ETRE_SUBJ: Forms = ['sois', 'sois', 'soit', 'soyons', 'soyez', 'soient']
 
 /** Con «être» el participio concuerda: allé(e), allé(e)s. */
 const agreed = (p: string, i: number) => (i < 3 ? `${p}(e)` : `${p}(e)s`)
@@ -190,6 +198,33 @@ function compound(v: Verb, auxForms: [Forms, Forms]): Forms {
 
 export const passeCompose = (v: Verb) => compound(v, [AVOIR, ETRE])
 export const plusQueParfait = (v: Verb) => compound(v, [AVOIR_IMP, ETRE_IMP])
+export const futurAnterieur = (v: Verb) => compound(v, [AVOIR_FUT, ETRE_FUT])
+export const conditionnelPasse = (v: Verb) => compound(v, [AVOIR_COND, ETRE_COND])
+export const subjonctifPasse = (v: Verb) => compound(v, [AVOIR_SUBJ, ETRE_SUBJ])
+
+const CIRCUMFLEX: Record<string, string> = { a: 'â', i: 'î', u: 'û' }
+
+/**
+ * Passé simple (el pasado de los libros): -er → -ai, -as, -a, -âmes, -âtes, -èrent;
+ * los demás → raíz + i/u/in + -s, -s, -t, ^mes, ^tes, -rent (finis, fus, vins).
+ */
+export function passeSimple(v: Verb): Forms {
+  const inf = core(v)
+  if (!v.ps && inf.endsWith('er')) {
+    const s = inf.slice(0, -2)
+    const a = softStem(s, 'a')
+    return withReflexive(v, [`${a}ai`, `${a}as`, `${a}a`, `${a}âmes`, `${a}âtes`, `${s}èrent`])
+  }
+  const base = v.ps ?? `${inf.slice(0, -2)}i`
+  if (base.endsWith('in')) {
+    const r = base.slice(0, -2)
+    return withReflexive(v, [`${r}ins`, `${r}ins`, `${r}int`, `${r}înmes`, `${r}întes`, `${r}inrent`])
+  }
+  const stem = base.slice(0, -1)
+  const vowel = base.slice(-1)
+  const hat = `${stem}${CIRCUMFLEX[vowel] ?? vowel}`
+  return withReflexive(v, [`${base}s`, `${base}s`, `${base}t`, `${hat}mes`, `${hat}tes`, `${base}rent`])
+}
 export const futurProche = (v: Verb): Forms => ALLER.map((a, i) => `${a} ${isPronominal(v) ? reflexive(i, core(v)) : v.inf}`) as Forms
 
 /** Imperativo (tu, nous, vous). En -er y similares, el «tu» pierde la -s: parle, ouvre, va. */
@@ -219,6 +254,10 @@ export const tenses = {
   conditionnel: { name: 'condicional', forms: conditionnel },
   subjonctif: { name: 'subjuntivo', forms: subjonctif },
   plusQueParfait: { name: 'plus-que-parfait', forms: plusQueParfait },
+  futurAnterieur: { name: 'futur antérieur', forms: futurAnterieur },
+  conditionnelPasse: { name: 'condicional pasado', forms: conditionnelPasse },
+  subjonctifPasse: { name: 'subjuntivo pasado', forms: subjonctifPasse },
+  passeSimple: { name: 'passé simple (literario)', forms: passeSimple },
 } as const
 export type TenseId = keyof typeof tenses
 

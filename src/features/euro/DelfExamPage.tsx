@@ -128,6 +128,45 @@ const tasks: Partial<Record<CefrLevel, ExamTasks>> = {
       'Hablé con fluidez y me corregí sin bloquearme',
     ],
   },
+  B2: {
+    form: {
+      context: 'Completa la carta formal de Camila al director del hospital (1–6). Registro formal: conectores, subjuntivo y condicional.',
+      text: 'Monsieur le Directeur, je me permets de vous écrire au nom de l’équipe de pédiatrie. (1) ___ les nombreuses alertes que nous vous avons adressées, la situation ne s’est pas améliorée. Il est indispensable que des remplacements (2) ___ assurés pendant les congés. (3) ___, plusieurs collègues risquent de quitter le service. Nous vous serions reconnaissants (4) ___ bien vouloir nous recevoir. Si vous acceptiez, nous (5) ___ vous présenter des propositions concrètes. (6) ___ l’attente de votre réponse, je vous prie d’agréer, Monsieur le Directeur, l’expression de mes salutations distinguées.',
+      fields: [
+        { label: '(1) – a pesar de (+ sustantivo)', answers: ['Malgré', 'malgré', 'En dépit de', 'en dépit de'] },
+        { label: '(2) – sean (être, subjuntivo)', answers: ['soient'] },
+        { label: '(3) – de lo contrario', answers: ['Sinon', 'sinon', 'Faute de quoi', 'À défaut'] },
+        { label: '(4) – de (fórmula: … de bien vouloir)', answers: ['de'] },
+        { label: '(5) – podríamos (pouvoir, condicional)', answers: ['pourrions'] },
+        { label: '(6) – fórmula: ___ l’attente de', answers: ['Dans', 'dans'] },
+      ],
+    },
+    message: {
+      prompt:
+        'Para la sección de opinión de un diario: «¿Debería limitarse por ley el número de pacientes por enfermero?». Escribe un texto argumentativo de unas 250 palabras, con introducción, desarrollo y conclusión.',
+      checks: [
+        'Introducción: presentas el tema, planteas la problemática (Faut-il… ?) y anuncias el plan',
+        'Desarrollo en dos o tres partes, cada una con un argumento, una explicación y un ejemplo',
+        'Consideras y refutas la opinión contraria (Certes…, mais… / On pourrait objecter que…)',
+        'Usas conectores B2 variados (en revanche, or, néanmoins, par conséquent, en outre)',
+        'Matizas tus afirmaciones (il semblerait que, sans doute, dans une certaine mesure)',
+        'Usas estructuras B2: subjuntivo, condicional pasado, nominalización, participio',
+        'Conclusión: respondes la pregunta y abres una perspectiva',
+        'Registro formal homogéneo y concordancias revisadas',
+      ],
+      model:
+        'Depuis plusieurs années, les soignants alertent sur la dégradation de leurs conditions de travail. Faut-il pour autant fixer par la loi un nombre maximal de patients par infirmier ? Nous verrons d’abord les avantages d’une telle mesure, puis ses limites. D’une part, des ratios obligatoires garantiraient la sécurité des patients. En effet, plusieurs études montrent que le risque d’erreur augmente lorsqu’une infirmière doit s’occuper de plus de huit malades. D’autre part, cette mesure rendrait le métier plus attractif : nombreux sont ceux qui le quittent faute de temps pour bien soigner. Certes, on pourrait objecter qu’une telle loi coûterait cher et qu’il manque déjà des infirmiers. Néanmoins, la Californie, qui a adopté des ratios en 2004, a vu revenir de nombreux soignants. En outre, le coût des arrêts maladie et des démissions est loin d’être négligeable. En définitive, il semblerait qu’une limitation légale soit non seulement souhaitable, mais nécessaire. Encore faut-il qu’elle s’accompagne d’un véritable plan de formation, sans quoi elle resterait lettre morte.',
+    },
+    speaking: [
+      'Preparé en 30 minutos un documento corto (un artículo, una opinión) y saqué su problemática',
+      'Presenté el tema y anuncié mi plan (Je vais d’abord…, ensuite…, enfin…)',
+      'Defendí un punto de vista claro con al menos dos argumentos y ejemplos concretos',
+      'Usé conectores y fórmulas para matizar (Il me semble que…, Dans une certaine mesure…)',
+      'En el debate con el examinador, mantuve mi postura y reaccioné a sus objeciones (Je comprends votre point de vue, mais…)',
+      'Reformulé cuando no me entendieron, sin pasar al español',
+      'Usé un registro formal y estructuras B2 (subjuntivo, condicional, hipótesis)',
+    ],
+  },
 }
 
 function pickTexts(level: CefrLevel, kind: 'reading' | 'dialogue', n: number): ReadingText[] {

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { verbByInf, verbs } from '../verbs'
-import { conditionnel, futur, futurProche, imparfait, imperatif, participePresent, passeCompose, plusQueParfait, present, subjonctif, withSubject } from './conjugation'
+import { conditionnel, conditionnelPasse, futur, futurAnterieur, futurProche, imparfait, imperatif, participePresent, passeCompose, passeSimple, plusQueParfait, present, subjonctif, subjonctifPasse, withSubject } from './conjugation'
 
 const v = (inf: string) => verbByInf.get(inf)!
 
@@ -85,6 +85,24 @@ describe('conjugación francesa', () => {
     expect(participePresent(v('être'))).toBe('étant')
   })
 
+  it('tiempos compuestos de B2 y passé simple', () => {
+    expect(futurAnterieur(v('finir'))[0]).toBe('aurai fini')
+    expect(futurAnterieur(v('partir'))[3]).toBe('serons parti(e)s')
+    expect(conditionnelPasse(v('venir'))[0]).toBe('serais venu(e)')
+    expect(conditionnelPasse(v('dire'))[5]).toBe('auraient dit')
+    expect(subjonctifPasse(v('faire'))[2]).toBe('ait fait')
+    expect(subjonctifPasse(v('se lever'))[0]).toBe('me sois levé(e)')
+    expect(passeSimple(v('parler'))).toEqual(['parlai', 'parlas', 'parla', 'parlâmes', 'parlâtes', 'parlèrent'])
+    expect(passeSimple(v('manger'))[3]).toBe('mangeâmes')
+    expect(passeSimple(v('commencer'))[0]).toBe('commençai')
+    expect(passeSimple(v('finir'))[2]).toBe('finit')
+    expect(passeSimple(v('être'))).toEqual(['fus', 'fus', 'fut', 'fûmes', 'fûtes', 'furent'])
+    expect(passeSimple(v('avoir'))[5]).toBe('eurent')
+    expect(passeSimple(v('venir'))).toEqual(['vins', 'vins', 'vint', 'vînmes', 'vîntes', 'vinrent'])
+    expect(passeSimple(v('naître'))[2]).toBe('naquit')
+    expect(passeSimple(v('prendre'))[2]).toBe('prit')
+  })
+
   it('el pronombre sujeto con elisión: j’ante vocal y h muda', () => {
     expect(withSubject(0, 'aime')).toBe("j'aime")
     expect(withSubject(0, 'habite')).toBe("j'habite")
@@ -95,7 +113,7 @@ describe('conjugación francesa', () => {
 
   it('todos los verbos generan todas sus formas sin huecos', () => {
     for (const verb of verbs) {
-      for (const f of [present, passeCompose, imparfait, futur, conditionnel, subjonctif, plusQueParfait, futurProche]) {
+      for (const f of [present, passeCompose, imparfait, futur, conditionnel, subjonctif, plusQueParfait, futurProche, futurAnterieur, conditionnelPasse, subjonctifPasse, passeSimple]) {
         const forms = f(verb)
         expect(forms, verb.inf).toHaveLength(6)
         for (const x of forms) expect(x, `${verb.inf}: ${x}`).toMatch(/^[a-zàâäéèêëîïôöùûüç' ()-]+$/)
