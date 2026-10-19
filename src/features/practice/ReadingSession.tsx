@@ -4,6 +4,7 @@ import type { Kana } from '../../courses/ja/types'
 import { useSpeech } from '../../lib/audio/useSpeech'
 import { type Question, questionPrompt } from '../../lib/quiz'
 import { matchesReading, romajiReadings } from '../../lib/romaji'
+import { RetryNote } from '../../components/RetryNote'
 import { useProgress } from '../../lib/progress/store'
 import { wordReadings } from '../../lib/words'
 
@@ -15,31 +16,48 @@ type Props = {
   secondsPerQuestion?: number
   /** Muestra «No lo sé» también en las preguntas de opción múltiple (test de nivel). */
   allowSkip?: boolean
+  /** Lección del recorrido: cada pregunta fallada vuelve al final, en el mismo orden, hasta acertarla. */
+  retryWrong?: boolean
+  /** Las respuestas del primer intento de cada pregunta. */
   onFinish: (answers: Answer[]) => void
 }
 
 const AUTO_ADVANCE_MS = 700
 
 /** Corre una lista de preguntas de lectura y devuelve las respuestas al terminar. */
-export function ReadingSession({ questions, secondsPerQuestion, allowSkip, onFinish }: Props) {
+export function ReadingSession({ questions, secondsPerQuestion, allowSkip, retryWrong, onFinish }: Props) {
+  // Orden de las preguntas: con retryWrong, las falladas se agregan al final.
+  const [order, setOrder] = useState(() => questions.map((_, i) => i))
   const [index, setIndex] = useState(0)
   const [answers, setAnswers] = useState<Answer[]>([])
+  const [current, setCurrent] = useState<Answer | null>(null)
   const { speak } = useSpeech()
 
-  const question = questions[index]
-  const current = answers[index]
+  const question = questions[order[index]]
+  const retry = order.indexOf(order[index]) < index
 
   const answer = (correct: boolean, given: string | null) => {
     if (current) return
-    setAnswers([...answers, { question, correct, given }])
-    if (question.type !== 'type-word') useProgress.getState().recordReading(question.kana.char, correct)
+    const a = { question, correct, given }
+    setCurrent(a)
+    // La nota y el repaso espaciado cuentan solo el primer intento.
+    if (!retry) {
+      setAnswers([...answers, a])
+      if (question.type !== 'type-word') useProgress.getState().recordReading(question.kana.char, correct)
+    }
     speak(questionPrompt(question).kana)
   }
 
   const next = () => {
-    if (index + 1 === questions.length) onFinish(answers)
-    else setIndex(index + 1)
+    const nextOrder = retryWrong && current && !current.correct ? [...order, order[index]] : order
+    if (index + 1 === nextOrder.length) onFinish(answers)
+    else {
+      setOrder(nextOrder)
+      setIndex(index + 1)
+      setCurrent(null)
+    }
   }
+  const last = index + 1 === order.length && !(retryWrong && current && !current.correct)
 
   // Avanza solo tras un acierto; tras un error espera a que se toque "Siguiente".
   useEffect(() => {
@@ -52,12 +70,14 @@ export function ReadingSession({ questions, secondsPerQuestion, allowSkip, onFin
     <div className="mx-auto flex w-full max-w-md flex-col items-center gap-5">
       <div className="flex w-full items-center gap-3">
         <span className="text-sm font-bold text-slate-500">
-          {index + 1}/{questions.length}
+          {index + 1}/{order.length}
         </span>
         <div className="h-2 flex-1 overflow-hidden rounded-full bg-slate-200 dark:bg-slate-800">
-          <div className="h-full rounded-full bg-accent transition-all" style={{ width: `${(index / questions.length) * 100}%` }} />
+          <div className="h-full rounded-full bg-accent transition-all" style={{ width: `${(index / order.length) * 100}%` }} />
         </div>
       </div>
+
+      {retry && <RetryNote />}
 
       {secondsPerQuestion && !current && (
         <Countdown key={`timer-${index}`} seconds={secondsPerQuestion} onTimeout={() => answer(false, null)} />
@@ -120,7 +140,7 @@ export function ReadingSession({ questions, secondsPerQuestion, allowSkip, onFin
       <div className="h-12">
         {current && !current.correct && (
           <button onClick={next} autoFocus className="rounded-full bg-ink px-6 py-3 font-bold text-white hover:opacity-90">
-            {index + 1 === questions.length ? 'Ver resultados' : 'Siguiente'}
+            {last ? 'Ver resultados' : 'Siguiente'}
           </button>
         )}
       </div>

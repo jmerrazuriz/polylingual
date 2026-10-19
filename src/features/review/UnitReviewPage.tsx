@@ -64,6 +64,7 @@ function UnitReview({ unit }: { unit: Unit }) {
         reading={plan.reading}
         writing={plan.writing}
         labels={{ reading: `${unit.title} · lectura`, writing: `${unit.title} · escritura` }}
+        retryWrong
         onFinish={(r) => {
           const s = summarize(r)
           const total = r.reading.length + r.writing.length

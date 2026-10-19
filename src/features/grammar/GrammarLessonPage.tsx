@@ -2,12 +2,14 @@ import { useState } from 'react'
 import { Link, useParams } from 'react-router'
 import { ComingSoon } from '../../components/ComingSoon'
 import { Furigana } from '../../components/Furigana'
+import { RetryNote } from '../../components/RetryNote'
 import { SaveProgressPrompt } from '../../components/SaveProgressPrompt'
 import { grammarByCourse } from '../../courses/content'
 import type { GrammarLesson } from '../../courses/grammar'
 import { useSpeech } from '../../lib/audio/useSpeech'
 import { useProgress } from '../../lib/progress/store'
 import { useUnlockedGrammar } from '../../lib/progress/unlock'
+import { firstTryCorrect, queueDone, useRetryQueue } from '../../lib/retryQueue'
 import { GrammarExerciseView } from './GrammarExerciseView'
 import { RichText } from './RichText'
 
@@ -47,26 +49,27 @@ type Props = {
 /** Explicación → ejemplos → ejercicios → resultado. */
 export function GrammarLessonView({ lesson, number, next, onFinish }: Props) {
   const [step, setStep] = useState(0)
-  const [correct, setCorrect] = useState(0)
+  const quiz = useRetryQueue(lesson.exercises.length)
   const [showReading, setShowReading] = useState(true)
   const complete = useProgress((s) => s.completeGrammar)
   const { available: audio, speak } = useSpeech()
-  const lang = useProgress((s) => s.course) === 'de' ? 'de' : 'ja'
+  const lang = useProgress((s) => s.course)
   const font = lang === 'ja' ? 'font-jp' : ''
   const hasReadings = lesson.examples.some((ex) => ex.reading)
 
   const total = lesson.exercises.length
-  const steps = 2 + total // explicación, ejemplos y un paso por ejercicio
-  const finished = step >= steps
+  // Explicación, ejemplos y los ejercicios (las falladas vuelven al final hasta acertarlas).
+  const steps = 2 + quiz.state.queue.length
+  const finished = step >= 2 && queueDone(quiz.state)
+  const correct = firstTryCorrect(quiz.state)
 
   const answer = (ok: boolean) => {
-    const score = correct + (ok ? 1 : 0)
-    setCorrect(score)
-    if (step + 1 === steps) {
+    const next = quiz.answer(ok)
+    if (queueDone(next)) {
+      const score = firstTryCorrect(next)
       complete(lesson.id, score, total)
       onFinish?.(score, total)
     }
-    setStep(step + 1)
   }
 
   return (
@@ -78,7 +81,7 @@ export function GrammarLessonView({ lesson, number, next, onFinish }: Props) {
           </Link>
         )}
         <div className="h-2 flex-1 overflow-hidden rounded-full bg-slate-200 dark:bg-slate-800">
-          <div className="h-full rounded-full bg-accent transition-all" style={{ width: `${(Math.min(step, steps) / steps) * 100}%` }} />
+          <div className="h-full rounded-full bg-accent transition-all" style={{ width: `${(finished ? steps : step < 2 ? step : 2 + quiz.state.pos) / steps * 100}%` }} />
         </div>
       </div>
 
@@ -141,7 +144,10 @@ export function GrammarLessonView({ lesson, number, next, onFinish }: Props) {
       )}
 
       {step >= 2 && !finished && (
-        <GrammarExerciseView key={step} exercise={lesson.exercises[step - 2]} onDone={answer} />
+        <>
+          {quiz.retry && <RetryNote />}
+          <GrammarExerciseView key={quiz.state.pos} exercise={lesson.exercises[quiz.current!]} onDone={answer} />
+        </>
       )}
 
       {finished && !onFinish && (

@@ -1,8 +1,10 @@
 import { type ReactNode, useState } from 'react'
 import { Link } from 'react-router'
+import { RetryNote } from '../../components/RetryNote'
 import { SaveProgressPrompt } from '../../components/SaveProgressPrompt'
 import type { WritingHelp } from '../../components/WritingCanvas'
 import type { GrammarExercise } from '../../courses/grammar'
+import { firstTryCorrect, queueDone, useRetryQueue } from '../../lib/retryQueue'
 import type { WritingItem } from '../../lib/writing'
 import { GrammarExerciseView } from '../grammar/GrammarExerciseView'
 import { WritingSession } from '../practice/WritingSession'
@@ -25,13 +27,17 @@ type Props = {
 /** Lección genérica: introducción → ejercicios → escritura (opcional) → resultado. */
 export function StudyLesson({ kicker, title, pages, exercises, writing, backTo, next, onComplete, embedded }: Props) {
   const [step, setStep] = useState(0)
-  const [correct, setCorrect] = useState(0)
+  const quiz = useRetryQueue(exercises.length)
   const [finished, setFinished] = useState<{ correct: number; total: number } | null>(null)
 
+  // Las páginas, luego los ejercicios (las falladas vuelven al final hasta acertarlas) y la escritura.
   const exerciseStart = pages.length
-  const writingStep = exerciseStart + exercises.length
+  const writingStep = exerciseStart + (exercises.length ? 1 : 0)
   const total = exercises.length + (writing?.items.length ?? 0)
-  const steps = writingStep + (writing ? 1 : 0)
+  const steps = exerciseStart + quiz.state.queue.length + (writing ? 1 : 0)
+  const inExercises = step === exerciseStart && !queueDone(quiz.state)
+  const correct = firstTryCorrect(quiz.state)
+  const progressStep = step < exerciseStart ? step : exerciseStart + quiz.state.pos
 
   const finish = (score: number) => {
     onComplete(score, total)
@@ -39,10 +45,10 @@ export function StudyLesson({ kicker, title, pages, exercises, writing, backTo, 
   }
 
   const answer = (ok: boolean) => {
-    const score = correct + (ok ? 1 : 0)
-    setCorrect(score)
-    if (step + 1 === writingStep && !writing) finish(score)
-    else setStep(step + 1)
+    const next = quiz.answer(ok)
+    if (!queueDone(next)) return
+    if (writing) setStep(writingStep)
+    else finish(firstTryCorrect(next))
   }
 
   if (finished && embedded) return null
@@ -54,7 +60,7 @@ export function StudyLesson({ kicker, title, pages, exercises, writing, backTo, 
           ×
         </Link>
         <div className="h-2 flex-1 overflow-hidden rounded-full bg-slate-200 dark:bg-slate-800">
-          <div className="h-full rounded-full bg-accent transition-all" style={{ width: `${finished ? 100 : (step / steps) * 100}%` }} />
+          <div className="h-full rounded-full bg-accent transition-all" style={{ width: `${finished ? 100 : (progressStep / steps) * 100}%` }} />
         </div>
       </div>
 
@@ -82,8 +88,11 @@ export function StudyLesson({ kicker, title, pages, exercises, writing, backTo, 
         </section>
       )}
 
-      {!finished && step >= exerciseStart && step < writingStep && (
-        <GrammarExerciseView key={step} exercise={exercises[step - exerciseStart]} onDone={answer} />
+      {!finished && inExercises && (
+        <>
+          {quiz.retry && <RetryNote />}
+          <GrammarExerciseView key={quiz.state.pos} exercise={exercises[quiz.current!]} onDone={answer} />
+        </>
       )}
 
       {!finished && writing && step === writingStep && (

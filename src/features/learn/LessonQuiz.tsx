@@ -20,6 +20,7 @@ export function LessonQuiz({ items, pool, onDone }: Props) {
   return (
     <ReadingSession
       questions={questions}
+      retryWrong
       onFinish={(answers) => onDone(answers.filter((a) => a.correct).length, answers.length)}
     />
   )

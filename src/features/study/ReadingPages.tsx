@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link, useParams } from 'react-router'
 import { ComingSoon } from '../../components/ComingSoon'
 import { Furigana } from '../../components/Furigana'
+import { RetryNote } from '../../components/RetryNote'
 import { SaveProgressPrompt } from '../../components/SaveProgressPrompt'
 import { grammarByCourse } from '../../courses/content'
 import type { ReadingText, TextLine } from '../../courses/reading'
@@ -11,6 +12,7 @@ import { useProgress } from '../../lib/progress/store'
 import { furiganaToPlain, hasFurigana } from '../../lib/furigana'
 import { glossary, type GlossaryEntry, lineTokens, readingById, readingTexts } from '../../lib/readings'
 import { useUnlockedReadings } from '../../lib/progress/unlock'
+import { firstTryCorrect, queueDone, useRetryQueue } from '../../lib/retryQueue'
 import { GrammarExerciseView } from '../grammar/GrammarExerciseView'
 import { LearnTabs } from '../learn/LearnTabs'
 import { LessonList } from './LessonList'
@@ -182,8 +184,9 @@ type Step = 'text' | 'questions' | 'done'
  */
 export function ReadingTextView({ text, onFinish }: { text: ReadingText; onFinish?: () => void }) {
   const [step, setStep] = useState<Step>('text')
-  const [index, setIndex] = useState(0)
-  const [correct, setCorrect] = useState(0)
+  // Las preguntas falladas vuelven al final hasta acertarlas; la nota cuenta el primer intento.
+  const quiz = useRetryQueue(text.questions.length)
+  const correct = firstTryCorrect(quiz.state)
   const [showText, setShowText] = useState(text.kind === 'reading')
   const [showMeaning, setShowMeaning] = useState(false)
   const withKanji = text.lines.some((l) => hasFurigana(l.text))
@@ -214,7 +217,7 @@ export function ReadingTextView({ text, onFinish }: { text: ReadingText; onFinis
         <div className="h-2 flex-1 overflow-hidden rounded-full bg-slate-200 dark:bg-slate-800">
           <div
             className="h-full rounded-full bg-accent transition-all"
-            style={{ width: `${step === 'text' ? 5 : step === 'done' ? 100 : ((index + 1) / (text.questions.length + 1)) * 100}%` }}
+            style={{ width: `${step === 'text' ? 5 : step === 'done' ? 100 : ((quiz.state.pos + 1) / (quiz.state.queue.length + 1)) * 100}%` }}
           />
         </div>
       </div>
@@ -286,7 +289,7 @@ export function ReadingTextView({ text, onFinish }: { text: ReadingText; onFinis
       {step === 'questions' && (
         <section className="flex flex-col gap-3">
           <p className="text-sm font-bold text-slate-500">
-            Pregunta {index + 1} de {text.questions.length} · {text.title}
+            Pregunta {quiz.state.pos + 1} de {quiz.state.queue.length} · {text.title}
           </p>
           {available && text.kind === 'dialogue' && (
             <button onClick={listen} className="self-start text-sm font-bold text-accent underline">
@@ -301,16 +304,15 @@ export function ReadingTextView({ text, onFinish }: { text: ReadingText; onFinis
               </div>
             </details>
           )}
+          {quiz.retry && <RetryNote />}
           <GrammarExerciseView
-            key={index}
-            exercise={text.questions[index]}
+            key={quiz.state.pos}
+            exercise={text.questions[quiz.current!]}
             onDone={(ok) => {
-              const score = correct + (ok ? 1 : 0)
-              setCorrect(score)
-              if (index + 1 < text.questions.length) setIndex(index + 1)
-              else {
+              const next = quiz.answer(ok)
+              if (queueDone(next)) {
                 stop()
-                complete(text.id, score, text.questions.length)
+                complete(text.id, firstTryCorrect(next), text.questions.length)
                 setStep('done')
                 onFinish?.()
               }

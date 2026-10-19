@@ -1,12 +1,14 @@
 import { useMemo, useState } from 'react'
 import { Link, useParams } from 'react-router'
 import { ComingSoon } from '../../components/ComingSoon'
+import { RetryNote } from '../../components/RetryNote'
 import { SaveProgressPrompt } from '../../components/SaveProgressPrompt'
 import type { EuroCourse, EuroWord } from '../../courses/euro'
 import type { ReadingText } from '../../courses/reading'
 import { useAccount } from '../../lib/account/store'
 import { useSpeech } from '../../lib/audio/useSpeech'
 import { useProgress } from '../../lib/progress/store'
+import { firstTryCorrect, queueDone, useRetryQueue } from '../../lib/retryQueue'
 import { GrammarExerciseView } from '../grammar/GrammarExerciseView'
 import { LearnTabs } from '../learn/LearnTabs'
 import { useEuroCourse } from './useEuroCourse'
@@ -135,17 +137,18 @@ function VocabLesson({ course, lessonId }: { course: EuroCourse; lessonId: strin
   const lesson = course.vocabLessonById.get(lessonId)!
   const [exercises] = useState(() => course.lessonExercises(lesson.words))
   const [step, setStep] = useState(-1)
-  const [correct, setCorrect] = useState(0)
+  const quiz = useRetryQueue(exercises.length)
   const complete = useProgress((s) => s.completeLesson)
   const total = exercises.length
-  const finished = step >= total
+  // Las falladas vuelven al final de la cola: la lección termina cuando se aciertan todas.
+  const finished = step >= 0 && queueDone(quiz.state)
+  const correct = firstTryCorrect(quiz.state)
+  const shown = quiz.state.queue.length
   const hasNouns = lesson.words.some((w) => w.pos === 'noun')
 
   const answer = (ok: boolean) => {
-    const score = correct + (ok ? 1 : 0)
-    setCorrect(score)
-    if (step + 1 === total) complete(lesson.id, score, total, lesson.words.map((w) => course.wordCard(w)))
-    setStep(step + 1)
+    const next = quiz.answer(ok)
+    if (queueDone(next)) complete(lesson.id, firstTryCorrect(next), total, lesson.words.map((w) => course.wordCard(w)))
   }
 
   return (
@@ -155,7 +158,7 @@ function VocabLesson({ course, lessonId }: { course: EuroCourse; lessonId: strin
           ×
         </Link>
         <div className="h-2 flex-1 overflow-hidden rounded-full bg-slate-200 dark:bg-slate-800">
-          <div className="h-full rounded-full bg-accent transition-all" style={{ width: `${(Math.max(0, Math.min(step + 1, total + 1)) / (total + 1)) * 100}%` }} />
+          <div className="h-full rounded-full bg-accent transition-all" style={{ width: `${((step < 0 ? 0 : finished ? shown + 1 : quiz.state.pos + 1) / (shown + 1)) * 100}%` }} />
         </div>
       </div>
 
@@ -192,7 +195,12 @@ function VocabLesson({ course, lessonId }: { course: EuroCourse; lessonId: strin
         </section>
       )}
 
-      {step >= 0 && !finished && <GrammarExerciseView key={step} exercise={exercises[step]} onDone={answer} />}
+      {step >= 0 && !finished && (
+        <>
+          {quiz.retry && <RetryNote />}
+          <GrammarExerciseView key={quiz.state.pos} exercise={exercises[quiz.current!]} onDone={answer} />
+        </>
+      )}
 
       {finished && (
         <section className="flex flex-col items-center gap-4 py-6 text-center">
@@ -279,8 +287,8 @@ export function EuroReadingRoute() {
 
 function ReadingView({ course, text }: { course: EuroCourse; text: ReadingText }) {
   const [step, setStep] = useState<'text' | 'questions' | 'done'>('text')
-  const [index, setIndex] = useState(0)
-  const [correct, setCorrect] = useState(0)
+  const quiz = useRetryQueue(text.questions.length)
+  const correct = firstTryCorrect(quiz.state)
   const [showText, setShowText] = useState(text.kind === 'reading')
   const [showMeaning, setShowMeaning] = useState(false)
   const [playing, setPlaying] = useState(false)
@@ -299,13 +307,13 @@ function ReadingView({ course, text }: { course: EuroCourse; text: ReadingText }
     speakLines(text.lines, () => setPlaying(false))
   }
 
+  // Las preguntas falladas vuelven al final hasta acertarlas; la nota cuenta el primer intento.
   const answer = (ok: boolean) => {
-    const score = correct + (ok ? 1 : 0)
-    setCorrect(score)
-    if (index + 1 === total) {
-      complete(text.id, score, total)
+    const next = quiz.answer(ok)
+    if (queueDone(next)) {
+      complete(text.id, firstTryCorrect(next), total)
       setStep('done')
-    } else setIndex(index + 1)
+    }
   }
 
   return (
@@ -315,7 +323,7 @@ function ReadingView({ course, text }: { course: EuroCourse; text: ReadingText }
           ×
         </Link>
         <div className="h-2 flex-1 overflow-hidden rounded-full bg-slate-200 dark:bg-slate-800">
-          <div className="h-full rounded-full bg-accent transition-all" style={{ width: `${step === 'text' ? 5 : step === 'done' ? 100 : ((index + 1) / (total + 1)) * 100}%` }} />
+          <div className="h-full rounded-full bg-accent transition-all" style={{ width: `${step === 'text' ? 5 : step === 'done' ? 100 : ((quiz.state.pos + 1) / (quiz.state.queue.length + 1)) * 100}%` }} />
         </div>
       </div>
 
@@ -403,7 +411,12 @@ function ReadingView({ course, text }: { course: EuroCourse; text: ReadingText }
         </section>
       )}
 
-      {step === 'questions' && <GrammarExerciseView key={index} exercise={text.questions[index]} onDone={answer} />}
+      {step === 'questions' && (
+        <>
+          {quiz.retry && <RetryNote />}
+          <GrammarExerciseView key={quiz.state.pos} exercise={text.questions[quiz.current!]} onDone={answer} />
+        </>
+      )}
 
       {step === 'done' && (
         <section className="flex flex-col items-center gap-4 py-6 text-center">

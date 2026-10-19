@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import type { WritingHelp } from '../../components/WritingCanvas'
+import { RetryNote } from '../../components/RetryNote'
 import { useProgress } from '../../lib/progress/store'
 import type { Question } from '../../lib/quiz'
 import type { TaggedExercise } from '../../lib/studyExercises'
@@ -18,18 +19,22 @@ type Props = {
   writingHelp?: WritingHelp
   /** Títulos de cada parte (p. ej. «Repaso de lectura»). */
   labels?: { reading: string; exercises?: string; writing: string }
+  /** En el recorrido: lo fallado (lectura y ejercicios) vuelve al final hasta acertarlo. */
+  retryWrong?: boolean
   onFinish: (result: MixedResult) => void
 }
 
 type Phase = 'reading' | 'exercises' | 'writing'
 
 /** Lectura → ejercicios → escritura; se saltan las partes vacías. */
-export function MixedSession({ reading, exercises = [], writing, writingHelp = 'memory', labels, onFinish }: Props) {
+export function MixedSession({ reading, exercises = [], writing, writingHelp = 'memory', labels, retryWrong, onFinish }: Props) {
   const phases = (['reading', 'exercises', 'writing'] as const).filter(
     (p) => (p === 'reading' ? reading : p === 'exercises' ? exercises : writing).length > 0,
   )
   const [phase, setPhase] = useState<Phase>(phases[0] ?? 'writing')
   const [answers, setAnswers] = useState<Answer[]>([])
+  // Orden de los ejercicios: con retryWrong, los fallados se agregan al final.
+  const [exerciseOrder, setExerciseOrder] = useState(() => exercises.map((_, i) => i))
   const [exerciseIndex, setExerciseIndex] = useState(0)
   const [exerciseResults, setExerciseResults] = useState<boolean[]>([])
 
@@ -51,30 +56,35 @@ export function MixedSession({ reading, exercises = [], writing, writingHelp = '
     return (
       <div className="flex flex-col gap-3">
         {labels && <PhaseTitle text={`${labels.reading} · ${reading.length}`} />}
-        <ReadingSession questions={reading} onFinish={(result) => advance('reading', { reading: result })} />
+        <ReadingSession questions={reading} retryWrong={retryWrong} onFinish={(result) => advance('reading', { reading: result })} />
       </div>
     )
   }
 
   if (phase === 'exercises') {
-    const current = exercises[exerciseIndex]
+    const current = exercises[exerciseOrder[exerciseIndex]]
+    const retry = exerciseOrder.indexOf(exerciseOrder[exerciseIndex]) < exerciseIndex
     return (
       <div className="mx-auto flex w-full max-w-md flex-col gap-3">
         {labels && (
-          <PhaseTitle text={`${labels.exercises ?? labels.reading} · ${exerciseIndex + 1}/${exercises.length}`} />
+          <PhaseTitle text={`${labels.exercises ?? labels.reading} · ${exerciseIndex + 1}/${exerciseOrder.length}`} />
         )}
+        {retry && <RetryNote />}
         <GrammarExerciseView
           key={exerciseIndex}
           exercise={current.exercise}
           onDone={(ok) => {
-            if (current.char) {
+            // La nota y el repaso espaciado cuentan solo el primer intento.
+            if (current.char && !retry) {
               const progress = useProgress.getState()
               if (current.skill === 'write') progress.recordWriting(current.char, ok ? 5 : 1)
               else progress.recordReading(current.char, ok)
             }
-            const results = [...exerciseResults, ok]
-            if (exerciseIndex + 1 < exercises.length) {
+            const results = retry ? exerciseResults : [...exerciseResults, ok]
+            const order = retryWrong && !ok ? [...exerciseOrder, exerciseOrder[exerciseIndex]] : exerciseOrder
+            if (exerciseIndex + 1 < order.length) {
               setExerciseResults(results)
+              setExerciseOrder(order)
               setExerciseIndex(exerciseIndex + 1)
             } else {
               advance('exercises', { exercises: results })
