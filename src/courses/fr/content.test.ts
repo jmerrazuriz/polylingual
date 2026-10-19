@@ -15,6 +15,7 @@ import { readingsA2 } from './readingsA2'
 import { readingsB1 } from './readingsB1'
 import { readingsB2 } from './readingsB2'
 import { readingsC1 } from './readingsC1'
+import { readingsC2 } from './readingsC2'
 import { connectorQuestion } from './connecteurs'
 import { registerQuestion } from './registres'
 import { agreementQuestion } from './accords'
@@ -25,12 +26,13 @@ import { frenchLessonExercises, frenchWordReviewExercise } from './vocabExercise
 const word = (w: string) => frenchVocab.find((x) => x.word === w)!
 
 describe('gramática', () => {
-  it('33 lecciones A1, 30 A2, 35 B1, 35 B2 y 35 C1 con ejemplos y ejercicios bien armados, todos con su explicación', () => {
+  it('33 lecciones A1, 30 A2, 35 B1, 35 B2, 35 C1 y 30 C2 con ejemplos y ejercicios bien armados, todos con su explicación', () => {
     expect(frenchGrammar.filter((g) => g.level === 'A1')).toHaveLength(33)
     expect(frenchGrammar.filter((g) => g.level === 'A2')).toHaveLength(30)
     expect(frenchGrammar.filter((g) => g.level === 'B1')).toHaveLength(35)
     expect(frenchGrammar.filter((g) => g.level === 'B2')).toHaveLength(35)
     expect(frenchGrammar.filter((g) => g.level === 'C1')).toHaveLength(35)
+    expect(frenchGrammar.filter((g) => g.level === 'C2')).toHaveLength(30)
     expect(new Set(frenchGrammar.map((g) => g.id)).size).toBe(frenchGrammar.length)
     for (const g of frenchGrammar) {
       expect(g.examples.length, g.id).toBeGreaterThanOrEqual(4)
@@ -66,12 +68,14 @@ describe('formato de las explicaciones', () => {
 })
 
 describe('vocabulario', () => {
-  it('al menos 650 palabras A1, 1.300 hasta A2, 2.350 hasta B1, 3.900 hasta B2 y 5.600 hasta C1, sin ids repetidos; los sustantivos con género', () => {
+  it('al menos 650 palabras A1, 1.300 hasta A2, 2.350 hasta B1, 3.900 hasta B2, 5.600 hasta C1 y 7.700 en total, sin ids repetidos; los sustantivos con género', () => {
     expect(frenchVocab.filter((w) => w.level === 'A1').length).toBeGreaterThanOrEqual(650)
     expect(frenchVocab.filter((w) => w.level === 'A1' || w.level === 'A2').length).toBeGreaterThanOrEqual(1300)
-    expect(frenchVocab.filter((w) => w.level !== 'B2' && w.level !== 'C1').length).toBeGreaterThanOrEqual(2350)
-    expect(frenchVocab.filter((w) => w.level !== 'C1').length).toBeGreaterThanOrEqual(3900)
-    expect(frenchVocab.length).toBeGreaterThanOrEqual(5600)
+    const upTo = (levels: string[]) => frenchVocab.filter((w) => levels.includes(w.level)).length
+    expect(upTo(['A1', 'A2', 'B1'])).toBeGreaterThanOrEqual(2350)
+    expect(upTo(['A1', 'A2', 'B1', 'B2'])).toBeGreaterThanOrEqual(3900)
+    expect(upTo(['A1', 'A2', 'B1', 'B2', 'C1'])).toBeGreaterThanOrEqual(5600)
+    expect(frenchVocab.length).toBeGreaterThanOrEqual(7700)
     expect(new Set(frenchVocab.map((w) => w.id)).size).toBe(frenchVocab.length)
     for (const w of frenchVocab) {
       if (w.pos === 'noun') expect(w.gender, w.word).toBeTruthy()
@@ -108,7 +112,8 @@ describe('vocabulario', () => {
         }
       }
     }
-  })
+    // Con ~8.000 palabras, generar los ejercicios de todas las lecciones tarda unos segundos.
+  }, 30_000)
 
   it('las tarjetas «fw-…» se repasan solo en francés', () => {
     const w = word('appartement')
@@ -140,12 +145,12 @@ describe('vocabulario', () => {
 
 describe('lecturas', () => {
   it('8 lecturas y 8 diálogos por nivel; cada uno pide una lección que existe y que va antes en el recorrido', () => {
-    for (const texts of [readingsA1, readingsA2, readingsB1, readingsB2, readingsC1]) {
+    for (const texts of [readingsA1, readingsA2, readingsB1, readingsB2, readingsC1, readingsC2]) {
       expect(texts.filter((t) => t.kind === 'reading')).toHaveLength(8)
       expect(texts.filter((t) => t.kind === 'dialogue')).toHaveLength(8)
     }
     const order = frenchPathItems.map((i) => `${i.kind}:${i.id}`)
-    for (const t of [...readingsA1, ...readingsA2, ...readingsB1, ...readingsB2, ...readingsC1]) {
+    for (const t of [...readingsA1, ...readingsA2, ...readingsB1, ...readingsB2, ...readingsC1, ...readingsC2]) {
       expect(frenchGrammar.some((g) => g.id === t.requires), t.id).toBe(true)
       expect(order.indexOf(`grammar:${t.requires}`), t.id).toBeLessThan(order.indexOf(`reading:${t.id}`))
       expect(t.questions.length, t.id).toBeGreaterThanOrEqual(3)
@@ -161,15 +166,16 @@ describe('recorrido', () => {
     const expected = [
       ...frenchGrammar.map((g) => `grammar:${g.id}`),
       ...frenchVocabLessons.map((l) => `vocab:${l.id}`),
-      ...[...readingsA1, ...readingsA2, ...readingsB1, ...readingsB2, ...readingsC1].map((t) => `reading:${t.id}`),
+      ...[...readingsA1, ...readingsA2, ...readingsB1, ...readingsB2, ...readingsC1, ...readingsC2].map((t) => `reading:${t.id}`),
       'exam:A1',
       'exam:A2',
       'exam:B1',
       'exam:B2',
       'exam:C1',
+      'exam:C2',
     ]
     expect(new Set(keys)).toEqual(new Set(expected))
-    expect(frenchPath.at(-1)!.id).toBe('fr-examen-c1')
+    expect(frenchPath.at(-1)!.id).toBe('fr-examen-c2')
     expect(frenchPath.map((u) => u.id)).toContain('fr-examen-a1')
     for (const u of frenchPath) for (const s of u.stops) expect(s.items.length).toBeLessThanOrEqual(3)
   })
@@ -200,8 +206,8 @@ describe('juegos y práctica', () => {
     }
   })
 
-  it('cada modo de práctica arma una sesión con las palabras de A1 a C1', () => {
-    expect(words.length).toBeGreaterThanOrEqual(5600)
+  it('cada modo de práctica arma una sesión con las palabras de A1 a C2', () => {
+    expect(words.length).toBeGreaterThanOrEqual(7700)
     for (const m of frenchCourse.practiceModes) expect(practiceSession(m.mode as PracticeMode, words).length, m.mode).toBe(12)
     for (const g of frenchCourse.games) {
       if (g.pairs) expect(g.pairs(words).length, g.id).toBeGreaterThanOrEqual(6)

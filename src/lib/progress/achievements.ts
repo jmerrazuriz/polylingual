@@ -45,6 +45,7 @@ const frenchAchievements: Achievement[] = [
   { id: 'fr-delf-b1', course: 'fr', icon: '🏆', title: 'DELF B1', description: 'Aprueba el simulacro DELF B1, el nivel de la tarjeta de residente.', check: (p) => delfPassed(p, 'b1') },
   { id: 'fr-delf-b2', course: 'fr', icon: '🇫🇷', title: 'DELF B2', description: 'Aprueba el simulacro DELF B2, el nivel que se pide para la nacionalidad.', check: (p) => delfPassed(p, 'b2') },
   { id: 'fr-dalf-c1', course: 'fr', icon: '🩺', title: 'DALF C1', description: 'Aprueba el simulacro DALF C1, el francés de quien trabaja y estudia en francés.', check: (p) => !!p.records['dalf-c1:aprobado'] },
+  { id: 'fr-dalf-c2', course: 'fr', icon: '👑', title: 'DALF C2', description: 'Aprueba el simulacro DALF C2: la maestría del francés.', check: (p) => !!p.records['dalf-c2:aprobado'] },
 ]
 
 const germanAchievements: Achievement[] = [

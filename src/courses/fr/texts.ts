@@ -4,6 +4,7 @@ import { readingsA2 } from './readingsA2.ts'
 import { readingsB1 } from './readingsB1.ts'
 import { readingsB2 } from './readingsB2.ts'
 import { readingsC1 } from './readingsC1.ts'
+import { readingsC2 } from './readingsC2.ts'
 
 /** Todas las lecturas y diálogos del francés, por nivel. */
-export const frenchTexts: ReadingText[] = [...readingsA1, ...readingsA2, ...readingsB1, ...readingsB2, ...readingsC1]
+export const frenchTexts: ReadingText[] = [...readingsA1, ...readingsA2, ...readingsB1, ...readingsB2, ...readingsC1, ...readingsC2]

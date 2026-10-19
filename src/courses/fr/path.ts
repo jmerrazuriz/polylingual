@@ -135,7 +135,33 @@ const unitsC1: PathUnit[] = [
   examUnit('C1'),
 ]
 
-const unitsByLevel: Record<CefrLevel, PathUnit[]> = { A1: unitsA1, A2: unitsA2, B1: unitsB1, B2: unitsB2, C1: unitsC1, C2: [] }
+const unitsC2: PathUnit[] = [
+  unit('fr-c2-1', 'C2 · La columna', '🖋️', ['fr-subjonctif-c2', 'fr-conditionnel-c2'], ['chronique', 'citations', 'locutions-soutenues'], ['ft-c2-redaction', 'ft-c2-chronique']),
+  unit('fr-c2-2', 'C2 · La lengua de los libros', '📚', ['fr-concordance-litteraire', 'fr-registre-litteraire', 'fr-style-indirect-libre'], ['litteraire', 'figures-c2', 'nature-litteraire'], ['ft-c2-roman']),
+  unit('fr-c2-3', 'C2 · Precisión', '🎯', ['fr-ne-litteraire', 'fr-participe-adjectif', 'fr-accords-c2'], ['metalangage', 'verbes-c2', 'verbes-c2-2'], []),
+  unit('fr-c2-4', 'C2 · Montreal', '🍁', ['fr-quebec', 'fr-pronoms-c2'], ['quebec', 'sigles', 'voyage-c2'], ['ft-c2-montreal']),
+  unit('fr-c2-5', 'C2 · Contratos y leyes', '⚖️', ['fr-registre-juridique', 'fr-reprise-que'], ['juridique', 'penal', 'institutions'], ['ft-c2-contrat']),
+  unit('fr-c2-6', 'C2 · La prensa', '📰', ['fr-registre-journalistique', 'fr-ellipse'], ['presse-c2', 'campagne', 'economie-c2'], ['ft-c2-presse']),
+  unit('fr-c2-7', 'C2 · Ironía y juego', '🎭', ['fr-ironie', 'fr-jeux-de-mots'], ['jeux-de-mots', 'idiomes-corps', 'idiomes-animaux'], ['ft-c2-courrier']),
+  unit('fr-c2-8', 'C2 · Las palabras justas', '🔤', ['fr-nuances-c2', 'fr-paronymes', 'fr-abreviations'], ['paronymes', 'faux-amis-c2', 'adjectifs-c2', 'adjectifs-c2-2'], []),
+  unit('fr-c2-9', 'C2 · Bruselas', '🇧🇪', ['fr-belgique-suisse', 'fr-orthographe-c2'], ['belgique-suisse', 'mots-composes', 'langue-francaise', 'linguistique'], ['ft-c2-bruxelles', 'ft-c2-langue']),
+  unit('fr-c2-10', 'C2 · Dakar', '🌍', ['fr-afrique'], ['afrique', 'plats', 'relations-c2'], ['ft-c2-dakar']),
+  unit('fr-c2-11', 'C2 · La calle', '🛹', ['fr-familier-c2', 'fr-francais-oral'], ['argot', 'verlan', 'oral-actuel', 'onomatopees'], ['ft-c2-ados']),
+  unit('fr-c2-12', 'C2 · La reseña', '🎬', ['fr-critique', 'fr-chronique'], ['critique', 'theatre', 'musique-c2', 'oenologie'], ['ft-c2-critique']),
+  unit('fr-c2-13', 'C2 · Convencer', '🗣️', ['fr-argumentation-c2', 'fr-reformulation'], ['philosophie-c2', 'pensee-c2', 'conflits-c2', 'morale-c2'], ['ft-c2-debat-tv']),
+  unit('fr-c2-14', 'C2 · El DALF C2', '🏁', ['fr-dossier-c2', 'fr-oral-c2'], ['recherche-c2', 'medecine-c2', 'sante-mentale'], ['ft-c2-dossier', 'ft-c2-jury', 'ft-c2-julien']),
+  unit('fr-c2-extra-1', 'C2 · Más palabras I', '🧺', [], ['idiomes-couleurs', 'idiomes-cuisine', 'idiomes-objets', 'proverbes-c2', 'psychanalyse', 'architecture-c2', 'noms-c2'], []),
+  unit('fr-c2-extra-2', 'C2 · Más palabras II', '🧺', [], ['anglicismes', 'collectifs', 'vices-vertus', 'arbres-plantes', 'oiseaux', 'sensations', 'mouvement-c2'], []),
+  unit('fr-c2-extra-3', 'C2 · Más palabras III', '🧺', [], ['histoire-c2', 'regions', 'maison-c2', 'vetements-c2', 'argent-familier', 'sante-familier', 'temps-litteraire'], []),
+  unit('fr-c2-extra-4', 'C2 · Más palabras IV', '🧺', [], ['ecole-france', 'technologie-c2', 'sport-c2', 'metiers-c2', 'cuisine-c2', 'jardin', 'ville-c2'], []),
+  unit('fr-c2-extra-5', 'C2 · Más palabras V', '🧺', [], ['adverbes-c2', 'visage', 'voir', 'dire-litteraire', 'quantites-c2', 'emotions-idiomes', 'meteo-idiomes'], []),
+  unit('fr-c2-extra-6', 'C2 · Más palabras VI', '🧺', [], ['administratif-c2', 'sciences-c2', 'espace-c2', 'bourse', 'geographie-c2', 'montagne', 'famille-c2'], []),
+  unit('fr-c2-extra-7', 'C2 · Más palabras VII', '🧺', [], ['deuil', 'mer-c2', 'religion-c2', 'pouvoir', 'tromperie', 'reussite-echec', 'changement'], []),
+  unit('fr-c2-extra-8', 'C2 · Más palabras VIII', '🧺', [], ['edition', 'verbes-nuances', 'duree', 'corps-mouvement'], []),
+  examUnit('C2'),
+]
+
+const unitsByLevel: Record<CefrLevel, PathUnit[]> = { A1: unitsA1, A2: unitsA2, B1: unitsB1, B2: unitsB2, C1: unitsC1, C2: unitsC2 }
 
 export const frenchPath: PathUnit[] = cefrLevels.flatMap((l) => unitsByLevel[l])
 

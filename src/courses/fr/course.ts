@@ -10,7 +10,7 @@ import { fauxAmiQuestion, homophoneQuestion } from './homophones.ts'
 import { articleQuestion, audioPairs, conjugationQuestion, femininePairs, frenchPoolLevels, frenchWordPool, meaningPairs, numberQuestion, practiceSession, type PracticeMode, tenseCountFor } from './practice.ts'
 import { frenchItemDone, frenchItemStatus, frenchUnlockedIds } from './progress.ts'
 import { frenchTexts } from './texts.ts'
-import { type FrenchWord, frenchThemesA1, frenchThemesA2, frenchThemesB1, frenchThemesB2, frenchThemesC1, frenchVocabLessonById, frenchVocabLessons, frenchWordCard, FRENCH_WORD_PREFIX, nounLine, speakWord, withArticle } from './vocab.ts'
+import { type FrenchWord, frenchThemesA1, frenchThemesA2, frenchThemesB1, frenchThemesB2, frenchThemesC1, frenchThemesC2, frenchVocabLessonById, frenchVocabLessons, frenchWordCard, FRENCH_WORD_PREFIX, nounLine, speakWord, withArticle } from './vocab.ts'
 import { frenchLessonExercises, meaningExercise, sayExercise } from './vocabExercises.ts'
 
 // El francés como curso europeo: lo que las pantallas comunes necesitan de él.
@@ -155,7 +155,7 @@ export const frenchCourse: EuroCourse = {
       : words.some((w) => w.pos === 'adj')
         ? 'Aprende cada adjetivo con su femenino. Toca una palabra para oírla.'
         : 'Aprende cada palabra o expresión completa, tal como se usa. Toca una para oírla.',
-  themes: [...frenchThemesA1.map((t) => ({ id: t.id, title: t.title, level: 'A1' as const })), ...frenchThemesA2.map((t) => ({ id: t.id, title: t.title, level: 'A2' as const })), ...frenchThemesB1.map((t) => ({ id: t.id, title: t.title, level: 'B1' as const })), ...frenchThemesB2.map((t) => ({ id: t.id, title: t.title, level: 'B2' as const })), ...frenchThemesC1.map((t) => ({ id: t.id, title: t.title, level: 'C1' as const }))],
+  themes: [...frenchThemesA1.map((t) => ({ id: t.id, title: t.title, level: 'A1' as const })), ...frenchThemesA2.map((t) => ({ id: t.id, title: t.title, level: 'A2' as const })), ...frenchThemesB1.map((t) => ({ id: t.id, title: t.title, level: 'B1' as const })), ...frenchThemesB2.map((t) => ({ id: t.id, title: t.title, level: 'B2' as const })), ...frenchThemesC1.map((t) => ({ id: t.id, title: t.title, level: 'C1' as const })), ...frenchThemesC2.map((t) => ({ id: t.id, title: t.title, level: 'C2' as const }))],
   vocabLessons: frenchVocabLessons,
   vocabLessonById: frenchVocabLessonById,
   texts: frenchTexts,

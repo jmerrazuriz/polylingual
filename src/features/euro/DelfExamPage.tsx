@@ -207,6 +207,47 @@ const tasks: Partial<Record<CefrLevel, ExamTasks>> = {
       'Usé estructuras C1: subjuntivo, hipótesis, inversión, conectores cultos',
     ],
   },
+  C2: {
+    form: {
+      context: 'Completa el párrafo de la columna de Camila (1–6). Registro culto: subjuntivo poco frecuente, ne literario, concordancias y conectores.',
+      text: 'On nous répète que le temps manque. (1) ___ que je sache, il n’a jamais manqué pour remplir des formulaires. Non que l’administration (2) ___ inutile : elle protège les patients. Mais voilà deux ans que je ne (3) ___ vu un tableau de bord mesurer le temps passé à écouter. La plupart des soignants le (4) ___ : écouter ne s’évalue pas, donc ne compte pas. Il est pourtant plus urgent qu’on ne le (5) ___. (6) ___ dit, ce qui ne se mesure pas finit par disparaître.',
+      fields: [
+        { label: '(1) – que yo sepa: «___ que je sache» (dos palabras)', answers: ['Pour autant', 'pour autant'] },
+        { label: '(2) – sea (être, subjuntivo)', answers: ['soit'] },
+        { label: '(3) – he (avoir, passé composé con ne literario)', answers: ['l’ai', "l'ai"] },
+        { label: '(4) – saben (savoir, presente, plural)', answers: ['savent'] },
+        { label: '(5) – cree (croire, presente, con on)', answers: ['croit'] },
+        { label: '(6) – dicho de otro modo: «___ dit»', answers: ['Autrement', 'autrement'] },
+      ],
+    },
+    message: {
+      prompt:
+        'Prueba escrita del DALF C2 (unas 700 palabras). A partir de un dossier sobre la telemedicina, escribe un editorial para la revista de un colegio profesional de enfermería: «¿La teleconsulta reduce o aumenta las desigualdades de acceso a la salud?». Usa los documentos sin copiarlos y defiende una posición matizada.',
+      checks: [
+        'Respetas el tipo de texto (editorial: título, tono comprometido, firma) y el destinatario (colegas enfermeros)',
+        'Introducción con gancho, problemática clara y anuncio del plan',
+        'Usas los documentos del dossier reformulados y atribuidos (comme le souligne…, selon…), sin copiar frases',
+        'Una tesis personal matizada, con concesión y refutación (certes…, il n’en reste pas moins…)',
+        'Argumentos variados: datos (logos), experiencia profesional (ethos) y un caso concreto (pathos)',
+        'Riqueza léxica C2: colocaciones, sinónimos precisos, nominalizaciones, ningún verbo comodín',
+        'Estructuras C2: subjuntivo tras si tant est que o non que, inversión, participio absoluto, ne literario',
+        'Conclusión que responde la problemática con una apertura y un remate memorable',
+        'Unas 700 palabras, registro homogéneo y relectura (concordancias, acentos, puntuación francesa)',
+      ],
+      model:
+        'Téléconsultation : le remède et la fracture. Il y a cinq ans encore, consulter un médecin par écran relevait de l’exception. Elle s’est depuis imposée, présentée comme la réponse aux déserts médicaux. Faut-il pour autant y voir l’outil de l’égalité retrouvée ? Pour autant que l’on puisse en juger, la réponse est plus nuancée. Certes, les chiffres du dossier sont éloquents : des trajets de plusieurs heures évités, des urgences désengorgées, des patients suivis plus régulièrement. Il serait absurde de mépriser ces progrès au nom d’une nostalgie du cabinet médical. Il n’en reste pas moins que, comme le souligne la revue de santé publique, les personnes âgées et les plus précaires sont aussi celles qui y recourent le moins. Autrement dit, l’outil censé réduire les inégalités risque de les creuser, si tant est qu’on le laisse fonctionner seul. Infirmières, nous le savons mieux que quiconque : un patient qui minimise ses symptômes ne se trahit pas toujours à l’écran ; il se trahit dans un geste, une hésitation, une main qui tremble. C’est pourquoi la téléconsultation assistée mérite d’être généralisée. Une infirmière présente au domicile ou en pharmacie, ce sont des yeux et des mains pour le médecin, et une voix rassurante pour le patient. Non que nous voulions nous substituer aux médecins : il s’agit de rendre la technique humaine. Reste la question du coût. Mais combien coûtent les hospitalisations évitables, les diagnostics tardifs, les renoncements aux soins ? En définitive, la téléconsultation ne sera un remède que si elle s’accompagne de présence. Sans quoi elle ne fera que déplacer la fracture, de la route vers l’écran.',
+    },
+    speaking: [
+      'Preparé en una hora un dossier oral y escrito y saqué una problemática personal',
+      'Hice un exposé de unos 10 minutos con plan anunciado, sin resumir los documentos uno por uno',
+      'Retomé los documentos sonoros con precisión (le premier intervenant souligne…, le reportage montre…)',
+      'Defendí una posición clara y matizada, con ejemplos concretos y propios',
+      'En el debate (unos 20 minutos), reformulé, concedí y refuté sin perder el hilo',
+      'Respondí a objeciones difíciles o provocadoras con calma (C’est une objection pertinente ; je la nuancerais toutefois…)',
+      'Usé un léxico preciso y variado, sin muletillas ni calcos del español',
+      'Adapté el registro: cuidado con el jurado, capaz de citar o comentar un uso familiar o regional',
+    ],
+  },
 }
 
 function pickTexts(level: CefrLevel, kind: 'reading' | 'dialogue', n: number): ReadingText[] {
@@ -219,7 +260,7 @@ export function DelfExamPage() {
   const exam = delfExams[level]
   const hasTexts = frenchTexts.some((t) => t.level === level)
   if (!exam || !hasTexts || !tasks[level]) return <ComingSoon title="Este simulacro llegará con su nivel" />
-  return <DelfExam key={level} level={level} />
+  return level === 'C2' ? <DalfC2Exam /> : <DelfExam key={level} level={level} />
 }
 
 type Phase = 'intro' | ExamModule | 'result'
@@ -304,6 +345,107 @@ function DelfExam({ level }: { level: CefrLevel }) {
         Se aprueba con {(order.length * exam.max) / 2}/{order.length * exam.max} y sin ninguna prueba bajo {exam.minimum}/{exam.max}. Aquí el aprobado depende de
         escuchar y leer; escribir y hablar son de práctica, porque no hay corrección automática de textos libres.
         {score.passed !== null && (score.passed ? ' Con tu autoevaluación, también aprobarías el total.' : ' Con tu autoevaluación, el total todavía no alcanza.')}
+      </p>
+      <SaveProgressPrompt />
+      <Link to="/aprender" className="rounded-full bg-ink px-6 py-3 font-bold text-white hover:opacity-90">
+        Volver al recorrido
+      </Link>
+    </section>
+  )
+}
+
+type C2Step = 'intro' | 'oral-q' | 'oral-p' | 'ecrit-q' | 'ecrit-p' | 'result'
+type C2Parts = { oralQ?: Result; oralP?: Result; ecritQ?: Result; ecritP?: Result }
+
+const ratio = (r?: Result) => (r && r.total ? r.correct / r.total : 0)
+/** Cada prueba del C2 vale lo mismo en comprensión (corregida) y en expresión (autoevaluada). */
+const combine = (a?: Result, b?: Result): Result => ({ correct: Math.round(((ratio(a) + ratio(b)) / 2) * 100), total: 100 })
+
+/**
+ * DALF C2: dos pruebas de 50 puntos que integran comprensión y expresión. Oral: escuchar un dossier y
+ * exponer y debatir (autoevaluado). Escrito: leer un dossier y escribir un texto argumentado. El aprobado
+ * guardado depende solo de la comprensión, que se corrige sola.
+ */
+function DalfC2Exam() {
+  const exam = delfExams.C2
+  const t = tasks.C2!
+  const [step, setStep] = useState<C2Step>('intro')
+  const [parts, setParts] = useState<C2Parts>({})
+  const [oral] = useState(() => pickTexts('C2', 'dialogue', 3))
+  const [ecrit] = useState(() => pickTexts('C2', 'reading', 3))
+  const submitRecord = useProgress((s) => s.submitRecord)
+
+  const done = (key: keyof C2Parts, r: Result, next: C2Step) => {
+    const p = { ...parts, [key]: r }
+    setParts(p)
+    if (next === 'result' && scoreDelf('C2', { oral: p.oralQ, ecrit: p.ecritQ }).passedAuto) submitRecord(delfPassedKey('C2'), 1)
+    setStep(next)
+  }
+
+  if (step === 'intro') {
+    return (
+      <section className="mx-auto flex max-w-md flex-col gap-4 py-6">
+        <span className="text-6xl" aria-hidden>
+          🏁
+        </span>
+        <h1 className="text-2xl font-extrabold">Simulacro DALF C2</h1>
+        <p className="text-slate-600 dark:text-slate-400">
+          Dos pruebas de {exam.max} puntos que integran comprensión y expresión, como el examen real. En cada una, la <strong>comprensión</strong> se corrige sola
+          y decide si apruebas (la mitad de los puntos y al menos {exam.minimum}/{exam.max} en cada prueba); la <strong>expresión</strong> es una autoevaluación
+          guiada, con un texto modelo.
+        </p>
+        <ul className="flex flex-col gap-1 text-sm">
+          <li>{moduleNames.oral} · escuchar un dossier, luego exposé y debate (autoevaluado)</li>
+          <li>{moduleNames.ecrit} · leer un dossier, luego un texto argumentado (en parte autoevaluado)</li>
+        </ul>
+        <button onClick={() => setStep('oral-q')} className="self-start rounded-full bg-ink px-6 py-3 font-bold text-white hover:opacity-90">
+          Empezar
+        </button>
+      </section>
+    )
+  }
+
+  if (step === 'oral-q') return <QuestionsModule key="oral" title={`${moduleNames.oral} · comprensión`} texts={oral} listen lang="fr" onDone={(r) => done('oralQ', r, 'oral-p')} />
+  if (step === 'oral-p') return <ChecklistModule title={`${moduleNames.oral} · exposé y debate`} checks={t.speaking} onDone={(r) => done('oralP', r, 'ecrit-q')} />
+  if (step === 'ecrit-q') return <QuestionsModule key="ecrit" title={`${moduleNames.ecrit} · comprensión`} texts={ecrit} listen={false} lang="fr" onDone={(r) => done('ecritQ', r, 'ecrit-p')} />
+  if (step === 'ecrit-p') return <WritingModule title={`${moduleNames.ecrit} · expresión`} formTask={t.form} messageTask={t.message} lang="fr" check={frenchCourse.check} onDone={(r) => done('ecritP', r, 'result')} />
+
+  const auto = scoreDelf('C2', { oral: parts.oralQ, ecrit: parts.ecritQ })
+  const full = scoreDelf('C2', { oral: combine(parts.oralQ, parts.oralP), ecrit: combine(parts.ecritQ, parts.ecritP) })
+  const rows: [string, Result | undefined][] = [
+    ['Comprensión oral', parts.oralQ],
+    ['Exposé y debate (autoevaluado)', parts.oralP],
+    ['Comprensión escrita', parts.ecritQ],
+    ['Expresión escrita (en parte autoevaluada)', parts.ecritP],
+  ]
+  return (
+    <section className="mx-auto flex max-w-md flex-col items-center gap-4 py-6 text-center">
+      <span className="text-6xl" aria-hidden>
+        {auto.passedAuto ? '🎉' : '💪'}
+      </span>
+      <h1 className="text-2xl font-extrabold">{auto.passedAuto ? '¡Aprobaste el simulacro DALF C2!' : 'Todavía no: sigue practicando'}</h1>
+      <p className="text-3xl font-extrabold">{(full.points.oral ?? 0) + (full.points.ecrit ?? 0)}/100</p>
+      <dl className="grid w-full grid-cols-2 gap-2 text-left">
+        {(['oral', 'ecrit'] as const).map((m) => (
+          <div key={m} className="rounded-2xl border border-slate-200 bg-white p-3 dark:border-slate-800 dark:bg-slate-900">
+            <dt className="text-xs font-bold text-slate-500 uppercase">{moduleNames[m]}</dt>
+            <dd className={`text-2xl font-extrabold ${full.eliminated.includes(m) ? 'text-red-600' : ''}`}>
+              {full.points[m] ?? 0}/{exam.max}
+            </dd>
+          </div>
+        ))}
+      </dl>
+      <ul className="w-full text-left text-sm text-slate-600 dark:text-slate-400">
+        {rows.map(([label, r]) => (
+          <li key={label}>
+            {label}: {r ? `${r.correct}/${r.total}` : '—'}
+          </li>
+        ))}
+      </ul>
+      <p className="text-sm text-slate-500">
+        Se aprueba con 50/100 y sin ninguna prueba bajo {exam.minimum}/{exam.max}. Aquí el aprobado depende de la comprensión, que se corrige sola; la
+        expresión es de práctica, porque no hay corrección automática de textos libres.
+        {full.passed !== null && (full.passed ? ' Con tu autoevaluación, también aprobarías el total.' : ' Con tu autoevaluación, el total todavía no alcanza.')}
       </p>
       <SaveProgressPrompt />
       <Link to="/aprender" className="rounded-full bg-ink px-6 py-3 font-bold text-white hover:opacity-90">

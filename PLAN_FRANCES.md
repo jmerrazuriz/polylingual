@@ -318,7 +318,7 @@ El nombre, la profesión y la ciudad son decisión del usuario (sección 11).
 | **F3 · B1** ✅ | ~35 lecciones, hasta ~2.400 palabras, juego de concordancias, simulacro B1. | Simulacro B1 con puntaje DELF. |
 | **F4 · B2** ✅ | ~35 lecciones, hasta ~4.000 palabras, simulacro B2 con ensayo y lista de control. | Simulacro B2. |
 | **F5 · C1** ✅ | ~35 lecciones, hasta ~6.000 palabras, síntesis + ensayo, simulacro DALF C1. | Simulacro C1. |
-| **F6 · C2** | ~30 lecciones, hasta ~8.000 palabras, variedades y estilo, simulacro DALF C2 (2 pruebas de 50). | Simulacro C2. Plan cerrado. |
+| **F6 · C2** ✅ | ~30 lecciones, hasta ~8.000 palabras, variedades y estilo, simulacro DALF C2 (2 pruebas de 50). | Simulacro C2. Plan cerrado. |
 | **F7 · Revisión** (externa) | Revisión de un hablante nativo o profesor de FLE, empezando por A1–B1. | Contenido revisado y errores corregidos. |
 
 
@@ -450,6 +450,25 @@ El nombre, la profesión y la ciudad son decisión del usuario (sección 11).
 - **Motor**: passé antérieur y subjuntivo imperfecto (con circunflejo: *parlât, fût, vînt, eût*); la tabla de conjugación los muestra.
 - **Juego nuevo** *Registres* y práctica de **registros**: pasar una frase familiar al registro formal, con el porqué de cada opción.
 - **Logro** DALF C1.
+
+### Qué quedó hecho en F6 (19-10-2026)
+- **Gramática C2** (`grammarC2a.ts`, `grammarC2b.ts`, `grammarC2c.ts`): 30 lecciones, cada ejercicio con su explicación y el porqué de cada opción incorrecta.
+  - Puntos finos: subjuntivo poco frecuente (*si tant est que, non que, soit que… soit que*), concordancia literaria y condicional pasado 2.ª forma, usos finos del condicional (indignación, juego, conjetura), *ne* literario y expletivo, participio presente frente a adjetivo verbal (*convainquant / convaincant*), concordancias de experto (*la plupart, coûté / coûtés, laissé + infinitivo*), pronombres (*le* neutro, *soi*), la reprise con *que*, la frase nominal y la ortografía (números, compuestos, rectificaciones de 1990).
+  - Estilo: registros literario, jurídico, periodístico y familiar (argot, verlan, truncamientos), ironía y segundo grado, juegos de palabras y expresiones desviadas, connotaciones, parónimos, siglas y abreviaturas, estilo indirecto libre.
+  - Variedades: Quebec, Bélgica y Suiza, África, y la gramática del oral espontáneo.
+  - Tipos de texto y examen: la prueba escrita del DALF C2 (texto a partir de un dossier), el exposé con debate, la columna, la reseña crítica, la argumentación retórica (ethos, pathos, logos, sofismas) y la reformulación.
+- **Vocabulario C2** (`vocabC2a.ts` … `vocabC2j.ts`): 2.059 palabras nuevas en 100 temas, **7.766 en total** (el plan decía ~8.000; muchas palabras típicas ya estaban en niveles anteriores).
+  - Argot, verlan, Quebec, Bélgica y Suiza, África, siglas, onomatopeyas, juegos de palabras, el francés oral de hoy.
+  - Expresiones idiomáticas (cuerpo, animales, colores, comida, objetos, emociones, tiempo), locuciones cultas, refranes, citas y referencias culturales, clichés de prensa, palabras compuestas.
+  - Registros literario, jurídico y administrativo, proceso penal, instituciones, campañas electorales, la Bolsa, economía.
+  - Crítica, teatro, columna, filosofía, psicoanálisis, enología, medicina avanzada, investigación, arquitectura, música, edición.
+  - Verbos, adjetivos y sustantivos cultos, parónimos, falsos amigos, anglicismos y sus equivalentes oficiales, colectivos, vicios y virtudes, juicios morales.
+  - Naturaleza literaria, árboles, aves, sensaciones, gestos y posturas, el rostro, mirar y decir, historia de Francia, regiones y gentilicios, platos, la casa, la ropa, el jardín, la ciudad, oficios, el sistema educativo, tecnología, deporte, ciencias, astronomía, geografía, montaña, mar, salud mental, familia y duelo.
+- **16 textos C2** (8 lecturas y 8 diálogos): la propuesta del jefe de redacción, la primera columna, un fragmento de novela en indirecto libre, una noche en Montreal, una cláusula de contrato, un artículo político, las cartas irónicas de los lectores, un congreso en Bruselas, una tribuna sobre la lengua, la llegada a Dakar, adolescentes en el tranvía, una reseña, un debate televisivo, un documento del dossier, el debate con el jurado y el resultado del DALF.
+- **Recorrido C2**: 14 unidades, 8 de «Más palabras» y el simulacro DALF C2.
+- **Simulacro DALF C2**: dos pruebas de 50 puntos que integran comprensión y expresión. Oral: escuchar tres diálogos y luego exposé y debate (autoevaluados). Escrito: leer tres textos, completar un párrafo culto y escribir un editorial de unas 700 palabras con lista de control y modelo. El aprobado guardado depende solo de la comprensión, que se corrige sola.
+- **Logro** DALF C2. El juego y la práctica de registros ya incluían el C2.
+- **Repetir lo fallado**: en todos los idiomas, las preguntas falladas de una lección del recorrido vuelven al final (en el mismo orden) hasta acertarlas; la nota cuenta el primer intento.
 
 ---
 
