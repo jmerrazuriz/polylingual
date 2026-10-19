@@ -68,7 +68,27 @@ const unitsA2: PathUnit[] = [
   examUnit('A2'),
 ]
 
-const unitsByLevel: Record<CefrLevel, PathUnit[]> = { A1: unitsA1, A2: unitsA2, B1: [], B2: [], C1: [], C2: [] }
+const unitsB1: PathUnit[] = [
+  unit('fr-b1-1', 'B1 · El diploma reconocido', '📜', ['fr-plus-que-parfait', 'fr-conditionnel-present', 'fr-si-imparfait'], ['diplome', 'carriere', 'courrier'], ['ft-b1-equivalence', 'ft-b1-jury']),
+  unit('fr-b1-2', 'B1 · Lo que quiero', '💭', ['fr-subjonctif-present', 'fr-subjonctif-volonte', 'fr-subjonctif-emotion'], ['sante-b1', 'emotions-b1'], ['ft-b1-sante']),
+  unit('fr-b1-3', 'B1 · Pediatría', '🧸', ['fr-subjonctif-opinion', 'fr-dont', 'fr-lequel-relatif'], ['soins', 'clinique'], ['ft-b1-pediatrie']),
+  unit('fr-b1-4', 'B1 · Lo que se dice', '🗞️', ['fr-ce-qui-ce-que', 'fr-discours-indirect'], ['faits-divers', 'droits'], ['ft-b1-fait-divers']),
+  unit('fr-b1-5', 'B1 · Lo mío y lo tuyo', '🏠', ['fr-pronoms-demonstratifs', 'fr-pronoms-possessifs'], ['logement-b1', 'relations'], ['ft-b1-coloc']),
+  unit('fr-b1-6', 'B1 · Trabajar y estudiar', '📚', ['fr-gerondif', 'fr-participe-present'], ['education', 'reunions'], ['ft-b1-formation']),
+  unit('fr-b1-7', 'B1 · Trámites y seguros', '📑', ['fr-voix-passive', 'fr-pronoms-doubles', 'fr-imperatif-pronoms'], ['assurances', 'argent'], ['ft-b1-assurance']),
+  unit('fr-b1-8', 'B1 · Por qué y para qué', '🎯', ['fr-cause', 'fr-consequence', 'fr-but'], ['societe', 'entreprise'], ['ft-b1-benevolat']),
+  unit('fr-b1-9', 'B1 · A pesar de todo', '🌧️', ['fr-opposition', 'fr-temps-conjonctions'], ['environnement-b1', 'meteo-b1'], ['ft-b1-climat', 'ft-b1-debat']),
+  unit('fr-b1-10', 'B1 · Ciudadanía', '🗳️', ['fr-indefinis', 'fr-mise-en-relief'], ['politique', 'citoyennete'], ['ft-b1-nationalite']),
+  unit('fr-b1-11', 'B1 · Opinar y escribir', '✍️', ['fr-opinion', 'fr-lettre-formelle'], ['opinion', 'argumenter'], ['ft-b1-forum']),
+  unit('fr-b1-12', 'B1 · Vida digital y consumo', '📱', ['fr-faire-causatif', 'fr-verbes-prepositions', 'fr-ne-que'], ['technologie', 'numerique', 'consommation'], ['ft-b1-arnaque']),
+  unit('fr-b1-13', 'B1 · Cultura y tiempo libre', '🎭', ['fr-adjectifs-sens', 'fr-negation-b1', 'fr-comparaison-b1'], ['culture', 'loisirs-b1', 'voyage-b1'], ['ft-b1-festival']),
+  unit('fr-b1-14', 'B1 · Dos años en Francia', '🌱', ['fr-registre', 'fr-accords'], ['ville-b1', 'transports-b1', 'famille-b1', 'personnalite-b1'], ['ft-b1-bilan']),
+  unit('fr-b1-extra-1', 'B1 · Más palabras I', '🧺', [], ['corps-b1', 'alimentation', 'verbes-b1', 'verbes-b1-2', 'adjectifs-b1'], []),
+  unit('fr-b1-extra-2', 'B1 · Más palabras II', '🧺', [], ['adjectifs-b1-2', 'noms-abstraits', 'noms-abstraits-2', 'adverbes-b1', 'expressions-b1', 'faux-amis-b1'], []),
+  examUnit('B1'),
+]
+
+const unitsByLevel: Record<CefrLevel, PathUnit[]> = { A1: unitsA1, A2: unitsA2, B1: unitsB1, B2: [], C1: [], C2: [] }
 
 export const frenchPath: PathUnit[] = cefrLevels.flatMap((l) => unitsByLevel[l])
 

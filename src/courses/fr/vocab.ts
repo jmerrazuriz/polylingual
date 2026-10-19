@@ -3,6 +3,12 @@ import { isHAspire } from './engine/phonetics.ts'
 import type { CefrLevel } from './levels.ts'
 import { vocabA1 } from './vocabA1.ts'
 import { vocabA2 } from './vocabA2.ts'
+import { vocabB1 } from './vocabB1.ts'
+import { vocabB1b } from './vocabB1b.ts'
+import { vocabB1c } from './vocabB1c.ts'
+import { vocabB1d } from './vocabB1d.ts'
+import { vocabB1e } from './vocabB1e.ts'
+import { vocabB1f } from './vocabB1f.ts'
 
 // Vocabulario del francés. Cada sustantivo se aprende con su artículo y su género (que el
 // artículo elidido «l’» no deja ver). Los ids (la palabra, o palabra·clase si se repite) no deben
@@ -81,9 +87,11 @@ function build(themes: FrenchTheme[], level: CefrLevel, previous: FrenchWord[] =
 
 export const frenchThemesA1 = vocabA1
 export const frenchThemesA2 = vocabA2
+export const frenchThemesB1 = [...vocabB1, ...vocabB1b, ...vocabB1c, ...vocabB1d, ...vocabB1e, ...vocabB1f]
 export const frenchVocabA1 = build(vocabA1, 'A1')
 export const frenchVocabA2 = build(vocabA2, 'A2', frenchVocabA1)
-export const frenchVocab: FrenchWord[] = [...frenchVocabA1, ...frenchVocabA2]
+export const frenchVocabB1 = build(frenchThemesB1, 'B1', [...frenchVocabA1, ...frenchVocabA2])
+export const frenchVocab: FrenchWord[] = [...frenchVocabA1, ...frenchVocabA2, ...frenchVocabB1]
 export const frenchWordById = new Map(frenchVocab.map((w) => [w.id, w]))
 
 const typographic = (s: string) => s.replace(/'/g, '’')
@@ -143,7 +151,8 @@ function lessonsOf(themes: FrenchTheme[], words: FrenchWord[], level: CefrLevel)
 
 export const frenchVocabLessonsA1 = lessonsOf(vocabA1, frenchVocabA1, 'A1')
 export const frenchVocabLessonsA2 = lessonsOf(vocabA2, frenchVocabA2, 'A2')
-export const frenchVocabLessons: FrenchVocabLesson[] = [...frenchVocabLessonsA1, ...frenchVocabLessonsA2]
+export const frenchVocabLessonsB1 = lessonsOf(frenchThemesB1, frenchVocabB1, 'B1')
+export const frenchVocabLessons: FrenchVocabLesson[] = [...frenchVocabLessonsA1, ...frenchVocabLessonsA2, ...frenchVocabLessonsB1]
 export const frenchVocabLessonById = new Map(frenchVocabLessons.map((l) => [l.id, l]))
 
 /** Tarjetas de repaso de palabras francesas: «fw-<id>». */

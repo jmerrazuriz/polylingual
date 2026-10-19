@@ -3,6 +3,9 @@ import { grammarA1a } from './grammarA1a.ts'
 import { grammarA1b } from './grammarA1b.ts'
 import { grammarA2a } from './grammarA2a.ts'
 import { grammarA2b } from './grammarA2b.ts'
+import { grammarB1a } from './grammarB1a.ts'
+import { grammarB1b } from './grammarB1b.ts'
+import { grammarB1c } from './grammarB1c.ts'
 
 /** Gramática del francés, por nivel (Le chemin de Camila). */
-export const frenchGrammar: GrammarLesson[] = [...grammarA1a, ...grammarA1b, ...grammarA2a, ...grammarA2b]
+export const frenchGrammar: GrammarLesson[] = [...grammarA1a, ...grammarA1b, ...grammarA2a, ...grammarA2b, ...grammarB1a, ...grammarB1b, ...grammarB1c]

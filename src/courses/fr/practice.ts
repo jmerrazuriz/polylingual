@@ -3,9 +3,10 @@ import type { GrammarExercise } from '../grammar.ts'
 import type { PairItem } from '../../lib/pairs.ts'
 import type { ProgressData } from '../../lib/progress/model.ts'
 import { shuffle } from '../../lib/random.ts'
-import { futur, futurProche, imparfait, passeCompose, persons, present, type Forms, type Verb } from './engine/conjugation.ts'
+import { conditionnel, futur, futurProche, imparfait, passeCompose, persons, plusQueParfait, present, subjonctif, type Forms, type Verb } from './engine/conjugation.ts'
 import { numberReason, numberToWords } from './engine/numbers.ts'
 import { genderReason } from './explain.ts'
+import { agreementQuestion } from './accords.ts'
 import { fauxAmiQuestion, homophoneQuestion } from './homophones.ts'
 import type { CefrLevel } from './levels.ts'
 import { frenchUnlockedIds } from './progress.ts'
@@ -66,10 +67,16 @@ const tenses: Tense[] = [
   { name: 'passé composé', forms: passeCompose },
   { name: 'imparfait', forms: imparfait },
   { name: 'futuro simple', forms: futur },
+  { name: 'condicional', forms: conditionnel },
+  { name: 'subjuntivo', forms: subjonctif },
+  { name: 'plus-que-parfait', forms: plusQueParfait },
 ]
 
-/** Tiempos que entran según el nivel de las palabras: A1 presente y futur proche; desde A2, los cinco. */
-export const tenseCountFor = (words: readonly FrenchWord[]) => (words.some((w) => w.level !== 'A1') ? tenses.length : 2)
+/** Tiempos que entran según el nivel de las palabras: A1 presente y futur proche; A2 cinco; desde B1, los ocho. */
+export function tenseCountFor(words: readonly FrenchWord[]): number {
+  if (words.some((w) => w.level !== 'A1' && w.level !== 'A2')) return tenses.length
+  return words.some((w) => w.level === 'A2') ? 5 : 2
+}
 
 /** Conjugación: «nous · parler (presente)» → parlons, entre formas de otras personas y tiempos. */
 export function conjugationQuestion(random = Math.random, tenseCount = 2): SpeedQuestion {
@@ -125,7 +132,7 @@ export const asExercise = (q: SpeedQuestion): GrammarExercise => ({
   whyWrong: q.whyWrong,
 })
 
-export type PracticeMode = 'palabras' | 'escribir' | 'genero' | 'femenino' | 'conjugacion' | 'numeros' | 'homofonos' | 'falsos-amigos'
+export type PracticeMode = 'palabras' | 'escribir' | 'genero' | 'femenino' | 'conjugacion' | 'numeros' | 'homofonos' | 'falsos-amigos' | 'concordancias'
 
 /** Una sesión de práctica libre de `count` ejercicios con las palabras del pool. */
 export function practiceSession(mode: PracticeMode, words: readonly FrenchWord[], count = 12, random = Math.random): GrammarExercise[] {
@@ -146,6 +153,14 @@ export function practiceSession(mode: PracticeMode, words: readonly FrenchWord[]
       return repeat(() => asExercise(numberQuestion(random)))
     case 'homofonos':
       return words.some((w) => w.level !== 'A1') ? repeat(() => asExercise(homophoneQuestion(random))) : []
+    case 'concordancias': {
+      const out: GrammarExercise[] = []
+      for (let tries = 0; out.length < count && tries < count * 5; tries++) {
+        const q = agreementQuestion(words, random)
+        if (q) out.push(asExercise(q))
+      }
+      return out
+    }
     case 'falsos-amigos':
       return words.some((w) => w.level !== 'A1') ? repeat(() => asExercise(fauxAmiQuestion(random))) : []
   }

@@ -315,7 +315,7 @@ El nombre, la profesión y la ciudad son decisión del usuario (sección 11).
 | **F0 · Base común** ✅ | Generalizar nivelación, simulacro, juegos, práctica y entrada de texto (sección 7). Motor de conjugación y artículos franceses con tests. Tablas (artículos, contracciones, pronombres, conjugador, números). | El japonés y el alemán siguen igual (todos los tests pasan) y existe un recorrido francés vacío. |
 | **F1 · A1** ✅ | Generalizar nivelación, simulacro, juegos y práctica (lo que quedó de F0). Corrección explicada en todos los ejercicios. Pronunciación, ~30 lecciones, ~650 palabras, 16 textos, simulacro DELF A1, test de nivelación A1, y juegos (parejas, escucha, *le ou la*, números, conjugación) y práctica. | Se puede hacer el A1 entero y jugar. El curso pasa a «disponible». |
 | **F2 · A2** ✅ | ~30 lecciones, hasta ~1.300 palabras, juegos de homófonos y falsos amigos, simulacro A2. | Igual que F1. |
-| **F3 · B1** | ~35 lecciones, hasta ~2.400 palabras, juego de concordancias, simulacro B1. | Simulacro B1 con puntaje DELF. |
+| **F3 · B1** ✅ | ~35 lecciones, hasta ~2.400 palabras, juego de concordancias, simulacro B1. | Simulacro B1 con puntaje DELF. |
 | **F4 · B2** | ~35 lecciones, hasta ~4.000 palabras, simulacro B2 con ensayo y lista de control. | Simulacro B2. |
 | **F5 · C1** | ~35 lecciones, hasta ~6.000 palabras, síntesis + ensayo, simulacro DALF C1. | Simulacro C1. |
 | **F6 · C2** | ~30 lecciones, hasta ~8.000 palabras, variedades y estilo, simulacro DALF C2 (2 pruebas de 50). | Simulacro C2. Plan cerrado. |
@@ -389,6 +389,24 @@ El nombre, la profesión y la ciudad son decisión del usuario (sección 11).
 - **Motor**: 17 verbos más (*jeter, nettoyer, essayer, espérer, conduire, se souvenir, se promener, s’inquiéter…*), verificados.
 - **Logro** DELF A2.
 - **Formato**: las cursivas pueden empezar con una negrita (*«**Il faut** venir»*); el test de asteriscos lo cubre.
+
+
+### Qué quedó hecho en F3 (18-10-2026)
+- **Gramática B1** (`grammarB1a.ts`, `grammarB1b.ts`, `grammarB1c.ts`): 35 lecciones, cada ejercicio con su explicación y el porqué de cada opción incorrecta.
+  - Tiempos y modos: plus-que-parfait, condicional, *si* + imparfait, el subjuntivo (formación, voluntad, emoción, opinión y duda).
+  - Relativos y pronombres: *dont*, *lequel/auquel/duquel*, *ce qui / ce que*, demostrativos (*celui*), posesivos (*le mien*), pronombres dobles y con el imperativo.
+  - Discurso indirecto, gerundio, participio presente y adjetivo verbal, voz pasiva, *faire* + infinitivo.
+  - Causa, consecuencia, finalidad, oposición y conectores de tiempo; indefinidos; puesta de relieve.
+  - Opinar, la carta formal, verbos con preposición, *ne… que*, adjetivos que cambian de sentido, *ni… ni*, comparaciones B1, registro y concordancias.
+- **Vocabulario B1** (`vocabB1.ts` … `vocabB1f.ts`): 1.088 palabras nuevas en 44 temas, **2.390 en total**.
+  - El diploma, salud, pediatría, carrera, empresa, dinero, seguros, derechos, sociedad, política, ciudadanía, medio ambiente, tecnología, vida digital, cultura, educación, vivienda, ciudad, transporte, relaciones, familia, emociones, personalidad, cuerpo, alimentación, consumo, ocio, viajes, clima, opinión, conectores, cartas formales, la clínica, reuniones y noticias.
+  - Verbos, adjetivos y sustantivos abstractos frecuentes, adverbios, expresiones idiomáticas y más falsos amigos.
+- **16 textos B1** (8 lecturas y 8 diálogos): la carta de la comisión, la práctica de adaptación, el sueño, una bronquiolitis, un rescate en el Ródano, la vida en departamento compartido, un diploma universitario, un daño por agua, el voluntariado, la canícula, un debate sobre los autos, la nacionalidad, un foro sobre teletrabajo, una estafa por SMS, un festival y «dos años después».
+- **Recorrido B1**: 14 unidades, 2 de «Más palabras» y el simulacro DELF B1 (correo formal con huecos, texto de opinión de 160–180 palabras y las tres partes del oral).
+- **Juego nuevo** *Accords* y práctica de **concordancias**: el adjetivo o el participio con être según el sujeto (masculino + femenino = masculino plural).
+- **Conjugación** en juegos y práctica: desde B1 suma condicional, subjuntivo y plus-que-parfait.
+- **Motor**: 30 verbos más (*obtenir, décevoir, souffrir, prévoir, plaire, rire, craindre, se plaindre, se taire, s’asseoir…*), verificados.
+- **Logro** DELF B1.
 
 ---
 

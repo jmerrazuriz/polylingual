@@ -90,6 +90,44 @@ const tasks: Partial<Record<CefrLevel, ExamTasks>> = {
       'Hablé con fluidez y sin pasar al español; me corregí cuando me equivoqué',
     ],
   },
+  B1: {
+    form: {
+      context: 'Completa el correo formal de Camila a una escuela de idiomas (1–6). Ojo con los conectores y los modos.',
+      text: 'Madame, Monsieur, je vous écris (1) ___ obtenir des renseignements sur vos cours de préparation au DELF B2. (2) ___ je travaille de jour, je souhaiterais suivre des cours le soir. Pourriez-vous m’indiquer (3) ___ les cours commencent en septembre ? Il est important que je (4) ___ le diplôme avant juin, car j’en ai besoin pour ma demande de nationalité. Je vous (5) ___ reconnaissante de me répondre rapidement. (6) ___, Camila Rojas',
+      fields: [
+        { label: '(1) – para (finalidad)', answers: ['pour', 'afin d’', "afin d'"] },
+        { label: '(2) – como (causa, al principio)', answers: ['Comme', 'comme', 'Puisque', 'puisque'] },
+        { label: '(3) – si (pregunta indirecta)', answers: ['si'] },
+        { label: '(4) – obtener, subjuntivo (obtenir)', answers: ['obtienne'] },
+        { label: '(5) – estaría (être, condicional)', answers: ['serais'] },
+        { label: '(6) – despedida de un correo formal', answers: ['Cordialement', 'cordialement', 'Bien à vous'] },
+      ],
+    },
+    message: {
+      prompt:
+        'En un foro se discute: «¿Deberían los supermercados regalar la comida que no venden en vez de botarla?». Escribe tu opinión (160 a 180 palabras), con argumentos y ejemplos.',
+      checks: [
+        'Presentas el tema y das tu opinión clara (À mon avis…, Je pense que…)',
+        'Das al menos dos argumentos, cada uno con un ejemplo',
+        'Consideras la opinión contraria (Certains pensent que…, cependant…)',
+        'Usas conectores variados (d’abord, de plus, pourtant, c’est pourquoi, en conclusion)',
+        'Usas al menos un subjuntivo (il faut que, il est important que, bien que) y un condicional',
+        'Terminas con una conclusión o una propuesta',
+        'Cuidas las concordancias y los homófonos',
+      ],
+      model:
+        'Chaque jour, les supermarchés jettent des tonnes de nourriture encore bonne. À mon avis, ils devraient la donner à des associations. D’abord, c’est une question de solidarité : de plus en plus de familles ont du mal à se nourrir, alors que nous gaspillons. Par exemple, l’association où je suis bénévole manque souvent de produits frais. De plus, donner au lieu de jeter réduirait les déchets et protégerait l’environnement. Certains pensent que c’est trop compliqué à organiser, à cause des règles d’hygiène. C’est vrai que les produits doivent être conservés correctement. Cependant, en France, une loi oblige déjà les grands supermarchés à donner leurs invendus, et cela fonctionne bien. Il faudrait que cette règle s’applique aussi aux restaurants et aux cantines. En conclusion, il est important que chacun participe : les magasins, mais aussi les consommateurs, qui peuvent acheter seulement ce dont ils ont besoin.',
+    },
+    speaking: [
+      'Parte 1 (entrevista dirigida): hablé de mí, de mi trabajo, de mis proyectos y de mi vida en Francia, sin preparación',
+      'Parte 2 (ejercicio en interacción): resolví una situación con el examinador (un reclamo, un desacuerdo con un vecino, organizar algo) y negocié una solución',
+      'Parte 2: usé fórmulas para proponer, aceptar, rechazar y convencer (Je vous propose de…, Ce serait mieux si…, Je comprends, mais…)',
+      'Parte 3 (punto de vista): a partir de un documento corto, presenté el tema y di mi opinión de forma organizada (introducción, dos argumentos, conclusión)',
+      'Parte 3: respondí las preguntas del examinador y defendí mi opinión con ejemplos',
+      'Usé subjuntivo, condicional y conectores (pourtant, c’est pourquoi, bien que)',
+      'Hablé con fluidez y me corregí sin bloquearme',
+    ],
+  },
 }
 
 function pickTexts(level: CefrLevel, kind: 'reading' | 'dialogue', n: number): ReadingText[] {

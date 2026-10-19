@@ -42,6 +42,7 @@ const frenchAchievements: Achievement[] = [
   { id: 'fr-textes-10', course: 'fr', icon: '📖', title: 'Lectrice', description: 'Lee 10 episodios de Le chemin de Camila.', check: (p) => frenchTextsRead(p) >= 10 },
   { id: 'fr-delf-a1', course: 'fr', icon: '🎓', title: 'DELF A1', description: 'Aprueba el simulacro DELF A1.', check: (p) => delfPassed(p, 'a1') },
   { id: 'fr-delf-a2', course: 'fr', icon: '🏅', title: 'DELF A2', description: 'Aprueba el simulacro DELF A2, el nivel de la residencia plurianual.', check: (p) => delfPassed(p, 'a2') },
+  { id: 'fr-delf-b1', course: 'fr', icon: '🏆', title: 'DELF B1', description: 'Aprueba el simulacro DELF B1, el nivel de la tarjeta de residente.', check: (p) => delfPassed(p, 'b1') },
 ]
 
 const germanAchievements: Achievement[] = [

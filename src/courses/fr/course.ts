@@ -3,11 +3,12 @@ import { checkFrench } from '../../lib/frenchInput.ts'
 import { lookupFrench } from './glossary.ts'
 import { frenchGrammar } from './grammar.ts'
 import { frenchPath } from './path.ts'
+import { agreementQuestion } from './accords.ts'
 import { fauxAmiQuestion, homophoneQuestion } from './homophones.ts'
 import { articleQuestion, audioPairs, conjugationQuestion, femininePairs, frenchPoolLevels, frenchWordPool, meaningPairs, numberQuestion, practiceSession, type PracticeMode, tenseCountFor } from './practice.ts'
 import { frenchItemDone, frenchItemStatus, frenchUnlockedIds } from './progress.ts'
 import { frenchTexts } from './texts.ts'
-import { type FrenchWord, frenchThemesA1, frenchThemesA2, frenchVocabLessonById, frenchVocabLessons, frenchWordCard, FRENCH_WORD_PREFIX, nounLine, speakWord, withArticle } from './vocab.ts'
+import { type FrenchWord, frenchThemesA1, frenchThemesA2, frenchThemesB1, frenchVocabLessonById, frenchVocabLessons, frenchWordCard, FRENCH_WORD_PREFIX, nounLine, speakWord, withArticle } from './vocab.ts'
 import { frenchLessonExercises, meaningExercise, sayExercise } from './vocabExercises.ts'
 
 // El francés como curso europeo: lo que las pantallas comunes necesitan de él.
@@ -101,6 +102,16 @@ const games: EuroGame[] = [
     record: (n) => `${n} correctas`,
     question: (ws) => (ws.some((w) => w.level !== 'A1') ? fauxAmiQuestion() : null),
   },
+  {
+    id: 'fr-speed-accords',
+    glyph: 'fatigué·e·s',
+    title: 'Accords',
+    text: 'La concordancia del adjetivo y del participio con être (desde B1).',
+    instructions: 'Elige la forma que concuerda con el sujeto. Cada error descuenta 3 segundos.',
+    kind: 'speed',
+    record: (n) => `${n} correctas`,
+    question: (ws) => agreementQuestion(ws as FrenchWord[]),
+  },
 ]
 
 export const frenchCourse: EuroCourse = {
@@ -122,7 +133,7 @@ export const frenchCourse: EuroCourse = {
       : words.some((w) => w.pos === 'adj')
         ? 'Aprende cada adjetivo con su femenino. Toca una palabra para oírla.'
         : 'Aprende cada palabra o expresión completa, tal como se usa. Toca una para oírla.',
-  themes: [...frenchThemesA1.map((t) => ({ id: t.id, title: t.title, level: 'A1' as const })), ...frenchThemesA2.map((t) => ({ id: t.id, title: t.title, level: 'A2' as const }))],
+  themes: [...frenchThemesA1.map((t) => ({ id: t.id, title: t.title, level: 'A1' as const })), ...frenchThemesA2.map((t) => ({ id: t.id, title: t.title, level: 'A2' as const })), ...frenchThemesB1.map((t) => ({ id: t.id, title: t.title, level: 'B1' as const }))],
   vocabLessons: frenchVocabLessons,
   vocabLessonById: frenchVocabLessonById,
   texts: frenchTexts,
@@ -149,10 +160,11 @@ export const frenchCourse: EuroCourse = {
     { mode: 'escribir', glyph: '⌨️', title: 'Escribir', text: 'Escribe la palabra en francés, con su artículo. Sin acentos cuenta como «casi».' },
     { mode: 'genero', glyph: 'un·une', title: 'Género', text: 'un o une: el género de cada sustantivo.' },
     { mode: 'femenino', glyph: '-e -ne', title: 'Femenino', text: 'El femenino de adjetivos y profesiones.' },
-    { mode: 'conjugacion', glyph: 'je suis', title: 'Conjugación', text: 'Presente y futur proche; desde A2, también passé composé, imparfait y futuro.' },
+    { mode: 'conjugacion', glyph: 'je suis', title: 'Conjugación', text: 'Presente y futur proche; desde A2, passé composé, imparfait y futuro; desde B1, condicional, subjuntivo y plus-que-parfait.' },
     { mode: 'numeros', glyph: '70·80·90', title: 'Números', text: 'Del número a las letras, con soixante-dix y quatre-vingts.' },
     { mode: 'homofonos', glyph: 'a · à', title: 'Homófonos', text: 'a/à, et/est, son/sont, on/ont, ce/se… con la prueba de cada uno (desde A2).' },
     { mode: 'falsos-amigos', glyph: '≠', title: 'Falsos amigos', text: 'embarrassé, constipé, quitter… lo que significan de verdad (desde A2).' },
+    { mode: 'concordancias', glyph: '-e -s', title: 'Concordancias', text: 'Adjetivos y participios con être que concuerdan con el sujeto (desde B1).' },
   ],
   practiceSession: (mode, words, count) => practiceSession(mode as PracticeMode, words as FrenchWord[], count),
   check: (input, answers) => {
