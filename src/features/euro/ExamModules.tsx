@@ -218,3 +218,23 @@ export function ChecklistModule({ title, checks, onDone }: { title: string; chec
     </section>
   )
 }
+
+/** Ejercicios sueltos (la prueba de estructuras del CILS): uno tras otro, con su corrección. */
+export function ExercisesModule({ title, exercises, onDone }: { title: string; exercises: GrammarExercise[]; onDone: (r: Result) => void }) {
+  const [i, setI] = useState(0)
+  const [correct, setCorrect] = useState(0)
+  const answer = (ok: boolean) => {
+    const score = correct + (ok ? 1 : 0)
+    setCorrect(score)
+    if (i + 1 < exercises.length) setI(i + 1)
+    else onDone({ correct: score, total: exercises.length })
+  }
+  return (
+    <div className="mx-auto flex max-w-md flex-col gap-5">
+      <p className="text-sm font-bold text-slate-500 uppercase">
+        {title} · {i + 1} de {exercises.length}
+      </p>
+      <GrammarExerciseView key={i} exercise={exercises[i]} onDone={answer} />
+    </div>
+  )
+}

@@ -34,6 +34,20 @@ const frenchWordsInReview = (p: ProgressData) => new Set(Object.keys(p.cards).fi
 const frenchTextsRead = (p: ProgressData) => Object.keys(p.lessons).filter((id) => id.startsWith('ft-')).length
 const delfPassed = (p: ProgressData, level: string) => !!p.records[`delf-${level}:aprobado`]
 
+const italianGrammarDone = (p: ProgressData) => Object.keys(p.grammar).filter((id) => id.startsWith('it-')).length
+const italianWordsInReview = (p: ProgressData) => new Set(Object.keys(p.cards).filter((id) => id.startsWith('iw-')).map((id) => id.split(':')[0])).size
+const italianTextsRead = (p: ProgressData) => Object.keys(p.lessons).filter((id) => id.startsWith('itx-')).length
+const cilsPassed = (p: ProgressData, level: string) => !!p.records[`cils-${level}:aprobado`]
+
+const italianAchievements: Achievement[] = [
+  { id: 'it-prima-lezione', course: 'it', icon: '🍕', title: 'Primi passi', description: 'Completa tu primera lección de gramática italiana.', check: (p) => italianGrammarDone(p) > 0 },
+  { id: 'it-grammatica-30', course: 'it', icon: '📙', title: 'Basi solide', description: 'Completa 30 lecciones de gramática italiana.', check: (p) => italianGrammarDone(p) >= 30 },
+  { id: 'it-parole-100', course: 'it', icon: '🗂️', title: '100 parole', description: 'Ten 100 palabras italianas en repaso.', check: (p) => italianWordsInReview(p) >= 100 },
+  { id: 'it-parole-500', course: 'it', icon: '📚', title: '500 parole', description: 'Ten 500 palabras italianas en repaso.', check: (p) => italianWordsInReview(p) >= 500 },
+  { id: 'it-testi-10', course: 'it', icon: '📖', title: 'Lettore', description: 'Lee 10 episodios de La strada di Lucca.', check: (p) => italianTextsRead(p) >= 10 },
+  { id: 'it-cils-a1', course: 'it', icon: '🎓', title: 'CILS A1', description: 'Aprueba el simulacro CILS A1.', check: (p) => cilsPassed(p, 'a1') },
+]
+
 const frenchAchievements: Achievement[] = [
   { id: 'fr-premiere-lecon', course: 'fr', icon: '🥐', title: 'Premiers pas', description: 'Completa tu primera lección de gramática francesa.', check: (p) => frenchGrammarDone(p) > 0 },
   { id: 'fr-grammaire-30', course: 'fr', icon: '📘', title: 'Bases sólidas', description: 'Completa 30 lecciones de gramática francesa.', check: (p) => frenchGrammarDone(p) >= 30 },
@@ -112,6 +126,7 @@ export const achievements: Achievement[] = [
   { id: 'primer-record', icon: '🏆', title: 'Récord', description: 'Consigue un récord en cualquier juego.', check: (p) => Object.keys(p.records).length > 0 },
   ...germanAchievements,
   ...frenchAchievements,
+  ...italianAchievements,
 ]
 
 /** Logros que se muestran en un curso: los generales y los de ese idioma. */

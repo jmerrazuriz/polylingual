@@ -2,7 +2,8 @@ import { germanPath, germanPathLevels } from '../courses/de/path.ts'
 import { germanItemStatus } from '../courses/de/progress.ts'
 import { frenchPath, frenchPathLevels } from '../courses/fr/path.ts'
 import { frenchItemStatus } from '../courses/fr/progress.ts'
-import { italianItemStatus, italianPath, italianPathLevels } from '../courses/it/path.ts'
+import { italianPath, italianPathLevels } from '../courses/it/path.ts'
+import { italianItemStatus } from '../courses/it/progress.ts'
 import { type ItemStatus, japanesePath, japanesePathLevels, type PathItem, pathItemStatus, type PathLevel, type PathUnit } from './path.ts'
 import type { ProgressData } from './progress/model.ts'
 
@@ -51,13 +52,12 @@ const french: CoursePath = {
   extraLessons: false,
 }
 
-/** En preparación (I0): los seis niveles sin lecciones, sin nivelación. */
 const italian: CoursePath = {
   units: italianPath,
   levels: italianPathLevels,
   itemStatus: italianItemStatus,
-  hasPlacement: false,
-  firstLessonTo: null,
+  hasPlacement: true,
+  firstLessonTo: '/gramatica/it-alfabeto',
   intro: 'La strada di Lucca: acompaña a Lucca, restaurador chileno en Bolonia, y a su amigo Bruno Esposito, del A1 al C2.',
   extraLessons: false,
 }

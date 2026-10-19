@@ -4,6 +4,7 @@
 import { grammarByCourse } from '../courses/content.ts'
 import { germanTexts } from '../courses/de/texts.ts'
 import { frenchTexts } from '../courses/fr/texts.ts'
+import { italianTexts } from '../courses/it/texts.ts'
 import type { GrammarExercise } from '../courses/grammar.ts'
 import type { ReadingText } from '../courses/reading.ts'
 import type { FeedbackContext } from './feedback.ts'
@@ -24,7 +25,7 @@ function build(): WeakMap<GrammarExercise, FeedbackContext> {
       for (const e of lesson.exercises) map.set(e, ctx)
     }
   }
-  for (const t of [...readingTexts, ...germanTexts, ...frenchTexts]) {
+  for (const t of [...readingTexts, ...germanTexts, ...frenchTexts, ...italianTexts]) {
     const ctx = textContext(t)
     for (const q of t.questions) map.set(q, ctx)
   }

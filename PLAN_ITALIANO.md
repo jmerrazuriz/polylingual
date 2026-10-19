@@ -416,7 +416,7 @@ Como *Ottos Weg* en alemán y *Le chemin de Camila* en francés. Los apellidos s
 - **Lucca Ferrari** es un restaurador de patrimonio chileno, de Valparaíso, bisnieto de genoveses que emigraron a Chile.
   - Con la ley de 2025 ya no puede pedir la ciudadanía por descendencia.
   - Se va a trabajar a un taller de restauración en **Bolonia** y recorre el camino de la residencia: el *permesso di soggiorno*, la residencia de larga duración (A2) y, años después, la **nacionalidad** (B1). Para quien no es de la Unión Europea, la nacionalidad por residencia pide diez años de residencia legal.
-- **Bruno Esposito** es su amigo napolitano, compañero de departamento y de taller. Con él aparecen el sur, el dialecto, la comida y la familia italiana.
+- **Bruno Esposito** es su amigo napolitano y compañero de departamento, ceramista. Con él aparecen el sur, el dialecto, la comida y la familia italiana.
 - **La historia por nivel:**
   - A1: llegada a Bolonia, el *codice fiscale*, la inscripción en el municipio y el departamento compartido con Bruno.
   - A2: la Questura y el *permesso di soggiorno*, el contrato en el taller, el médico de cabecera.
@@ -432,7 +432,7 @@ Como *Ottos Weg* en alemán y *Le chemin de Camila* en francés. Los apellidos s
 | Etapa | Contenido | Hecho cuando… |
 |---|---|---|
 | **I0 · Base** ✅ | Motor italiano (conjugación, artículos, plurales, números) con tests. `italianInput` y `ItalianKeys`. Ampliar lo europeo a tres cursos (sección 7). Puntaje CILS con tests. `ItalianTablesPage`. Recorrido italiano vacío, visible solo en desarrollo. | El japonés, el alemán y el francés siguen igual (todos los tests pasan) y existe un recorrido italiano vacío. |
-| **I1 · A1** | Pronunciación, ~30 lecciones, ~650 palabras y 16 textos de *La strada di Lucca*. Simulacro CILS A1 con módulo de estructuras y test de nivelación. Juegos (parejas, escucha, *il/lo/la*, plurales, dobles, conjugación, números), práctica y **lección del día**. `export-review.ts` por curso. | Se puede hacer el A1 entero, jugar y tener lección del día. El curso pasa a «disponible». |
+| **I1 · A1** ✅ | Pronunciación, ~30 lecciones, ~650 palabras y 16 textos de *La strada di Lucca*. Simulacro CILS A1 con módulo de estructuras y test de nivelación. Juegos (parejas, escucha, *il/lo/la*, plurales, dobles, conjugación, números), práctica y **lección del día**. `export-review.ts` por curso. | Se puede hacer el A1 entero, jugar y tener lección del día. El curso pasa a «disponible». |
 | **I2 · A2** | ~30 lecciones, hasta ~1.300 palabras, juegos de preposiciones y falsos amigos, simulacro A2. | Igual que I1. |
 | **I3 · B1** | ~35 lecciones, hasta ~2.400 palabras, juegos de pronombres y subjuntivo, simulacro UNO-B1. | Simulacro B1 con puntaje CILS. |
 | **I4 · B2** | ~35 lecciones, hasta ~4.000 palabras, passato remoto en el motor y el glosario, juego de conectores, simulacro DUE-B2 con ensayo y lista de control. | Simulacro B2. |
@@ -465,6 +465,16 @@ Como *Ottos Weg* en alemán y *Le chemin de Camila* en francés. Los apellidos s
   - Inicio propio en vista previa. Se puede elegir solo en desarrollo; en producción sigue «Próximamente».
 - **Ícono en iPhone:** `apple-touch-icon.png` (180 px) y un ícono PNG de 192 px, porque Safari no usa el SVG al agregar la app a la pantalla de inicio.
 - El japonés, el alemán y el francés no cambian: 327 tests pasan.
+
+
+### Qué quedó hecho en I1 (19-10-2026)
+- **El curso pasa a «disponible»**: el A1 se puede hacer entero, con lección del día, juegos, práctica, nivelación y simulacro.
+- **Gramática A1** (`grammarA1a.ts`, `grammarA1b.ts`): 33 lecciones; cada opción incorrecta explica por qué no sirve.
+- **Vocabulario A1** (`vocabA1.ts`): 655 palabras en 23 temas y 70 lecciones, con artículo y plural (*lo zaino, gli zaini*); ejercicios de artículo, plural y escribir.
+- **16 textos A1** de *La strada di Lucca* (8 lecturas y 8 diálogos), con glosario que reconoce elisiones, plurales, femeninos y verbos conjugados.
+- **Recorrido A1**: 10 unidades y el simulacro CILS A1 (`/cils/a1`), con la prueba de estructuras de comunicación.
+- **Juegos**: parejas, escucha, singular/plural, *Il, lo o la?*, *Plurali*, *Doppia o no?*, conjugación e *I numeri*. **Práctica**: palabras, escribir, artículos, plurales, dobles, conjugación y números.
+- **Logros** del italiano, repaso de tarjetas «iw-», y `scripts/export-review.ts it` para la revisión externa.
 
 ---
 

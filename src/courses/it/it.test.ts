@@ -3,6 +3,7 @@ import { courseById, isCourseOpen } from '..'
 import { coursePath } from '../../lib/coursePath'
 import { agreementVariants } from './engine/conjugation'
 import { cilsExams, cilsPassedKey, scoreCils } from './exams'
+import { cilsTasks } from './examTasks'
 
 describe('simulacros CILS', () => {
   it('cinco pruebas en todos los niveles: 12 puntos (mínimo 7) en A1–A2 y 20 (mínimo 11) desde B1', () => {
@@ -34,16 +35,31 @@ describe('simulacros CILS', () => {
     expect(partial.passedAuto).toBe(true)
     expect(partial.passed).toBeNull()
   })
+
+  it('las tareas del A1: estructuras con su explicación, ficha, mensaje y oral', () => {
+    const t = cilsTasks.A1!
+    expect(t.structures.length).toBeGreaterThanOrEqual(10)
+    for (const e of t.structures) {
+      expect(e.explanation).toBeTruthy()
+      if (e.type === 'choice') {
+        expect(e.options).toContain(e.answer)
+        for (const k of Object.keys(e.whyWrong ?? {})) expect(e.options).toContain(k)
+      }
+    }
+    expect(t.form.fields.length).toBe(5)
+    expect(t.speaking.length).toBeGreaterThanOrEqual(5)
+  })
 })
 
-describe('curso de italiano (vista previa)', () => {
-  it('tiene su recorrido propio con los seis niveles, todavía sin lecciones', () => {
+describe('curso de italiano', () => {
+  it('está disponible, con su recorrido de seis niveles y test de nivelación', () => {
     const cp = coursePath('it')
     expect(cp.levels.map((l) => l.level)).toEqual(['A1', 'A2', 'B1', 'B2', 'C1', 'C2'])
-    expect(cp.units).toEqual([])
+    expect(cp.units.length).toBeGreaterThan(0)
+    expect(cp.hasPlacement).toBe(true)
     expect(cp.intro).toMatch(/Lucca/)
-    expect(courseById('it').status).toBe('soon')
-    expect(isCourseOpen(courseById('it'))).toBe(import.meta.env.DEV)
+    expect(courseById('it').status).toBe('available')
+    expect(isCourseOpen(courseById('it'))).toBe(true)
   })
 
   it('al escribir se acepta el participio en masculino o femenino', () => {

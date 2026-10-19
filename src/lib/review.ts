@@ -9,6 +9,8 @@ import { germanWordFromCard } from '../courses/de/vocab.ts'
 import { germanWordReviewExercise } from '../courses/de/vocabExercises.ts'
 import { frenchWordFromCard } from '../courses/fr/vocab.ts'
 import { frenchWordReviewExercise } from '../courses/fr/vocabExercises.ts'
+import { italianWordFromCard } from '../courses/it/vocab.ts'
+import { italianWordReviewExercise } from '../courses/it/vocabExercises.ts'
 import type { WritingItem } from './writing.ts'
 
 export const REVIEW_LIMIT = 20
@@ -21,10 +23,10 @@ export const REVIEW_LIMIT = 20
 export type ReviewPlan = { reading: Question[]; exercises: TaggedExercise[]; writing: WritingItem[] }
 
 /** Caracteres que tienen tarjetas de repaso: kana, kanji y palabras («w-<id>»). */
-export const isReviewable = (char: string) => kanaByChar.has(char) || kanjiByChar.has(char) || !!wordFromCard(char) || !!germanWordFromCard(char) || !!frenchWordFromCard(char)
+export const isReviewable = (char: string) => kanaByChar.has(char) || kanjiByChar.has(char) || !!wordFromCard(char) || !!germanWordFromCard(char) || !!frenchWordFromCard(char) || !!italianWordFromCard(char)
 
-/** Curso de una tarjeta: palabras alemanas «dw-<id>», francesas «fw-<id>»; kana, kanji y «w-<id>» son del japonés. */
-export const cardCourse = (char: string): string => (germanWordFromCard(char) ? 'de' : frenchWordFromCard(char) ? 'fr' : 'ja')
+/** Curso de una tarjeta: palabras alemanas «dw-<id>», francesas «fw-<id>», italianas «iw-<id>»; kana, kanji y «w-<id>» son del japonés. */
+export const cardCourse = (char: string): string => (germanWordFromCard(char) ? 'de' : frenchWordFromCard(char) ? 'fr' : italianWordFromCard(char) ? 'it' : 'ja')
 
 /** Solo las tarjetas de un curso: cada idioma repasa lo suyo, sin mezclarse con los otros. */
 export function cardsOfCourse(cards: Record<string, SrsCard>, course: string): Record<string, SrsCard> {
@@ -64,6 +66,7 @@ export function buildReview(cards: Record<string, SrsCard>, now: number, random 
     if (wordFromCard(char)) return [wordReviewExercise(char, skill, random)]
     if (germanWordFromCard(char)) return [germanWordReviewExercise(char, skill, random)]
     if (frenchWordFromCard(char)) return [frenchWordReviewExercise(char, skill, random)]
+    if (italianWordFromCard(char)) return [italianWordReviewExercise(char, skill, random)]
     return skill === 'read' && kanjiByChar.has(char) ? [kanjiReviewExercise(char, random)] : []
   })
 

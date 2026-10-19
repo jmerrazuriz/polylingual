@@ -30,7 +30,6 @@ const features = [
 export function HomePage() {
   const course = courseById(useProgress((s) => s.course))
   if (euroCourses[course.id]) return <EuroHome course={euroCourses[course.id]} />
-  if (course.id === 'it') return <ItalianPreviewHome />
   return (
     <div className="flex flex-col gap-10">
       <section className="flex flex-col items-center gap-4 pt-6 text-center">
@@ -197,6 +196,16 @@ const euroHome: Record<string, { hero: [string, string]; title: string; text: st
     tables: ['l’', 'Artículos, pronombres, un conjugador y los números.'],
     practice: 'Género, femeninos, conjugación y números en sesiones cortas.',
   },
+  it: {
+    hero: ['È', 'gli'],
+    title: '🇮🇹 Italiano · La strada di Lucca',
+    text: 'Del A1 al C2, con italiano para vivir en Italia y obtener la nacionalidad.',
+    characters: Object.values(italianCharacters),
+    words: 'Con artículo y plural, y repaso espaciado.',
+    texts: 'Las historias de Lucca y Bruno, como en el examen.',
+    tables: ['lo', 'Artículos, preposiciones articuladas, plurales, pronombres, un conjugador y los números.'],
+    practice: 'Artículos, plurales, dobles consonantes, conjugación y números en sesiones cortas.',
+  },
 }
 
 /** Inicio de un curso europeo: seguir el recorrido, repasar y las secciones. */
@@ -289,50 +298,3 @@ function EuroHome({ course }: { course: EuroCourse }) {
   )
 }
 
-/** Inicio del italiano mientras está en preparación (I0): el recorrido vacío y las tablas. */
-function ItalianPreviewHome() {
-  return (
-    <div className="flex flex-col gap-8">
-      <section className="flex flex-col items-center gap-4 pt-6 text-center">
-        <div lang="it" className="flex gap-3 text-6xl font-extrabold md:text-7xl">
-          <span className="text-ink dark:text-white">È</span>
-          <span className="text-accent">gli</span>
-        </div>
-        <h1 className="text-3xl font-extrabold md:text-4xl">🇮🇹 Italiano · La strada di Lucca</h1>
-        <p className="max-w-md text-slate-600 dark:text-slate-400">
-          Del A1 al C2, con italiano para vivir en Italia y obtener la nacionalidad. El curso está en preparación: las lecciones llegan pronto.
-        </p>
-      </section>
-
-      <section className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-        {Object.values(italianCharacters).map((c) => (
-          <div key={c.name} className="flex flex-col gap-1 rounded-2xl border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900">
-            <span className="text-lg font-extrabold">{c.name}</span>
-            <span className="text-sm text-slate-500 dark:text-slate-400">{c.description}</span>
-          </div>
-        ))}
-      </section>
-
-      <section className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-        {[
-          { to: '/aprender', glyph: 'A1', title: 'Recorrido', text: 'Los seis niveles, del A1 al C2 (en preparación).' },
-          { to: '/tabla', glyph: 'lo', title: 'Tablas', text: 'Artículos, preposiciones articuladas, plurales, pronombres, un conjugador y los números.' },
-        ].map((f) => (
-          <Link
-            key={f.to}
-            to={f.to}
-            className="flex items-center gap-4 rounded-2xl border border-slate-200 bg-white p-4 transition hover:-translate-y-0.5 hover:shadow-md dark:border-slate-800 dark:bg-slate-900"
-          >
-            <span lang="it" className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-ink text-xl font-extrabold text-white">
-              {f.glyph}
-            </span>
-            <span>
-              <span className="block font-extrabold">{f.title}</span>
-              <span className="text-sm text-slate-500 dark:text-slate-400">{f.text}</span>
-            </span>
-          </Link>
-        ))}
-      </section>
-    </div>
-  )
-}

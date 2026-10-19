@@ -1,5 +1,6 @@
 import { germanUnlockedIds } from '../../courses/de/progress.ts'
 import { frenchUnlockedIds } from '../../courses/fr/progress.ts'
+import { italianUnlockedIds } from '../../courses/it/progress.ts'
 import { lessons as allLessons, lessonsByScript } from '../../courses/ja/lessons.ts'
 import {
   VOCAB_KATA_UNLOCKED_BY,
@@ -17,7 +18,7 @@ import type { LessonResult } from './model.ts'
 import { useProgress } from './store.ts'
 
 /** Desbloqueo por el recorrido de cada curso europeo (se importa aparte para no cargar sus juegos). */
-const euroUnlockedIds: Record<string, typeof germanUnlockedIds> = { de: germanUnlockedIds, fr: frenchUnlockedIds }
+const euroUnlockedIds: Record<string, typeof germanUnlockedIds> = { de: germanUnlockedIds, fr: frenchUnlockedIds, it: italianUnlockedIds }
 
 /** El katakana se abre al terminar los básicos del hiragana (la lección «W y N»). */
 export const KATAKANA_UNLOCKED_BY = 'w'

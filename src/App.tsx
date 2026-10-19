@@ -29,6 +29,7 @@ const EuroReadingsPage = page(() => import('./features/euro/EuroStudyPages'), (m
 const EuroReadingRoute = page(() => import('./features/euro/EuroStudyPages'), (m) => m.EuroReadingRoute)
 const GoetheExamPage = page(() => import('./features/euro/GoetheExamPage'), (m) => m.GoetheExamPage)
 const DelfExamPage = page(() => import('./features/euro/DelfExamPage'), (m) => m.DelfExamPage)
+const CilsExamPage = page(() => import('./features/euro/CilsExamPage'), (m) => m.CilsExamPage)
 const LessonRoute = page(() => import('./features/learn/LessonPage'), (m) => m.LessonRoute)
 const PlacementPage = page(() => import('./features/learn/PlacementPage'), (m) => m.PlacementPage)
 const PathPlacementPage = page(() => import('./features/path/PathPlacementPage'), (m) => m.PathPlacementPage)
@@ -81,6 +82,7 @@ export default function App() {
         <Route path="textos/:textId" element={<EuroOnly><EuroReadingRoute /></EuroOnly>} />
         <Route path="goethe/:level" element={<CourseOnly course="de"><GoetheExamPage /></CourseOnly>} />
         <Route path="delf/:level" element={<CourseOnly course="fr"><DelfExamPage /></CourseOnly>} />
+        <Route path="cils/:level" element={<CourseOnly course="it"><CilsExamPage /></CourseOnly>} />
         <Route path="vocabulario" element={<CourseOnly course="ja"><VocabPage /></CourseOnly>} />
         <Route path="vocabulario/:lessonId" element={<CourseOnly course="ja"><VocabLessonRoute /></CourseOnly>} />
         <Route path="contadores" element={<CourseOnly course="ja"><CountersPage /></CourseOnly>} />

@@ -33,6 +33,6 @@ export const characters = {
   },
   bruno: {
     name: 'Bruno Esposito',
-    description: 'Su amigo napolitano, compañero de departamento y de taller. Le enseña la ciudad, la cocina y el italiano de todos los días.',
+    description: 'Su amigo napolitano y compañero de departamento; trabaja en un taller de cerámica. Le enseña la ciudad, la cocina y el italiano de todos los días.',
   },
 } as const
