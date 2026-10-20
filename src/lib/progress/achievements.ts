@@ -47,6 +47,7 @@ const italianAchievements: Achievement[] = [
   { id: 'it-testi-10', course: 'it', icon: '📖', title: 'Lettore', description: 'Lee 10 episodios de La strada di Lucca.', check: (p) => italianTextsRead(p) >= 10 },
   { id: 'it-cils-a1', course: 'it', icon: '🎓', title: 'CILS A1', description: 'Aprueba el simulacro CILS A1.', check: (p) => cilsPassed(p, 'a1') },
   { id: 'it-cils-a2', course: 'it', icon: '🏅', title: 'CILS A2', description: 'Aprueba el simulacro CILS A2, el nivel de la residencia de larga duración.', check: (p) => cilsPassed(p, 'a2') },
+  { id: 'it-cils-b1', course: 'it', icon: '🏆', title: 'CILS UNO-B1', description: 'Aprueba el simulacro CILS UNO-B1, el nivel que se pide para la nacionalidad.', check: (p) => cilsPassed(p, 'b1') },
   { id: 'it-parole-1000', course: 'it', icon: '🏛️', title: '1000 parole', description: 'Ten 1000 palabras italianas en repaso.', check: (p) => italianWordsInReview(p) >= 1000 },
 ]
 

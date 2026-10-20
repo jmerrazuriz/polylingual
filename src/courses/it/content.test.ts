@@ -14,15 +14,19 @@ import { falsiAmiciCount, falsoAmicoQuestion } from './falsiAmici'
 import { prepositionQuestion } from './prepositions'
 import { readingsA1 } from './readingsA1'
 import { readingsA2 } from './readingsA2'
+import { readingsB1 } from './readingsB1'
+import { pronounQuestion } from './pronomi'
+import { subjunctiveCount, subjunctiveQuestion } from './subjunctive'
 import { italianVocab, italianVocabLessons, italianWordCard, italianWordFromCard, nounLine, withArticle } from './vocab'
 import { italianLessonExercises, italianWordReviewExercise } from './vocabExercises'
 
 const word = (w: string) => italianVocab.find((x) => x.word === w)!
 
 describe('gramática', () => {
-  it('33 lecciones A1 y 31 A2 con ejemplos y ejercicios bien armados, todos con su explicación', () => {
+  it('33 lecciones A1, 31 A2 y 34 B1 con ejemplos y ejercicios bien armados, todos con su explicación', () => {
     expect(italianGrammar.filter((g) => g.level === 'A1')).toHaveLength(33)
     expect(italianGrammar.filter((g) => g.level === 'A2')).toHaveLength(31)
+    expect(italianGrammar.filter((g) => g.level === 'B1')).toHaveLength(34)
     expect(new Set(italianGrammar.map((g) => g.id)).size).toBe(italianGrammar.length)
     for (const g of italianGrammar) {
       expect(g.id.startsWith('it-'), g.id).toBe(true)
@@ -49,9 +53,10 @@ describe('gramática', () => {
 })
 
 describe('vocabulario', () => {
-  it('al menos 650 palabras A1 y 1.300 hasta el A2, sin ids repetidos; los sustantivos con género', () => {
+  it('al menos 650 palabras A1, 1.300 hasta el A2 y 2.350 hasta el B1, sin ids repetidos; los sustantivos con género', () => {
     expect(italianVocab.filter((w) => w.level === 'A1').length).toBeGreaterThanOrEqual(650)
     expect(italianVocab.filter((w) => w.level === 'A1' || w.level === 'A2').length).toBeGreaterThanOrEqual(1300)
+    expect(italianVocab.filter((w) => ['A1', 'A2', 'B1'].includes(w.level)).length).toBeGreaterThanOrEqual(2350)
     expect(new Set(italianVocab.map((w) => w.id)).size).toBe(italianVocab.length)
     for (const w of italianVocab) {
       if (w.pos === 'noun') expect(w.gender, w.word).toBeTruthy()
@@ -138,13 +143,13 @@ describe('vocabulario', () => {
 
 describe('lecturas', () => {
   it('8 lecturas y 8 diálogos por nivel; cada uno pide una lección que existe y que va antes en el recorrido', () => {
-    for (const texts of [readingsA1, readingsA2]) {
+    for (const texts of [readingsA1, readingsA2, readingsB1]) {
       expect(texts.filter((t) => t.kind === 'reading')).toHaveLength(8)
       expect(texts.filter((t) => t.kind === 'dialogue')).toHaveLength(8)
     }
     const order = italianPathItems.map((i) => `${i.kind}:${i.id}`)
-    for (const t of [...readingsA1, ...readingsA2]) {
-      expect(t.level, t.id).toBe(t.id.startsWith('itx-a1') ? 'A1' : 'A2')
+    for (const t of [...readingsA1, ...readingsA2, ...readingsB1]) {
+      expect(t.level, t.id).toBe(t.id.slice(4, 6).toUpperCase())
       expect(italianGrammar.some((g) => g.id === t.requires), t.id).toBe(true)
       expect(order.indexOf(`grammar:${t.requires}`), t.id).toBeLessThan(order.indexOf(`reading:${t.id}`))
       expect(t.questions.length, t.id).toBeGreaterThanOrEqual(3)
@@ -160,14 +165,16 @@ describe('recorrido', () => {
   it('incluye cada lección una sola vez y cada nivel termina en su simulacro CILS', () => {
     const keys = italianPathItems.map((i) => `${i.kind}:${i.id}`)
     expect(new Set(keys).size).toBe(keys.length)
-    const expected = [...italianGrammar.map((g) => `grammar:${g.id}`), ...italianVocabLessons.map((l) => `vocab:${l.id}`), ...readingsA1.map((t) => `reading:${t.id}`), ...readingsA2.map((t) => `reading:${t.id}`), 'exam:A1', 'exam:A2']
+    const expected = [...italianGrammar.map((g) => `grammar:${g.id}`), ...italianVocabLessons.map((l) => `vocab:${l.id}`), ...readingsA1.map((t) => `reading:${t.id}`), ...readingsA2.map((t) => `reading:${t.id}`), ...readingsB1.map((t) => `reading:${t.id}`), 'exam:A1', 'exam:A2', 'exam:B1']
     expect(new Set(keys)).toEqual(new Set(expected))
     expect(italianPath.map((u) => u.id)).toContain('it-examen-a1')
-    expect(italianPath.at(-1)!.id).toBe('it-examen-a2')
+    expect(italianPath.map((u) => u.id)).toContain('it-examen-a2')
+    expect(italianPath.at(-1)!.id).toBe('it-examen-b1')
     // Las palabras y la gramática de cada nivel van dentro de su nivel.
-    const levelOf = (k: string) => (k.startsWith('exam:') ? k.slice(5) : k.startsWith('grammar:') ? italianGrammar.find((g) => `grammar:${g.id}` === k)!.level : k.startsWith('vocab:') ? italianVocabLessons.find((l) => `vocab:${l.id}` === k)!.level : k.includes('-a1-') ? 'A1' : 'A2')
+    const levelOf = (k: string) => (k.startsWith('exam:') ? k.slice(5) : k.startsWith('grammar:') ? italianGrammar.find((g) => `grammar:${g.id}` === k)!.level : k.startsWith('vocab:') ? italianVocabLessons.find((l) => `vocab:${l.id}` === k)!.level : k.slice(12, 14).toUpperCase())
     const levels = keys.map(levelOf)
     expect(levels.lastIndexOf('A1')).toBeLessThan(levels.indexOf('A2'))
+    expect(levels.lastIndexOf('A2')).toBeLessThan(levels.indexOf('B1'))
     for (const u of italianPath) for (const s of u.stops) expect(s.items.length).toBeLessThanOrEqual(3)
   })
 
@@ -199,7 +206,7 @@ describe('juegos y práctica', () => {
 
   it('las preguntas rápidas traen la respuesta entre opciones distintas y su explicación', () => {
     for (let i = 0; i < 200; i++) {
-      for (const q of [conjugationQuestion(Math.random, 1), conjugationQuestion(Math.random, 6), numberQuestion(), articleQuestion(words), pluralQuestion(words), doublesQuestion(words), minimalPairQuestion(), prepositionQuestion(words), falsoAmicoQuestion()]) {
+      for (const q of [conjugationQuestion(Math.random, 1), conjugationQuestion(Math.random, 6), numberQuestion(), articleQuestion(words), pluralQuestion(words), doublesQuestion(words), minimalPairQuestion(), prepositionQuestion(words), falsoAmicoQuestion(), pronounQuestion(), subjunctiveQuestion()]) {
         if (!q) continue
         expect(q.options).toContain(q.answer)
         expect(new Set(q.options).size, q.options.join(' / ')).toBe(q.options.length)
@@ -214,6 +221,17 @@ describe('juegos y práctica', () => {
     expect(prepositionQuestion(a1)).toBeNull()
     expect(practiceSession('falsos-amigos', a1)).toEqual([])
     expect(falsiAmiciCount).toBeGreaterThanOrEqual(25)
+  })
+
+  it('pronombres combinados y subjuntivo solo aparecen desde el B1', () => {
+    const a2 = words.filter((w) => w.level === 'A1' || w.level === 'A2')
+    expect(practiceSession('pronombres', a2)).toEqual([])
+    expect(practiceSession('subjuntivo', a2)).toEqual([])
+    expect(italianCourse.games.find((g) => g.id === 'it-speed-pronomi')!.question!(a2)).toBeNull()
+    expect(subjunctiveCount).toBeGreaterThanOrEqual(30)
+    const q = pronounQuestion(() => 0)
+    expect(q.prompt).toBe('Bruno porta il libro a me. → ＿ porta.')
+    expect(q.answer).toBe('me lo')
   })
 
   it('cada modo de práctica arma una sesión y cada juego tiene preguntas', () => {

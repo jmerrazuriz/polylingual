@@ -6,11 +6,13 @@ import { falsoAmicoQuestion } from './falsiAmici.ts'
 import { lookupItalian } from './glossary.ts'
 import { italianGrammar } from './grammar.ts'
 import { italianPath } from './path.ts'
-import { articleQuestion, audioPairs, conjugationQuestion, italianPoolLevels, italianWordPool, meaningPairs, numberQuestion, practiceSession, type PracticeMode, pluralPairs, pluralQuestion, tenseCountFor } from './practice.ts'
+import { articleQuestion, audioPairs, conjugationQuestion, fromB1, italianPoolLevels, italianWordPool, meaningPairs, numberQuestion, practiceSession, type PracticeMode, pluralPairs, pluralQuestion, tenseCountFor } from './practice.ts'
 import { prepositionQuestion } from './prepositions.ts'
+import { pronounQuestion } from './pronomi.ts'
+import { subjunctiveQuestion } from './subjunctive.ts'
 import { italianItemDone, italianItemStatus, italianUnlockedIds } from './progress.ts'
 import { italianTexts } from './texts.ts'
-import { type ItalianWord, italianThemesA1, italianThemesA2, italianVocabLessonById, italianVocabLessons, italianWordCard, ITALIAN_WORD_PREFIX, nounLine, speakWord, withArticle } from './vocab.ts'
+import { type ItalianWord, italianThemesA1, italianThemesA2, italianThemesB1, italianVocabLessonById, italianVocabLessons, italianWordCard, ITALIAN_WORD_PREFIX, nounLine, speakWord, withArticle } from './vocab.ts'
 import { italianLessonExercises, meaningExercise, sayExercise } from './vocabExercises.ts'
 
 // El italiano como curso europeo: lo que las pantallas comunes necesitan de él.
@@ -123,6 +125,26 @@ const games: EuroGame[] = [
     record: (n) => `${n} correctas`,
     question: (ws) => (ws.some((w) => w.level !== 'A1') ? falsoAmicoQuestion() : null),
   },
+  {
+    id: 'it-speed-pronomi',
+    glyph: 'glielo',
+    title: 'Pronomi',
+    text: 'Los pronombres combinados: me lo, te la, glielo, ce ne (desde B1).',
+    instructions: 'Reemplaza el objeto y a quién por los dos pronombres juntos. Cada error descuenta 3 segundos.',
+    kind: 'speed',
+    record: (n) => `${n} correctas`,
+    question: (ws) => (fromB1(ws as ItalianWord[]) ? pronounQuestion() : null),
+  },
+  {
+    id: 'it-speed-congiuntivo',
+    glyph: 'sia · è',
+    title: 'Congiuntivo o indicativo?',
+    text: 'Penso che sia, so che è: cuándo va el subjuntivo (desde B1).',
+    instructions: 'Elige la forma correcta según lo que expresa la frase. Cada error descuenta 3 segundos.',
+    kind: 'speed',
+    record: (n) => `${n} correctas`,
+    question: (ws) => (fromB1(ws as ItalianWord[]) ? subjunctiveQuestion() : null),
+  },
 ]
 
 export const italianCourse: EuroCourse = {
@@ -144,7 +166,7 @@ export const italianCourse: EuroCourse = {
       : words.some((w) => w.pos === 'adj')
         ? 'Aprende cada adjetivo con su femenino. Toca una palabra para oírla.'
         : 'Aprende cada palabra o expresión completa, tal como se usa. Toca una para oírla.',
-  themes: [...italianThemesA1.map((t) => ({ id: t.id, title: t.title, level: 'A1' as const })), ...italianThemesA2.map((t) => ({ id: t.id, title: t.title, level: 'A2' as const }))],
+  themes: [...italianThemesA1.map((t) => ({ id: t.id, title: t.title, level: 'A1' as const })), ...italianThemesA2.map((t) => ({ id: t.id, title: t.title, level: 'A2' as const })), ...italianThemesB1.map((t) => ({ id: t.id, title: t.title, level: 'B1' as const }))],
   vocabLessons: italianVocabLessons,
   vocabLessonById: italianVocabLessonById,
   texts: italianTexts,
@@ -176,6 +198,8 @@ export const italianCourse: EuroCourse = {
     { mode: 'numeros', glyph: '21·28·33', title: 'Números', text: 'Del número a las letras: ventuno, ventotto, trentatré.' },
     { mode: 'preposiciones', glyph: 'dal·nel·sul', title: 'Preposiciones', text: 'in banca, dal medico, al mare; su + il = sul (desde A2).' },
     { mode: 'falsos-amigos', glyph: '≠', title: 'Falsos amigos', text: 'burro, salire, camera… lo que significan de verdad (desde A2).' },
+    { mode: 'pronombres', glyph: 'glielo', title: 'Pronombres combinados', text: 'me lo, te la, glielo, ce ne (desde B1).' },
+    { mode: 'subjuntivo', glyph: 'sia · è', title: 'Subjuntivo o indicativo', text: 'penso che sia, so che è, benché, anche se (desde B1).' },
   ],
   practiceSession: (mode, words, count) => practiceSession(mode as PracticeMode, words as ItalianWord[], count),
   check: (input, answers) => {

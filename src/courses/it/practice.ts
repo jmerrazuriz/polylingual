@@ -12,6 +12,8 @@ import { falsoAmicoQuestion } from './falsiAmici.ts'
 import type { CefrLevel } from './levels.ts'
 import { italianUnlockedIds } from './progress.ts'
 import { prepositionQuestion } from './prepositions.ts'
+import { pronounQuestion } from './pronomi.ts'
+import { subjunctiveQuestion } from './subjunctive.ts'
 import { verbs } from './verbs.ts'
 import { type ItalianWord, italianVocabLessonById, pluralWithArticle, withArticle } from './vocab.ts'
 import { articleExercise, hasArticleQuestion, hasPluralQuestion, meaningExercise, pluralExercise, sayExercise, writeExercise } from './vocabExercises.ts'
@@ -158,6 +160,9 @@ export function numberQuestion(random = Math.random): SpeedQuestion {
   return { prompt: String(n), options, answer, speak: answer, explanation: `${n} = ${answer}. ${numberReason(n)}`, whyWrong }
 }
 
+/** Hay palabras del B1 o más: se abren los juegos de pronombres combinados y subjuntivo. */
+export const fromB1 = (words: readonly ItalianWord[]) => words.some((w) => w.level !== 'A1' && w.level !== 'A2')
+
 /** La pregunta rápida como ejercicio de opción, para las sesiones de práctica. */
 export const asExercise = (q: SpeedQuestion): GrammarExercise => ({
   type: 'choice',
@@ -169,7 +174,7 @@ export const asExercise = (q: SpeedQuestion): GrammarExercise => ({
   whyWrong: q.whyWrong,
 })
 
-export type PracticeMode = 'palabras' | 'escribir' | 'articulos' | 'plurales' | 'dobles' | 'conjugacion' | 'numeros' | 'preposiciones' | 'falsos-amigos'
+export type PracticeMode = 'palabras' | 'escribir' | 'articulos' | 'plurales' | 'dobles' | 'conjugacion' | 'numeros' | 'preposiciones' | 'falsos-amigos' | 'pronombres' | 'subjuntivo'
 
 /** Una sesión de práctica libre de `count` ejercicios con las palabras del pool. */
 export function practiceSession(mode: PracticeMode, words: readonly ItalianWord[], count = 12, random = Math.random): GrammarExercise[] {
@@ -200,5 +205,9 @@ export function practiceSession(mode: PracticeMode, words: readonly ItalianWord[
       })
     case 'falsos-amigos':
       return words.some((w) => w.level !== 'A1') ? repeat(() => asExercise(falsoAmicoQuestion(random))) : []
+    case 'pronombres':
+      return fromB1(words) ? repeat(() => asExercise(pronounQuestion(random))) : []
+    case 'subjuntivo':
+      return fromB1(words) ? repeat(() => asExercise(subjunctiveQuestion(random))) : []
   }
 }

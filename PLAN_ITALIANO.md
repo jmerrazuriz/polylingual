@@ -434,7 +434,7 @@ Como *Ottos Weg* en alemán y *Le chemin de Camila* en francés. Los apellidos s
 | **I0 · Base** ✅ | Motor italiano (conjugación, artículos, plurales, números) con tests. `italianInput` y `ItalianKeys`. Ampliar lo europeo a tres cursos (sección 7). Puntaje CILS con tests. `ItalianTablesPage`. Recorrido italiano vacío, visible solo en desarrollo. | El japonés, el alemán y el francés siguen igual (todos los tests pasan) y existe un recorrido italiano vacío. |
 | **I1 · A1** ✅ | Pronunciación, ~30 lecciones, ~650 palabras y 16 textos de *La strada di Lucca*. Simulacro CILS A1 con módulo de estructuras y test de nivelación. Juegos (parejas, escucha, *il/lo/la*, plurales, dobles, conjugación, números), práctica y **lección del día**. `export-review.ts` por curso. | Se puede hacer el A1 entero, jugar y tener lección del día. El curso pasa a «disponible». |
 | **I2 · A2** ✅ | ~30 lecciones, hasta ~1.300 palabras, juegos de preposiciones y falsos amigos, simulacro A2. | Igual que I1. |
-| **I3 · B1** | ~35 lecciones, hasta ~2.400 palabras, juegos de pronombres y subjuntivo, simulacro UNO-B1. | Simulacro B1 con puntaje CILS. |
+| **I3 · B1** ✅ | ~35 lecciones, hasta ~2.400 palabras, juegos de pronombres y subjuntivo, simulacro UNO-B1. | Simulacro B1 con puntaje CILS. |
 | **I4 · B2** | ~35 lecciones, hasta ~4.000 palabras, passato remoto en el motor y el glosario, juego de conectores, simulacro DUE-B2 con ensayo y lista de control. | Simulacro B2. |
 | **I5 · C1** | ~35 lecciones, hasta ~5.700 palabras, variedades y registro, juego de registros, simulacro TRE-C1. | Simulacro C1. |
 | **I6 · C2** | ~30 lecciones, hasta ~7.700 palabras, estilo y variedades, simulacro QUATTRO-C2 (ensayo y carta formal). | Simulacro C2. Plan cerrado. |
@@ -489,6 +489,19 @@ Como *Ottos Weg* en alemán y *Le chemin de Camila* en francés. Los apellidos s
 - **Juegos y práctica**: *Preposizioni* (uso y fusión con el artículo) y *Falsi amici* (30 palabras), que se abren con las palabras A2; la conjugación suma passato prossimo, imperfetto y futuro.
 - **Motor**: 17 verbos más (*assumere, richiedere, trasferirsi, restituire, guarire…*) para que el glosario reconozca sus formas.
 - **Logros**: CILS A2 y 1000 parole.
+
+
+### Qué quedó hecho en I3 (19-10-2026)
+- **Gramática B1** (`grammarB1a.ts`, `grammarB1b.ts`): 34 lecciones.
+  - Tiempos: trapassato, futuro anteriore, condicional pasado (también el futuro visto desde el pasado: *ha detto che sarebbe venuto*), *stavo facendo* y el gerundio.
+  - El congiuntivo: presente, irregulares, pasado e imperfetto; con opinión, voluntad, emoción y duda; frente al indicativo y al infinitivo; tras *benché, affinché, prima che, purché*; y el periodo hipotético real y posible.
+  - Pronombres combinados (*glielo, dammelo*), pronominales (*andarsene, farcela, cavarsela*) y tónicos; *il quale, ciò che*; discurso indirecto; pasiva con *essere, venire, andare*; *si* pasivo en pasado; *fare* + infinitivo; conectores de causa, concesión y finalidad; verbos con preposición; alterados; comparaciones; opinar y la carta formal.
+- **Vocabulario B1** (`vocabB1a.ts`, `vocabB1b.ts`, `vocabB1c.ts`): 1.030 palabras en 38 temas y 110 lecciones (2.378 en total). Incluye trabajo y derechos, dinero, seguros, impuestos, nacionalidad, política, sociedad, ambiente, medios, arte, universidad, justicia, emergencias, emigración y modismos.
+- **16 textos B1** de *La strada di Lucca*: el atraso en San Giacomo, el sindicato, el seguro, la información oficial sobre la nacionalidad, la inundación de la Romaña, la preparación del CILS, la exposición, la boda en Nápoles y la carta al Archivo de Génova.
+- **Recorrido B1**: 12 unidades y el simulacro CILS UNO-B1 (`/cils/b1`, 20 puntos y mínimo 11 por prueba): 16 preguntas de estructuras, un correo formal para completar, un texto de opinión y la lista para hablar. Se probó completo en el navegador.
+- **Juegos y práctica**: *Pronomi* (pronombres combinados, generados por el motor) y *Congiuntivo o indicativo?* (30 frases), que se abren con las palabras B1.
+- **Motor**: 59 verbos más (*ottenere, proporre, ridurre, riuscire, accorgersi…*).
+- **Logro**: CILS UNO-B1.
 
 ---
 

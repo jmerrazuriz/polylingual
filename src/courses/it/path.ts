@@ -67,7 +67,23 @@ const unitsA2: PathUnit[] = [
   examUnit('A2'),
 ]
 
-const unitsByLevel: Record<CefrLevel, PathUnit[]> = { A1: unitsA1, A2: unitsA2, B1: [], B2: [], C1: [], C2: [] }
+const unitsB1: PathUnit[] = [
+  unit('it-b1-1', 'B1 · Un año en el taller', '🛠️', ['it-trapassato', 'it-futuro-anteriore', 'it-condizionale-passato'], ['lavoro-b1', 'comunicazione', 'verbi-b1a'], ['itx-b1-sara', 'itx-b1-cantiere']),
+  unit('it-b1-2', 'B1 · Mis derechos', '⚖️', ['it-stavo-facendo', 'it-gerundio', 'it-congiuntivo-presente'], ['diritti', 'carriera', 'connettivi-b1'], ['itx-b1-sindacato', 'itx-b1-guida']),
+  unit('it-b1-3', 'B1 · Dinero y seguros', '💶', ['it-congiuntivo-irregolari', 'it-congiuntivo-opinione', 'it-congiuntivo-volonta'], ['soldi-b1', 'assicurazioni', 'fisco'], ['itx-b1-assicurazione']),
+  unit('it-b1-4', 'B1 · Rumbo a la nacionalidad', '🇮🇹', ['it-congiuntivo-emozioni', 'it-congiuntivo-o-indicativo', 'it-infinito-o-congiuntivo'], ['cittadinanza-b1', 'politica', 'giustizia'], ['itx-b1-cittadinanza', 'itx-b1-giulia']),
+  unit('it-b1-5', 'B1 · La Italia de hoy', '📰', ['it-congiuntivo-passato', 'it-congiuntivo-imperfetto', 'it-periodo-ipotetico-reale'], ['societa', 'media', 'opinione'], ['itx-b1-giovani']),
+  unit('it-b1-6', 'B1 · La inundación', '🌧️', ['it-periodo-ipotetico-possibile', 'it-congiunzioni-congiuntivo', 'it-pronomi-combinati'], ['ambiente', 'clima', 'emergenze'], ['itx-b1-alluvione', 'itx-b1-volontari']),
+  unit('it-b1-7', 'B1 · Rumbo al CILS', '💻', ['it-pronomi-combinati-verbi', 'it-verbi-pronominali', 'it-pronomi-tonici'], ['tecnologia-b1', 'universita', 'verbi-b1b'], ['itx-b1-cils']),
+  unit('it-b1-8', 'B1 · Arte y patrimonio', '🏛️', ['it-relativi-quale', 'it-discorso-indiretto', 'it-passiva'], ['patrimonio', 'arte', 'storia'], ['itx-b1-mostra']),
+  unit('it-b1-9', 'B1 · Libros, cine y música', '🎬', ['it-si-passivante', 'it-fare-causativo', 'it-connettivi-causa'], ['letteratura', 'spettacolo', 'aggettivi-b1'], ['itx-b1-film']),
+  unit('it-b1-10', 'B1 · La vida en Bolonia', '🚲', ['it-concessive', 'it-finali', 'it-preposizioni-verbi'], ['citta-b1', 'traffico', 'casa-b1', 'animali'], ['itx-b1-bici']),
+  unit('it-b1-11', 'B1 · Una boda en Nápoles', '💍', ['it-nomi-alterati', 'it-comparativi-avanzati'], ['relazioni', 'parentela', 'benessere', 'modi-di-dire'], ['itx-b1-matrimonio']),
+  unit('it-b1-12', 'B1 · Las raíces genovesas', '⚓', ['it-opinione', 'it-lettera-formale'], ['emigrazione', 'geografia', 'cibo-b1'], ['itx-b1-lettera']),
+  examUnit('B1'),
+]
+
+const unitsByLevel: Record<CefrLevel, PathUnit[]> = { A1: unitsA1, A2: unitsA2, B1: unitsB1, B2: [], C1: [], C2: [] }
 
 export const italianPath: PathUnit[] = cefrLevels.flatMap((l) => unitsByLevel[l])
 
